@@ -1,0 +1,198 @@
+{
+  "fylker": [
+    {
+      "id": "oslo",
+      "navn": "Oslo",
+      "takstmenn": [
+        { "id": 1, "navn": "Erik Johansen", "telefon": "900 11 223", "epost": "erik@takst-oslo.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=1" },
+        { "id": 2, "navn": "Marte Svendsen", "telefon": "901 22 334", "epost": "marte@takst-oslo.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=5" },
+        { "id": 3, "navn": "Lars Pettersen", "telefon": "902 33 445", "epost": "lars@takst-oslo.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=3" },
+        { "id": 4, "navn": "Silje Haugen", "telefon": "903 44 556", "epost": "silje@takst-oslo.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=9" },
+        { "id": 5, "navn": "Anders Berg", "telefon": "904 55 667", "epost": "anders@takst-oslo.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=11" },
+        { "id": 6, "navn": "Karin Nilsen", "telefon": "905 66 778", "epost": "karin@takst-oslo.no", "spesialitet": "Boligsalgsrapport", "bilde": "https://i.pravatar.cc/150?img=16" }
+      ]
+    },
+    {
+      "id": "rogaland",
+      "navn": "Rogaland",
+      "takstmenn": [
+        { "id": 7, "navn": "Trond Aase", "telefon": "906 77 889", "epost": "trond@takst-rogaland.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=12" },
+        { "id": 8, "navn": "Ingrid Lunde", "telefon": "907 88 990", "epost": "ingrid@takst-rogaland.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=23" },
+        { "id": 9, "navn": "Bjørn Vik", "telefon": "908 99 001", "epost": "bjorn@takst-rogaland.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=14" },
+        { "id": 10, "navn": "Helene Strand", "telefon": "909 00 112", "epost": "helene@takst-rogaland.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=25" },
+        { "id": 11, "navn": "Geir Moen", "telefon": "910 11 223", "epost": "geir@takst-rogaland.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=15" },
+        { "id": 12, "navn": "Tonje Bakke", "telefon": "911 22 334", "epost": "tonje@takst-rogaland.no", "spesialitet": "Boligsalgsrapport", "bilde": "https://i.pravatar.cc/150?img=26" },
+        { "id": 13, "navn": "Ola Sandvik", "telefon": "912 33 445", "epost": "ola@takst-rogaland.no", "spesialitet": "Energivurdering", "bilde": "https://i.pravatar.cc/150?img=17" }
+      ]
+    },
+    {
+      "id": "vestland",
+      "navn": "Vestland",
+      "takstmenn": [
+        { "id": 14, "navn": "Kristin Dale", "telefon": "913 44 556", "epost": "kristin@takst-vestland.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=27" },
+        { "id": 15, "navn": "Pål Hovde", "telefon": "914 55 667", "epost": "pal@takst-vestland.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=18" },
+        { "id": 16, "navn": "Anne Fjell", "telefon": "915 66 778", "epost": "anne@takst-vestland.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=28" },
+        { "id": 17, "navn": "Rune Knutsen", "telefon": "916 77 889", "epost": "rune@takst-vestland.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=19" },
+        { "id": 18, "navn": "Hilde Osen", "telefon": "917 88 990", "epost": "hilde@takst-vestland.no", "spesialitet": "Boligsalgsrapport", "bilde": "https://i.pravatar.cc/150?img=29" },
+        { "id": 19, "navn": "Magnus Eide", "telefon": "918 99 001", "epost": "magnus@takst-vestland.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=20" }
+      ]
+    },
+    {
+      "id": "trondelag",
+      "navn": "Trøndelag",
+      "takstmenn": [
+        { "id": 20, "navn": "Stine Hagen", "telefon": "919 00 112", "epost": "stine@takst-trondelag.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=30" },
+        { "id": 21, "navn": "Tor Brekke", "telefon": "920 11 223", "epost": "tor@takst-trondelag.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=51" },
+        { "id": 22, "navn": "Line Haug", "telefon": "921 22 334", "epost": "line@takst-trondelag.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=32" },
+        { "id": 23, "navn": "Einar Lien", "telefon": "922 33 445", "epost": "einar@takst-trondelag.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=52" },
+        { "id": 24, "navn": "Camilla Nes", "telefon": "923 44 556", "epost": "camilla@takst-trondelag.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=34" },
+        { "id": 25, "navn": "Henrik Solberg", "telefon": "924 55 667", "epost": "henrik@takst-trondelag.no", "spesialitet": "Energivurdering", "bilde": "https://i.pravatar.cc/150?img=53" }
+      ]
+    },
+    {
+      "id": "akershus",
+      "navn": "Akershus",
+      "takstmenn": [
+        { "id": 26, "navn": "Mona Elstad", "telefon": "925 66 778", "epost": "mona@takst-akershus.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=35" },
+        { "id": 27, "navn": "Kjetil Rønning", "telefon": "926 77 889", "epost": "kjetil@takst-akershus.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=54" },
+        { "id": 28, "navn": "Vibeke Storm", "telefon": "927 88 990", "epost": "vibeke@takst-akershus.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=36" },
+        { "id": 29, "navn": "Dag Fossheim", "telefon": "928 99 001", "epost": "dag@takst-akershus.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=55" },
+        { "id": 30, "navn": "Renate Holm", "telefon": "929 00 112", "epost": "renate@takst-akershus.no", "spesialitet": "Boligsalgsrapport", "bilde": "https://i.pravatar.cc/150?img=37" },
+        { "id": 31, "navn": "Arild Dahl", "telefon": "930 11 223", "epost": "arild@takst-akershus.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=56" },
+        { "id": 32, "navn": "Siri Krog", "telefon": "931 22 334", "epost": "siri@takst-akershus.no", "spesialitet": "Energivurdering", "bilde": "https://i.pravatar.cc/150?img=38" }
+      ]
+    },
+    {
+      "id": "innlandet",
+      "navn": "Innlandet",
+      "takstmenn": [
+        { "id": 33, "navn": "Jon Enger", "telefon": "932 33 445", "epost": "jon@takst-innlandet.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=57" },
+        { "id": 34, "navn": "Bente Solli", "telefon": "933 44 556", "epost": "bente@takst-innlandet.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=39" },
+        { "id": 35, "navn": "Håkon Lyng", "telefon": "934 55 667", "epost": "hakon@takst-innlandet.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=58" },
+        { "id": 36, "navn": "Gro Aune", "telefon": "935 66 778", "epost": "gro@takst-innlandet.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=40" },
+        { "id": 37, "navn": "Svein Berge", "telefon": "936 77 889", "epost": "svein@takst-innlandet.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=59" }
+      ]
+    },
+    {
+      "id": "vestfold",
+      "navn": "Vestfold",
+      "takstmenn": [
+        { "id": 38, "navn": "Rita Foss", "telefon": "937 88 990", "epost": "rita@takst-vestfold.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=41" },
+        { "id": 39, "navn": "Nils Hamre", "telefon": "938 99 001", "epost": "nils@takst-vestfold.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=60" },
+        { "id": 40, "navn": "Marit Tangen", "telefon": "939 00 112", "epost": "marit@takst-vestfold.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=42" }
+      ]
+    },
+    {
+      "id": "telemark",
+      "navn": "Telemark",
+      "takstmenn": [
+        { "id": 41, "navn": "Olav Risnes", "telefon": "940 11 223", "epost": "olav@takst-telemark.no", "spesialitet": "Boligsalgsrapport", "bilde": "https://i.pravatar.cc/150?img=61" },
+        { "id": 42, "navn": "Else Viken", "telefon": "941 22 334", "epost": "else@takst-telemark.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=43" },
+        { "id": 43, "navn": "Per Grønli", "telefon": "942 33 445", "epost": "per@takst-telemark.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=62" }
+      ]
+    },
+    {
+      "id": "agder",
+      "navn": "Agder",
+      "takstmenn": [
+        { "id": 44, "navn": "Tone Søgne", "telefon": "943 44 556", "epost": "tone@takst-agder.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=44" },
+        { "id": 45, "navn": "Knut Helle", "telefon": "944 55 667", "epost": "knut@takst-agder.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=63" },
+        { "id": 46, "navn": "Eva Flaten", "telefon": "945 66 778", "epost": "eva@takst-agder.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=45" },
+        { "id": 47, "navn": "Harald Tveit", "telefon": "946 77 889", "epost": "harald@takst-agder.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=64" },
+        { "id": 48, "navn": "Solveig Kile", "telefon": "947 88 990", "epost": "solveig@takst-agder.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=46" }
+      ]
+    },
+    {
+      "id": "more-og-romsdal",
+      "navn": "Møre og Romsdal",
+      "takstmenn": [
+        { "id": 49, "navn": "Asbjørn Devold", "telefon": "948 99 001", "epost": "asbjorn@takst-more.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=47" },
+        { "id": 50, "navn": "Liv Ørsta", "telefon": "949 00 112", "epost": "liv@takst-more.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=65" },
+        { "id": 51, "navn": "Terje Ålesund", "telefon": "950 11 223", "epost": "terje@takst-more.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=48" },
+        { "id": 52, "navn": "Astrid Molde", "telefon": "951 22 334", "epost": "astrid@takst-more.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=66" },
+        { "id": 53, "navn": "Gunnar Sunndal", "telefon": "952 33 445", "epost": "gunnar@takst-more.no", "spesialitet": "Boligsalgsrapport", "bilde": "https://i.pravatar.cc/150?img=49" },
+        { "id": 54, "navn": "Berit Kristiansund", "telefon": "953 44 556", "epost": "berit@takst-more.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=67" }
+      ]
+    },
+    {
+      "id": "nordland",
+      "navn": "Nordland",
+      "takstmenn": [
+        { "id": 55, "navn": "Sigurd Bodø", "telefon": "954 55 667", "epost": "sigurd@takst-nordland.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=50" },
+        { "id": 56, "navn": "Ragnhild Narvik", "telefon": "955 66 778", "epost": "ragnhild@takst-nordland.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=68" },
+        { "id": 57, "navn": "Oddvar Sortland", "telefon": "956 77 889", "epost": "oddvar@takst-nordland.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=2" },
+        { "id": 58, "navn": "Kirsten Mo", "telefon": "957 88 990", "epost": "kirsten@takst-nordland.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=69" },
+        { "id": 59, "navn": "Leif Svolvær", "telefon": "958 99 001", "epost": "leif@takst-nordland.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=4" }
+      ]
+    },
+    {
+      "id": "troms",
+      "navn": "Troms",
+      "takstmenn": [
+        { "id": 60, "navn": "Turid Tromsø", "telefon": "959 00 112", "epost": "turid@takst-troms.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=70" },
+        { "id": 61, "navn": "Vegard Harstad", "telefon": "960 11 223", "epost": "vegard@takst-troms.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=6" },
+        { "id": 62, "navn": "Randi Finnsnes", "telefon": "961 22 334", "epost": "randi@takst-troms.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=21" },
+        { "id": 63, "navn": "Arne Senja", "telefon": "962 33 445", "epost": "arne@takst-troms.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=7" },
+        { "id": 64, "navn": "Johanne Bardufoss", "telefon": "963 44 556", "epost": "johanne@takst-troms.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=22" },
+        { "id": 65, "navn": "Fredrik Lyngen", "telefon": "964 55 667", "epost": "fredrik@takst-troms.no", "spesialitet": "Boligsalgsrapport", "bilde": "https://i.pravatar.cc/150?img=8" }
+      ]
+    },
+    {
+      "id": "finnmark",
+      "navn": "Finnmark",
+      "takstmenn": [
+        { "id": 66, "navn": "Oddny Hammerfest", "telefon": "965 66 778", "epost": "oddny@takst-finnmark.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=24" },
+        { "id": 67, "navn": "Kai Alta", "telefon": "966 77 889", "epost": "kai@takst-finnmark.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=10" },
+        { "id": 68, "navn": "Solrun Kirkenes", "telefon": "967 88 990", "epost": "solrun@takst-finnmark.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=31" },
+        { "id": 69, "navn": "Ivar Vadsø", "telefon": "968 99 001", "epost": "ivar@takst-finnmark.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=13" },
+        { "id": 70, "navn": "Guri Lakselv", "telefon": "969 00 112", "epost": "guri@takst-finnmark.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=33" }
+      ]
+    },
+    {
+      "id": "buskerud",
+      "navn": "Buskerud",
+      "takstmenn": [
+        { "id": 71, "navn": "Thomas Drammen", "telefon": "970 11 223", "epost": "thomas@takst-buskerud.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=52" },
+        { "id": 72, "navn": "Lise Kongsberg", "telefon": "971 22 334", "epost": "lise@takst-buskerud.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=35" },
+        { "id": 73, "navn": "Frode Hønefoss", "telefon": "972 33 445", "epost": "frode@takst-buskerud.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=53" },
+        { "id": 74, "navn": "Wenche Gol", "telefon": "973 44 556", "epost": "wenche@takst-buskerud.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=36" },
+        { "id": 75, "navn": "Steinar Geilo", "telefon": "974 55 667", "epost": "steinar@takst-buskerud.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=54" },
+        { "id": 76, "navn": "Anette Hallingdal", "telefon": "975 66 778", "epost": "anette@takst-buskerud.no", "spesialitet": "Boligsalgsrapport", "bilde": "https://i.pravatar.cc/150?img=37" }
+      ]
+    },
+    {
+      "id": "ostfold",
+      "navn": "Østfold",
+      "takstmenn": [
+        { "id": 77, "navn": "Roger Fredrikstad", "telefon": "976 77 889", "epost": "roger@takst-ostfold.no", "spesialitet": "Boligtaksering", "bilde": "https://i.pravatar.cc/150?img=55" },
+        { "id": 78, "navn": "Monica Sarpsborg", "telefon": "977 88 990", "epost": "monica@takst-ostfold.no", "spesialitet": "Skadetaksering", "bilde": "https://i.pravatar.cc/150?img=38" },
+        { "id": 79, "navn": "Stein Halden", "telefon": "978 99 001", "epost": "stein@takst-ostfold.no", "spesialitet": "Næringstaksering", "bilde": "https://i.pravatar.cc/150?img=56" },
+        { "id": 80, "navn": "Unni Moss", "telefon": "979 00 112", "epost": "unni@takst-ostfold.no", "spesialitet": "Tilstandsrapport", "bilde": "https://i.pravatar.cc/150?img=39" },
+        { "id": 81, "navn": "Vidar Askim", "telefon": "980 11 223", "epost": "vidar@takst-ostfold.no", "spesialitet": "Verditaksering", "bilde": "https://i.pravatar.cc/150?img=57" }
+      ]
+    }
+  ],
+  "bloggposter": [
+    {
+      "id": "hva-er-boligtaksering",
+      "tittel": "Hva er boligtaksering og hvorfor trenger du det?",
+      "dato": "2025-01-15",
+      "ingress": "Boligtaksering er en profesjonell vurdering av en eiendoms markedsverdi. Enten du skal selge, kjøpe eller refinansiere, er en takst et viktig verktøy for å sikre at du tar gode økonomiske beslutninger.",
+      "innhold": "En boligtakst er en uavhengig vurdering av eiendommens tekniske tilstand og markedsverdi, utført av en sertifisert takstmann. Taksten gir deg et solid grunnlag for å forstå hva boligen din faktisk er verdt.\n\nDet finnes flere typer takster:\n\n**Verditakst** er den vanligste formen og gir en estimert markedsverdi basert på beliggenhet, størrelse, standard og sammenlignbare salg i området.\n\n**Tilstandsrapport** går dypere og kartlegger den tekniske tilstanden til boligen. Her vurderes alt fra tak og fasade til våtrom og elektrisk anlegg.\n\n**Boligsalgsrapport** kombinerer verditakst og tilstandsrapport, og er den mest omfattende vurderingen du kan få. Denne er spesielt nyttig ved boligsalg.\n\nNår trenger du egentlig en takst? De vanligste situasjonene er:\n\n- Ved kjøp eller salg av bolig\n- Ved refinansiering av boliglån\n- Ved arv og skifte\n- Ved forsikringssaker og skader\n- Ved uenigheter om eiendomsverdi\n\nEn god takstmann har utdanning fra høyskole eller universitet innen bygg, og er sertifisert gjennom Norsk Takst. Det er viktig å velge en takstmann med lokal kunnskap om markedet i ditt område.\n\nPrisen for en takst varierer, men regn med mellom 5 000 og 15 000 kroner avhengig av type takst og boligens størrelse. En tilstandsrapport eller boligsalgsrapport koster naturligvis mer enn en enkel verditakst.\n\nHusk at en takst er en investering i trygghet. Ved å få en profesjonell vurdering unngår du ubehagelige overraskelser og kan ta informerte beslutninger om din viktigste investering – boligen din."
+    },
+    {
+      "id": "velge-riktig-takstmann",
+      "tittel": "Slik velger du riktig takstmann – 7 tips",
+      "dato": "2025-02-20",
+      "ingress": "Å velge riktig takstmann kan spare deg for store summer og mye hodepine. Her er våre beste tips for å finne en takstmann du kan stole på.",
+      "innhold": "Valg av takstmann er en viktig beslutning som kan påvirke både kjøpspris, salgspris og forsikringsoppgjør. Her er syv konkrete tips som hjelper deg å velge rett.\n\n**1. Sjekk sertifiseringen**\nEn takstmann bør være sertifisert gjennom Norsk Takst eller tilsvarende bransjeorganisasjon. Dette sikrer at vedkommende har riktig utdanning og følger etiske retningslinjer.\n\n**2. Se etter lokal erfaring**\nEn takstmann som kjenner det lokale markedet vil gi mer presise vurderinger. De vet hva som er vanlig prisnivå i nabolaget og kan sammenligne med relevante salg.\n\n**3. Spør om spesialitet**\nNoen takstmenn spesialiserer seg på bolig, andre på næring, og noen på skadetaksering. Velg en som har erfaring med din type eiendom.\n\n**4. Be om referanser**\nEn dyktig takstmann deler gjerne referanser fra tidligere oppdrag. Ikke vær redd for å spørre.\n\n**5. Sammenlign priser**\nFå tilbud fra flere takstmenn, men husk at den billigste ikke nødvendigvis er den beste. Kvalitet koster, men det lønner seg i lengden.\n\n**6. Sjekk responstid**\nHvor raskt kan takstmannen komme på befaring? I et hett boligmarked kan rask responstid være avgjørende.\n\n**7. Les anmeldelser**\nSjekk Google-anmeldelser og andre plattformer. Tidligere kunders erfaringer gir verdifull innsikt.\n\nEn god takstmann er ikke bare teknisk dyktig, men også en god kommunikator som forklarer funnene sine på en forståelig måte. De bør være tilgjengelige for spørsmål etter at rapporten er levert.\n\nTa deg tid til å gjøre research – det er verdt det. En grundig og ærlig takstmann er gull verdt når du skal ta store økonomiske beslutninger om eiendom."
+    },
+    {
+      "id": "tilstandsrapport-guide",
+      "tittel": "Alt du trenger å vite om tilstandsrapporten",
+      "dato": "2025-03-10",
+      "ingress": "Tilstandsrapporten ble obligatorisk ved boligsalg fra 2022. Her forklarer vi hva den inneholder, hva den koster, og hvorfor den er så viktig for både kjøper og selger.",
+      "innhold": "Siden januar 2022 har det vært obligatorisk med tilstandsrapport ved salg av bolig i Norge. Dette var en del av den nye avhendingsloven som styrket kjøpers rettigheter.\n\n**Hva inneholder tilstandsrapporten?**\n\nEn tilstandsrapport er en grundig gjennomgang av boligens tekniske tilstand. Takstmannen vurderer følgende områder:\n\n- Tak og taktekning\n- Yttervegger og fasade\n- Vinduer og dører\n- Kjeller og grunnmur\n- Våtrom (bad, vaskerom)\n- Kjøkken\n- Elektrisk anlegg\n- VVS og rør\n- Ventilasjon\n- Innvendige overflater\n\nHvert område får en tilstandsgrad fra TG0 (ingen avvik) til TG3 (store avvik). Denne graderingen gjør det lett for kjøpere å forstå tilstanden på ulike deler av boligen.\n\n**Hva koster det?**\n\nPrisen avhenger av boligens størrelse og type. Som en tommelfingerregel:\n- Leilighet: 8 000 – 12 000 kr\n- Rekkehus: 10 000 – 15 000 kr\n- Enebolig: 12 000 – 20 000 kr\n\n**Fordeler for selger**\nMed en god tilstandsrapport beskytter du deg mot reklamasjoner etter salget. Når alle kjente feil er dokumentert, er risikoen for tvister betydelig redusert.\n\n**Fordeler for kjøper**\nDu får en grundig og uavhengig vurdering av boligens tilstand før du legger inn bud. Dette gir deg et mye bedre beslutningsgrunnlag.\n\n**Vårt råd**\nBestill tilstandsrapporten i god tid før salg. En grundig takstmann trenger tid til å gjøre en skikkelig jobb, og rapporten bør være klar når boligen legges ut for salg. Velg alltid en takstmann som er sertifisert gjennom Norsk Takst."
+    }
+  ]
+}
