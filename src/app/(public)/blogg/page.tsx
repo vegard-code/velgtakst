@@ -3,9 +3,15 @@ import type { Metadata } from "next";
 import data from "@/data/takstmenn.json";
 
 export const metadata: Metadata = {
-  title: "Blogg om takst og bolig | VelgTakst",
+  title: "Blogg om takst og bolig | Fagartikler og tips | VelgTakst",
   description:
-    "Les artikler om boligtaksering, tilstandsrapporter, skadetakst, nye regler og tips for boligkjøpere og -selgere. Oppdatert fagstoff fra bransjen.",
+    "Les fagartikler om tilstandsrapport, verditakst, skadetakst, nye regler for boligsalg og tips for boligkjøpere og -selgere. Oppdatert innhold fra takstbransjen.",
+  openGraph: {
+    title: "Blogg om takst og bolig | VelgTakst",
+    description:
+      "Fagartikler om tilstandsrapport, verditakst, skadetakst og tips for boligkjøpere og -selgere.",
+    url: "https://www.velgtakst.no/blogg",
+  },
 };
 
 export default function BloggPage() {
@@ -14,44 +20,93 @@ export default function BloggPage() {
   );
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 glow-text">
-        Blogg
-      </h1>
-      <p className="text-gray-400 mb-10 max-w-2xl">
-        Fagartikler om takst, boligsalg, nye regler og tips for boligkjøpere og
-        -selgere. Hold deg oppdatert med siste nytt fra bransjen.
-      </p>
+    <>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Breadcrumb */}
+        <nav aria-label="Brødsmulesti" className="mb-8">
+          <ol className="flex items-center gap-2 text-sm text-gray-500">
+            <li>
+              <Link href="/" className="hover:text-white transition-colors">VelgTakst</Link>
+            </li>
+            <li>/</li>
+            <li className="text-gray-300">Blogg</li>
+          </ol>
+        </nav>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {poster.map((post) => (
+        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 glow-text">
+          Blogg om takst og bolig
+        </h1>
+        <p className="text-gray-400 mb-10 max-w-2xl leading-relaxed">
+          Fagartikler om tilstandsrapport, verditakst, skadetakst, nye regler for boligsalg
+          og tips for boligkjøpere og -selgere. Hold deg oppdatert med siste nytt fra takstbransjen.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {poster.map((post) => (
+            <Link
+              key={post.id}
+              href={`/blogg/${post.id}`}
+              className="group block bg-card-bg border border-card-border rounded-xl overflow-hidden hover:border-accent/40 transition-all duration-200"
+            >
+              <div className="h-1.5 bg-gradient-to-r from-accent to-blue-400" />
+              <div className="p-6">
+                <time className="text-xs text-gray-500 block mb-2">
+                  {new Date(post.dato).toLocaleDateString("nb-NO", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                <h2 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-accent transition-colors">
+                  {post.tittel}
+                </h2>
+                <p className="text-gray-400 text-sm line-clamp-3 mb-4">
+                  {post.ingress}
+                </p>
+                <span className="text-accent text-sm font-medium">
+                  Les mer &rarr;
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-16 text-center">
+          <p className="text-gray-400 mb-4">Trenger du hjelp med takst?</p>
           <Link
-            key={post.id}
-            href={`/blogg/${post.id}`}
-            className="group block bg-card-bg border border-card-border rounded-xl overflow-hidden hover:border-accent/40 transition-all duration-200"
+            href="/#fylker"
+            className="inline-block bg-accent hover:bg-accent/90 text-white px-8 py-3 rounded-lg font-medium transition-colors"
           >
-            <div className="h-1.5 bg-gradient-to-r from-accent to-blue-400" />
-            <div className="p-6">
-              <time className="text-xs text-gray-500 block mb-2">
-                {new Date(post.dato).toLocaleDateString("nb-NO", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
-              <h2 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-accent transition-colors">
-                {post.tittel}
-              </h2>
-              <p className="text-gray-400 text-sm line-clamp-3 mb-4">
-                {post.ingress}
-              </p>
-              <span className="text-accent text-sm font-medium">
-                Les mer &rarr;
-              </span>
-            </div>
+            Finn takstmann i ditt fylke
           </Link>
-        ))}
+        </div>
       </div>
-    </div>
+
+      {/* Structured Data: BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "VelgTakst",
+                item: "https://www.velgtakst.no",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Blogg",
+                item: "https://www.velgtakst.no/blogg",
+              },
+            ],
+          }),
+        }}
+      />
+    </>
   );
 }

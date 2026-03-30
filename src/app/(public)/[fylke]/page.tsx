@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannMedFylker } from "@/lib/supabase/types";
 import RandomSpinnerWrapper from "@/components/RandomSpinnerWrapper";
+import data from "@/data/takstmenn.json";
 
 export const revalidate = 900;
 
@@ -22,10 +23,66 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const fylke = FYLKER.find((f) => f.id === fylkeId);
   if (!fylke) return {};
   return {
-    title: `Takstmenn i ${fylke.navn} | VelgTakst`,
-    description: `Finn sertifiserte takstmenn i ${fylke.navn}. Erfarne takstmenn for boligtaksering, tilstandsrapporter og verditakster.`,
+    title: `Takstmann i ${fylke.navn} | Finn sertifisert takstmann | VelgTakst`,
+    description: `Finn sertifiserte takstmenn i ${fylke.navn}. Sammenlign erfarne takstmenn for tilstandsrapport, verditakst, skadetakst og andre taksttjenester i ${fylke.navn}.`,
+    openGraph: {
+      title: `Takstmann i ${fylke.navn} | VelgTakst`,
+      description: `Finn sertifiserte takstmenn i ${fylke.navn}. Tilstandsrapport, verditakst, skadetakst og mer.`,
+      url: `https://www.velgtakst.no/${fylkeId}`,
+    },
   };
 }
+
+// Fylkebeskrivelser for SEO-innhold
+const FYLKE_INTRO: Record<string, string> = {
+  oslo: "Oslo er Norges mest folkerike fylke med et aktivt boligmarked. Høy omsetning av leiligheter, rekkehus og eneboliger gjør at behovet for kvalifiserte takstmenn er stort hele året.",
+  rogaland: "Rogaland har et variert boligmarked fra Stavanger-regionen til mindre tettsteder langs kysten. Oljebyen Stavanger skaper stor etterspørsel etter både bolig- og næringstakster.",
+  vestland: "Vestland fylke, med Bergen som sentrum, har et mangfoldig boligmarked preget av både bymessig bebyggelse og spredt bosetting. Fukt og klima gjør tilstandsvurderinger ekstra viktige her.",
+  trondelag: "Trøndelag, med Trondheim som regionhovedstad, har et voksende boligmarked. Studentbyen skaper høy etterspørsel etter utleieboliger og tilhørende taksttjenester.",
+  akershus: "Akershus omringer Oslo og har noen av landets mest attraktive boligområder. Stor tilflytting og høye boligpriser gjør at profesjonell takst er ekstra viktig ved kjøp og salg.",
+  innlandet: "Innlandet er Norges største fylke i areal, med et variert boligmarked fra byene Hamar og Lillehammer til hytteområder i fjellheimen. Både bolig- og fritidstakst er etterspurt.",
+  vestfold: "Vestfold har en blanding av kystbyer som Tønsberg, Sandefjord og Larvik, med et aktivt boligmarked særlig i sommersesongen. Mange eldre boliger krever grundig tilstandsvurdering.",
+  telemark: "Telemark byr på alt fra bymessig bebyggelse i Skien og Porsgrunn til hytter og fritidsboliger i fjellområdene. Variert boligmasse gir behov for bred takstkompetanse.",
+  agder: "Agder strekker seg langs Sørlandskysten med populære byer som Kristiansand og Arendal. Kystklima og eldre trehusbebyggelse gjør grundig tilstandsvurdering viktig.",
+  "more-og-romsdal": "Møre og Romsdal har et variert boligmarked fra byer som Ålesund og Molde til spredt bosetting langs fjorder og på øyer. Maritime forhold stiller krav til bygningsvern.",
+  nordland: "Nordland strekker seg over en lang kystlinje med byer som Bodø og Mo i Rana. Arktisk klima og krevende værforhold gjør grundig tilstandsvurdering av bygninger ekstra viktig.",
+  troms: "Troms, med Tromsø som Nordens Paris, har et aktivt boligmarked tross nordlig beliggenhet. Kulde, snølast og fukt gjør at takstmenn med lokal kompetanse er avgjørende.",
+  finnmark: "Finnmark er Norges nordligste og østligste fylke med unike klimautfordringer. Ekstreme temperaturer og værforhold gjør profesjonell tilstandsvurdering helt nødvendig.",
+  buskerud: "Buskerud spenner fra Drammen og nærhet til Oslo til fjellbygder og hytteområder rundt Geilo og Hemsedal. Stort bolig- og hyttemarked gir jevn etterspørsel etter takst.",
+  ostfold: "Østfold ligger nær Oslo og svenskegrensen, med byer som Fredrikstad, Sarpsborg og Moss. Regionens vekst og mange eldre boliger gir stort behov for tilstandsrapporter og verditakster.",
+};
+
+// FAQ-spørsmål tilpasset hvert fylke
+function getFAQ(fylkeNavn: string) {
+  return [
+    {
+      sporsmal: `Hva koster en takstmann i ${fylkeNavn}?`,
+      svar: `Prisen for takst i ${fylkeNavn} varierer etter type oppdrag. En tilstandsrapport for en enebolig koster typisk mellom 10 000 og 20 000 kroner, mens en verditakst ofte ligger på 3 000–8 000 kroner. Prisen avhenger av boligens størrelse, beliggenhet og kompleksitet. Be alltid om tilbud fra flere takstmenn for å sammenligne.`,
+    },
+    {
+      sporsmal: `Trenger jeg tilstandsrapport ved boligsalg i ${fylkeNavn}?`,
+      svar: `Ja, fra 1. januar 2022 er det obligatorisk med tilstandsrapport ved salg av bolig i Norge, også i ${fylkeNavn}. Fra 1. juli 2026 gjelder den nye standarden NS 3600:2025, som stiller strengere krav til innholdet i rapporten. En sertifisert takstmann sikrer at rapporten oppfyller gjeldende krav.`,
+    },
+    {
+      sporsmal: `Hvordan finner jeg en god takstmann i ${fylkeNavn}?`,
+      svar: `På VelgTakst kan du se tilgjengelige takstmenn i ${fylkeNavn}, sammenligne fagområder og sertifiseringer, og velge den som passer ditt oppdrag best. Se etter takstmenn med relevant erfaring, godkjente sertifiseringer og tydelig spesialisering innen det du trenger hjelp med.`,
+    },
+    {
+      sporsmal: `Hva er forskjellen mellom verditakst og tilstandsrapport?`,
+      svar: `En verditakst fastsetter markedsverdien på en eiendom og brukes ved refinansiering, arv eller skifte. En tilstandsrapport dokumenterer den tekniske tilstanden på boligen med tilstandsgrader (TG0–TG3) og er obligatorisk ved boligsalg. Mange takstmenn i ${fylkeNavn} tilbyr begge tjenestene.`,
+    },
+  ];
+}
+
+// Relevante bloggposter for fylkesider
+const relevantePoster = [
+  "hva-koster-takst",
+  "tilstandsrapport-guide",
+  "nye-regler-tilstandsrapport-2026",
+  "tilstandsgrader-tg0-tg3",
+  "verditakst-hva-er-det",
+  "finn-takstmann-i-ditt-fylke",
+];
 
 async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannMedFylker[]> {
   const supabase = await createClient();
@@ -56,106 +113,287 @@ export default async function FylkePage({ params }: Props) {
   if (!fylke) notFound();
 
   const takstmenn = await hentTakstmennIFylke(fylkeId);
+  const faq = getFAQ(fylke.navn);
+  const bloggposter = data.bloggposter.filter((p) => relevantePoster.includes(p.id));
+  const intro = FYLKE_INTRO[fylkeId] ?? `${fylke.navn} har et aktivt boligmarked med behov for kvalifiserte takstmenn til tilstandsrapporter, verditakster og andre taksttjenester.`;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8 text-sm"
-      >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-        Tilbake til forsiden
-      </Link>
+    <>
+      {/* Breadcrumb */}
+      <nav aria-label="Brødsmulesti" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <ol className="flex items-center gap-2 text-sm text-gray-500">
+          <li>
+            <Link href="/" className="hover:text-white transition-colors">VelgTakst</Link>
+          </li>
+          <li>/</li>
+          <li className="text-gray-300">{fylke.navn}</li>
+        </ol>
+      </nav>
 
-      <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 glow-text">
-        Takstmenn i {fylke.navn}
-      </h1>
-      <p className="text-gray-400 mb-10">
-        {takstmenn.length > 0
-          ? `${takstmenn.length} sertifiserte takstmenn tilgjengelig`
-          : "Ingen takstmenn registrert i dette fylket ennå"}
-      </p>
+      {/* Hero */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 glow-text">
+          Takstmann i {fylke.navn}
+        </h1>
+        <p className="text-lg text-gray-400 leading-relaxed max-w-3xl mb-4">
+          {intro}
+        </p>
+        <p className="text-gray-400 leading-relaxed max-w-3xl">
+          Finn sertifiserte takstmenn i {fylke.navn} som kan hjelpe med{" "}
+          <Link href="/blogg/tilstandsrapport-guide" className="text-accent hover:underline">tilstandsrapport</Link>,{" "}
+          <Link href="/blogg/verditakst-hva-er-det" className="text-accent hover:underline">verditakst</Link>,{" "}
+          <Link href="/blogg/hva-er-skadetakst" className="text-accent hover:underline">skadetakst</Link>{" "}
+          og andre taksttjenester.
+        </p>
+        <div className="gradient-line max-w-xs mt-6 mb-2" />
+        <p className="text-sm text-gray-500">
+          {takstmenn.length > 0
+            ? `${takstmenn.length} sertifiserte takstmenn tilgjengelig i ${fylke.navn}`
+            : `Ingen takstmenn registrert i ${fylke.navn} ennå`}
+        </p>
+      </section>
 
+      {/* Tjenester folk trenger */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <h2 className="text-xl font-bold text-white mb-5">
+          Hva trenger folk takstmann til i {fylke.navn}?
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { tittel: "Tilstandsrapport", beskrivelse: "Obligatorisk ved boligsalg. Dokumenterer teknisk tilstand.", href: "/blogg/tilstandsrapport-guide" },
+            { tittel: "Verditakst", beskrivelse: "Verdivurdering ved refinansiering, arv eller skifte.", href: "/blogg/verditakst-hva-er-det" },
+            { tittel: "Skadetakst", beskrivelse: "Skadedokumentasjon for forsikringsoppgjør.", href: "/blogg/hva-er-skadetakst" },
+            { tittel: "Næringstakst", beskrivelse: "Verdivurdering av næringseiendommer.", href: "/blogg/naeringstakst-bedrifter" },
+          ].map((t) => (
+            <Link
+              key={t.tittel}
+              href={t.href}
+              className="card-hover bg-card-bg border border-card-border rounded-xl p-4 block"
+            >
+              <h3 className="text-white font-semibold text-sm mb-1">{t.tittel}</h3>
+              <p className="text-gray-500 text-xs leading-relaxed">{t.beskrivelse}</p>
+              <span className="text-accent text-xs font-medium mt-2 inline-block">Les mer &rarr;</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Tilfeldig spinner */}
       {takstmenn.length > 0 && (
-        <RandomSpinnerWrapper takstmenn={takstmenn} fylkeNavn={fylke.navn} />
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <RandomSpinnerWrapper takstmenn={takstmenn} fylkeNavn={fylke.navn} />
+        </section>
       )}
 
-      <h2 className="text-xl font-bold text-white mb-6">
-        Alle takstmenn i {fylke.navn}
-      </h2>
+      {/* Alle takstmenn */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <h2 className="text-xl font-bold text-white mb-6">
+          {takstmenn.length > 0
+            ? `Alle takstmenn i ${fylke.navn}`
+            : `Takstmenn i ${fylke.navn}`}
+        </h2>
 
-      {takstmenn.length === 0 ? (
-        <div className="bg-card-bg border border-card-border rounded-xl p-12 text-center">
-          <p className="text-gray-400 mb-4">
-            Ingen takstmenn har aktivert synlighet i {fylke.navn} ennå.
-          </p>
-          <Link
-            href="/registrer/takstmann"
-            className="inline-block bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            Er du takstmann? Registrer deg
+        {takstmenn.length === 0 ? (
+          <div className="bg-card-bg border border-card-border rounded-xl p-12 text-center">
+            <p className="text-gray-400 mb-4">
+              Ingen takstmenn har aktivert synlighet i {fylke.navn} ennå.
+            </p>
+            <Link
+              href="/registrer/takstmann"
+              className="inline-block bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              Er du takstmann? Registrer deg
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {takstmenn.map((t) => (
+              <Link
+                key={t.id}
+                href={`/takstmann/${t.id}`}
+                className="card-hover block bg-card-bg border border-card-border rounded-xl p-5"
+              >
+                <div className="flex gap-4 items-start">
+                  <div className="w-16 h-16 rounded-full overflow-hidden border border-accent/20 shrink-0 relative bg-accent/10">
+                    {t.bilde_url ? (
+                      <Image
+                        src={t.bilde_url}
+                        alt={t.navn}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-accent font-bold text-xl">
+                        {t.navn.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-white font-semibold truncate">{t.navn}</h3>
+                    {t.tittel && (
+                      <p className="text-gray-500 text-xs mb-1">{t.tittel}</p>
+                    )}
+                    {t.spesialitet && (
+                      <p className="text-accent text-sm mb-2">{t.spesialitet}</p>
+                    )}
+                    {t.telefon && (
+                      <p className="text-gray-400 text-xs">{t.telefon}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="mt-3 pt-3 border-t border-card-border flex items-center justify-between">
+                  {t.sertifiseringer?.length > 0 && (
+                    <p className="text-gray-500 text-xs">
+                      {t.sertifiseringer[0]}
+                      {t.sertifiseringer.length > 1 && ` +${t.sertifiseringer.length - 1}`}
+                    </p>
+                  )}
+                  <span className="text-accent text-xs font-medium ml-auto">
+                    Se profil &rarr;
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* FAQ */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-8 text-center">
+            Ofte stilte spørsmål om takst i {fylke.navn}
+          </h2>
+          <div className="space-y-4">
+            {faq.map((item, i) => (
+              <details
+                key={i}
+                className="bg-card-bg border border-card-border rounded-xl group"
+              >
+                <summary className="p-5 cursor-pointer text-white font-semibold flex items-center justify-between list-none">
+                  <span>{item.sporsmal}</span>
+                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-5 pb-5 text-gray-400 leading-relaxed text-sm">
+                  {item.svar}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Relevante blogginnlegg */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-white">Nyttige artikler om takst</h2>
+          <Link href="/blogg" className="text-accent text-sm font-medium hover:underline">
+            Se alle &rarr;
           </Link>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {takstmenn.map((t) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {bloggposter.slice(0, 6).map((post) => (
             <Link
-              key={t.id}
-              href={`/takstmann/${t.id}`}
-              className="card-hover block bg-card-bg border border-card-border rounded-xl p-5"
+              key={post.id}
+              href={`/blogg/${post.id}`}
+              className="card-hover block bg-card-bg border border-card-border rounded-xl overflow-hidden"
             >
-              <div className="flex gap-4 items-start">
-                <div className="w-16 h-16 rounded-full overflow-hidden border border-accent/20 shrink-0 relative bg-accent/10">
-                  {t.bilde_url ? (
-                    <Image
-                      src={t.bilde_url}
-                      alt={t.navn}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-accent font-bold text-xl">
-                      {t.navn.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <h3 className="text-white font-semibold truncate">{t.navn}</h3>
-                  {t.tittel && (
-                    <p className="text-gray-500 text-xs mb-1">{t.tittel}</p>
-                  )}
-                  {t.spesialitet && (
-                    <p className="text-accent text-sm mb-2">{t.spesialitet}</p>
-                  )}
-                  {t.telefon && (
-                    <p className="text-gray-400 text-xs">{t.telefon}</p>
-                  )}
-                </div>
-              </div>
-              <div className="mt-3 pt-3 border-t border-card-border flex items-center justify-between">
-                {t.sertifiseringer?.length > 0 && (
-                  <p className="text-gray-500 text-xs">
-                    {t.sertifiseringer[0]}
-                    {t.sertifiseringer.length > 1 && ` +${t.sertifiseringer.length - 1}`}
-                  </p>
-                )}
-                <span className="text-accent text-xs font-medium ml-auto">
-                  Se profil &rarr;
+              <div className="h-1 bg-gradient-to-r from-accent to-blue-400" />
+              <div className="p-5">
+                <h3 className="text-white font-semibold text-sm mb-2 leading-snug">
+                  {post.tittel}
+                </h3>
+                <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
+                  {post.ingress}
+                </p>
+                <span className="inline-block mt-3 text-accent text-xs font-medium">
+                  Les mer &rarr;
                 </span>
               </div>
             </Link>
           ))}
         </div>
-      )}
-    </div>
+      </section>
+
+      {/* Andre fylker */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <h2 className="text-xl font-bold text-white mb-5 text-center">
+          Se takstmenn i andre fylker
+        </h2>
+        <div className="flex flex-wrap justify-center gap-2">
+          {FYLKER.filter((f) => f.id !== fylkeId).map((f) => (
+            <Link
+              key={f.id}
+              href={`/${f.id}`}
+              className="text-sm text-gray-400 hover:text-accent border border-card-border hover:border-accent/30 rounded-lg px-3 py-1.5 transition-colors"
+            >
+              {f.navn}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA for takstmenn */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="bg-gradient-to-r from-accent/10 to-blue-500/10 border border-accent/20 rounded-2xl p-8 sm:p-10 text-center max-w-3xl mx-auto">
+          <h2 className="text-xl font-bold text-white mb-3">
+            Er du takstmann i {fylke.navn}?
+          </h2>
+          <p className="text-gray-400 leading-relaxed mb-5 text-sm">
+            Bli synlig på VelgTakst og la kunder i {fylke.navn} finne deg.
+            Registrer deg, aktiver profilen din og start å motta henvendelser.
+          </p>
+          <Link
+            href="/registrer/takstmann"
+            className="inline-block bg-accent hover:bg-accent/90 text-white px-8 py-3 rounded-lg font-medium transition-colors"
+          >
+            Registrer deg som takstmann
+          </Link>
+        </div>
+      </section>
+
+      {/* Structured Data: BreadcrumbList + FAQPage */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "VelgTakst",
+                    item: "https://www.velgtakst.no",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: `Takstmann i ${fylke.navn}`,
+                    item: `https://www.velgtakst.no/${fylkeId}`,
+                  },
+                ],
+              },
+              {
+                "@type": "FAQPage",
+                mainEntity: faq.map((item) => ({
+                  "@type": "Question",
+                  name: item.sporsmal,
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: item.svar,
+                  },
+                })),
+              },
+            ],
+          }),
+        }}
+      />
+    </>
   );
 }

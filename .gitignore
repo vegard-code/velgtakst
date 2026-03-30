@@ -48,3 +48,5 @@ preview/
 
 # claude worktrees
 .claude/worktrees/
+
+.vercel
