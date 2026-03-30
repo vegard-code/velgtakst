@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# duplicate folder (slett manuelt)
+src/src/
+
+# preview assets
+preview/
+
+# claude worktrees
+.claude/worktrees/
