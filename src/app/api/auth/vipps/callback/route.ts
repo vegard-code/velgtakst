@@ -117,7 +117,7 @@ export async function GET(request: NextRequest) {
     if (existingUser) {
       // Bruker finnes – oppdater Vipps-sub i metadata
       userId = existingUser.id
-      await supabaseAdmin.auth.admin.updateUser(userId, {
+      await supabaseAdmin.auth.admin.updateUserById(userId, {
         user_metadata: {
           ...existingUser.user_metadata,
           vipps_sub: vippsSub,
