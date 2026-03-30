@@ -12,6 +12,14 @@ export default function RegistrerTakstmannForm() {
   const [laster, setLaster] = useState(false);
   const [steg, setSteg] = useState(1);
 
+  // Lagre steg 1-data så de ikke forsvinner når steg 2 vises
+  const [bedriftsdata, setBedriftsdata] = useState({
+    firmanavn: "",
+    orgnr: "",
+    telefon_firma: "",
+    epost_firma: "",
+  });
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setFeil("");
@@ -126,7 +134,20 @@ export default function RegistrerTakstmannForm() {
             </div>
             <button
               type="button"
-              onClick={() => setSteg(2)}
+              onClick={() => {
+                // Lagre bedriftsdataene før vi bytter steg
+                const form = document.querySelector("form");
+                if (form) {
+                  const fd = new FormData(form);
+                  setBedriftsdata({
+                    firmanavn: fd.get("firmanavn") as string || "",
+                    orgnr: fd.get("orgnr") as string || "",
+                    telefon_firma: fd.get("telefon_firma") as string || "",
+                    epost_firma: fd.get("epost_firma") as string || "",
+                  });
+                }
+                setSteg(2);
+              }}
               className="w-full bg-accent hover:bg-accent/90 text-white font-semibold py-3 rounded-lg transition-colors mt-2"
             >
               Neste: Din bruker &rarr;
@@ -136,6 +157,12 @@ export default function RegistrerTakstmannForm() {
 
         {steg === 2 && (
           <>
+            {/* Skjulte felter med bedriftsdataene fra steg 1 */}
+            <input type="hidden" name="firmanavn" value={bedriftsdata.firmanavn} />
+            <input type="hidden" name="orgnr" value={bedriftsdata.orgnr} />
+            <input type="hidden" name="telefon_firma" value={bedriftsdata.telefon_firma} />
+            <input type="hidden" name="epost_firma" value={bedriftsdata.epost_firma} />
+
             <h2 className="text-white font-semibold text-lg mb-4">
               Din brukerkonto
             </h2>
