@@ -4,13 +4,14 @@ import Link from "next/link";
 
 interface Props {
   navn: string;
-  portalType: "takstmann" | "megler" | "kunde";
+  portalType: "takstmann" | "megler" | "kunde" | "admin";
 }
 
 const portalTitler: Record<string, string> = {
   takstmann: "Takstmann-portal",
   megler: "Megler-portal",
   kunde: "Min side",
+  admin: "Admin-panel",
 };
 
 export default function PortalHeader({ navn, portalType }: Props) {

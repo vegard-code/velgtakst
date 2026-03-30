@@ -52,7 +52,9 @@ export async function updateSession(request: NextRequest) {
     // Ruter til riktig portal basert på rolle
     if (pathname === '/portal') {
       const url = request.nextUrl.clone()
-      if (rolle === 'takstmann' || rolle === 'takstmann_admin') {
+      if (rolle === 'admin') {
+        url.pathname = '/portal/admin'
+      } else if (rolle === 'takstmann' || rolle === 'takstmann_admin') {
         url.pathname = '/portal/takstmann'
       } else if (rolle === 'megler') {
         url.pathname = '/portal/megler'
@@ -63,13 +65,16 @@ export async function updateSession(request: NextRequest) {
     }
 
     // Blokkér feil portal
-    if (pathname.startsWith('/portal/takstmann') && rolle !== 'takstmann' && rolle !== 'takstmann_admin') {
+    if (pathname.startsWith('/portal/admin') && rolle !== 'admin') {
       return NextResponse.redirect(new URL('/portal', request.url))
     }
-    if (pathname.startsWith('/portal/megler') && rolle !== 'megler') {
+    if (pathname.startsWith('/portal/takstmann') && rolle !== 'takstmann' && rolle !== 'takstmann_admin' && rolle !== 'admin') {
       return NextResponse.redirect(new URL('/portal', request.url))
     }
-    if (pathname.startsWith('/portal/kunde') && rolle !== 'privatkunde') {
+    if (pathname.startsWith('/portal/megler') && rolle !== 'megler' && rolle !== 'admin') {
+      return NextResponse.redirect(new URL('/portal', request.url))
+    }
+    if (pathname.startsWith('/portal/kunde') && rolle !== 'privatkunde' && rolle !== 'admin') {
       return NextResponse.redirect(new URL('/portal', request.url))
     }
   }
