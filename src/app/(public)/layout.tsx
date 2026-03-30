@@ -29,7 +29,7 @@ export default async function PublicLayout({
               Finn takstmann
             </Link>
             <Link
-              href="/#blogg"
+              href="/blogg"
               className="text-gray-400 hover:text-white transition-colors hidden sm:block"
             >
               Blogg
@@ -92,7 +92,7 @@ export default async function PublicLayout({
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#blogg" className="hover:text-white transition-colors">
+                  <Link href="/blogg" className="hover:text-white transition-colors">
                     Blogg
                   </Link>
                 </li>
