@@ -97,6 +97,9 @@ export interface PrivatkundeProfil {
   navn: string
   telefon: string | null
   epost: string | null
+  adresse: string | null
+  postnr: string | null
+  by: string | null
   created_at: string
 }
 
