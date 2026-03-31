@@ -20,7 +20,7 @@ export async function hentEllerOpprettAbonnement(companyId: string) {
   const supabase = await createServiceClient()
 
   // Sjekk om abonnement allerede finnes
-  const { data: existing } = await supabase
+  const { data: existing, error: selectError } = await supabase
     .from('abonnementer')
     .select('*')
     .eq('company_id', companyId)
@@ -28,11 +28,15 @@ export async function hentEllerOpprettAbonnement(companyId: string) {
 
   if (existing) return existing
 
+  if (selectError) {
+    console.log('hentEllerOpprettAbonnement select:', selectError.code, selectError.message)
+  }
+
   // Opprett prøveperiode-abonnement (90 dager gratis)
   const now = new Date()
   const slutt = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000)
 
-  const { data: nyttAbonnement } = await supabase
+  const { data: nyttAbonnement, error: insertError } = await supabase
     .from('abonnementer')
     .insert({
       company_id: companyId,
@@ -43,6 +47,24 @@ export async function hentEllerOpprettAbonnement(companyId: string) {
     })
     .select('*')
     .single()
+
+  if (insertError) {
+    console.error('hentEllerOpprettAbonnement insert error:', insertError.message)
+    // Returnerer en fallback med prøveperiode-info selv om insert feilet
+    return {
+      id: 'temp',
+      company_id: companyId,
+      status: 'proveperiode' as const,
+      proveperiode_start: now.toISOString(),
+      proveperiode_slutt: slutt.toISOString(),
+      vipps_agreement_id: null,
+      vipps_agreement_status: null,
+      maanedlig_belop: 0,
+      neste_trekk_dato: null,
+      created_at: now.toISOString(),
+      updated_at: now.toISOString(),
+    }
+  }
 
   return nyttAbonnement
 }
@@ -69,6 +91,17 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
       .single()
 
     if (abonnement?.status === 'proveperiode') {
+      // Sjekk maks 3 fylker i prøveperioden
+      const { count: aktiveFylker } = await supabase
+        .from('fylke_synlighet')
+        .select('*', { count: 'exact', head: true })
+        .eq('takstmann_id', takstmannId)
+        .eq('er_aktiv', true)
+
+      if ((aktiveFylker ?? 0) >= 3) {
+        return { error: 'Du kan aktivere maks 3 fylker i prøveperioden. Oppgrader til betalt abonnement for ubegrenset.' }
+      }
+
       betaltTil = new Date(abonnement.proveperiode_slutt)
     } else if (abonnement?.status === 'aktiv') {
       betaltTil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)

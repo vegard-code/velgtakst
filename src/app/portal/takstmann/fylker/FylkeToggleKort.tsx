@@ -11,24 +11,36 @@ interface Props {
   betaltTil: string | null;
   takstmannId: string | null;
   erProveperiode?: boolean;
+  antallAktive?: number;
+  onToggle?: (fylkeId: string, nyStatus: boolean) => void;
 }
 
-export default function FylkeToggleKort({ fylke, erAktiv, betaltTil, takstmannId, erProveperiode }: Props) {
+export default function FylkeToggleKort({ fylke, erAktiv, betaltTil, takstmannId, erProveperiode, antallAktive = 0, onToggle }: Props) {
   const [aktiv, setAktiv] = useState(erAktiv);
   const [laster, setLaster] = useState(false);
+  const [feil, setFeil] = useState<string | null>(null);
 
   const pris = getFylkePris(fylke.id);
 
   async function handleToggle() {
     if (!takstmannId) return;
     setLaster(true);
+    setFeil(null);
 
     if (aktiv) {
       const result = await deaktiverFylke(takstmannId, fylke.id);
-      if (!result.error) setAktiv(false);
+      if (!result.error) {
+        setAktiv(false);
+        onToggle?.(fylke.id, false);
+      }
     } else {
       const result = await aktiverFylke(takstmannId, fylke.id);
-      if (!result.error) setAktiv(true);
+      if (result.error) {
+        setFeil(result.error);
+      } else {
+        setAktiv(true);
+        onToggle?.(fylke.id, true);
+      }
     }
 
     setLaster(false);
@@ -81,6 +93,12 @@ export default function FylkeToggleKort({ fylke, erAktiv, betaltTil, takstmannId
           />
         </button>
       </div>
+
+      {feil && (
+        <div className="mt-2 text-xs text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+          {feil}
+        </div>
+      )}
 
       {aktiv && (
         <div className="mt-3 pt-3 border-t border-[#dbeafe]">

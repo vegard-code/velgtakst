@@ -38,6 +38,13 @@ export default async function AbonnementPage() {
   const aktiveFylker = FYLKER.filter(f => aktiveFylkerIds.includes(f.id));
   const maanedligKostnad = aktiveFylker.reduce((sum, f) => sum + getFylkePris(f.id), 0);
 
+  // Debug: logg hva vi sender til klient
+  console.log('AbonnementPage data:', {
+    companyId: takstmann.company_id,
+    abonnementStatus: abonnement?.status ?? 'NULL',
+    aktiveFylker: aktiveFylker.length,
+  });
+
   return (
     <AbonnementKlient
       abonnement={abonnement}
