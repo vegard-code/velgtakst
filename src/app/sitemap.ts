@@ -62,12 +62,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  // Kommunesider
+  // Kommunesider — store byer får høyere prioritet
+  const storeByer = new Set([
+    "oslo", "bergen", "trondheim", "stavanger", "kristiansand",
+    "fredrikstad", "tromso", "drammen", "sandnes", "tonsberg",
+    "aalesund", "bodoe", "sandefjord", "skien", "larvik", "hamar",
+  ]);
   const kommuneSider: MetadataRoute.Sitemap = KOMMUNER.map((kommune) => ({
     url: `${BASE_URL}/${kommune.fylkeId}/${kommune.id}`,
     lastModified: now,
-    changeFrequency: "daily" as const,
-    priority: 0.7,
+    changeFrequency: "weekly" as const,
+    priority: storeByer.has(kommune.id) ? 0.8 : 0.65,
   }));
 
   // Blogginnlegg

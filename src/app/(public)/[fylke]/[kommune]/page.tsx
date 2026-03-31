@@ -28,19 +28,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
   if (!fylke || !kommune) return {};
 
-  const title = `Takstmann i ${kommune.navn} | Finn sertifisert takstmann | VelgTakst`;
-  const description = `Finn sertifiserte takstmenn i ${kommune.navn}, ${fylke.navn}. Sammenlign erfarne takstmenn for tilstandsrapport, verditakst og skadetakst i ${kommune.navn}.`;
+  const title = `Takstmann i ${kommune.navn} | VelgTakst.no`;
+  const description = `Finn sertifisert takstmann i ${kommune.navn}. Bestill tilstandsrapport, verditakst eller skadetakst i ${kommune.navn}. Sammenlign sertifiserte takstmenn i ${fylke.navn} og få tilbud i dag.`;
+  const keywords = `takstmann ${kommune.navn}, takst ${kommune.navn}, skadetakst ${kommune.navn}, tilstandsrapport ${kommune.navn}, verditakst ${kommune.navn}, takstmenn ${fylke.navn}, bestill takst ${kommune.navn}`;
+  const url = `https://www.velgtakst.no/${fylkeId}/${kommuneId}`;
 
   return {
     title,
     description,
+    keywords,
     openGraph: {
-      title: `Takstmann i ${kommune.navn} | VelgTakst`,
+      title,
       description,
-      url: `https://www.velgtakst.no/${fylkeId}/${kommuneId}`,
+      url,
+      type: "website",
+      siteName: "VelgTakst.no",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
     },
     alternates: {
-      canonical: `https://www.velgtakst.no/${fylkeId}/${kommuneId}`,
+      canonical: url,
     },
   };
 }
@@ -108,7 +118,7 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
 }
 
 function getKommuneIntro(kommuneNavn: string, fylkeNavn: string): string {
-  return `Leter du etter takstmann i ${kommuneNavn}? Her finner du sertifiserte takstmenn som dekker ${kommuneNavn} og resten av ${fylkeNavn}. Enten du trenger tilstandsrapport ved boligsalg, verditakst for refinansiering, eller skadetakst etter skade — vi hjelper deg å finne riktig fagperson.`;
+  return `Leter du etter takstmann i ${kommuneNavn}? Her finner du sertifiserte takstmenn som tilbyr tilstandsrapport, verditakst, skadetakst og næringstakst i ${kommuneNavn} og resten av ${fylkeNavn}. Enten du skal selge bolig og trenger tilstandsrapport i ${kommuneNavn}, refinansiere og trenger verditakst, eller dokumentere en forsikringsskade med skadetakst i ${kommuneNavn} — vi hjelper deg å finne riktig fagperson.`;
 }
 
 function getKommuneFAQ(kommuneNavn: string, fylkeNavn: string) {
@@ -187,6 +197,14 @@ export default async function KommunePage({ params }: Props) {
           Takstmennene nedenfor dekker {kommune.navn} og øvrige kommuner i{" "}
           {fylke.navn}. Se profiler, sammenlign spesialiteter og ta kontakt
           direkte.
+        </p>
+        <p className="text-gray-500 text-sm leading-relaxed max-w-3xl mt-3">
+          Vanlige søk:{" "}
+          <span className="text-gray-400">takstmann {kommune.navn}</span>{" · "}
+          <span className="text-gray-400">skadetakst {kommune.navn}</span>{" · "}
+          <span className="text-gray-400">tilstandsrapport {kommune.navn}</span>{" · "}
+          <span className="text-gray-400">verditakst {kommune.navn}</span>{" · "}
+          <span className="text-gray-400">takst {kommune.navn}</span>
         </p>
         <div className="gradient-line max-w-xs mt-6 mb-2" />
         <p className="text-sm text-gray-500">
@@ -526,6 +544,41 @@ export default async function KommunePage({ params }: Props) {
                     item: `https://www.velgtakst.no/${fylkeId}/${kommuneId}`,
                   },
                 ],
+              },
+              {
+                "@type": "ProfessionalService",
+                name: `Takstmann i ${kommune.navn} – VelgTakst.no`,
+                description: `Finn sertifisert takstmann i ${kommune.navn} for tilstandsrapport, verditakst, skadetakst og næringstakst.`,
+                url: `https://www.velgtakst.no/${fylkeId}/${kommuneId}`,
+                areaServed: [
+                  {
+                    "@type": "City",
+                    name: kommune.navn,
+                    containedInPlace: {
+                      "@type": "AdministrativeArea",
+                      name: fylke.navn,
+                      containedInPlace: {
+                        "@type": "Country",
+                        name: "Norge",
+                      },
+                    },
+                  },
+                ],
+                hasOfferCatalog: {
+                  "@type": "OfferCatalog",
+                  name: `Taksttjenester i ${kommune.navn}`,
+                  itemListElement: [
+                    { "@type": "Offer", itemOffered: { "@type": "Service", name: `Tilstandsrapport ${kommune.navn}` } },
+                    { "@type": "Offer", itemOffered: { "@type": "Service", name: `Verditakst ${kommune.navn}` } },
+                    { "@type": "Offer", itemOffered: { "@type": "Service", name: `Skadetakst ${kommune.navn}` } },
+                    { "@type": "Offer", itemOffered: { "@type": "Service", name: `Næringstakst ${kommune.navn}` } },
+                  ],
+                },
+                provider: {
+                  "@type": "Organization",
+                  name: "VelgTakst.no",
+                  url: "https://www.velgtakst.no",
+                },
               },
               {
                 "@type": "FAQPage",
