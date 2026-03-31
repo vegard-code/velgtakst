@@ -27,6 +27,7 @@ export type OppdragType =
 export type BestillingStatus = 'ny' | 'akseptert' | 'avvist' | 'kansellert' | 'fullfort'
 export type PurreType = 'purring_1' | 'purring_2' | 'inkasso'
 export type RegnskapSystem = 'fiken' | 'tripletex' | 'ingen'
+export type AbonnementStatus = 'proveperiode' | 'aktiv' | 'kansellert' | 'utlopt'
 
 // ============================================================
 // Database row types
@@ -194,6 +195,20 @@ export interface CompanySettings {
   updated_at: string
 }
 
+export interface Abonnement {
+  id: string
+  company_id: string
+  status: AbonnementStatus
+  proveperiode_start: string
+  proveperiode_slutt: string
+  vipps_agreement_id: string | null
+  vipps_agreement_status: string | null
+  maanedlig_belop: number
+  neste_trekk_dato: string | null
+  created_at: string
+  updated_at: string
+}
+
 // ============================================================
 // Supabase Database definition (for createClient<Database>)
 // ============================================================
@@ -265,6 +280,11 @@ export type Database = {
         Row: CompanySettings
         Insert: Omit<CompanySettings, 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Omit<CompanySettings, 'id' | 'created_at' | 'updated_at'>>
+      }
+      abonnementer: {
+        Row: Abonnement
+        Insert: Omit<Abonnement, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<Abonnement, 'id' | 'created_at' | 'updated_at'>>
       }
     }
     Views: Record<string, never>
