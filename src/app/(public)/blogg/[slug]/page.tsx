@@ -65,6 +65,28 @@ function finnRelatertePoster(currentId: string, maxAntall = 3) {
   return scored.map((s) => s.post);
 }
 
+function parseInline(text: string, keyPrefix: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/);
+  return parts.map((part, j) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={`${keyPrefix}-${j}`} className="text-white font-semibold">
+          {part.replace(/\*\*/g, "")}
+        </strong>
+      );
+    }
+    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      return (
+        <Link key={`${keyPrefix}-${j}`} href={linkMatch[2]} className="text-accent underline hover:text-accent/80 transition-colors">
+          {linkMatch[1]}
+        </Link>
+      );
+    }
+    return part;
+  });
+}
+
 export default async function BloggPost({ params }: Props) {
   const { slug } = await params;
   const post = data.bloggposter.find((p) => p.id === slug);
@@ -121,24 +143,14 @@ export default async function BloggPost({ params }: Props) {
               return (
                 <ul key={i} className="list-disc list-inside space-y-1 text-gray-400 mb-4">
                   {paragraph.split("\n").map((line, j) => (
-                    <li key={j}>{line.replace(/^- /, "")}</li>
+                    <li key={j}>{parseInline(line.replace(/^- /, ""), `li-${i}-${j}`)}</li>
                   ))}
                 </ul>
               );
             }
-            const parts = paragraph.split(/(\*\*[^*]+\*\*)/);
             return (
               <p key={i} className="text-gray-400 leading-relaxed mb-4">
-                {parts.map((part, j) => {
-                  if (part.startsWith("**") && part.endsWith("**")) {
-                    return (
-                      <strong key={j} className="text-white font-semibold">
-                        {part.replace(/\*\*/g, "")}
-                      </strong>
-                    );
-                  }
-                  return part;
-                })}
+                {parseInline(paragraph, `p-${i}`)}
               </p>
             );
           })}
