@@ -242,24 +242,21 @@ export default async function FylkePage({ params }: Props) {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {takstmenn.map((t) => {
-              const alleTjenester = [
-                t.spesialitet,
-                t.spesialitet_2,
-                ...(t.tjenester ?? []),
-              ].filter(Boolean) as string[];
-              const companyData = t.company as unknown as { navn: string } | null;
+              const andreTjenester = (t.tjenester ?? []).filter(
+                (tj) => tj !== t.spesialitet && tj !== t.spesialitet_2
+              );
 
               return (
                 <Link
                   key={t.id}
                   href={`/takstmann/${t.id}`}
-                  className="card-hover block bg-card-bg border border-card-border rounded-xl p-6"
+                  className="card-hover block bg-card-bg border border-card-border rounded-xl overflow-hidden"
                 >
-                  <div className="flex gap-5 items-start">
-                    {/* Profilbilde */}
-                    <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-accent/20 shrink-0 relative bg-accent/10">
+                  {/* Profilbilde – stor, sentrert */}
+                  <div className="flex justify-center pt-6 pb-4">
+                    <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent/20 relative bg-accent/10">
                       {t.bilde_url ? (
                         <Image
                           src={t.bilde_url}
@@ -269,80 +266,69 @@ export default async function FylkePage({ params }: Props) {
                           unoptimized
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-accent font-bold text-2xl">
+                        <div className="w-full h-full flex items-center justify-center text-accent font-bold text-3xl">
                           {t.navn.charAt(0)}
                         </div>
                       )}
                     </div>
-
-                    {/* Info */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <h3 className="text-white font-semibold text-lg">{t.navn}</h3>
-                          {companyData?.navn && (
-                            <p className="text-gray-500 text-sm">{companyData.navn}</p>
-                          )}
-                        </div>
-                        {/* Vurdering */}
-                        {t.snittKarakter !== null && (
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            <svg className="w-4 h-4 text-yellow-400 fill-yellow-400" viewBox="0 0 24 24">
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                            </svg>
-                            <span className="text-white font-semibold text-sm">{t.snittKarakter.toFixed(1)}</span>
-                            <span className="text-gray-500 text-xs">({t.antallVurderinger})</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Spesialitet */}
-                      {t.spesialitet && (
-                        <p className="text-accent text-sm mt-1">{t.spesialitet}{t.spesialitet_2 ? ` · ${t.spesialitet_2}` : ""}</p>
-                      )}
-
-                      {/* Bio utdrag */}
-                      {t.bio && (
-                        <p className="text-gray-400 text-sm mt-2 line-clamp-2 leading-relaxed">{t.bio}</p>
-                      )}
-                    </div>
                   </div>
 
-                  {/* Tjenester + kontakt */}
-                  <div className="mt-4 pt-4 border-t border-card-border">
-                    {alleTjenester.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-3">
-                        {alleTjenester.slice(0, 5).map((tj) => (
-                          <span key={tj} className="text-xs px-2 py-1 rounded-md bg-accent/10 text-accent/80 border border-accent/15">
-                            {tj}
-                          </span>
-                        ))}
-                        {alleTjenester.length > 5 && (
-                          <span className="text-xs px-2 py-1 text-gray-500">+{alleTjenester.length - 5} til</span>
-                        )}
+                  {/* Innhold */}
+                  <div className="px-5 pb-5 text-center">
+                    <h3 className="text-white font-semibold text-lg">{t.navn}</h3>
+
+                    {/* Vurdering */}
+                    {t.snittKarakter !== null ? (
+                      <div className="flex items-center justify-center gap-1.5 mt-1">
+                        <div className="flex">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <svg key={s} className={`w-3.5 h-3.5 ${s <= Math.round(t.snittKarakter!) ? "text-yellow-400" : "text-gray-600"}`} fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          ))}
+                        </div>
+                        <span className="text-gray-400 text-xs">({t.antallVurderinger})</span>
                       </div>
+                    ) : (
+                      <p className="text-gray-600 text-xs mt-1">Ingen vurderinger ennå</p>
                     )}
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-xs text-gray-400">
-                        {t.telefon && (
-                          <span className="flex items-center gap-1">
-                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                            </svg>
-                            {t.telefon}
-                          </span>
-                        )}
-                        {t.sertifiseringer?.length > 0 && (
-                          <span className="flex items-center gap-1">
-                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    {/* Spesialitet */}
+                    <div className="mt-4 text-left space-y-2">
+                      {t.spesialitet && (
+                        <div>
+                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Spesialitet</p>
+                          <p className="text-accent text-sm">
+                            {t.spesialitet}
+                            {t.spesialitet_2 && <span className="text-gray-500"> · </span>}
+                            {t.spesialitet_2 && <span>{t.spesialitet_2}</span>}
+                          </p>
+                        </div>
+                      )}
+
+                      {andreTjenester.length > 0 && (
+                        <div>
+                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Utfører også</p>
+                          <p className="text-gray-300 text-sm">{andreTjenester.slice(0, 4).join(", ")}{andreTjenester.length > 4 ? ` +${andreTjenester.length - 4}` : ""}</p>
+                        </div>
+                      )}
+
+                      {t.sertifiseringer?.length > 0 && (
+                        <div>
+                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Sertifisering</p>
+                          <p className="text-gray-300 text-sm flex items-center gap-1">
+                            <svg className="w-3.5 h-3.5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             {t.sertifiseringer[0]}
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-accent text-sm font-medium">
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* CTA */}
+                    <div className="mt-4 pt-4 border-t border-card-border">
+                      <span className="inline-flex items-center gap-2 text-accent text-sm font-medium">
                         Se profil &rarr;
                       </span>
                     </div>

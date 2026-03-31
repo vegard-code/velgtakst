@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannProfil, MeglerVurdering, FylkeSynlighet } from "@/lib/supabase/types";
 
 export const revalidate = 900;
@@ -57,11 +58,23 @@ export default async function TakstmannProfilPage({ params }: Props) {
     .eq("er_aktiv", true);
   const fylker = (fylkerRaw ?? []) as unknown as Pick<FylkeSynlighet, "fylke_id">[];
 
+  // Hent firmanavn
+  const { data: companyRaw } = profil.company_id
+    ? await supabase.from("companies").select("navn").eq("id", profil.company_id).single()
+    : { data: null };
+  const companyNavn = (companyRaw as { navn: string } | null)?.navn;
+
   const snittKarakter =
     vurderinger && vurderinger.length > 0
       ? vurderinger.reduce((sum, v) => sum + (v.karakter ?? 0), 0) /
         vurderinger.length
       : null;
+
+  const andreTjenester = (profil.tjenester ?? []).filter(
+    (t) => t !== profil.spesialitet && t !== profil.spesialitet_2
+  );
+
+  const fylkeNavn = (id: string) => FYLKER.find((f) => f.id === id)?.navn ?? id;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -76,9 +89,9 @@ export default async function TakstmannProfilPage({ params }: Props) {
       </Link>
 
       {/* Profil-header */}
-      <div className="bg-card-bg border border-card-border rounded-2xl p-8 mb-8">
+      <div className="bg-card-bg border border-card-border rounded-2xl p-8 mb-6">
         <div className="flex flex-col sm:flex-row gap-6 items-start">
-          <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent/30 shrink-0 relative bg-accent/10">
+          <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-accent/30 shrink-0 relative bg-accent/10">
             {profil.bilde_url ? (
               <Image
                 src={profil.bilde_url}
@@ -88,7 +101,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
                 unoptimized
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-accent font-bold text-3xl">
+              <div className="w-full h-full flex items-center justify-center text-accent font-bold text-4xl">
                 {profil.navn.charAt(0)}
               </div>
             )}
@@ -97,21 +110,21 @@ export default async function TakstmannProfilPage({ params }: Props) {
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">
               {profil.navn}
             </h1>
+            {companyNavn && (
+              <p className="text-gray-400 mb-2">{companyNavn}</p>
+            )}
             {profil.tittel && (
-              <p className="text-gray-400 mb-2">{profil.tittel}</p>
+              <p className="text-gray-500 text-sm mb-3">{profil.tittel}</p>
             )}
-            {profil.spesialitet && (
-              <span className="inline-block bg-accent/10 border border-accent/20 text-accent text-sm px-3 py-1 rounded-full mb-3">
-                {profil.spesialitet}
-              </span>
-            )}
-            {snittKarakter !== null && (
+
+            {/* Vurderingsstjerner */}
+            {snittKarakter !== null ? (
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <svg
                       key={s}
-                      className={`w-4 h-4 ${s <= Math.round(snittKarakter) ? "text-yellow-400" : "text-gray-600"}`}
+                      className={`w-5 h-5 ${s <= Math.round(snittKarakter) ? "text-yellow-400" : "text-gray-600"}`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -119,89 +132,123 @@ export default async function TakstmannProfilPage({ params }: Props) {
                     </svg>
                   ))}
                 </div>
+                <span className="text-white font-semibold">{snittKarakter.toFixed(1)}</span>
                 <span className="text-gray-400 text-sm">
-                  {snittKarakter.toFixed(1)} ({vurderinger?.length} vurderinger)
+                  ({vurderinger?.length} {vurderinger?.length === 1 ? "vurdering" : "vurderinger"})
                 </span>
+              </div>
+            ) : (
+              <p className="text-gray-600 text-sm mb-3">Ingen vurderinger ennå</p>
+            )}
+
+            {/* Kontaktinfo inline */}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+              {profil.telefon && (
+                <a href={`tel:${profil.telefon}`} className="flex items-center gap-1.5 hover:text-white transition-colors">
+                  <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  {profil.telefon}
+                </a>
+              )}
+              {profil.epost && (
+                <a href={`mailto:${profil.epost}`} className="flex items-center gap-1.5 hover:text-white transition-colors">
+                  <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  {profil.epost}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        {/* Venstre kolonne: Tjenester, bio, sertifiseringer */}
+        <div className="md:col-span-2 space-y-6">
+          {/* Spesialitet og tjenester */}
+          <div className="bg-card-bg border border-card-border rounded-xl p-6">
+            {profil.spesialitet && (
+              <div className="mb-5">
+                <h2 className="text-gray-500 text-xs font-medium uppercase tracking-wide mb-2">Spesialitet</h2>
+                <div className="flex flex-wrap gap-2">
+                  <span className="bg-accent/15 border border-accent/25 text-accent text-sm px-3 py-1.5 rounded-lg font-medium">{profil.spesialitet}</span>
+                  {profil.spesialitet_2 && (
+                    <span className="bg-accent/15 border border-accent/25 text-accent text-sm px-3 py-1.5 rounded-lg font-medium">{profil.spesialitet_2}</span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {andreTjenester.length > 0 && (
+              <div className="mb-5">
+                <h2 className="text-gray-500 text-xs font-medium uppercase tracking-wide mb-2">Utfører også</h2>
+                <div className="flex flex-wrap gap-2">
+                  {andreTjenester.map((t) => (
+                    <span key={t} className="bg-gray-800/50 border border-gray-700 text-gray-300 text-sm px-3 py-1.5 rounded-lg">{t}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {profil.sertifiseringer && profil.sertifiseringer.length > 0 && (
+              <div>
+                <h2 className="text-gray-500 text-xs font-medium uppercase tracking-wide mb-2">Sertifiseringer</h2>
+                <ul className="space-y-2">
+                  {profil.sertifiseringer.map((sert, i) => (
+                    <li key={i} className="flex items-center gap-2 text-gray-300 text-sm">
+                      <svg className="w-4 h-4 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {sert}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>
-        </div>
 
-        {profil.bio && (
-          <div className="mt-6 pt-6 border-t border-card-border">
-            <h2 className="text-white font-semibold mb-3">Om meg</h2>
-            <p className="text-gray-400 leading-relaxed">{profil.bio}</p>
-          </div>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {/* Kontaktinfo */}
-        <div className="bg-card-bg border border-card-border rounded-xl p-6">
-          <h2 className="text-white font-semibold mb-4">Kontaktinformasjon</h2>
-          <ul className="space-y-3">
-            {profil.telefon && (
-              <li className="flex items-center gap-3 text-gray-400">
-                <svg className="w-4 h-4 text-accent shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <a href={`tel:${profil.telefon}`} className="hover:text-white transition-colors">
-                  {profil.telefon}
-                </a>
-              </li>
-            )}
-            {profil.epost && (
-              <li className="flex items-center gap-3 text-gray-400">
-                <svg className="w-4 h-4 text-accent shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <a href={`mailto:${profil.epost}`} className="hover:text-white transition-colors truncate">
-                  {profil.epost}
-                </a>
-              </li>
-            )}
-          </ul>
-
-          <Link
-            href={`/registrer/kunde?takstmann=${profil.id}`}
-            className="mt-6 w-full flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-4 py-3 rounded-lg font-medium transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            Bestill takst
-          </Link>
-        </div>
-
-        {/* Sertifiseringer & Fylker */}
-        <div className="space-y-6">
-          {profil.sertifiseringer && profil.sertifiseringer.length > 0 && (
+          {/* Om meg */}
+          {profil.bio && (
             <div className="bg-card-bg border border-card-border rounded-xl p-6">
-              <h2 className="text-white font-semibold mb-4">Sertifiseringer</h2>
-              <ul className="space-y-2">
-                {profil.sertifiseringer.map((sert, i) => (
-                  <li key={i} className="flex items-center gap-2 text-gray-400 text-sm">
-                    <svg className="w-4 h-4 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {sert}
-                  </li>
-                ))}
-              </ul>
+              <h2 className="text-white font-semibold mb-3">Om meg</h2>
+              <p className="text-gray-400 leading-relaxed whitespace-pre-line">{profil.bio}</p>
             </div>
           )}
+        </div>
 
+        {/* Høyre kolonne: Send forespørsel + fylker */}
+        <div className="space-y-6">
+          {/* Send forespørsel */}
+          <div className="bg-card-bg border border-card-border rounded-xl p-6">
+            <h2 className="text-white font-semibold mb-2">Trenger du takst?</h2>
+            <p className="text-gray-400 text-sm mb-4">
+              Send en forespørsel til {profil.navn.split(" ")[0]}, så avtaler dere pris og tidspunkt.
+            </p>
+            <Link
+              href={`/portal/kunde/finn-takstmann?bestill=${profil.id}`}
+              className="w-full flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-4 py-3 rounded-lg font-medium transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              Send forespørsel
+            </Link>
+          </div>
+
+          {/* Aktiv i fylker */}
           {fylker && fylker.length > 0 && (
             <div className="bg-card-bg border border-card-border rounded-xl p-6">
-              <h2 className="text-white font-semibold mb-4">Aktiv i fylker</h2>
+              <h2 className="text-white font-semibold mb-3">Dekker disse fylkene</h2>
               <div className="flex flex-wrap gap-2">
                 {fylker.map((f) => (
                   <Link
                     key={f.fylke_id}
                     href={`/${f.fylke_id}`}
-                    className="bg-accent/10 border border-accent/20 text-accent text-xs px-3 py-1 rounded-full hover:bg-accent/20 transition-colors"
+                    className="bg-accent/10 border border-accent/20 text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-accent/20 transition-colors"
                   >
-                    {f.fylke_id}
+                    {fylkeNavn(f.fylke_id)}
                   </Link>
                 ))}
               </div>
@@ -211,11 +258,11 @@ export default async function TakstmannProfilPage({ params }: Props) {
       </div>
 
       {/* Vurderinger */}
-      {vurderinger && vurderinger.length > 0 && (
-        <div className="bg-card-bg border border-card-border rounded-xl p-6">
-          <h2 className="text-white font-semibold mb-6">
-            Vurderinger ({vurderinger.length})
-          </h2>
+      <div className="bg-card-bg border border-card-border rounded-xl p-6">
+        <h2 className="text-white font-semibold mb-6">
+          Vurderinger {vurderinger.length > 0 && `(${vurderinger.length})`}
+        </h2>
+        {vurderinger.length > 0 ? (
           <div className="space-y-4">
             {vurderinger.map((v: MeglerVurdering) => (
               <div
@@ -245,8 +292,10 @@ export default async function TakstmannProfilPage({ params }: Props) {
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <p className="text-gray-500 text-sm">Ingen vurderinger ennå. Bli den første til å gi en tilbakemelding!</p>
+        )}
+      </div>
     </div>
   );
 }
