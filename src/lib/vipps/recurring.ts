@@ -148,7 +148,7 @@ export async function opprettAgreement(params: OpprettAgreementParams): Promise<
 
   const res = await fetch(`${BASE_URL}/recurring/v3/agreements`, {
     method: 'POST',
-    headers: vippsHeaders(accessToken, `agreement-${params.reference}-${Date.now()}`),
+    headers: vippsHeaders(accessToken, crypto.randomUUID()),
     body: JSON.stringify(body),
   })
 
