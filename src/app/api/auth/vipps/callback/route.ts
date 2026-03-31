@@ -60,6 +60,18 @@ export async function GET(request: NextRequest) {
     // Hent OIDC-endepunkter
     const discovery = await getDiscoveryDocument()
 
+    // Debug: logg hva vi sender til Vipps token-endepunktet
+    console.log('Vipps token exchange debug:', {
+      tokenEndpoint: discovery.token_endpoint,
+      redirectUri: VIPPS_CONFIG.redirectUri,
+      clientIdPrefix: VIPPS_CONFIG.clientId?.substring(0, 8) + '...',
+      clientSecretLength: VIPPS_CONFIG.clientSecret?.length,
+      hasCode: !!code,
+      hasCodeVerifier: !!savedState.codeVerifier,
+      testMode: process.env.VIPPS_TEST_MODE,
+      siteUrl: process.env.NEXT_PUBLIC_SITE_URL,
+    })
+
     // --- 1. Bytt code mot tokens ---
     const tokenRes = await fetch(discovery.token_endpoint, {
       method: 'POST',
@@ -78,7 +90,13 @@ export async function GET(request: NextRequest) {
     if (!tokenRes.ok) {
       const err = await tokenRes.text()
       console.error('Vipps token exchange failed:', err)
-      return NextResponse.redirect(new URL('/logg-inn?error=token_feil', request.url))
+      console.error('Token exchange details:', {
+        status: tokenRes.status,
+        redirectUri: VIPPS_CONFIG.redirectUri,
+        clientIdFull: VIPPS_CONFIG.clientId,
+        tokenEndpoint: discovery.token_endpoint,
+      })
+      return NextResponse.redirect(new URL(`/logg-inn?error=token_feil&detalj=${encodeURIComponent(err)}`, request.url))
     }
 
     const tokens = await tokenRes.json()
