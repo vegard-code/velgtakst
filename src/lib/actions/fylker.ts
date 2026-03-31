@@ -86,7 +86,7 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
     // Sjekk om bedriften har aktiv prøveperiode (service client for abonnementer)
     const { data: abonnement } = await serviceClient
       .from('abonnementer')
-      .select('status, proveperiode_slutt')
+      .select('status, proveperiode_slutt, vipps_agreement_id')
       .eq('company_id', takstmann.company_id)
       .single()
 
