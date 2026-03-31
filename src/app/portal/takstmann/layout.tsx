@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import TakstmannSidebar from "@/components/portal/TakstmannSidebar";
 import PortalHeader from "@/components/portal/PortalHeader";
+import { hentAntallUleste } from "@/lib/actions/meldinger";
 
 export default async function TakstmannPortalLayout({
   children,
@@ -34,12 +35,15 @@ export default async function TakstmannPortalLayout({
         .single()
     : { data: null };
 
+  const ulesteMeldinger = await hentAntallUleste();
+
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">
       <TakstmannSidebar
         navn={profil.navn}
         firmanavn={company?.navn}
         rolle={profil.rolle}
+        ulesteMeldinger={ulesteMeldinger}
       />
       <div className="flex-1 flex flex-col min-w-0">
         <PortalHeader navn={profil.navn} portalType="takstmann" />

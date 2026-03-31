@@ -8,6 +8,7 @@ interface Props {
   navn: string;
   firmanavn?: string | null;
   rolle: string;
+  ulesteMeldinger?: number;
 }
 
 const navItems = [
@@ -40,6 +41,16 @@ const navItems = [
     ),
   },
   {
+    href: "/portal/takstmann/meldinger",
+    label: "Meldinger",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+    ),
+    hasBadge: true,
+  },
+  {
     href: "/portal/takstmann/fylker",
     label: "Fylkesynlighet",
     icon: (
@@ -70,7 +81,7 @@ const navItems = [
   },
 ];
 
-export default function TakstmannSidebar({ navn, firmanavn, rolle }: Props) {
+export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMeldinger = 0 }: Props) {
   const pathname = usePathname();
 
   function isActive(href: string, exact?: boolean) {
@@ -108,7 +119,12 @@ export default function TakstmannSidebar({ navn, firmanavn, rolle }: Props) {
             className={`portal-sidebar-link ${isActive(item.href, item.exact) ? "active" : ""}`}
           >
             {item.icon}
-            {item.label}
+            <span className="flex-1">{item.label}</span>
+            {"hasBadge" in item && item.hasBadge && ulesteMeldinger > 0 && (
+              <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center">
+                {ulesteMeldinger > 9 ? "9+" : ulesteMeldinger}
+              </span>
+            )}
           </Link>
         ))}
       </nav>

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import KundeSidebar from "@/components/portal/KundeSidebar";
 import PortalHeader from "@/components/portal/PortalHeader";
+import { hentAntallUleste } from "@/lib/actions/meldinger";
 
 export default async function KundePortalLayout({
   children,
@@ -21,9 +22,11 @@ export default async function KundePortalLayout({
 
   if (!profil || profil.rolle !== "privatkunde") redirect("/portal");
 
+  const ulesteMeldinger = await hentAntallUleste();
+
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">
-      <KundeSidebar navn={profil.navn} />
+      <KundeSidebar navn={profil.navn} ulesteMeldinger={ulesteMeldinger} />
       <div className="flex-1 flex flex-col min-w-0">
         <PortalHeader navn={profil.navn} portalType="kunde" />
         <main className="flex-1 p-6 lg:p-8">{children}</main>

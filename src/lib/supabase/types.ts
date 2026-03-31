@@ -286,6 +286,21 @@ export type Database = {
         Insert: Omit<Abonnement, 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Omit<Abonnement, 'id' | 'created_at' | 'updated_at'>>
       }
+      samtaler: {
+        Row: Samtale
+        Insert: Omit<Samtale, 'id' | 'created_at'>
+        Update: Partial<Omit<Samtale, 'id' | 'created_at'>>
+      }
+      meldinger: {
+        Row: Melding
+        Insert: Omit<Melding, 'id' | 'created_at'>
+        Update: Partial<Omit<Melding, 'id' | 'created_at'>>
+      }
+      varsel_innstillinger: {
+        Row: VarselInnstillinger
+        Insert: Omit<VarselInnstillinger, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<VarselInnstillinger, 'id' | 'created_at' | 'updated_at'>>
+      }
     }
     Views: Record<string, never>
     Functions: {
@@ -294,6 +309,33 @@ export type Database = {
     }
     Enums: Record<string, never>
   }
+}
+
+export interface Samtale {
+  id: string
+  bestilling_id: string | null
+  takstmann_id: string
+  kunde_id: string | null
+  megler_id: string | null
+  created_at: string
+}
+
+export interface Melding {
+  id: string
+  samtale_id: string
+  avsender_id: string
+  innhold: string
+  lest: boolean
+  lest_tidspunkt: string | null
+  created_at: string
+}
+
+export interface VarselInnstillinger {
+  id: string
+  user_id: string
+  epost_meldinger: boolean
+  created_at: string
+  updated_at: string
 }
 
 // ============================================================
@@ -313,6 +355,14 @@ export interface OppdragMedDetaljer extends Oppdrag {
   status_logg?: StatusLogg[]
   dokumenter?: Dokument[]
   purre_logg?: PurreLogg[]
+}
+
+export interface SamtaleMedDetaljer extends Samtale {
+  takstmann?: Pick<TakstmannProfil, 'id' | 'navn' | 'bilde_url'> | null
+  kunde?: Pick<PrivatkundeProfil, 'id' | 'navn'> | null
+  megler?: Pick<MeglerProfil, 'id' | 'navn'> | null
+  siste_melding?: Pick<Melding, 'innhold' | 'created_at' | 'avsender_id'> | null
+  uleste: number
 }
 
 export interface BestillingMedDetaljer extends Bestilling {

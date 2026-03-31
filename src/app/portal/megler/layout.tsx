@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import MeglerSidebar from "@/components/portal/MeglerSidebar";
 import PortalHeader from "@/components/portal/PortalHeader";
+import { hentAntallUleste } from "@/lib/actions/meldinger";
 
 export default async function MeglerPortalLayout({
   children,
@@ -21,9 +22,11 @@ export default async function MeglerPortalLayout({
 
   if (!profil || profil.rolle !== "megler") redirect("/portal");
 
+  const ulesteMeldinger = await hentAntallUleste();
+
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">
-      <MeglerSidebar navn={profil.navn} />
+      <MeglerSidebar navn={profil.navn} ulesteMeldinger={ulesteMeldinger} />
       <div className="flex-1 flex flex-col min-w-0">
         <PortalHeader navn={profil.navn} portalType="megler" />
         <main className="flex-1 p-6 lg:p-8">{children}</main>

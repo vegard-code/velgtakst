@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/faktura-status",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/meldinger-varsel",
+      "schedule": "*/15 * * * *"
     }
   ]
 }
