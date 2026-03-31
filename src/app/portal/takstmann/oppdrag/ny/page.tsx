@@ -27,7 +27,7 @@ export default function NyttOppdragPage() {
               name="tittel"
               required
               className="portal-input"
-              placeholder="f.eks. Boligtaksering Storgata 1"
+              placeholder="f.eks. Tilstandsrapport Storgata 1"
             />
           </div>
 

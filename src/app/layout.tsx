@@ -6,12 +6,12 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "VelgTakst - Velg en sertifisert takstmann",
   description:
-    "Finn sertifiserte takstmenn i hele Norge. Søk etter takstmenn i ditt fylke for boligtaksering, tilstandsrapporter og verditakster.",
+    "Finn sertifiserte takstmenn i hele Norge. Søk etter takstmenn i ditt fylke for tilstandsrapporter, verditakster og skadetakster.",
   metadataBase: new URL("https://www.velgtakst.no"),
   openGraph: {
     title: "VelgTakst - Velg en sertifisert takstmann",
     description:
-      "Finn sertifiserte takstmenn i hele Norge. Søk etter takstmenn i ditt fylke for boligtaksering, tilstandsrapporter og verditakster.",
+      "Finn sertifiserte takstmenn i hele Norge. Søk etter takstmenn i ditt fylke for tilstandsrapporter, verditakster og skadetakster.",
     url: "https://www.velgtakst.no",
     siteName: "VelgTakst",
     locale: "nb_NO",
