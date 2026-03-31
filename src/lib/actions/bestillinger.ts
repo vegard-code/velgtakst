@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import type { BestillingStatus, Bestilling, TakstmannProfil, Oppdrag } from '@/lib/supabase/types'
+import type { BestillingStatus, Bestilling, TakstmannProfil, Oppdrag, OppdragType } from '@/lib/supabase/types'
 
 export interface BestillingMedInfo extends Bestilling {
   takstmann?: Pick<TakstmannProfil, 'id' | 'navn' | 'spesialitet' | 'telefon' | 'epost' | 'bilde_url'> | null
@@ -14,19 +14,27 @@ export interface BestillingMedInfo extends Bestilling {
 export async function opprettBestilling(
   takstmannId: string,
   melding: string,
-  meglerEllerKundeId: { meglerProfilId?: string; kundeProfilId?: string }
+  meglerEllerKundeId: { meglerProfilId?: string; kundeProfilId?: string },
+  oppdragType?: OppdragType,
+  adresse?: string
 ) {
   const supabase = await createClient()
 
+  const insertData: Record<string, unknown> = {
+    takstmann_id: takstmannId,
+    bestilt_av_megler_id: meglerEllerKundeId.meglerProfilId ?? null,
+    bestilt_av_kunde_id: meglerEllerKundeId.kundeProfilId ?? null,
+    melding,
+    status: 'ny',
+  }
+
+  // Legg til oppdrag_type og adresse om de finnes
+  if (oppdragType) insertData.oppdrag_type = oppdragType
+  if (adresse) insertData.adresse = adresse
+
   const { data, error } = await supabase
     .from('bestillinger')
-    .insert({
-      takstmann_id: takstmannId,
-      bestilt_av_megler_id: meglerEllerKundeId.meglerProfilId ?? null,
-      bestilt_av_kunde_id: meglerEllerKundeId.kundeProfilId ?? null,
-      melding,
-      status: 'ny',
-    })
+    .insert(insertData)
     .select('id')
     .single()
 

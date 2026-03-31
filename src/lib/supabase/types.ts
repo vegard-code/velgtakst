@@ -20,6 +20,8 @@ export type OppdragType =
   | 'verditakst'
   | 'næringstaksering'
   | 'skadetaksering'
+  | 'reklamasjonsrapport'
+  | 'arealoppmaaling'
   | 'annet'
 
 export type BestillingStatus = 'ny' | 'akseptert' | 'avvist' | 'kansellert' | 'fullfort'
@@ -352,6 +354,8 @@ export const OPPDRAG_TYPE_LABELS: Record<OppdragType, string> = {
   verditakst: 'Verditakst',
   næringstaksering: 'Næringstaksering',
   skadetaksering: 'Skadetaksering',
+  reklamasjonsrapport: 'Reklamasjonsrapport',
+  arealoppmaaling: 'Arealoppmåling',
   annet: 'Annet',
 }
 
