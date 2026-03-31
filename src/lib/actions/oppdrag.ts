@@ -16,6 +16,16 @@ export async function hentOppdragListe(filter?: {
 }) {
   const supabase = await createClient()
 
+  // Hent brukerens company_id for å scope queries
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return []
+
+  const { data: profil } = await supabase
+    .from('user_profiles')
+    .select('company_id')
+    .eq('id', user.id)
+    .single()
+
   let query = supabase
     .from('oppdrag')
     .select(`
@@ -25,6 +35,11 @@ export async function hentOppdragListe(filter?: {
       privatkunde:privatkunde_profiler(id, navn)
     `)
     .order('created_at', { ascending: false })
+
+  // Scope til brukerens bedrift
+  if (profil?.company_id) {
+    query = query.eq('company_id', profil.company_id)
+  }
 
   if (filter?.status) query = query.eq('status', filter.status)
   if (filter?.type) query = query.eq('oppdrag_type', filter.type)
@@ -36,7 +51,10 @@ export async function hentOppdragListe(filter?: {
   }
 
   const { data, error } = await query
-  if (error) throw error
+  if (error) {
+    console.error('hentOppdragListe error:', error.message)
+    return []
+  }
   return data ?? []
 }
 

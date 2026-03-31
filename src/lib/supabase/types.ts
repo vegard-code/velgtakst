@@ -15,7 +15,6 @@ export type OppdragStatus =
   | 'kansellert'
 
 export type OppdragType =
-  | 'boligtaksering'
   | 'tilstandsrapport'
   | 'verditakst'
   | 'næringstaksering'
@@ -331,7 +330,6 @@ export const ALLE_TJENESTER = [
   'Tilstandsrapport',
   'Reklamasjonsrapport',
   'Verditakst',
-  'Boligtaksering',
   'Skadetaksering',
   'Næringstakst',
   'Arealoppmåling',
@@ -402,7 +400,6 @@ export const OPPDRAG_STATUS_LABELS: Record<OppdragStatus, string> = {
 }
 
 export const OPPDRAG_TYPE_LABELS: Record<OppdragType, string> = {
-  boligtaksering: 'Boligtaksering',
   tilstandsrapport: 'Tilstandsrapport',
   verditakst: 'Verditakst',
   næringstaksering: 'Næringstaksering',

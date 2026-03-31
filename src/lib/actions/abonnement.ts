@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { opprettAgreement, stoppAgreement } from '@/lib/vipps/recurring'
 import { FYLKER, getFylkePris } from '@/lib/supabase/types'
 
@@ -27,14 +27,11 @@ export async function beregnMaanedligKostnad(takstmannId: string): Promise<numbe
 
 /**
  * Start Vipps Recurring abonnement for en takstmann.
- * Kalles typisk mot slutten av prøveperioden, eller manuelt av brukeren.
- *
- * Returnerer en URL som brukeren må åpne i Vipps for å godkjenne.
  */
 export async function startVippsAbonnement(companyId: string) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
 
-  // Hent takstmann for å finne company og telefon
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke innlogget' }
 
@@ -48,7 +45,6 @@ export async function startVippsAbonnement(companyId: string) {
     return { error: 'Ugyldig bedrift' }
   }
 
-  // Beregn månedlig kostnad
   const maanedligKroner = await beregnMaanedligKostnad(takstmann.id)
   if (maanedligKroner === 0) {
     return { error: 'Du har ingen aktive fylker. Aktiver minst ett fylke først.' }
@@ -67,8 +63,8 @@ export async function startVippsAbonnement(companyId: string) {
       notificationUrl: `${siteUrl}/api/vipps/recurring-webhook`,
     })
 
-    // Lagre agreement ID i abonnement-tabellen
-    await supabase
+    // Lagre agreement ID (service client for abonnementer-tabellen)
+    await serviceClient
       .from('abonnementer')
       .update({
         vipps_agreement_id: result.agreementId,
@@ -91,8 +87,9 @@ export async function startVippsAbonnement(companyId: string) {
  */
 export async function siOppAbonnement(companyId: string) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
 
-  const { data: abonnement } = await supabase
+  const { data: abonnement } = await serviceClient
     .from('abonnementer')
     .select('vipps_agreement_id, status')
     .eq('company_id', companyId)
@@ -100,7 +97,7 @@ export async function siOppAbonnement(companyId: string) {
 
   if (!abonnement?.vipps_agreement_id) {
     // Ingen Vipps-avtale — bare sett status til kansellert
-    await supabase
+    await serviceClient
       .from('abonnementer')
       .update({
         status: 'kansellert',
@@ -133,7 +130,7 @@ export async function siOppAbonnement(companyId: string) {
   try {
     await stoppAgreement(abonnement.vipps_agreement_id)
 
-    await supabase
+    await serviceClient
       .from('abonnementer')
       .update({
         status: 'kansellert',
