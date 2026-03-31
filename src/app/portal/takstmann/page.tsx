@@ -179,7 +179,7 @@ export default async function TakstmannDashboard() {
             {stats.kommendeFrister.map((o) => {
               const fristDato = o.frist ? new Date(o.frist) : null;
               const dagerIgjen = fristDato
-                ? Math.ceil((fristDato.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+                ? Math.ceil((fristDato.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
                 : null;
               return (
                 <div key={o.id} className="flex items-center gap-4 py-3">

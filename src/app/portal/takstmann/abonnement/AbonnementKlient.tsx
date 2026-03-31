@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { startVippsAbonnement, siOppAbonnement } from "@/lib/actions/abonnement";
 import type { Abonnement } from "@/lib/supabase/types";
 
@@ -20,8 +21,9 @@ export default function AbonnementKlient({ abonnement, companyId, aktiveFylker, 
   const erKansellert = abonnement?.status === "kansellert";
   const erUtlopt = abonnement?.status === "utlopt";
 
+  const [now] = useState(() => new Date());
   const dagerIgjen = erProveperiode && abonnement?.proveperiode_slutt
-    ? Math.max(0, Math.ceil((new Date(abonnement.proveperiode_slutt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    ? Math.max(0, Math.ceil((new Date(abonnement.proveperiode_slutt).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
     : 0;
 
   async function handleStartAbonnement() {
@@ -136,18 +138,18 @@ export default function AbonnementKlient({ abonnement, companyId, aktiveFylker, 
               <span className="text-[#285982]">{maanedligKostnad} kr/mnd</span>
             </div>
           </div>
-          <a href="/portal/takstmann/fylker" className="text-sm text-[#285982] hover:underline mt-3 inline-block">
+          <Link href="/portal/takstmann/fylker" className="text-sm text-[#285982] hover:underline mt-3 inline-block">
             Administrer fylker →
-          </a>
+          </Link>
         </div>
       )}
 
       {aktiveFylker.length === 0 && (
         <div className="portal-card p-6 mb-6 text-center">
           <p className="text-[#64748b] text-sm mb-3">Du har ingen aktive fylker.</p>
-          <a href="/portal/takstmann/fylker" className="portal-btn-primary inline-block text-sm">
+          <Link href="/portal/takstmann/fylker" className="portal-btn-primary inline-block text-sm">
             Aktiver fylker
-          </a>
+          </Link>
         </div>
       )}
 

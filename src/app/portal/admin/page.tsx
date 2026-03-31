@@ -51,7 +51,8 @@ export default async function AdminDashboardPage() {
     .reduce((sum, a) => sum + (a.maanedlig_belop ?? 0), 0) ?? 0;
 
   // Siste 7 dager registreringer
-  const syvDagerSiden = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const now = new Date();
+  const syvDagerSiden = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
   const nyeBrukere7d = sisteBrukere?.filter(b => b.created_at > syvDagerSiden).length ?? 0;
 
   const rolleFarger: Record<string, string> = {

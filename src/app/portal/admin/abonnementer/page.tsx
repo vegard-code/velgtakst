@@ -9,6 +9,7 @@ const FYLKE_NAVN: Record<string, string> = {
 };
 
 export default async function AdminAbonnementerPage() {
+  const now = new Date();
   const supabase = await createServiceClient();
 
   // Hent abonnementer med company-info
@@ -116,7 +117,7 @@ export default async function AdminAbonnementerPage() {
               {abonnementer && abonnementer.length > 0 ? (
                 abonnementer.map((a) => {
                   const dagerIgjen = a.status === "proveperiode" && a.proveperiode_slutt
-                    ? Math.max(0, Math.ceil((new Date(a.proveperiode_slutt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+                    ? Math.max(0, Math.ceil((new Date(a.proveperiode_slutt).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
                     : null;
                   const company = a.companies as { id: string; navn: string } | null;
 

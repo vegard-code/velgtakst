@@ -27,8 +27,9 @@ export default async function FylkerSynlighetPage() {
     : null;
 
   const erProveperiode = abonnement?.status === "proveperiode";
+  const now = new Date();
   const dagerIgjen = erProveperiode && abonnement?.proveperiode_slutt
-    ? Math.max(0, Math.ceil((new Date(abonnement.proveperiode_slutt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    ? Math.max(0, Math.ceil((new Date(abonnement.proveperiode_slutt).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
     : 0;
 
   const synlighetsMap: Record<string, { er_aktiv: boolean; betalt_til: string | null }> = {};
