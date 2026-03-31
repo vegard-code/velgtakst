@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { FYLKER } from "@/lib/supabase/types";
+import { KOMMUNER } from "@/data/kommuner";
 import data from "@/data/takstmenn.json";
 
 const BASE_URL = "https://www.velgtakst.no";
@@ -61,6 +62,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  // Kommunesider
+  const kommuneSider: MetadataRoute.Sitemap = KOMMUNER.map((kommune) => ({
+    url: `${BASE_URL}/${kommune.fylkeId}/${kommune.id}`,
+    lastModified: now,
+    changeFrequency: "daily" as const,
+    priority: 0.7,
+  }));
+
   // Blogginnlegg
   const bloggSider: MetadataRoute.Sitemap = data.bloggposter.map((post) => ({
     url: `${BASE_URL}/blogg/${post.id}`,
@@ -69,5 +78,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...statiskeSider, ...fylkeSider, ...bloggSider];
+  return [...statiskeSider, ...fylkeSider, ...kommuneSider, ...bloggSider];
 }

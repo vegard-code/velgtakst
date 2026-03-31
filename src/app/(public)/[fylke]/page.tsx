@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannMedFylker } from "@/lib/supabase/types";
+import { getKommunerForFylke } from "@/data/kommuner";
 import RandomSpinnerWrapper from "@/components/RandomSpinnerWrapper";
 import data from "@/data/takstmenn.json";
 
@@ -398,6 +399,30 @@ export default async function FylkePage({ params }: Props) {
           ))}
         </div>
       </section>
+
+      {/* Kommuner i fylket */}
+      {(() => {
+        const kommuner = getKommunerForFylke(fylkeId);
+        if (kommuner.length === 0) return null;
+        return (
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+            <h2 className="text-xl font-bold text-white mb-5 text-center">
+              Finn takstmann i din kommune i {fylke.navn}
+            </h2>
+            <div className="flex flex-wrap justify-center gap-2">
+              {kommuner.map((k) => (
+                <Link
+                  key={k.id}
+                  href={`/${fylkeId}/${k.id}`}
+                  className="text-sm text-gray-400 hover:text-accent border border-card-border hover:border-accent/30 rounded-lg px-3 py-1.5 transition-colors"
+                >
+                  {k.navn}
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* Andre fylker */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
