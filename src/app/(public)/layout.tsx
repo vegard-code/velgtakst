@@ -50,10 +50,10 @@ export default async function PublicLayout({
                   Logg inn
                 </Link>
                 <Link
-                  href="/registrer/takstmann"
+                  href="/logg-inn"
                   className="bg-accent hover:bg-accent/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
-                  Registrer deg
+                  Kom i gang
                 </Link>
               </div>
             )}
