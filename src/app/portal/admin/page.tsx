@@ -19,6 +19,10 @@ export default async function AdminDashboardPage() {
     { data: sisteOppdrag },
     { data: sisteBestillinger },
     { data: aktiveFylker },
+    { count: totalSamtaler },
+    { count: totalMeldinger },
+    { count: ulesteMeldinger },
+    { count: totalVurderinger },
   ] = await Promise.all([
     supabase.from("user_profiles").select("*", { count: "exact", head: true }),
     supabase.from("user_profiles").select("*", { count: "exact", head: true }).in("rolle", ["takstmann", "takstmann_admin"]),
@@ -32,6 +36,10 @@ export default async function AdminDashboardPage() {
     supabase.from("oppdrag").select("id, tittel, status, oppdrag_type, created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("bestillinger").select("id, status, oppdrag_type, adresse, created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("fylke_synlighet").select("fylke_id, er_aktiv").eq("er_aktiv", true),
+    supabase.from("samtaler").select("*", { count: "exact", head: true }),
+    supabase.from("meldinger").select("*", { count: "exact", head: true }),
+    supabase.from("meldinger").select("*", { count: "exact", head: true }).eq("lest", false),
+    supabase.from("megler_vurderinger").select("*", { count: "exact", head: true }),
   ]);
 
   // Beregn abonnement-statistikk
@@ -236,6 +244,8 @@ export default async function AdminDashboardPage() {
               { href: "/portal/admin/takstmenn", label: "Se takstmenn", icon: "🏠", desc: `${totalTakstmenn ?? 0} registrert` },
               { href: "/portal/admin/bestillinger", label: "Bestillinger", icon: "📬", desc: `${nyeBestillinger ?? 0} nye` },
               { href: "/portal/admin/abonnementer", label: "Abonnementer", icon: "💳", desc: `${aktiveFylkerCount ?? 0} aktive fylker` },
+              { href: "/portal/admin/meldinger", label: "Meldinger", icon: "💬", desc: `${totalSamtaler ?? 0} samtaler, ${ulesteMeldinger ?? 0} uleste` },
+              { href: "/portal/admin/vurderinger", label: "Vurderinger", icon: "⭐", desc: `${totalVurderinger ?? 0} totalt` },
             ].map((link) => (
               <Link
                 key={link.href}
@@ -249,6 +259,38 @@ export default async function AdminDashboardPage() {
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Melding- og vurdering-statistikk */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 text-sm">💬</div>
+          <div>
+            <p className="text-lg font-bold text-[#1e293b]">{totalSamtaler ?? 0}</p>
+            <p className="text-xs text-[#64748b]">Samtaler</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 text-sm">📨</div>
+          <div>
+            <p className="text-lg font-bold text-[#1e293b]">{totalMeldinger ?? 0}</p>
+            <p className="text-xs text-[#64748b]">Meldinger sendt</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-500 text-sm">🔴</div>
+          <div>
+            <p className="text-lg font-bold text-[#1e293b]">{ulesteMeldinger ?? 0}</p>
+            <p className="text-xs text-[#64748b]">Uleste meldinger</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-[#e2e8f0] p-4 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 text-sm">⭐</div>
+          <div>
+            <p className="text-lg font-bold text-[#1e293b]">{totalVurderinger ?? 0}</p>
+            <p className="text-xs text-[#64748b]">Vurderinger</p>
           </div>
         </div>
       </div>
