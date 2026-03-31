@@ -20,21 +20,17 @@ export async function opprettBestilling(
 ) {
   const supabase = await createClient()
 
-  const insertData: Record<string, unknown> = {
-    takstmann_id: takstmannId,
-    bestilt_av_megler_id: meglerEllerKundeId.meglerProfilId ?? null,
-    bestilt_av_kunde_id: meglerEllerKundeId.kundeProfilId ?? null,
-    melding,
-    status: 'ny',
-  }
-
-  // Legg til oppdrag_type og adresse om de finnes
-  if (oppdragType) insertData.oppdrag_type = oppdragType
-  if (adresse) insertData.adresse = adresse
-
   const { data, error } = await supabase
     .from('bestillinger')
-    .insert(insertData)
+    .insert({
+      takstmann_id: takstmannId,
+      bestilt_av_megler_id: meglerEllerKundeId.meglerProfilId ?? null,
+      bestilt_av_kunde_id: meglerEllerKundeId.kundeProfilId ?? null,
+      melding,
+      status: 'ny',
+      oppdrag_type: oppdragType ?? null,
+      adresse: adresse ?? null,
+    })
     .select('id')
     .single()
 

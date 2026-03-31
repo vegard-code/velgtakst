@@ -98,6 +98,8 @@ export default async function KundeFinnTakstmannPage({ searchParams }: Props) {
             <option value="Verditakst">Verditakst</option>
             <option value="Skadetaksering">Skadetaksering</option>
             <option value="Næringstaksering">Næringstaksering</option>
+            <option value="Reklamasjonsrapport">Reklamasjonsrapport</option>
+            <option value="Arealoppmåling">Arealoppmåling</option>
           </select>
           <button type="submit" className="portal-btn-primary shrink-0">Søk</button>
         </form>

@@ -127,6 +127,8 @@ export interface Bestilling {
   bestilt_av_kunde_id: string | null
   status: BestillingStatus
   melding: string | null
+  oppdrag_type: OppdragType | null
+  adresse: string | null
   created_at: string
   updated_at: string
 }
