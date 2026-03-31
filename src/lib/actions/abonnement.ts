@@ -54,14 +54,24 @@ export async function startVippsAbonnement(companyId: string) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
   try {
+    console.log('startVippsAbonnement: calling opprettAgreement with', {
+      maanedligKroner,
+      maanedligOre,
+      companyId,
+      siteUrl,
+      telefon: takstmann.telefon ? '***' : 'null',
+    })
+
     const result = await opprettAgreement({
       customerPhone: takstmann.telefon || undefined,
       monthlyAmountOre: maanedligOre,
-      productName: `VelgTakst – Fylkesynlighet (${maanedligKroner} kr/mnd)`,
+      productName: `VelgTakst Fylkesynlighet`,
       reference: `velgtakst-${companyId}`,
       returnUrl: `${siteUrl}/portal/takstmann/abonnement?status=ok`,
       notificationUrl: `${siteUrl}/api/vipps/recurring-webhook`,
     })
+
+    console.log('startVippsAbonnement: agreement created, id =', result.agreementId)
 
     // Lagre agreement ID (service client for abonnementer-tabellen)
     await serviceClient
@@ -77,8 +87,9 @@ export async function startVippsAbonnement(companyId: string) {
     revalidatePath('/portal/takstmann/abonnement')
     return { success: true, confirmationUrl: result.vippsConfirmationUrl }
   } catch (err) {
-    console.error('Start Vipps abonnement error:', err)
-    return { error: 'Kunne ikke opprette Vipps-abonnement. Prøv igjen.' }
+    const errorMessage = err instanceof Error ? err.message : String(err)
+    console.error('Start Vipps abonnement error:', errorMessage)
+    return { error: `Vipps-feil: ${errorMessage}` }
   }
 }
 

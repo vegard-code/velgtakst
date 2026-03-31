@@ -37,6 +37,11 @@ async function getAccessToken(): Promise<string> {
     return tokenCache.token
   }
 
+  console.log('Vipps getAccessToken: requesting from', `${BASE_URL}/accesstoken/get`)
+  console.log('Vipps getAccessToken: isTest =', isTest, ', VIPPS_TEST_MODE =', process.env.VIPPS_TEST_MODE)
+  console.log('Vipps getAccessToken: client_id length =', process.env.VIPPS_CLIENT_ID?.length ?? 'MISSING')
+  console.log('Vipps getAccessToken: MSN =', process.env.VIPPS_MSN ?? 'MISSING')
+
   const res = await fetch(`${BASE_URL}/accesstoken/get`, {
     method: 'POST',
     headers: {
@@ -50,7 +55,8 @@ async function getAccessToken(): Promise<string> {
 
   if (!res.ok) {
     const err = await res.text()
-    throw new Error(`Vipps token error: ${err}`)
+    console.error('Vipps token error status:', res.status, 'body:', err)
+    throw new Error(`Vipps token error ${res.status}: ${err}`)
   }
 
   const data: VippsTokenResponse = await res.json()
@@ -113,7 +119,8 @@ export async function opprettAgreement(params: OpprettAgreementParams): Promise<
 }> {
   const accessToken = await getAccessToken()
 
-  const body = {
+  // Vipps Recurring v3 agreement body
+  const body: Record<string, unknown> = {
     pricing: {
       type: 'LEGACY',
       amount: params.monthlyAmountOre,
@@ -125,26 +132,35 @@ export async function opprettAgreement(params: OpprettAgreementParams): Promise<
     },
     merchantRedirectUrl: params.returnUrl,
     merchantAgreementUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/takstmann/abonnement`,
-    phoneNumber: params.customerPhone
-      ? `47${params.customerPhone.replace(/\s/g, '')}`
-      : undefined,
     productName: params.productName,
-    externalId: params.reference,
   }
+
+  // phoneNumber must be MSISDN format (e.g. "4712345678")
+  if (params.customerPhone) {
+    const cleaned = params.customerPhone.replace(/\s/g, '').replace(/^\+47/, '').replace(/^47/, '')
+    if (cleaned.length === 8) {
+      body.phoneNumber = `47${cleaned}`
+    }
+  }
+
+  console.log('Vipps opprettAgreement request URL:', `${BASE_URL}/recurring/v3/agreements`)
+  console.log('Vipps opprettAgreement request body:', JSON.stringify(body, null, 2))
 
   const res = await fetch(`${BASE_URL}/recurring/v3/agreements`, {
     method: 'POST',
-    headers: vippsHeaders(accessToken, `agreement-${params.reference}`),
+    headers: vippsHeaders(accessToken, `agreement-${params.reference}-${Date.now()}`),
     body: JSON.stringify(body),
   })
 
+  const responseText = await res.text()
+  console.log('Vipps opprettAgreement response status:', res.status)
+  console.log('Vipps opprettAgreement response body:', responseText)
+
   if (!res.ok) {
-    const err = await res.text()
-    console.error('Vipps create agreement error:', err)
-    throw new Error(`Kunne ikke opprette Vipps-abonnement: ${err}`)
+    throw new Error(`Vipps API ${res.status}: ${responseText}`)
   }
 
-  const data = await res.json()
+  const data = JSON.parse(responseText)
   return {
     agreementId: data.agreementId,
     vippsConfirmationUrl: data.vippsConfirmationUrl,
