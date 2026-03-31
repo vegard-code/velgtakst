@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { hentMinebestillinger } from "@/lib/actions/bestillinger";
 import type { BestillingMedInfo } from "@/lib/actions/bestillinger";
+import { hentSamtaler } from "@/lib/actions/meldinger";
 import { BESTILLING_STATUS_LABELS } from "@/lib/supabase/types";
 import type { BestillingStatus, OppdragType } from "@/lib/supabase/types";
 
@@ -119,9 +120,12 @@ function aktivtSteg(status: BestillingStatus): number {
 
 export default async function KundeDashboard() {
   const bestillinger = await hentMinebestillinger("kunde");
+  const samtaler = await hentSamtaler();
   const aktiveBestillinger = bestillinger.filter(
     (b) => b.status !== "kansellert" && b.status !== "avvist"
   );
+  const ulesteSamtaler = samtaler.filter((s) => s.uleste > 0).slice(0, 3);
+  const totalUleste = samtaler.reduce((s, c) => s + c.uleste, 0);
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -162,6 +166,50 @@ export default async function KundeDashboard() {
           ))}
         </div>
       </section>
+
+      {/* ---------------------------------------------------------- */}
+      {/*  Uleste meldinger                                           */}
+      {/* ---------------------------------------------------------- */}
+      {ulesteSamtaler.length > 0 && (
+        <section className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-[#1e293b]">
+              Uleste meldinger
+              <span className="ml-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#285982] text-white text-xs font-bold">
+                {totalUleste > 9 ? "9+" : totalUleste}
+              </span>
+            </h2>
+            <Link href="/portal/kunde/meldinger" className="text-sm text-[#285982] hover:underline">
+              Se alle
+            </Link>
+          </div>
+          <div className="space-y-2">
+            {ulesteSamtaler.map((s) => {
+              const navn = s.takstmann?.navn ?? "Ukjent";
+              return (
+                <Link
+                  key={s.id}
+                  href={`/portal/kunde/meldinger/${s.id}`}
+                  className="portal-card portal-card-hover p-4 flex items-center gap-3"
+                >
+                  <div className="w-10 h-10 rounded-full bg-[#285982]/10 flex items-center justify-center text-[#285982] font-semibold shrink-0">
+                    {navn.charAt(0)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-[#1e293b] truncate">{navn}</p>
+                    {s.siste_melding && (
+                      <p className="text-xs text-[#94a3b8] truncate">{s.siste_melding.innhold}</p>
+                    )}
+                  </div>
+                  <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center shrink-0">
+                    {s.uleste > 9 ? "9+" : s.uleste}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* ---------------------------------------------------------- */}
       {/*  Mine bestillinger                                          */}
