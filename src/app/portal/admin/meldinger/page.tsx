@@ -7,7 +7,7 @@ export default async function AdminMeldingerPage() {
   const { data: samtaler } = await supabase
     .from("samtaler")
     .select(`
-      id, created_at, bestilling_id,
+      id, created_at,
       takstmann:takstmann_profiler(id, navn),
       kunde:privatkunde_profiler(id, navn),
       megler:megler_profiler(id, navn)
@@ -15,7 +15,7 @@ export default async function AdminMeldingerPage() {
     .order("created_at", { ascending: false })
     .limit(50);
 
-  // Hent melding-tall per samtale
+  // Hent melding-tall per samtale (kun antall, ikke innhold)
   const samtalerMedStats = await Promise.all(
     (samtaler ?? []).map(async (s) => {
       const { count: totalMeldinger } = await supabase
@@ -29,9 +29,10 @@ export default async function AdminMeldingerPage() {
         .eq("samtale_id", s.id)
         .eq("lest", false);
 
+      // Hent tidspunkt for siste melding, men IKKE innhold
       const { data: sisteMelding } = await supabase
         .from("meldinger")
-        .select("innhold, created_at")
+        .select("created_at")
         .eq("samtale_id", s.id)
         .order("created_at", { ascending: false })
         .limit(1)
@@ -44,7 +45,7 @@ export default async function AdminMeldingerPage() {
         megler: s.megler as unknown as { id: string; navn: string } | null,
         totalMeldinger: totalMeldinger ?? 0,
         uleste: uleste ?? 0,
-        sisteMelding,
+        sisteAktivitet: sisteMelding?.created_at ?? null,
       };
     })
   );
@@ -59,7 +60,7 @@ export default async function AdminMeldingerPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-[#1e293b]">Meldinger</h1>
-          <p className="text-sm text-[#64748b]">Oversikt over alle samtaler på plattformen</p>
+          <p className="text-sm text-[#64748b]">Statistikk over samtaler på plattformen (innhold er ikke synlig av personvernhensyn)</p>
         </div>
         <Link href="/portal/admin" className="text-sm text-[#285982] hover:underline">Tilbake</Link>
       </div>
@@ -88,9 +89,9 @@ export default async function AdminMeldingerPage() {
               <tr className="border-b border-[#e2e8f0] bg-[#f8fafc]">
                 <th className="text-left text-xs font-semibold text-[#64748b] px-5 py-3">Takstmann</th>
                 <th className="text-left text-xs font-semibold text-[#64748b] px-5 py-3">Motpart</th>
-                <th className="text-left text-xs font-semibold text-[#64748b] px-5 py-3">Siste melding</th>
                 <th className="text-center text-xs font-semibold text-[#64748b] px-5 py-3">Meldinger</th>
                 <th className="text-center text-xs font-semibold text-[#64748b] px-5 py-3">Uleste</th>
+                <th className="text-left text-xs font-semibold text-[#64748b] px-5 py-3">Siste aktivitet</th>
                 <th className="text-left text-xs font-semibold text-[#64748b] px-5 py-3">Opprettet</th>
               </tr>
             </thead>
@@ -113,13 +114,6 @@ export default async function AdminMeldingerPage() {
                         {s.kunde ? "Privatkunde" : s.megler ? "Megler" : ""}
                       </p>
                     </td>
-                    <td className="px-5 py-3 max-w-[200px]">
-                      {s.sisteMelding ? (
-                        <p className="text-xs text-[#64748b] truncate">{s.sisteMelding.innhold}</p>
-                      ) : (
-                        <p className="text-xs text-[#94a3b8]">Ingen meldinger</p>
-                      )}
-                    </td>
                     <td className="px-5 py-3 text-center">
                       <span className="text-sm font-semibold text-[#1e293b]">{s.totalMeldinger}</span>
                     </td>
@@ -131,6 +125,13 @@ export default async function AdminMeldingerPage() {
                       ) : (
                         <span className="text-sm text-[#94a3b8]">0</span>
                       )}
+                    </td>
+                    <td className="px-5 py-3">
+                      <p className="text-xs text-[#94a3b8]">
+                        {s.sisteAktivitet
+                          ? new Date(s.sisteAktivitet).toLocaleDateString("nb-NO", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })
+                          : "–"}
+                      </p>
                     </td>
                     <td className="px-5 py-3">
                       <p className="text-xs text-[#94a3b8]">
