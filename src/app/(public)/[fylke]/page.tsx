@@ -61,7 +61,7 @@ function getFAQ(fylkeNavn: string) {
     },
     {
       sporsmal: `Trenger jeg tilstandsrapport ved boligsalg i ${fylkeNavn}?`,
-      svar: `Ja, fra 1. januar 2022 er det obligatorisk med tilstandsrapport ved salg av bolig i Norge, også i ${fylkeNavn}. Fra 1. juli 2026 gjelder den nye standarden NS 3600:2025, som stiller strengere krav til innholdet i rapporten. En sertifisert takstmann sikrer at rapporten oppfyller gjeldende krav.`,
+      svar: `Det er ikke lovpålagt, men i praksis er det nærmest nødvendig. Endringene i avhendingslova fra 1. januar 2022 fjernet selgers mulighet til å selge bolig «som den er» til forbrukere. Uten tilstandsrapport sitter selger med all risikoen for skjulte feil og mangler. Fra 1. juli 2026 gjelder den nye standarden NS 3600:2025, som stiller strengere krav til innholdet i rapporten. En sertifisert takstmann i ${fylkeNavn} sikrer at rapporten oppfyller gjeldende krav.`,
     },
     {
       sporsmal: `Hvordan finner jeg en god takstmann i ${fylkeNavn}?`,
@@ -69,7 +69,7 @@ function getFAQ(fylkeNavn: string) {
     },
     {
       sporsmal: `Hva er forskjellen mellom verditakst og tilstandsrapport?`,
-      svar: `En verditakst fastsetter markedsverdien på en eiendom og brukes ved refinansiering, arv eller skifte. En tilstandsrapport dokumenterer den tekniske tilstanden på boligen med tilstandsgrader (TG0–TG3) og er obligatorisk ved boligsalg. Mange takstmenn i ${fylkeNavn} tilbyr begge tjenestene.`,
+      svar: `En verditakst fastsetter markedsverdien på en eiendom og brukes ved refinansiering, arv eller skifte. En tilstandsrapport dokumenterer den tekniske tilstanden på boligen med tilstandsgrader (TG0–TG3) og er i praksis nødvendig ved boligsalg etter lovendringene i 2022. Mange takstmenn i ${fylkeNavn} tilbyr begge tjenestene.`,
     },
   ];
 }
