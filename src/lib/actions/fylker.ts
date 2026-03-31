@@ -91,7 +91,7 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
       .single()
 
     if (abonnement?.status === 'proveperiode') {
-      // Sjekk maks 3 fylker i prøveperioden
+      // Sjekk antall aktive fylker — første 3 er gratis
       const { count: aktiveFylker } = await supabase
         .from('fylke_synlighet')
         .select('*', { count: 'exact', head: true })
@@ -99,7 +99,10 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
         .eq('er_aktiv', true)
 
       if ((aktiveFylker ?? 0) >= 3) {
-        return { error: 'Du kan aktivere maks 3 fylker i prøveperioden. Oppgrader til betalt abonnement for ubegrenset.' }
+        // Fylke 4+ krever betalt abonnement
+        if (!abonnement.vipps_agreement_id) {
+          return { error: 'De 3 første fylkene er gratis. For flere fylker må du starte betalt abonnement via Vipps.' }
+        }
       }
 
       betaltTil = new Date(abonnement.proveperiode_slutt)

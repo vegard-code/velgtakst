@@ -73,8 +73,9 @@ export default async function FylkerSynlighetPage() {
             <div className="flex-1">
               <h3 className="text-green-800 font-semibold text-sm">Gratis prøveperiode — {dagerIgjen} dager igjen</h3>
               <p className="text-green-700 text-sm mt-1">
-                Du kan aktivere opptil 3 fylker gratis i prøveperioden ({aktiveFylker} av 3 brukt).
-                Etter prøveperioden faktureres du automatisk via Vipps for de aktive fylkene.
+                De 3 første fylkene er gratis i prøveperioden ({Math.min(aktiveFylker, 3)} av 3 gratis brukt).
+                {aktiveFylker > 3 && ` ${aktiveFylker - 3} ekstra fylker faktureres.`}
+                {" "}Etter prøveperioden faktureres alle aktive fylker via Vipps.
               </p>
               <p className="text-green-600 text-xs mt-2">
                 Prøveperioden utløper {new Date(abonnement!.proveperiode_slutt).toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric" })}
