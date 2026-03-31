@@ -6,10 +6,24 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import VippsLoginKnapp from "@/components/VippsLoginKnapp";
 
+const vippsFeilmeldinger: Record<string, string> = {
+  vipps_avbrutt: "Vipps-innlogging ble avbrutt. Prøv igjen.",
+  ugyldig_forespørsel: "Ugyldig forespørsel. Prøv å logge inn på nytt.",
+  ugyldig_state: "Sikkerhetssjekk feilet. Prøv å logge inn på nytt.",
+  token_feil: "Kunne ikke fullføre Vipps-innlogging. Prøv igjen.",
+  brukerinfo_feil: "Kunne ikke hente brukerinfo fra Vipps. Prøv igjen.",
+  mangler_epost: "Vipps-kontoen mangler e-postadresse. Kontakt support.",
+  opprett_bruker_feil: "Kunne ikke opprette brukerkonto. Prøv igjen eller kontakt support.",
+  session_feil: "Kunne ikke opprette innloggingsøkt. Prøv igjen.",
+  ukjent_feil: "En ukjent feil oppstod. Prøv igjen.",
+};
+
 export default function LoggInnForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") ?? "/portal";
+  const vippsError = searchParams.get("error");
+  const vippsDetalj = searchParams.get("detalj");
 
   const [epost, setEpost] = useState("");
   const [passord, setPassord] = useState("");
@@ -39,6 +53,16 @@ export default function LoggInnForm() {
 
   return (
     <div className="bg-card-bg border border-card-border rounded-2xl p-8">
+      {/* Vipps feilmelding fra callback */}
+      {vippsError && (
+        <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-lg mb-4">
+          <p>{vippsFeilmeldinger[vippsError] ?? `Vipps-feil: ${vippsError}`}</p>
+          {vippsDetalj && (
+            <p className="text-red-500/60 text-xs mt-1">Detalj: {vippsDetalj}</p>
+          )}
+        </div>
+      )}
+
       {/* Vipps-innlogging */}
       <VippsLoginKnapp redirect={redirect} />
 

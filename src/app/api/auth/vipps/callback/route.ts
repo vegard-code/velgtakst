@@ -30,6 +30,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (!code || !state || !authCookie) {
+    console.error('Missing code, state, or auth cookie', { code: !!code, state: !!state, authCookie: !!authCookie })
     return NextResponse.redirect(new URL('/logg-inn?error=ugyldig_forespørsel', request.url))
   }
 
@@ -48,6 +49,7 @@ export async function GET(request: NextRequest) {
 
   // CSRF-sjekk
   if (state !== savedState.state) {
+    console.error('State mismatch', { received: state, expected: savedState.state })
     return NextResponse.redirect(new URL('/logg-inn?error=ugyldig_state', request.url))
   }
 
@@ -99,6 +101,8 @@ export async function GET(request: NextRequest) {
     const telefon = vippsUser.phone_number as string | undefined
     const vippsSub = vippsUser.sub as string
 
+    console.log('Vipps user info:', { email, navn, vippsSub })
+
     if (!email) {
       return NextResponse.redirect(new URL('/logg-inn?error=mangler_epost', request.url))
     }
@@ -107,8 +111,11 @@ export async function GET(request: NextRequest) {
     const supabaseAdmin = await createServiceClient()
 
     // Sjekk om brukeren allerede finnes (via epost)
-    const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers()
-    const existingUser = existingUsers?.users?.find(
+    const { data: existingUserData } = await supabaseAdmin.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000,
+    })
+    const existingUser = existingUserData?.users?.find(
       (u) => u.email === email
     )
 
@@ -123,6 +130,7 @@ export async function GET(request: NextRequest) {
           vipps_sub: vippsSub,
         },
       })
+      console.log('Existing user found:', userId)
     } else {
       // Ny bruker – opprett med Vipps-info
       const rolle = savedState.rolle || 'privatkunde'
@@ -146,6 +154,7 @@ export async function GET(request: NextRequest) {
       }
 
       userId = newAuth.user.id
+      console.log('New user created:', userId)
 
       // Opprett profiler basert på rolle
       if (rolle === 'takstmann_admin' || rolle === 'takstmann') {
@@ -206,7 +215,6 @@ export async function GET(request: NextRequest) {
     }
 
     // --- 4. Generer en Supabase-session for brukeren ---
-    // Vi bruker generateLink for å lage en magic link, som vi setter som session
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'magiclink',
       email,
@@ -217,15 +225,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/logg-inn?error=session_feil', request.url))
     }
 
-    // Hent token_hash fra linken og bruk den til å verifisere OTP
-    const linkUrl = new URL(linkData.properties.action_link)
-    const tokenHash = linkUrl.searchParams.get('token_hash') ?? linkUrl.hash
+    const hashed_token = linkData.properties.hashed_token
+    console.log('Magic link generated, verifying OTP for session...')
 
-    // Sett opp en response med redirect
+    // Sett opp response med redirect
     const redirectUrl = savedState.redirect || '/portal'
-
-    // Bruk Supabase server client med cookies for å verifisere OTP
-    // Dette setter session-cookies automatisk
     const response = NextResponse.redirect(new URL(redirectUrl, request.url))
 
     const supabaseWithCookies = createServerClient(
@@ -238,7 +242,7 @@ export async function GET(request: NextRequest) {
           },
           setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
             cookiesToSet.forEach(({ name, value, options }) => {
-              response.cookies.set(name, value, options)
+              response.cookies.set(name, value, options as Record<string, unknown>)
             })
           },
         },
@@ -246,11 +250,26 @@ export async function GET(request: NextRequest) {
     )
 
     // Verifiser OTP for å opprette session
-    const hashed_token = linkData.properties.hashed_token
-    await supabaseWithCookies.auth.verifyOtp({
+    const { data: otpData, error: otpError } = await supabaseWithCookies.auth.verifyOtp({
       type: 'magiclink',
       token_hash: hashed_token,
     })
+
+    if (otpError) {
+      console.error('OTP verification failed:', otpError.message)
+      // Fallback: prøv med email-type
+      const { data: otpData2, error: otpError2 } = await supabaseWithCookies.auth.verifyOtp({
+        type: 'email',
+        token_hash: hashed_token,
+      })
+      if (otpError2) {
+        console.error('OTP fallback also failed:', otpError2.message)
+        return NextResponse.redirect(new URL(`/logg-inn?error=session_feil&detalj=${encodeURIComponent(otpError.message)}`, request.url))
+      }
+      console.log('OTP fallback succeeded, session created:', !!otpData2.session)
+    } else {
+      console.log('OTP verified, session created:', !!otpData.session)
+    }
 
     return response
   } catch (err) {
