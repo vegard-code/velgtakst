@@ -173,6 +173,7 @@ export interface MeglerVurdering {
   id: string
   takstmann_id: string
   megler_id: string | null
+  kunde_id: string | null
   oppdrag_id: string | null
   karakter: number | null
   kommentar: string | null

@@ -149,8 +149,7 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
             ) : (
               <VurderingSkjema
                 takstmannId={bestilling.takstmann.id}
-                meglerProfilId={meglerProfil.id}
-                oppdragId={bestilling.oppdrag_id ?? undefined}
+                bestillingId={bestilling.id}
               />
             )}
           </div>

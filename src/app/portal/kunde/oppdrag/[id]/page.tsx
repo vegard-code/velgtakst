@@ -4,6 +4,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { BESTILLING_STATUS_LABELS, OPPDRAG_STATUS_LABELS } from "@/lib/supabase/types";
 import type { BestillingStatus, OppdragStatus } from "@/lib/supabase/types";
+import VurderingSkjema from "@/components/portal/VurderingSkjema";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -42,6 +43,18 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
   if (!bestilling) notFound();
 
   const status = bestilling.status as BestillingStatus;
+
+  // Sjekk om kunden allerede har gitt vurdering
+  let harVurdert = false;
+  if (status === "fullfort" && bestilling.takstmann) {
+    const { data: eksisterende } = await supabase
+      .from("megler_vurderinger")
+      .select("id")
+      .eq("takstmann_id", bestilling.takstmann.id)
+      .eq("oppdrag_id", id)
+      .maybeSingle();
+    harVurdert = !!eksisterende;
+  }
 
   const aktivtSteg = (() => {
     if (status === "fullfort") return 3;
@@ -171,6 +184,28 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
                 ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Vurdering */}
+      {status === "fullfort" && bestilling.takstmann && !harVurdert && (
+        <div className="mb-6">
+          <VurderingSkjema
+            takstmannId={bestilling.takstmann.id}
+            bestillingId={id}
+            takstmannNavn={bestilling.takstmann.navn}
+          />
+        </div>
+      )}
+
+      {status === "fullfort" && harVurdert && (
+        <div className="portal-card p-5 mb-6 bg-green-50 border-green-200">
+          <p className="text-green-700 text-sm flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Du har gitt vurdering for dette oppdraget. Takk!
+          </p>
         </div>
       )}
 

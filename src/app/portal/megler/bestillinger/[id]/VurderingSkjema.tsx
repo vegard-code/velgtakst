@@ -5,11 +5,10 @@ import { sendVurdering } from "@/lib/actions/vurderinger";
 
 interface Props {
   takstmannId: string;
-  meglerProfilId: string;
-  oppdragId?: string;
+  bestillingId?: string;
 }
 
-export default function VurderingSkjema({ takstmannId, meglerProfilId, oppdragId }: Props) {
+export default function VurderingSkjema({ takstmannId, bestillingId }: Props) {
   const [karakter, setKarakter] = useState(0);
   const [hover, setHover] = useState(0);
   const [kommentar, setKommentar] = useState("");
@@ -20,7 +19,7 @@ export default function VurderingSkjema({ takstmannId, meglerProfilId, oppdragId
     e.preventDefault();
     if (karakter === 0) return;
     setLaster(true);
-    await sendVurdering({ takstmannId, meglerProfilId, oppdragId, karakter, kommentar });
+    await sendVurdering({ takstmannId, bestillingId, karakter, kommentar });
     setSendt(true);
     setLaster(false);
   }

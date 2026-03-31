@@ -4,6 +4,7 @@ import { useState } from "react";
 import { oppdaterInnstillinger } from "@/lib/actions/innstillinger";
 import { ALLE_TJENESTER } from "@/lib/supabase/types";
 import type { CompanySettings, TakstmannProfil } from "@/lib/supabase/types";
+import ProfilbildeOpplaster from "@/components/portal/ProfilbildeOpplaster";
 
 interface Props {
   profil: {
@@ -94,6 +95,16 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil }:
         {aktifFane === "profil" && (
           <>
             <h2 className="text-[#1e293b] font-semibold text-lg">Din profil</h2>
+
+            {/* Profilbilde */}
+            <div className="border-b border-[#e2e8f0] pb-5">
+              <label className="block text-sm font-medium text-[#374151] mb-3">Profilbilde</label>
+              <ProfilbildeOpplaster
+                nåværendeBildeUrl={takstmannProfil?.bilde_url ?? null}
+                takstmannNavn={takstmannProfil?.navn ?? profil?.navn ?? ""}
+              />
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-[#374151] mb-1.5">Fullt navn</label>
