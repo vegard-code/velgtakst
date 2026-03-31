@@ -84,7 +84,14 @@ const relevantePoster = [
   "finn-takstmann-i-ditt-fylke",
 ];
 
-async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannMedFylker[]> {
+interface TakstmannKort extends TakstmannMedFylker {
+  tjenester: string[]
+  snittKarakter: number | null
+  antallVurderinger: number
+  company?: { navn: string } | null
+}
+
+async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("fylke_synlighet")
@@ -92,7 +99,8 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannMedFylker[
       `
       takstmann_id,
       takstmann_profiler!inner (
-        id, navn, tittel, spesialitet, bio, telefon, epost, bilde_url, sertifiseringer, created_at, updated_at, user_id, company_id
+        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, tjenester, created_at, updated_at, user_id, company_id,
+        company:companies(navn)
       )
     `
     )
@@ -101,10 +109,38 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannMedFylker[
 
   if (error || !data) return [];
 
-  return (data as unknown as { takstmann_profiler: TakstmannMedFylker }[]).map((row) => ({
+  const takstmenn = (data as unknown as { takstmann_profiler: TakstmannKort }[]).map((row) => ({
     ...row.takstmann_profiler,
     fylke_synlighet: [],
+    snittKarakter: null as number | null,
+    antallVurderinger: 0,
   }));
+
+  // Hent vurderinger for alle takstmenn
+  if (takstmenn.length > 0) {
+    const ids = takstmenn.map((t) => t.id);
+    const { data: vurderinger } = await supabase
+      .from("megler_vurderinger")
+      .select("takstmann_id, karakter")
+      .in("takstmann_id", ids);
+
+    if (vurderinger) {
+      const vurderingMap = new Map<string, number[]>();
+      for (const v of vurderinger) {
+        if (!vurderingMap.has(v.takstmann_id)) vurderingMap.set(v.takstmann_id, []);
+        if (v.karakter) vurderingMap.get(v.takstmann_id)!.push(v.karakter);
+      }
+      for (const t of takstmenn) {
+        const karakterer = vurderingMap.get(t.id);
+        if (karakterer && karakterer.length > 0) {
+          t.snittKarakter = karakterer.reduce((a, b) => a + b, 0) / karakterer.length;
+          t.antallVurderinger = karakterer.length;
+        }
+      }
+    }
+  }
+
+  return takstmenn;
 }
 
 export default async function FylkePage({ params }: Props) {
@@ -206,55 +242,114 @@ export default async function FylkePage({ params }: Props) {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {takstmenn.map((t) => (
-              <Link
-                key={t.id}
-                href={`/takstmann/${t.id}`}
-                className="card-hover block bg-card-bg border border-card-border rounded-xl p-5"
-              >
-                <div className="flex gap-4 items-start">
-                  <div className="w-16 h-16 rounded-full overflow-hidden border border-accent/20 shrink-0 relative bg-accent/10">
-                    {t.bilde_url ? (
-                      <Image
-                        src={t.bilde_url}
-                        alt={t.navn}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-accent font-bold text-xl">
-                        {t.navn.charAt(0)}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {takstmenn.map((t) => {
+              const alleTjenester = [
+                t.spesialitet,
+                t.spesialitet_2,
+                ...(t.tjenester ?? []),
+              ].filter(Boolean) as string[];
+              const companyData = t.company as unknown as { navn: string } | null;
+
+              return (
+                <Link
+                  key={t.id}
+                  href={`/takstmann/${t.id}`}
+                  className="card-hover block bg-card-bg border border-card-border rounded-xl p-6"
+                >
+                  <div className="flex gap-5 items-start">
+                    {/* Profilbilde */}
+                    <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-accent/20 shrink-0 relative bg-accent/10">
+                      {t.bilde_url ? (
+                        <Image
+                          src={t.bilde_url}
+                          alt={t.navn}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-accent font-bold text-2xl">
+                          {t.navn.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <h3 className="text-white font-semibold text-lg">{t.navn}</h3>
+                          {companyData?.navn && (
+                            <p className="text-gray-500 text-sm">{companyData.navn}</p>
+                          )}
+                        </div>
+                        {/* Vurdering */}
+                        {t.snittKarakter !== null && (
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <svg className="w-4 h-4 text-yellow-400 fill-yellow-400" viewBox="0 0 24 24">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            <span className="text-white font-semibold text-sm">{t.snittKarakter.toFixed(1)}</span>
+                            <span className="text-gray-500 text-xs">({t.antallVurderinger})</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Spesialitet */}
+                      {t.spesialitet && (
+                        <p className="text-accent text-sm mt-1">{t.spesialitet}{t.spesialitet_2 ? ` · ${t.spesialitet_2}` : ""}</p>
+                      )}
+
+                      {/* Bio utdrag */}
+                      {t.bio && (
+                        <p className="text-gray-400 text-sm mt-2 line-clamp-2 leading-relaxed">{t.bio}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Tjenester + kontakt */}
+                  <div className="mt-4 pt-4 border-t border-card-border">
+                    {alleTjenester.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        {alleTjenester.slice(0, 5).map((tj) => (
+                          <span key={tj} className="text-xs px-2 py-1 rounded-md bg-accent/10 text-accent/80 border border-accent/15">
+                            {tj}
+                          </span>
+                        ))}
+                        {alleTjenester.length > 5 && (
+                          <span className="text-xs px-2 py-1 text-gray-500">+{alleTjenester.length - 5} til</span>
+                        )}
                       </div>
                     )}
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-xs text-gray-400">
+                        {t.telefon && (
+                          <span className="flex items-center gap-1">
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            {t.telefon}
+                          </span>
+                        )}
+                        {t.sertifiseringer?.length > 0 && (
+                          <span className="flex items-center gap-1">
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            {t.sertifiseringer[0]}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-accent text-sm font-medium">
+                        Se profil &rarr;
+                      </span>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="text-white font-semibold truncate">{t.navn}</h3>
-                    {t.tittel && (
-                      <p className="text-gray-500 text-xs mb-1">{t.tittel}</p>
-                    )}
-                    {t.spesialitet && (
-                      <p className="text-accent text-sm mb-2">{t.spesialitet}</p>
-                    )}
-                    {t.telefon && (
-                      <p className="text-gray-400 text-xs">{t.telefon}</p>
-                    )}
-                  </div>
-                </div>
-                <div className="mt-3 pt-3 border-t border-card-border flex items-center justify-between">
-                  {t.sertifiseringer?.length > 0 && (
-                    <p className="text-gray-500 text-xs">
-                      {t.sertifiseringer[0]}
-                      {t.sertifiseringer.length > 1 && ` +${t.sertifiseringer.length - 1}`}
-                    </p>
-                  )}
-                  <span className="text-accent text-xs font-medium ml-auto">
-                    Se profil &rarr;
-                  </span>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         )}
       </section>
