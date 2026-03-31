@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { oppdaterInnstillinger } from "@/lib/actions/innstillinger";
+import { ALLE_TJENESTER } from "@/lib/supabase/types";
 import type { CompanySettings, TakstmannProfil } from "@/lib/supabase/types";
 
 interface Props {
@@ -21,6 +22,26 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil }:
   const [laster, setLaster] = useState(false);
   const [aktifFane, setAktifFane] = useState<"profil" | "regnskap" | "purring">("profil");
 
+  // Spesialiteter (maks 2)
+  const [spes1, setSpes1] = useState(takstmannProfil?.spesialitet ?? "");
+  const [spes2, setSpes2] = useState(takstmannProfil?.spesialitet_2 ?? "");
+
+  // Tjenester (checkboxes)
+  const [valgteTjenester, setValgteTjenester] = useState<string[]>(
+    takstmannProfil?.tjenester ?? []
+  );
+
+  function toggleTjeneste(t: string) {
+    setValgteTjenester((prev) =>
+      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+    );
+  }
+
+  // Filtrer bort valgte spesialiteter fra tjenester-listen
+  const tilgjengeligeTjenester = ALLE_TJENESTER.filter(
+    (t) => t !== spes1 && t !== spes2
+  );
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setMelding(null);
@@ -28,6 +49,13 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil }:
 
     const formData = new FormData(e.currentTarget);
     formData.set("fane", aktifFane);
+
+    // Legg til tjenester som multiple values
+    formData.delete("tjenester");
+    valgteTjenester
+      .filter((t) => t !== spes1 && t !== spes2)
+      .forEach((t) => formData.append("tjenester", t));
+
     const result = await oppdaterInnstillinger(formData);
 
     setMelding(result.error
@@ -75,24 +103,95 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil }:
                 <label className="block text-sm font-medium text-[#374151] mb-1.5">Telefon</label>
                 <input name="telefon" defaultValue={takstmannProfil?.telefon ?? ""} className="portal-input" />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-[#374151] mb-1.5">Spesialitet</label>
-                <select name="spesialitet" defaultValue={takstmannProfil?.spesialitet ?? ""} className="portal-input">
-                  <option value="">Velg spesialitet</option>
-                  <option value="Boligtaksering">Boligtaksering</option>
-                  <option value="Tilstandsrapport">Tilstandsrapport</option>
-                  <option value="Verditakst">Verditakst</option>
-                  <option value="Næringstaksering">Næringstaksering</option>
-                  <option value="Skadetaksering">Skadetaksering</option>
-                  <option value="Reklamasjonsrapport">Reklamasjonsrapport</option>
-                  <option value="Arealoppmåling">Arealoppmåling</option>
-                </select>
-              </div>
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-[#374151] mb-1.5">Om deg (vises på profilen)</label>
-                <textarea name="bio" defaultValue={takstmannProfil?.bio ?? ""} rows={4} className="portal-input resize-none" placeholder="Beskriv din bakgrunn og erfaring..." />
+            </div>
+
+            {/* Spesialiteter (maks 2) */}
+            <div className="border-t border-[#e2e8f0] pt-5">
+              <h3 className="text-[#1e293b] font-medium mb-1">Spesialitet</h3>
+              <p className="text-[#64748b] text-sm mb-4">Velg opptil 2 fagområder du spesialiserer deg på.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#64748b] mb-1.5">Primær spesialitet</label>
+                  <select
+                    name="spesialitet"
+                    value={spes1}
+                    onChange={(e) => {
+                      setSpes1(e.target.value);
+                      // Fjern fra tjenester om den var valgt der
+                      setValgteTjenester((prev) => prev.filter((t) => t !== e.target.value));
+                    }}
+                    className="portal-input"
+                  >
+                    <option value="">Velg spesialitet</option>
+                    {ALLE_TJENESTER.filter((t) => t !== spes2).map((t) => (
+                      <option key={t} value={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#64748b] mb-1.5">Sekundær spesialitet</label>
+                  <select
+                    name="spesialitet_2"
+                    value={spes2}
+                    onChange={(e) => {
+                      setSpes2(e.target.value);
+                      setValgteTjenester((prev) => prev.filter((t) => t !== e.target.value));
+                    }}
+                    className="portal-input"
+                  >
+                    <option value="">Ingen</option>
+                    {ALLE_TJENESTER.filter((t) => t !== spes1).map((t) => (
+                      <option key={t} value={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
+
+            {/* Utfører også (checkboxes) */}
+            <div className="border-t border-[#e2e8f0] pt-5">
+              <h3 className="text-[#1e293b] font-medium mb-1">Utfører også</h3>
+              <p className="text-[#64748b] text-sm mb-4">Kryss av for andre oppdragstyper du tar.</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {tilgjengeligeTjenester.map((t) => (
+                  <label
+                    key={t}
+                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg border cursor-pointer transition-colors text-sm ${
+                      valgteTjenester.includes(t)
+                        ? "border-[#285982] bg-[#e8f0f8] text-[#285982] font-medium"
+                        : "border-[#e2e8f0] text-[#374151] hover:border-[#cbd5e1]"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={valgteTjenester.includes(t)}
+                      onChange={() => toggleTjeneste(t)}
+                      className="sr-only"
+                    />
+                    <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
+                      valgteTjenester.includes(t)
+                        ? "bg-[#285982] border-[#285982]"
+                        : "border-[#cbd5e1]"
+                    }`}>
+                      {valgteTjenester.includes(t) && (
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                    {t}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Bio */}
+            <div className="border-t border-[#e2e8f0] pt-5">
+              <label className="block text-sm font-medium text-[#374151] mb-1.5">Om deg (vises på profilen)</label>
+              <textarea name="bio" defaultValue={takstmannProfil?.bio ?? ""} rows={4} className="portal-input resize-none" placeholder="Beskriv din bakgrunn og erfaring..." />
+            </div>
+
+            {/* Bedriftsinformasjon */}
             <div className="border-t border-[#e2e8f0] pt-5">
               <h3 className="text-[#1e293b] font-medium mb-4">Bedriftsinformasjon</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -162,36 +261,15 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil }:
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-[#374151] mb-1.5">1. purring etter (dager)</label>
-                <input
-                  name="purring_dager_1"
-                  type="number"
-                  min="1"
-                  max="90"
-                  defaultValue={settings?.purring_dager_1 ?? 14}
-                  className="portal-input"
-                />
+                <input name="purring_dager_1" type="number" min="1" max="90" defaultValue={settings?.purring_dager_1 ?? 14} className="portal-input" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#374151] mb-1.5">2. purring etter (dager)</label>
-                <input
-                  name="purring_dager_2"
-                  type="number"
-                  min="1"
-                  max="90"
-                  defaultValue={settings?.purring_dager_2 ?? 28}
-                  className="portal-input"
-                />
+                <input name="purring_dager_2" type="number" min="1" max="90" defaultValue={settings?.purring_dager_2 ?? 28} className="portal-input" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#374151] mb-1.5">Inkasso etter (dager)</label>
-                <input
-                  name="inkasso_dager"
-                  type="number"
-                  min="1"
-                  max="180"
-                  defaultValue={settings?.inkasso_dager ?? 60}
-                  className="portal-input"
-                />
+                <input name="inkasso_dager" type="number" min="1" max="180" defaultValue={settings?.inkasso_dager ?? 60} className="portal-input" />
               </div>
             </div>
           </>

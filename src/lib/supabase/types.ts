@@ -60,6 +60,8 @@ export interface TakstmannProfil {
   navn: string
   tittel: string | null
   spesialitet: string | null
+  spesialitet_2: string | null
+  tjenester: string[]
   bio: string | null
   telefon: string | null
   epost: string | null
@@ -296,6 +298,32 @@ export interface BestillingMedDetaljer extends Bestilling {
   kunde?: PrivatkundeProfil | null
   oppdrag?: Oppdrag | null
 }
+
+// ============================================================
+// Tjenester og spesialiteter
+// ============================================================
+
+/** Alle tjenester en takstmann kan tilby */
+export const ALLE_TJENESTER = [
+  'Tilstandsrapport',
+  'Reklamasjonsrapport',
+  'Verditakst',
+  'Boligtaksering',
+  'Skadetaksering',
+  'Næringstakst',
+  'Arealoppmåling',
+  'Tomtetakst',
+  'Byggesak',
+  'Naturskade',
+  'Forhåndstakst',
+  'Skjønnstakst',
+  'Brevtakst',
+  'Energirådgivning',
+  'Landbrukstakst',
+  'Våtromsinspeksjon',
+] as const
+
+export type TjenesteNavn = (typeof ALLE_TJENESTER)[number]
 
 // ============================================================
 // Fylke-konstanter

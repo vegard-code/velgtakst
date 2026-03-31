@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { FYLKER, OPPDRAG_TYPE_LABELS } from "@/lib/supabase/types";
+import { FYLKER, OPPDRAG_TYPE_LABELS, ALLE_TJENESTER } from "@/lib/supabase/types";
 import type { OppdragType } from "@/lib/supabase/types";
 import KundeBestillKnapp from "./KundeBestillKnapp";
 
@@ -23,7 +23,7 @@ export default async function KundeFinnTakstmannPage({ searchParams }: Props) {
     .select(`
       fylke_id,
       takstmann:takstmann_profiler!inner(
-        id, navn, tittel, spesialitet, bio, telefon, bilde_url, sertifiseringer
+        id, navn, tittel, spesialitet, spesialitet_2, tjenester, bio, telefon, bilde_url, sertifiseringer
       )
     `)
     .eq("er_aktiv", true);
@@ -34,13 +34,21 @@ export default async function KundeFinnTakstmannPage({ searchParams }: Props) {
 
   let takstmenn = (resultater ?? []).map((r) => r.takstmann as unknown as {
     id: string; navn: string; tittel: string | null; spesialitet: string | null;
+    spesialitet_2: string | null; tjenester: string[];
     bio: string | null; telefon: string | null; bilde_url: string | null; sertifiseringer: string[];
   });
 
   const sett = new Set<string>();
   takstmenn = takstmenn.filter((t) => { if (sett.has(t.id)) return false; sett.add(t.id); return true; });
 
-  if (spesialitet) takstmenn = takstmenn.filter((t) => t.spesialitet?.toLowerCase().includes(spesialitet.toLowerCase()));
+  if (spesialitet) {
+    const s = spesialitet.toLowerCase();
+    takstmenn = takstmenn.filter((t) =>
+      t.spesialitet?.toLowerCase().includes(s) ||
+      t.spesialitet_2?.toLowerCase().includes(s) ||
+      t.tjenester?.some((tj) => tj.toLowerCase().includes(s))
+    );
+  }
   if (sok) takstmenn = takstmenn.filter((t) => t.navn.toLowerCase().includes(sok.toLowerCase()));
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -92,14 +100,10 @@ export default async function KundeFinnTakstmannPage({ searchParams }: Props) {
             {FYLKER.map((f) => <option key={f.id} value={f.id}>{f.navn}</option>)}
           </select>
           <select name="spesialitet" defaultValue={spesialitet ?? ""} className="portal-input sm:w-52">
-            <option value="">Alle spesialiteter</option>
-            <option value="Boligtaksering">Boligtaksering</option>
-            <option value="Tilstandsrapport">Tilstandsrapport</option>
-            <option value="Verditakst">Verditakst</option>
-            <option value="Skadetaksering">Skadetaksering</option>
-            <option value="Næringstaksering">Næringstaksering</option>
-            <option value="Reklamasjonsrapport">Reklamasjonsrapport</option>
-            <option value="Arealoppmåling">Arealoppmåling</option>
+            <option value="">Alle tjenester</option>
+            {ALLE_TJENESTER.map((t) => (
+              <option key={t} value={t}>{t}</option>
+            ))}
           </select>
           <button type="submit" className="portal-btn-primary shrink-0">Søk</button>
         </form>
@@ -129,16 +133,29 @@ export default async function KundeFinnTakstmannPage({ searchParams }: Props) {
                 </div>
                 <div className="min-w-0">
                   <p className="text-[#1e293b] font-semibold text-sm truncate">{t.navn}</p>
-                  {t.spesialitet && (
-                    <span className="inline-block text-xs bg-[#e8f0f8] text-[#285982] px-2 py-0.5 rounded-full mt-0.5">
-                      {t.spesialitet}
-                    </span>
-                  )}
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {t.spesialitet && (
+                      <span className="text-xs bg-[#e8f0f8] text-[#285982] px-2 py-0.5 rounded-full font-medium">
+                        {t.spesialitet}
+                      </span>
+                    )}
+                    {t.spesialitet_2 && (
+                      <span className="text-xs bg-[#e8f0f8] text-[#285982] px-2 py-0.5 rounded-full font-medium">
+                        {t.spesialitet_2}
+                      </span>
+                    )}
+                  </div>
                   {t.telefon && <p className="text-xs text-[#64748b] mt-1">{t.telefon}</p>}
                 </div>
               </div>
               {t.bio && (
-                <p className="text-xs text-[#64748b] mb-3 line-clamp-2">{t.bio}</p>
+                <p className="text-xs text-[#64748b] mb-2 line-clamp-2">{t.bio}</p>
+              )}
+              {t.tjenester && t.tjenester.length > 0 && (
+                <p className="text-xs text-[#94a3b8] mb-3">
+                  Utfører også: {t.tjenester.slice(0, 4).join(", ")}
+                  {t.tjenester.length > 4 && ` +${t.tjenester.length - 4}`}
+                </p>
               )}
               {kundeProfil && (
                 <KundeBestillKnapp
