@@ -82,7 +82,13 @@ export async function hentOppdragDetaljer(id: string) {
 // ============================================================
 // OPPRETT OPPDRAG
 // ============================================================
-export async function opprettOppdrag(formData: FormData) {
+
+export type OpprettOppdragState = { error: string } | null
+
+export async function opprettOppdrag(
+  _prevState: OpprettOppdragState,
+  formData: FormData
+): Promise<OpprettOppdragState> {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
