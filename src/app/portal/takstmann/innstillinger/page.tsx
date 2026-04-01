@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import InnstillingerForm from "./InnstillingerForm";
+import { Suspense } from "react";
 
 export default async function InnstillingerPage() {
   const supabase = await createClient();
@@ -26,14 +27,29 @@ export default async function InnstillingerPage() {
     .eq("user_id", user.id)
     .single();
 
+  // Sjekk om Google Calendar er koblet til
+  const googleKoblet = takstmannProfil
+    ? await (async () => {
+        const { data } = await supabase
+          .from("google_calendar_tokens")
+          .select("id")
+          .eq("takstmann_id", takstmannProfil.id)
+          .maybeSingle();
+        return !!data;
+      })()
+    : false;
+
   return (
     <div className="max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold text-[#1e293b] mb-6">Innstillinger</h1>
-      <InnstillingerForm
-        profil={profil}
-        settings={settings}
-        takstmannProfil={takstmannProfil}
-      />
+      <Suspense>
+        <InnstillingerForm
+          profil={profil}
+          settings={settings}
+          takstmannProfil={takstmannProfil}
+          googleKoblet={googleKoblet}
+        />
+      </Suspense>
     </div>
   );
 }

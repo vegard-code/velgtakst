@@ -138,6 +138,7 @@ export interface Oppdrag {
   befaringsdato: string | null
   pris: number | null
   faktura_id: string | null
+  google_event_id: string | null
   created_at: string
   updated_at: string
 }
@@ -223,6 +224,18 @@ export interface Abonnement {
   vipps_agreement_status: string | null
   maanedlig_belop: number
   neste_trekk_dato: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface GoogleCalendarToken {
+  id: string
+  takstmann_id: string
+  access_token: string
+  refresh_token: string | null
+  expires_at: string
+  scope: string | null
+  token_type: string | null
   created_at: string
   updated_at: string
 }

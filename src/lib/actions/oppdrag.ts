@@ -4,6 +4,12 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { OppdragStatus, OppdragType } from '@/lib/supabase/types'
+import {
+  opprettKalenderHendelse,
+  oppdaterKalenderHendelse,
+  slettKalenderHendelse,
+  hentTokenForTakstmann,
+} from '@/lib/integrasjoner/google-calendar'
 
 // ============================================================
 // HENT OPPDRAG
@@ -133,6 +139,33 @@ export async function opprettOppdrag(formData: FormData) {
     notat: 'Oppdrag opprettet',
   })
 
+  // Google Calendar sync – kun hvis takstmann har koblet til
+  if (takstmannProfil?.id) {
+    const harToken = await hentTokenForTakstmann(takstmannProfil.id)
+    if (harToken) {
+      // Hent kundenavn for hendelsen
+      const befaringsdato = (formData.get('befaringsdato') as string) || null
+      if (befaringsdato) {
+        const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
+          oppdragId: data.id,
+          tittel: formData.get('tittel') as string,
+          beskrivelse: (formData.get('beskrivelse') as string) || null,
+          adresse: (formData.get('adresse') as string) || null,
+          by: (formData.get('by') as string) || null,
+          befaringsdato,
+          oppdragType: formData.get('oppdrag_type') as string,
+        })
+
+        if (googleEventId) {
+          await supabase
+            .from('oppdrag')
+            .update({ google_event_id: googleEventId })
+            .eq('id', data.id)
+        }
+      }
+    }
+  }
+
   revalidatePath('/portal/takstmann/oppdrag')
   redirect(`/portal/takstmann/oppdrag/${data.id}`)
 }
@@ -181,6 +214,16 @@ export async function oppdaterOppdragStatus(
 export async function oppdaterOppdrag(id: string, formData: FormData) {
   const supabase = await createClient()
 
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Ikke autentisert' }
+
+  // Hent eksisterende oppdrag for å få google_event_id
+  const { data: eksisterende } = await supabase
+    .from('oppdrag')
+    .select('google_event_id, takstmann_id')
+    .eq('id', id)
+    .single()
+
   const { error } = await supabase
     .from('oppdrag')
     .update({
@@ -198,6 +241,50 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
 
   if (error) return { error: error.message }
 
+  // Google Calendar sync
+  if (eksisterende?.takstmann_id) {
+    // Hent takstmann_profil.id fra user
+    const { data: takstmannProfil } = await supabase
+      .from('takstmann_profiler')
+      .select('id')
+      .eq('id', eksisterende.takstmann_id)
+      .single()
+
+    if (takstmannProfil) {
+      const nyBefaringsdato = (formData.get('befaringsdato') as string) || null
+
+      if (eksisterende.google_event_id) {
+        // Oppdater eksisterende hendelse
+        await oppdaterKalenderHendelse(takstmannProfil.id, eksisterende.google_event_id, {
+          tittel: formData.get('tittel') as string,
+          adresse: (formData.get('adresse') as string) || null,
+          by: (formData.get('by') as string) || null,
+          befaringsdato: nyBefaringsdato ?? undefined,
+        })
+      } else if (nyBefaringsdato) {
+        // Opprett ny kalenderhendelse (ble ikke opprettet ved oppretting)
+        const harToken = await hentTokenForTakstmann(takstmannProfil.id)
+        if (harToken) {
+          const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
+            oppdragId: id,
+            tittel: formData.get('tittel') as string,
+            beskrivelse: (formData.get('beskrivelse') as string) || null,
+            adresse: (formData.get('adresse') as string) || null,
+            by: (formData.get('by') as string) || null,
+            befaringsdato: nyBefaringsdato,
+            oppdragType: formData.get('oppdrag_type') as string,
+          })
+          if (googleEventId) {
+            await supabase
+              .from('oppdrag')
+              .update({ google_event_id: googleEventId })
+              .eq('id', id)
+          }
+        }
+      }
+    }
+  }
+
   revalidatePath(`/portal/takstmann/oppdrag/${id}`)
   return { success: true }
 }
@@ -208,12 +295,24 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
 export async function slettOppdrag(id: string) {
   const supabase = await createClient()
 
+  // Hent google_event_id og takstmann_id før vi kansellerer
+  const { data: oppdrag } = await supabase
+    .from('oppdrag')
+    .select('google_event_id, takstmann_id')
+    .eq('id', id)
+    .single()
+
   const { error } = await supabase
     .from('oppdrag')
     .update({ status: 'kansellert' })
     .eq('id', id)
 
   if (error) return { error: error.message }
+
+  // Slett fra Google Calendar hvis den finnes
+  if (oppdrag?.google_event_id && oppdrag.takstmann_id) {
+    await slettKalenderHendelse(oppdrag.takstmann_id, oppdrag.google_event_id)
+  }
 
   revalidatePath('/portal/takstmann/oppdrag')
   return { success: true }
