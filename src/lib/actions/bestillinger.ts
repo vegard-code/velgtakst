@@ -236,9 +236,9 @@ export async function oppdaterBestillingStatus(
   // Send akseptert-varsel til bestiller
   if (nyStatus === 'akseptert' && bestilling) {
     try {
-      const takstmann = bestilling.takstmann as { navn: string; telefon: string | null; epost: string | null } | null
-      const bestiller = (bestilling.megler as { navn: string; epost: string | null } | null)
-        ?? (bestilling.kunde as { navn: string; epost: string | null } | null)
+      const takstmann = bestilling.takstmann as unknown as { navn: string; telefon: string | null; epost: string | null } | null
+      const bestiller = (bestilling.megler as unknown as { navn: string; epost: string | null } | null)
+        ?? (bestilling.kunde as unknown as { navn: string; epost: string | null } | null)
 
       if (bestiller?.epost && takstmann) {
         await sendForespørselAkseptertVarsel({
