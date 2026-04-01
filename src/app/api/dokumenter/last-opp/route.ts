@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { RAPPORT_TYPER } from '@/lib/supabase/types'
 import type { DokumentType } from '@/lib/supabase/types'
-import { sendRapportKlarVarsel } from '@/lib/integrasjoner/epost'
+import { sendNyRapportVarsel } from '@/lib/integrasjoner/epost'
 
 const TILLATTE_TYPER = [
   'application/pdf',
@@ -95,15 +95,15 @@ export async function POST(req: NextRequest) {
       ?? (oppdrag.privatkunde as { navn: string; epost: string | null } | null)
     if (mottaker?.epost) {
       try {
-        await sendRapportKlarVarsel({
+        await sendNyRapportVarsel({
           til: mottaker.epost,
-          mottakerNavn: mottaker.navn,
+          bestillerNavn: mottaker.navn,
           oppdragTittel: oppdrag.tittel,
-          dokumentNavn: fil.name,
-          dokumentType: dokumentType,
+          oppdragId: oppdragId,
+          rapportNavn: fil.name,
         })
       } catch (e) {
-        console.error('sendRapportKlarVarsel feil:', e)
+        console.error('sendNyRapportVarsel feil:', e)
       }
     }
   }
