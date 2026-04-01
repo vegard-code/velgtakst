@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `Takstmann i ${kommune.navn} | VelgTakst`,
       description,
-      url: `https://www.velgtakst.no/${fylkeId}/${kommuneId}`,
+      url: `https://www.takstmann.net/${fylkeId}/${kommuneId}`,
     },
     alternates: {
-      canonical: `https://www.velgtakst.no/${fylkeId}/${kommuneId}`,
+      canonical: `https://www.takstmann.net/${fylkeId}/${kommuneId}`,
     },
   };
 }
@@ -540,19 +540,19 @@ export default async function KommunePage({ params }: Props) {
                     "@type": "ListItem",
                     position: 1,
                     name: "VelgTakst",
-                    item: "https://www.velgtakst.no",
+                    item: "https://www.takstmann.net",
                   },
                   {
                     "@type": "ListItem",
                     position: 2,
                     name: `Takstmann i ${fylke.navn}`,
-                    item: `https://www.velgtakst.no/${fylkeId}`,
+                    item: `https://www.takstmann.net/${fylkeId}`,
                   },
                   {
                     "@type": "ListItem",
                     position: 3,
                     name: `Takstmann i ${kommune.navn}`,
-                    item: `https://www.velgtakst.no/${fylkeId}/${kommuneId}`,
+                    item: `https://www.takstmann.net/${fylkeId}/${kommuneId}`,
                   },
                 ],
               },

@@ -3,7 +3,7 @@ import { FYLKER } from "@/lib/supabase/types";
 import { KOMMUNER } from "@/data/kommuner";
 import data from "@/data/takstmenn.json";
 
-const BASE_URL = "https://www.velgtakst.no";
+const BASE_URL = "https://www.takstmann.net";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

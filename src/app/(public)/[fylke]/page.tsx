@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `Takstmann i ${fylke.navn} | VelgTakst`,
       description: `Finn sertifiserte takstmenn i ${fylke.navn}. Tilstandsrapport, verditakst, skadetakst og mer.`,
-      url: `https://www.velgtakst.no/${fylkeId}`,
+      url: `https://www.takstmann.net/${fylkeId}`,
     },
   };
 }
@@ -475,13 +475,13 @@ export default async function FylkePage({ params }: Props) {
                     "@type": "ListItem",
                     position: 1,
                     name: "VelgTakst",
-                    item: "https://www.velgtakst.no",
+                    item: "https://www.takstmann.net",
                   },
                   {
                     "@type": "ListItem",
                     position: 2,
                     name: `Takstmann i ${fylke.navn}`,
-                    item: `https://www.velgtakst.no/${fylkeId}`,
+                    item: `https://www.takstmann.net/${fylkeId}`,
                   },
                 ],
               },

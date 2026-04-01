@@ -166,7 +166,7 @@ export async function sendNyBestillingVarsel({
           <p>Hei ${takstmannNavn},</p>
           <p>Du har mottatt en ny bestilling fra <strong>${bestillerNavn}</strong> (${bestillerType === 'megler' ? 'Megler' : 'Privatkunde'}).</p>
           ${melding ? `<p><em>"${melding}"</em></p>` : ''}
-          <a href="${process.env.NEXT_PUBLIC_APP_URL ?? 'https://velgtakst.no'}/portal/takstmann/bestillinger"
+          <a href="${process.env.NEXT_PUBLIC_APP_URL ?? 'https://takstmann.net'}/portal/takstmann/bestillinger"
              style="display: inline-block; background: #285982; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 16px;">
             Se bestilling
           </a>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "Blogg om takst og bolig | VelgTakst",
     description:
       "Fagartikler om tilstandsrapport, verditakst, skadetakst og tips for boligkjøpere og -selgere.",
-    url: "https://www.velgtakst.no/blogg",
+    url: "https://www.takstmann.net/blogg",
   },
 };
 
@@ -95,13 +95,13 @@ export default function BloggPage() {
                 "@type": "ListItem",
                 position: 1,
                 name: "VelgTakst",
-                item: "https://www.velgtakst.no",
+                item: "https://www.takstmann.net",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Blogg",
-                item: "https://www.velgtakst.no/blogg",
+                item: "https://www.takstmann.net/blogg",
               },
             ],
           }),

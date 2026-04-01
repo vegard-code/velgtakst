@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   title: "VelgTakst - Velg en sertifisert takstmann",
   description:
     "Finn sertifiserte takstmenn i hele Norge. Søk etter takstmenn i ditt fylke for tilstandsrapporter, verditakster og skadetakster.",
-  metadataBase: new URL("https://www.velgtakst.no"),
+  metadataBase: new URL("https://www.takstmann.net"),
   openGraph: {
     title: "VelgTakst - Velg en sertifisert takstmann",
     description:
       "Finn sertifiserte takstmenn i hele Norge. Søk etter takstmenn i ditt fylke for tilstandsrapporter, verditakster og skadetakster.",
-    url: "https://www.velgtakst.no",
+    url: "https://www.takstmann.net",
     siteName: "VelgTakst",
     locale: "nb_NO",
     type: "website",

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/portal/", "/api/"],
     },
-    sitemap: "https://www.velgtakst.no/sitemap.xml",
+    sitemap: "https://www.takstmann.net/sitemap.xml",
   };
 }

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!match) return {};
 
   const { kommune, fylke } = match;
-  const canonicalUrl = `https://www.velgtakst.no/${fylke.id}/${kommune.id}`;
+  const canonicalUrl = `https://www.takstmann.net/${fylke.id}/${kommune.id}`;
 
   return {
     title: `Takstmann i ${kommune.navn} | VelgTakst`,

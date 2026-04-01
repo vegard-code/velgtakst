@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "VelgTakst | Finn sertifisert takstmann i ditt fylke",
     description:
       "Finn sertifiserte takstmenn i hele Norge. Velg fylke, sammenlign takstmenn og få hjelp til tilstandsrapport, verditakst, skadetakst og andre taksttjenester.",
-    url: "https://www.velgtakst.no",
+    url: "https://www.takstmann.net",
   },
 };
 
@@ -233,17 +233,17 @@ export default async function Home() {
             "@graph": [
               {
                 "@type": "Organization",
-                "@id": "https://www.velgtakst.no/#organization",
+                "@id": "https://www.takstmann.net/#organization",
                 name: "VelgTakst",
-                url: "https://www.velgtakst.no",
+                url: "https://www.takstmann.net",
                 description: "Norges portal for å finne sertifiserte takstmenn.",
               },
               {
                 "@type": "WebSite",
-                "@id": "https://www.velgtakst.no/#website",
-                url: "https://www.velgtakst.no",
+                "@id": "https://www.takstmann.net/#website",
+                url: "https://www.takstmann.net",
                 name: "VelgTakst",
-                publisher: { "@id": "https://www.velgtakst.no/#organization" },
+                publisher: { "@id": "https://www.takstmann.net/#organization" },
                 inLanguage: "nb-NO",
               },
             ],

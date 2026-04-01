@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Registrer deg som takstmann | VelgTakst",
     description:
       "Bli synlig for kunder i ditt fylke. Registrer deg på VelgTakst og motta henvendelser for tilstandsrapport, verditakst og skadetakst.",
-    url: "https://www.velgtakst.no/registrer/takstmann",
+    url: "https://www.takstmann.net/registrer/takstmann",
   },
 };
 
@@ -103,13 +103,13 @@ export default function RegistrerTakstmannPage() {
                 "@type": "ListItem",
                 position: 1,
                 name: "VelgTakst",
-                item: "https://www.velgtakst.no",
+                item: "https://www.takstmann.net",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Registrer takstmann",
-                item: "https://www.velgtakst.no/registrer/takstmann",
+                item: "https://www.takstmann.net/registrer/takstmann",
               },
             ],
           }),

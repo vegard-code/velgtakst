@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: post.tittel,
       description: post.ingress,
-      url: `https://www.velgtakst.no/blogg/${post.id}`,
+      url: `https://www.takstmann.net/blogg/${post.id}`,
       type: "article",
       publishedTime: post.dato,
       siteName: "VelgTakst",
@@ -213,40 +213,22 @@ export default async function BloggPost({ params }: Props) {
                     "@type": "ListItem",
                     position: 1,
                     name: "VelgTakst",
-                    item: "https://www.velgtakst.no",
+                    item: "https://www.takstmann.net",
                   },
                   {
                     "@type": "ListItem",
                     position: 2,
                     name: "Blogg",
-                    item: "https://www.velgtakst.no/blogg",
+                    item: "https://www.takstmann.net/blogg",
                   },
                   {
                     "@type": "ListItem",
                     position: 3,
                     name: post.tittel,
-                    item: `https://www.velgtakst.no/blogg/${post.id}`,
+                    item: `https://www.takstmann.net/blogg/${post.id}`,
                   },
                 ],
               },
               {
                 "@type": "Article",
-                headline: post.tittel,
-                description: post.ingress,
-                datePublished: post.dato,
-                url: `https://www.velgtakst.no/blogg/${post.id}`,
-                inLanguage: "nb-NO",
-                publisher: {
-                  "@type": "Organization",
-                  name: "VelgTakst",
-                  url: "https://www.velgtakst.no",
-                },
-                mainEntityOfPage: `https://www.velgtakst.no/blogg/${post.id}`,
-              },
-            ],
-          }),
-        }}
-      />
-    </>
-  );
-}
+                

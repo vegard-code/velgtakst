@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js'
 const RESEND_API_KEY = process.env.RESEND_API_KEY
 const FROM = process.env.EMAIL_FROM ?? 'noreply@velgtakst.no'
 const RESEND_URL = 'https://api.resend.com/emails'
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://velgtakst.no'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://takstmann.net'
 
 // Supabase admin client (bypasses RLS)
 function getAdminClient() {
