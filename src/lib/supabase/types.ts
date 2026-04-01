@@ -16,11 +16,20 @@ export type OppdragStatus =
 
 export type OppdragType =
   | 'tilstandsrapport'
-  | 'verditakst'
-  | 'næringstaksering'
-  | 'skadetaksering'
   | 'reklamasjonsrapport'
+  | 'verditakst'
+  | 'skadetaksering'
+  | 'næringstaksering'
   | 'arealoppmaaling'
+  | 'tomtetakst'
+  | 'byggesak'
+  | 'naturskade'
+  | 'forhåndstakst'
+  | 'skjønnstakst'
+  | 'brevtakst'
+  | 'energirådgivning'
+  | 'landbrukstakst'
+  | 'våtromsinspeksjon'
   | 'annet'
 
 export type BestillingStatus = 'ny' | 'akseptert' | 'avvist' | 'kansellert' | 'fullfort'
@@ -461,11 +470,20 @@ export const OPPDRAG_STATUS_LABELS: Record<OppdragStatus, string> = {
 
 export const OPPDRAG_TYPE_LABELS: Record<OppdragType, string> = {
   tilstandsrapport: 'Tilstandsrapport',
-  verditakst: 'Verditakst',
-  næringstaksering: 'Næringstaksering',
-  skadetaksering: 'Skadetaksering',
   reklamasjonsrapport: 'Reklamasjonsrapport',
+  verditakst: 'Verditakst',
+  skadetaksering: 'Skadetaksering',
+  næringstaksering: 'Næringstaksering',
   arealoppmaaling: 'Arealoppmåling',
+  tomtetakst: 'Tomtetakst',
+  byggesak: 'Byggesak',
+  naturskade: 'Naturskade',
+  forhåndstakst: 'Forhåndstakst',
+  skjønnstakst: 'Skjønnstakst',
+  brevtakst: 'Brevtakst',
+  energirådgivning: 'Energirådgivning',
+  landbrukstakst: 'Landbrukstakst',
+  våtromsinspeksjon: 'Våtromsinspeksjon',
   annet: 'Annet',
 }
 
