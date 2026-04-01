@@ -89,6 +89,125 @@ export async function opprettBestilling(
   return { success: true, id: data.id }
 }
 
+const TJENESTE_TIL_OPPDRAG_TYPE: Record<string, OppdragType> = {
+  'Tilstandsrapport': 'tilstandsrapport',
+  'Reklamasjonsrapport': 'reklamasjonsrapport',
+  'Verditakst': 'verditakst',
+  'Skadetaksering': 'skadetaksering',
+  'Næringstakst': 'næringstaksering',
+  'Arealoppmåling': 'arealoppmaaling',
+  'Tomtetakst': 'tomtetakst',
+  'Byggesak': 'byggesak',
+  'Naturskade': 'naturskade',
+  'Forhåndstakst': 'forhåndstakst',
+  'Skjønnstakst': 'skjønnstakst',
+  'Brevtakst': 'brevtakst',
+  'Energirådgivning': 'energirådgivning',
+  'Landbrukstakst': 'landbrukstakst',
+  'Våtromsinspeksjon': 'våtromsinspeksjon',
+}
+
+export async function opprettBestillingFraPublikk(input: {
+  takstmannId: string
+  tjeneste?: string
+  adresse?: string
+  melding?: string
+  // Authenticated user
+  kundeProfilId?: string
+  meglerProfilId?: string
+  // Guest info (unauthenticated)
+  guestNavn?: string
+  guestEpost?: string
+  guestTelefon?: string
+}) {
+  const supabase = await createClient()
+  const { takstmannId, tjeneste, adresse, kundeProfilId, meglerProfilId } = input
+
+  // Build melding – prepend guest contact info when not authenticated
+  let meldingTekst = input.melding ?? ''
+  let bestillerNavn = 'Ukjent'
+  let bestillerType: 'megler' | 'privatkunde' = 'privatkunde'
+  let bestillerTelefon: string | null = null
+  let bestillerEpost: string | null = null
+
+  if (!kundeProfilId && !meglerProfilId && input.guestNavn) {
+    const kontaktLinjer = [`Kontaktinfo: ${input.guestNavn}`]
+    if (input.guestTelefon) kontaktLinjer.push(`Tlf: ${input.guestTelefon}`)
+    if (input.guestEpost) kontaktLinjer.push(`E-post: ${input.guestEpost}`)
+    meldingTekst = kontaktLinjer.join('\n') + (meldingTekst ? '\n\n' + meldingTekst : '')
+    bestillerNavn = input.guestNavn
+    bestillerTelefon = input.guestTelefon ?? null
+    bestillerEpost = input.guestEpost ?? null
+  }
+
+  const oppdragType = tjeneste ? TJENESTE_TIL_OPPDRAG_TYPE[tjeneste] : undefined
+
+  const { data, error } = await supabase
+    .from('bestillinger')
+    .insert({
+      takstmann_id: takstmannId,
+      bestilt_av_megler_id: meglerProfilId ?? null,
+      bestilt_av_kunde_id: kundeProfilId ?? null,
+      melding: meldingTekst || null,
+      status: 'ny',
+      oppdrag_type: oppdragType ?? null,
+      adresse: adresse ?? null,
+    })
+    .select('id')
+    .single()
+
+  if (error || !data) return { error: error?.message ?? 'Bestilling feilet' }
+
+  // Send e-postvarsel til takstmann
+  try {
+    const { data: takstmann } = await supabase
+      .from('takstmann_profiler')
+      .select('navn, epost')
+      .eq('id', takstmannId)
+      .single()
+
+    if (takstmann?.epost) {
+      if (meglerProfilId) {
+        const { data: megler } = await supabase
+          .from('megler_profiler')
+          .select('navn, telefon, epost')
+          .eq('id', meglerProfilId)
+          .single()
+        bestillerNavn = (megler as { navn: string } | null)?.navn ?? 'Megler'
+        bestillerTelefon = (megler as { telefon: string | null } | null)?.telefon ?? null
+        bestillerEpost = (megler as { epost: string | null } | null)?.epost ?? null
+        bestillerType = 'megler'
+      } else if (kundeProfilId) {
+        const { data: kunde } = await supabase
+          .from('privatkunde_profiler')
+          .select('navn, telefon, epost')
+          .eq('id', kundeProfilId)
+          .single()
+        bestillerNavn = (kunde as { navn: string } | null)?.navn ?? bestillerNavn
+        bestillerTelefon = (kunde as { telefon: string | null } | null)?.telefon ?? null
+        bestillerEpost = (kunde as { epost: string | null } | null)?.epost ?? null
+      }
+
+      await sendNyForespørselTilTakstmann({
+        til: takstmann.epost,
+        takstmannNavn: (takstmann as { navn: string }).navn,
+        bestillerNavn,
+        bestillerType,
+        bestillerTelefon,
+        bestillerEpost,
+        oppdragType: oppdragType ?? null,
+        adresse: adresse ?? null,
+        bestillingId: data.id,
+        melding: input.melding || null,
+      })
+    }
+  } catch {
+    // E-post er nice-to-have, ikke kritisk
+  }
+
+  return { success: true, id: data.id }
+}
+
 export async function oppdaterBestillingStatus(
   bestillingId: string,
   nyStatus: BestillingStatus

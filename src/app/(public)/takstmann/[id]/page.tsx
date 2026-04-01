@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannProfil, MeglerVurdering, FylkeSynlighet } from "@/lib/supabase/types";
+import BestillTakstKnapp from "./BestillTakstKnapp";
 
 export const revalidate = 900;
 
@@ -63,6 +64,29 @@ export default async function TakstmannProfilPage({ params }: Props) {
     ? await supabase.from("companies").select("navn").eq("id", profil.company_id).single()
     : { data: null };
   const companyNavn = (companyRaw as { navn: string } | null)?.navn;
+
+  // Sjekk innlogget bruker og hent profilID for bestilling
+  const { data: { user } } = await supabase.auth.getUser();
+  let kundeProfilId: string | undefined;
+  let meglerProfilId: string | undefined;
+
+  if (user) {
+    const { data: kundeP } = await supabase
+      .from("privatkunde_profiler")
+      .select("id")
+      .eq("user_id", user.id)
+      .single();
+    if (kundeP) {
+      kundeProfilId = (kundeP as { id: string }).id;
+    } else {
+      const { data: meglerP } = await supabase
+        .from("megler_profiler")
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
+      if (meglerP) meglerProfilId = (meglerP as { id: string }).id;
+    }
+  }
 
   const snittKarakter =
     vurderinger && vurderinger.length > 0
@@ -220,21 +244,20 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
         {/* Høyre kolonne: Send forespørsel + fylker */}
         <div className="space-y-6">
-          {/* Send forespørsel */}
+          {/* Bestill takst */}
           <div className="bg-card-bg border border-card-border rounded-xl p-6">
             <h2 className="text-white font-semibold mb-2">Trenger du takst?</h2>
             <p className="text-gray-400 text-sm mb-4">
-              Send en forespørsel til {profil.navn.split(" ")[0]}, så avtaler dere pris og tidspunkt.
+              Send en bestilling til {profil.navn.split(" ")[0]}, så avtaler dere pris og tidspunkt.
             </p>
-            <Link
-              href={`/portal/kunde/finn-takstmann?bestill=${profil.id}`}
-              className="w-full flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white px-4 py-3 rounded-lg font-medium transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              Send forespørsel
-            </Link>
+            <BestillTakstKnapp
+              takstmannId={profil.id}
+              takstmannNavn={profil.navn}
+              tjenester={profil.tjenester ?? []}
+              kundeProfilId={kundeProfilId}
+              meglerProfilId={meglerProfilId}
+              isLoggedIn={!!user}
+            />
           </div>
 
           {/* Aktiv i fylker */}
