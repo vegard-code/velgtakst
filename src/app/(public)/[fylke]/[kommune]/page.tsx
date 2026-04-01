@@ -48,7 +48,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary",
       title,
       description,
-      url: `https://www.takstmann.net/${fylkeId}/${kommuneId}`,
     },
     alternates: {
       canonical: `https://www.takstmann.net/${fylkeId}/${kommuneId}`,

@@ -213,8 +213,10 @@ export async function oppdaterOppdragStatus(
 
   // Send e-postvarsel til bestiller
   try {
-    const bestiller = (gammelt?.megler as { navn: string; epost: string | null } | null)
-      ?? (gammelt?.privatkunde as { navn: string; epost: string | null } | null)
+    type KontaktInfo = { navn: string; epost: string | null }
+    const rawMegler = Array.isArray(gammelt?.megler) ? gammelt.megler[0] : gammelt?.megler
+    const rawPrivatkunde = Array.isArray(gammelt?.privatkunde) ? gammelt.privatkunde[0] : gammelt?.privatkunde
+    const bestiller = (rawMegler as KontaktInfo | null) ?? (rawPrivatkunde as KontaktInfo | null)
 
     if (bestiller?.epost && gammelt?.tittel) {
       if (nyStatus === 'rapport_levert') {

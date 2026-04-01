@@ -236,9 +236,13 @@ export async function oppdaterBestillingStatus(
   // Send akseptert-varsel til bestiller
   if (nyStatus === 'akseptert' && bestilling) {
     try {
-      const takstmann = bestilling.takstmann as { navn: string; telefon: string | null; epost: string | null } | null
-      const bestiller = (bestilling.megler as { navn: string; epost: string | null } | null)
-        ?? (bestilling.kunde as { navn: string; epost: string | null } | null)
+      type TakstmannInfo = { navn: string; telefon: string | null; epost: string | null }
+      type KontaktInfo = { navn: string; epost: string | null }
+      const rawTakstmann = Array.isArray(bestilling.takstmann) ? bestilling.takstmann[0] : bestilling.takstmann
+      const rawMegler = Array.isArray(bestilling.megler) ? bestilling.megler[0] : bestilling.megler
+      const rawKunde = Array.isArray(bestilling.kunde) ? bestilling.kunde[0] : bestilling.kunde
+      const takstmann = rawTakstmann as TakstmannInfo | null
+      const bestiller = (rawMegler as KontaktInfo | null) ?? (rawKunde as KontaktInfo | null)
 
       if (bestiller?.epost && takstmann) {
         await sendForespørselAkseptertVarsel({
