@@ -80,6 +80,15 @@ export interface FylkeSynlighet {
   created_at: string
 }
 
+export interface KommuneSynlighet {
+  id: string
+  takstmann_id: string
+  fylke_id: string
+  kommune_id: string
+  er_aktiv: boolean
+  created_at: string
+}
+
 export interface MeglerProfil {
   id: string
   user_id: string | null

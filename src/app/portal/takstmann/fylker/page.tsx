@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { FYLKER, getFylkePris } from "@/lib/supabase/types";
 import { hentEllerOpprettAbonnement } from "@/lib/actions/fylker";
+import { getKommunerForFylke } from "@/data/kommuner";
 import FylkeToggleKort from "./FylkeToggleKort";
 
 export default async function FylkerSynlighetPage() {
@@ -20,6 +21,20 @@ export default async function FylkerSynlighetPage() {
         .select("*")
         .eq("takstmann_id", takstmannProfil.id)
     : { data: [] };
+
+  // Hent kommune-synlighet
+  const { data: kommuneSynligheter } = takstmannProfil
+    ? await supabase
+        .from("kommune_synlighet")
+        .select("kommune_id, fylke_id, er_aktiv")
+        .eq("takstmann_id", takstmannProfil.id)
+    : { data: [] };
+
+  const kommuneStatuserPerFylke: Record<string, { kommune_id: string; er_aktiv: boolean }[]> = {};
+  for (const ks of kommuneSynligheter ?? []) {
+    if (!kommuneStatuserPerFylke[ks.fylke_id]) kommuneStatuserPerFylke[ks.fylke_id] = [];
+    kommuneStatuserPerFylke[ks.fylke_id].push({ kommune_id: ks.kommune_id, er_aktiv: ks.er_aktiv });
+  }
 
   // Hent eller opprett abonnement
   const abonnement = takstmannProfil?.company_id
@@ -137,6 +152,8 @@ export default async function FylkerSynlighetPage() {
               betaltTil={synlighet?.betalt_til ?? null}
               takstmannId={takstmannProfil?.id ?? null}
               erProveperiode={erProveperiode}
+              kommuner={getKommunerForFylke(fylke.id)}
+              kommuneStatuser={kommuneStatuserPerFylke[fylke.id] ?? []}
             />
           );
         })}

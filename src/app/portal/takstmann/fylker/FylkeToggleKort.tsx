@@ -4,6 +4,13 @@ import { useState } from "react";
 import { aktiverFylke, deaktiverFylke } from "@/lib/actions/fylker";
 import { getFylkePris } from "@/lib/supabase/types";
 import type { Fylke } from "@/lib/supabase/types";
+import type { Kommune } from "@/data/kommuner";
+import KommuneToggleListe from "./KommuneToggleListe";
+
+interface KommuneStatus {
+  kommune_id: string;
+  er_aktiv: boolean;
+}
 
 interface Props {
   fylke: Fylke;
@@ -11,14 +18,25 @@ interface Props {
   betaltTil: string | null;
   takstmannId: string | null;
   erProveperiode?: boolean;
-  antallAktive?: number;
   onToggle?: (fylkeId: string, nyStatus: boolean) => void;
+  kommuner: Kommune[];
+  kommuneStatuser: KommuneStatus[];
 }
 
-export default function FylkeToggleKort({ fylke, erAktiv, betaltTil, takstmannId, erProveperiode, antallAktive = 0, onToggle }: Props) {
+export default function FylkeToggleKort({
+  fylke,
+  erAktiv,
+  betaltTil,
+  takstmannId,
+  erProveperiode,
+  onToggle,
+  kommuner,
+  kommuneStatuser,
+}: Props) {
   const [aktiv, setAktiv] = useState(erAktiv);
   const [laster, setLaster] = useState(false);
   const [feil, setFeil] = useState<string | null>(null);
+  const [visKommuner, setVisKommuner] = useState(false);
 
   const pris = getFylkePris(fylke.id);
 
@@ -31,6 +49,7 @@ export default function FylkeToggleKort({ fylke, erAktiv, betaltTil, takstmannId
       const result = await deaktiverFylke(takstmannId, fylke.id);
       if (!result.error) {
         setAktiv(false);
+        setVisKommuner(false);
         onToggle?.(fylke.id, false);
       }
     } else {
@@ -55,7 +74,9 @@ export default function FylkeToggleKort({ fylke, erAktiv, betaltTil, takstmannId
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-[#1e293b] font-semibold text-sm">{fylke.navn}</h3>
+            <h3 className="text-[#1e293b] font-semibold text-sm">
+              {fylke.navn}
+            </h3>
             {fylke.er_stor && (
               <span className="text-[10px] bg-[#1e4468] text-white px-1.5 py-0.5 rounded font-semibold">
                 STOR
@@ -65,14 +86,17 @@ export default function FylkeToggleKort({ fylke, erAktiv, betaltTil, takstmannId
           {erProveperiode ? (
             <div className="flex items-center gap-1.5">
               <p className="text-green-600 font-bold text-sm">Gratis</p>
-              <p className="text-[#94a3b8] text-xs line-through">{pris} kr/mnd</p>
+              <p className="text-[#94a3b8] text-xs line-through">
+                {pris} kr/mnd
+              </p>
             </div>
           ) : (
             <p className="text-[#285982] font-bold text-sm">{pris} kr/mnd</p>
           )}
           {aktiv && betaltTil && (
             <p className="text-xs text-[#64748b] mt-1">
-              {erProveperiode ? "Gratis til" : "Aktiv til"} {new Date(betaltTil).toLocaleDateString("nb-NO")}
+              {erProveperiode ? "Gratis til" : "Aktiv til"}{" "}
+              {new Date(betaltTil).toLocaleDateString("nb-NO")}
             </p>
           )}
         </div>
@@ -102,11 +126,32 @@ export default function FylkeToggleKort({ fylke, erAktiv, betaltTil, takstmannId
 
       {aktiv && (
         <div className="mt-3 pt-3 border-t border-[#dbeafe]">
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-green-500" />
-            <span className="text-xs text-green-700 font-medium">Synlig i søkeresultater</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-green-500" />
+              <span className="text-xs text-green-700 font-medium">
+                Synlig i søkeresultater
+              </span>
+            </div>
+            {kommuner.length > 0 && (
+              <button
+                onClick={() => setVisKommuner(!visKommuner)}
+                className="text-xs text-[#285982] hover:underline font-medium"
+              >
+                {visKommuner ? "Skjul kommuner" : "Velg kommuner"}
+              </button>
+            )}
           </div>
         </div>
+      )}
+
+      {aktiv && visKommuner && kommuner.length > 0 && takstmannId && (
+        <KommuneToggleListe
+          kommuner={kommuner}
+          kommuneStatuser={kommuneStatuser}
+          takstmannId={takstmannId}
+          fylkeId={fylke.id}
+        />
       )}
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { opprettKommunerForFylke, deaktiverKommunerForFylke } from './kommuner'
 
 export async function hentFylkeSynlighet(takstmannId: string) {
   const supabase = await createClient()
@@ -142,6 +143,9 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
 
   if (error) return { error: error.message }
 
+  // Opprett kommune-synlighet for alle kommuner i fylket
+  await opprettKommunerForFylke(takstmannId, fylkeId)
+
   revalidatePath('/portal/takstmann/fylker')
   revalidatePath('/', 'layout')
   return { success: true }
@@ -157,6 +161,9 @@ export async function deaktiverFylke(takstmannId: string, fylkeId: string) {
     .eq('fylke_id', fylkeId)
 
   if (error) return { error: error.message }
+
+  // Deaktiver alle kommuner i fylket
+  await deaktiverKommunerForFylke(takstmannId, fylkeId)
 
   revalidatePath('/portal/takstmann/fylker')
   revalidatePath('/', 'layout')

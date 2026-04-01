@@ -52,9 +52,25 @@ interface TakstmannKort extends TakstmannMedFylker {
   company?: { navn: string } | null;
 }
 
-async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
+async function hentTakstmennIKommune(fylkeId: string, kommuneId: string): Promise<TakstmannKort[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
+
+  // Først: hent takstmenn som har denne kommunen aktiv
+  const { data: kommuneData } = await supabase
+    .from("kommune_synlighet")
+    .select("takstmann_id")
+    .eq("kommune_id", kommuneId)
+    .eq("fylke_id", fylkeId)
+    .eq("er_aktiv", true);
+
+  // Hvis det finnes kommune_synlighet-rader, filtrer på disse
+  // Ellers: fall tilbake til alle i fylket (bakoverkompatibilitet)
+  let takstmannIds: string[] | null = null;
+  if (kommuneData && kommuneData.length > 0) {
+    takstmannIds = kommuneData.map((k) => k.takstmann_id);
+  }
+
+  const query = supabase
     .from("fylke_synlighet")
     .select(
       `
@@ -67,6 +83,12 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
     )
     .eq("fylke_id", fylkeId)
     .eq("er_aktiv", true);
+
+  if (takstmannIds) {
+    query.in("takstmann_id", takstmannIds);
+  }
+
+  const { data, error } = await query;
 
   if (error || !data) return [];
 
@@ -141,7 +163,7 @@ export default async function KommunePage({ params }: Props) {
 
   if (!fylke || !kommune) notFound();
 
-  const takstmenn = await hentTakstmennIFylke(fylkeId);
+  const takstmenn = await hentTakstmennIKommune(fylkeId, kommuneId);
   const faq = getKommuneFAQ(kommune.navn, fylke.navn);
   const intro = getKommuneIntro(kommune.navn, fylke.navn);
   const andreKommuner = getKommunerForFylke(fylkeId).filter(
