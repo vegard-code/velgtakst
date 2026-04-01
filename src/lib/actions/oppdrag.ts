@@ -10,6 +10,10 @@ import {
   slettKalenderHendelse,
   hentTokenForTakstmann,
 } from '@/lib/integrasjoner/google-calendar'
+import {
+  sendStatusOppdateringVarsel,
+  sendNyRapportVarsel,
+} from '@/lib/integrasjoner/epost'
 
 // ============================================================
 // HENT OPPDRAG
@@ -184,7 +188,11 @@ export async function oppdaterOppdragStatus(
 
   const { data: gammelt } = await supabase
     .from('oppdrag')
-    .select('status')
+    .select(`
+      status, tittel,
+      megler:megler_profiler(navn, epost),
+      privatkunde:privatkunde_profiler(navn, epost)
+    `)
     .eq('id', oppdragId)
     .single()
 
@@ -202,6 +210,44 @@ export async function oppdaterOppdragStatus(
     endret_av: user.id,
     notat: notat || null,
   })
+
+  // Send e-postvarsel til bestiller
+  try {
+    const bestiller = (gammelt?.megler as { navn: string; epost: string | null } | null)
+      ?? (gammelt?.privatkunde as { navn: string; epost: string | null } | null)
+
+    if (bestiller?.epost && gammelt?.tittel) {
+      if (nyStatus === 'rapport_levert') {
+        // Hent navn på rapporten hvis den finnes
+        const { data: rapport } = await supabase
+          .from('dokumenter')
+          .select('navn')
+          .eq('oppdrag_id', oppdragId)
+          .eq('er_rapport', true)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single()
+
+        await sendNyRapportVarsel({
+          til: bestiller.epost,
+          bestillerNavn: bestiller.navn,
+          oppdragTittel: gammelt.tittel,
+          oppdragId,
+          rapportNavn: rapport?.navn ?? null,
+        })
+      } else {
+        await sendStatusOppdateringVarsel({
+          til: bestiller.epost,
+          bestillerNavn: bestiller.navn,
+          nyStatus,
+          oppdragTittel: gammelt.tittel,
+          oppdragId,
+        })
+      }
+    }
+  } catch (epostFeil) {
+    console.error('[Oppdrag] Statusvarsel feilet:', epostFeil)
+  }
 
   revalidatePath(`/portal/takstmann/oppdrag/${oppdragId}`)
   revalidatePath('/portal/takstmann/oppdrag')
