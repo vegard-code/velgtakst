@@ -87,9 +87,15 @@ export async function toggleKommune(takstmannId: string, fylkeId: string, kommun
 
   const { error } = await supabase
     .from('kommune_synlighet')
-    .update({ er_aktiv: erAktiv })
-    .eq('takstmann_id', takstmannId)
-    .eq('kommune_id', kommuneId)
+    .upsert(
+      {
+        takstmann_id: takstmannId,
+        fylke_id: fylkeId,
+        kommune_id: kommuneId,
+        er_aktiv: erAktiv,
+      },
+      { onConflict: 'takstmann_id,kommune_id' }
+    )
 
   if (error) return { error: error.message }
 

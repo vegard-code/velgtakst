@@ -22,11 +22,14 @@ export default function KommuneToggleListe({
   takstmannId,
   fylkeId,
 }: Props) {
-  const statusMap = new Map(
-    kommuneStatuser.map((k) => [k.kommune_id, k.er_aktiv])
-  );
+  // Initialiser alle kommuner — de som har en rad bruker den, resten er aktiv som standard
+  const initialMap = new Map<string, boolean>();
+  const dbMap = new Map(kommuneStatuser.map((k) => [k.kommune_id, k.er_aktiv]));
+  for (const k of kommuner) {
+    initialMap.set(k.id, dbMap.get(k.id) ?? true);
+  }
 
-  const [statuser, setStatuser] = useState<Map<string, boolean>>(statusMap);
+  const [statuser, setStatuser] = useState<Map<string, boolean>>(initialMap);
   const [lastende, setLastende] = useState<Set<string>>(new Set());
 
   const aktiveAntall = Array.from(statuser.values()).filter(Boolean).length;
