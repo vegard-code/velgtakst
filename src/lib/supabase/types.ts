@@ -34,6 +34,7 @@ export type OppdragType =
 
 export type BestillingStatus = 'ny' | 'akseptert' | 'avvist' | 'kansellert' | 'fullfort'
 export type PurreType = 'purring_1' | 'purring_2' | 'inkasso'
+export type DokumentType = 'tilstandsrapport' | 'verditakst' | 'skadetakst' | 'foto' | 'annet'
 export type RegnskapSystem = 'fiken' | 'tripletex' | 'ingen'
 export type AbonnementStatus = 'proveperiode' | 'aktiv' | 'kansellert' | 'utlopt'
 
@@ -175,8 +176,20 @@ export interface Dokument {
   storage_path: string
   lastet_opp_av: string | null
   er_rapport: boolean
+  dokument_type: DokumentType
+  storrelse: number | null
   created_at: string
 }
+
+export const DOKUMENT_TYPE_LABELS: Record<DokumentType, string> = {
+  tilstandsrapport: 'Tilstandsrapport',
+  verditakst: 'Verditakst',
+  skadetakst: 'Skadetakst',
+  foto: 'Foto',
+  annet: 'Annet',
+}
+
+export const RAPPORT_TYPER: DokumentType[] = ['tilstandsrapport', 'verditakst', 'skadetakst']
 
 export interface PurreLogg {
   id: string

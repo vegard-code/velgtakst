@@ -3,7 +3,7 @@
 // ============================================================
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
-const FROM = process.env.EMAIL_FROM ?? 'noreply@velgtakst.no'
+const FROM = process.env.EMAIL_FROM ?? 'noreply@takstmann.net'
 const RESEND_URL = 'https://api.resend.com/emails'
 
 interface SendEpostInput {
@@ -170,6 +170,62 @@ export async function sendNyBestillingVarsel({
              style="display: inline-block; background: #285982; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 16px;">
             Se bestilling
           </a>
+        </div>
+      </div>
+    `,
+  })
+}
+
+export async function sendRapportKlarVarsel({
+  til,
+  mottakerNavn,
+  oppdragTittel,
+  dokumentNavn,
+  dokumentType,
+}: {
+  til: string
+  mottakerNavn: string
+  oppdragTittel: string
+  dokumentNavn: string
+  dokumentType: string
+}) {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://takstmann.net'
+
+  await sendEpost({
+    til,
+    emne: `Rapport klar: ${oppdragTittel}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #285982; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+          <h1 style="margin: 0; font-size: 20px;">Takstmann.net – Rapport klar</h1>
+        </div>
+        <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 8px 8px; border: 1px solid #e2e8f0;">
+          <p>Hei ${mottakerNavn},</p>
+          <p>Din rapport er nå klar og kan lastes ned fra portalen.</p>
+
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd; background: white;">Oppdrag</td>
+              <td style="padding: 8px; border: 1px solid #ddd; background: white;"><strong>${oppdragTittel}</strong></td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd; background: white;">Dokumenttype</td>
+              <td style="padding: 8px; border: 1px solid #ddd; background: white;">${dokumentType}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd; background: white;">Filnavn</td>
+              <td style="padding: 8px; border: 1px solid #ddd; background: white;">${dokumentNavn}</td>
+            </tr>
+          </table>
+
+          <a href="${appUrl}/portal"
+             style="display: inline-block; background: #285982; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 16px;">
+            Gå til portalen
+          </a>
+
+          <p style="margin-top: 30px; font-size: 12px; color: #666;">
+            Spørsmål? Kontakt oss på post@takstmann.net
+          </p>
         </div>
       </div>
     `,

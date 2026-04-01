@@ -3,8 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { BESTILLING_STATUS_LABELS, OPPDRAG_STATUS_LABELS } from "@/lib/supabase/types";
-import type { BestillingStatus, OppdragStatus } from "@/lib/supabase/types";
+import type { BestillingStatus, DokumentType, OppdragStatus } from "@/lib/supabase/types";
 import VurderingSkjema from "@/components/portal/VurderingSkjema";
+import DokumentListe from "@/components/portal/DokumentListe";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -37,7 +38,7 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
     oppdrag_id: string | null;
     created_at: string;
     takstmann: { id: string; navn: string; spesialitet: string | null; telefon: string | null; epost: string | null; bilde_url: string | null } | null;
-    oppdrag: { id: string; tittel: string; status: string; adresse: string | null; by: string | null; dokumenter: { id: string; navn: string; er_rapport: boolean }[] } | null;
+    oppdrag: { id: string; tittel: string; status: string; adresse: string | null; by: string | null; dokumenter: { id: string; navn: string; er_rapport: boolean; dokument_type: DokumentType; storrelse: number | null; storage_path: string; created_at: string }[] } | null;
   } | null;
 
   if (!bestilling) notFound();
@@ -154,7 +155,7 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
         )}
       </div>
 
-      {/* Oppdrag og rapporter */}
+      {/* Oppdrag og dokumenter */}
       {bestilling.oppdrag && (
         <div className="portal-card p-6 mb-6">
           <h2 className="text-[#1e293b] font-semibold mb-4">Oppdragsstatus</h2>
@@ -165,23 +166,10 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
             </span>
           </div>
 
-          {/* Rapporter */}
-          {bestilling.oppdrag.dokumenter && bestilling.oppdrag.dokumenter.filter((d: { er_rapport: boolean }) => d.er_rapport).length > 0 && (
+          {bestilling.oppdrag.dokumenter && bestilling.oppdrag.dokumenter.length > 0 && (
             <div className="mt-4 pt-4 border-t border-[#f1f5f9]">
-              <p className="text-sm font-semibold text-[#1e293b] mb-2">Rapporter</p>
-              {bestilling.oppdrag.dokumenter
-                .filter((d: { er_rapport: boolean }) => d.er_rapport)
-                .map((dok: { id: string; navn: string }) => (
-                  <div key={dok.id} className="flex items-center gap-3 p-3 bg-[#f8fafc] rounded-lg border border-[#e2e8f0]">
-                    <svg className="w-4 h-4 text-[#285982]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span className="text-sm text-[#1e293b]">{dok.navn}</span>
-                    <button className="ml-auto text-xs text-[#285982] hover:underline">
-                      Last ned
-                    </button>
-                  </div>
-                ))}
+              <p className="text-sm font-semibold text-[#1e293b] mb-3">Dokumenter</p>
+              <DokumentListe dokumenter={bestilling.oppdrag.dokumenter} />
             </div>
           )}
         </div>

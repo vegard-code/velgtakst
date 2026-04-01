@@ -3,8 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { BESTILLING_STATUS_LABELS, OPPDRAG_STATUS_LABELS } from "@/lib/supabase/types";
-import type { BestillingStatus, OppdragStatus } from "@/lib/supabase/types";
+import type { BestillingStatus, DokumentType, OppdragStatus } from "@/lib/supabase/types";
 import VurderingSkjema from "./VurderingSkjema";
+import DokumentListe from "@/components/portal/DokumentListe";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -19,7 +20,7 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
     .select(`
       *,
       takstmann:takstmann_profiler(id, navn, spesialitet, telefon, epost, bilde_url, sertifiseringer),
-      oppdrag(*)
+      oppdrag(*, dokumenter(*))
     `)
     .eq("id", id)
     .single();
@@ -30,7 +31,7 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
     oppdrag_id: string | null;
     created_at: string;
     takstmann: { id: string; navn: string; spesialitet: string | null; telefon: string | null; epost: string | null; bilde_url: string | null; sertifiseringer: string[] | null } | null;
-    oppdrag: { id: string; tittel: string; status: string; adresse: string | null; by: string | null } | null;
+    oppdrag: { id: string; tittel: string; status: string; adresse: string | null; by: string | null; dokumenter: { id: string; navn: string; er_rapport: boolean; dokument_type: DokumentType; storrelse: number | null; storage_path: string; created_at: string }[] } | null;
   } | null;
 
   if (!bestilling) notFound();
@@ -116,6 +117,14 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
                 {OPPDRAG_STATUS_LABELS[bestilling.oppdrag.status as OppdragStatus] ?? bestilling.oppdrag.status}
               </span>
             </div>
+          </div>
+        )}
+
+        {/* Dokumenter */}
+        {bestilling.oppdrag?.dokumenter && bestilling.oppdrag.dokumenter.length > 0 && (
+          <div className="portal-card p-6">
+            <h2 className="text-[#1e293b] font-semibold mb-4">Dokumenter</h2>
+            <DokumentListe dokumenter={bestilling.oppdrag.dokumenter} />
           </div>
         )}
 
