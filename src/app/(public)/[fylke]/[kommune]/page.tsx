@@ -55,19 +55,26 @@ interface TakstmannKort extends TakstmannMedFylker {
 async function hentTakstmennIKommune(fylkeId: string, kommuneId: string): Promise<TakstmannKort[]> {
   const supabase = await createClient();
 
-  // Først: hent takstmenn som har denne kommunen aktiv
-  const { data: kommuneData } = await supabase
+  // Sjekk om noen takstmenn i dette fylket bruker kommune-synlighet i det hele tatt
+  const { count: harKommuneData } = await supabase
     .from("kommune_synlighet")
-    .select("takstmann_id")
-    .eq("kommune_id", kommuneId)
-    .eq("fylke_id", fylkeId)
-    .eq("er_aktiv", true);
+    .select("id", { count: "exact", head: true })
+    .eq("fylke_id", fylkeId);
 
-  // Hvis det finnes kommune_synlighet-rader, filtrer på disse
-  // Ellers: fall tilbake til alle i fylket (bakoverkompatibilitet)
   let takstmannIds: string[] | null = null;
-  if (kommuneData && kommuneData.length > 0) {
-    takstmannIds = kommuneData.map((k) => k.takstmann_id);
+
+  if (harKommuneData && harKommuneData > 0) {
+    // Kommune-synlighet er i bruk — filtrer på de som har denne kommunen aktiv
+    const { data: kommuneData } = await supabase
+      .from("kommune_synlighet")
+      .select("takstmann_id")
+      .eq("kommune_id", kommuneId)
+      .eq("fylke_id", fylkeId)
+      .eq("er_aktiv", true);
+
+    takstmannIds = (kommuneData ?? []).map((k) => k.takstmann_id);
+    // Hvis ingen har denne kommunen aktiv, returner tom liste
+    if (takstmannIds.length === 0) return [];
   }
 
   const query = supabase
