@@ -6,37 +6,87 @@ interface Props {
   searchParams: Promise<{ sok?: string; rolle?: string }>;
 }
 
+type BrukerRad = {
+  id: string;
+  navn: string;
+  epost: string | null;
+  telefon: string | null;
+  rolle: string;
+  created_at: string;
+};
+
 export default async function AdminBrukerePage({ searchParams }: Props) {
   const params = await searchParams;
   const supabase = await createServiceClient();
 
-  let query = supabase
-    .from("user_profiles")
-    .select("id, navn, rolle, telefon, created_at")
-    .order("created_at", { ascending: false });
-
-  if (params.rolle && params.rolle !== "alle") {
-    query = query.eq("rolle", params.rolle);
-  }
-
-  if (params.sok) {
-    query = query.ilike("navn", `%${params.sok}%`);
-  }
-
-  const { data: brukere } = await query;
-
-  // Hent e-poster fra auth.users
+  // Hent e-poster fra auth.users (brukes for admin-brukere uten epost i profiltabell)
   const { data: authUsers } = await supabase.auth.admin.listUsers();
   const epostMap = new Map<string, string>();
   authUsers?.users?.forEach((u) => {
     if (u.email) epostMap.set(u.id, u.email);
   });
 
-  // Totaler per rolle
-  const { count: totalBrukere } = await supabase.from("user_profiles").select("*", { count: "exact", head: true });
-  const { count: totalTakstmenn } = await supabase.from("user_profiles").select("*", { count: "exact", head: true }).in("rolle", ["takstmann", "takstmann_admin"]);
-  const { count: totalMeglere } = await supabase.from("user_profiles").select("*", { count: "exact", head: true }).eq("rolle", "megler");
-  const { count: totalKunder } = await supabase.from("user_profiles").select("*", { count: "exact", head: true }).eq("rolle", "privatkunde");
+  // Totaler fra riktige profiltabeller
+  const [
+    { count: totalTakstmenn },
+    { count: totalMeglere },
+    { count: totalKunder },
+  ] = await Promise.all([
+    supabase.from("takstmann_profiler").select("*", { count: "exact", head: true }),
+    supabase.from("megler_profiler").select("*", { count: "exact", head: true }),
+    supabase.from("privatkunde_profiler").select("*", { count: "exact", head: true }),
+  ]);
+  const totalBrukere = (totalTakstmenn ?? 0) + (totalMeglere ?? 0) + (totalKunder ?? 0);
+
+  // Hent brukere fra riktige tabeller basert på rollefilter
+  let brukere: BrukerRad[] = [];
+
+  const sokFilter = params.sok ? `%${params.sok}%` : null;
+
+  if (!params.rolle || params.rolle === "alle") {
+    const [
+      { data: takstmenn },
+      { data: meglere },
+      { data: kunder },
+      { data: adminBrukere },
+    ] = await Promise.all([
+      sokFilter
+        ? supabase.from("takstmann_profiler").select("user_id, navn, epost, telefon, created_at").ilike("navn", sokFilter).order("created_at", { ascending: false })
+        : supabase.from("takstmann_profiler").select("user_id, navn, epost, telefon, created_at").order("created_at", { ascending: false }),
+      sokFilter
+        ? supabase.from("megler_profiler").select("user_id, navn, epost, telefon, created_at").ilike("navn", sokFilter).order("created_at", { ascending: false })
+        : supabase.from("megler_profiler").select("user_id, navn, epost, telefon, created_at").order("created_at", { ascending: false }),
+      sokFilter
+        ? supabase.from("privatkunde_profiler").select("user_id, navn, epost, telefon, created_at").ilike("navn", sokFilter).order("created_at", { ascending: false })
+        : supabase.from("privatkunde_profiler").select("user_id, navn, epost, telefon, created_at").order("created_at", { ascending: false }),
+      sokFilter
+        ? supabase.from("user_profiles").select("id, navn, rolle, telefon, created_at").eq("rolle", "admin").ilike("navn", sokFilter).order("created_at", { ascending: false })
+        : supabase.from("user_profiles").select("id, navn, rolle, telefon, created_at").eq("rolle", "admin").order("created_at", { ascending: false }),
+    ]);
+
+    const seenIds = new Set<string>();
+    brukere = [
+      ...(takstmenn ?? []).filter(t => t.user_id).map(t => { seenIds.add(t.user_id!); return { id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "takstmann", created_at: t.created_at }; }),
+      ...(meglere ?? []).filter(t => t.user_id).map(t => { seenIds.add(t.user_id!); return { id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "megler", created_at: t.created_at }; }),
+      ...(kunder ?? []).filter(t => t.user_id).map(t => { seenIds.add(t.user_id!); return { id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "privatkunde", created_at: t.created_at }; }),
+      ...(adminBrukere ?? []).filter(u => !seenIds.has(u.id)).map(u => ({ id: u.id, navn: u.navn, epost: epostMap.get(u.id) ?? null, telefon: u.telefon, rolle: u.rolle, created_at: u.created_at })),
+    ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  } else if (params.rolle === "takstmann") {
+    let q = supabase.from("takstmann_profiler").select("user_id, navn, epost, telefon, created_at").order("created_at", { ascending: false });
+    if (sokFilter) q = q.ilike("navn", sokFilter);
+    const { data } = await q;
+    brukere = (data ?? []).filter(t => t.user_id).map(t => ({ id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "takstmann", created_at: t.created_at }));
+  } else if (params.rolle === "megler") {
+    let q = supabase.from("megler_profiler").select("user_id, navn, epost, telefon, created_at").order("created_at", { ascending: false });
+    if (sokFilter) q = q.ilike("navn", sokFilter);
+    const { data } = await q;
+    brukere = (data ?? []).filter(t => t.user_id).map(t => ({ id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "megler", created_at: t.created_at }));
+  } else if (params.rolle === "privatkunde") {
+    let q = supabase.from("privatkunde_profiler").select("user_id, navn, epost, telefon, created_at").order("created_at", { ascending: false });
+    if (sokFilter) q = q.ilike("navn", sokFilter);
+    const { data } = await q;
+    brukere = (data ?? []).filter(t => t.user_id).map(t => ({ id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "privatkunde", created_at: t.created_at }));
+  }
 
   const rolleFarger: Record<string, string> = {
     admin: "bg-red-100 text-red-700",
@@ -128,7 +178,7 @@ export default async function AdminBrukerePage({ searchParams }: Props) {
                       </div>
                     </td>
                     <td className="px-5 py-3">
-                      <p className="text-sm text-[#64748b]">{epostMap.get(bruker.id) ?? "–"}</p>
+                      <p className="text-sm text-[#64748b]">{bruker.epost ?? epostMap.get(bruker.id) ?? "–"}</p>
                     </td>
                     <td className="px-5 py-3">
                       <p className="text-sm text-[#64748b]">{bruker.telefon ?? "–"}</p>

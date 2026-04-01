@@ -7,7 +7,6 @@ export default async function AdminDashboardPage() {
 
   // Hent all statistikk parallelt
   const [
-    { count: totalBrukere },
     { count: totalTakstmenn },
     { count: totalMeglere },
     { count: totalKunder },
@@ -15,7 +14,8 @@ export default async function AdminDashboardPage() {
     { count: aktiveFylkerCount },
     { count: nyeBestillinger },
     { data: abonnementer },
-    { data: sisteBrukere },
+    { data: userProfilesBrukere },
+    { data: takstmannBrukere },
     { data: sisteOppdrag },
     { data: sisteBestillinger },
     { data: aktiveFylker },
@@ -24,15 +24,15 @@ export default async function AdminDashboardPage() {
     { count: ulesteMeldinger },
     { count: totalVurderinger },
   ] = await Promise.all([
-    supabase.from("user_profiles").select("*", { count: "exact", head: true }),
-    supabase.from("user_profiles").select("*", { count: "exact", head: true }).in("rolle", ["takstmann", "takstmann_admin"]),
-    supabase.from("user_profiles").select("*", { count: "exact", head: true }).eq("rolle", "megler"),
-    supabase.from("user_profiles").select("*", { count: "exact", head: true }).eq("rolle", "privatkunde"),
+    supabase.from("takstmann_profiler").select("*", { count: "exact", head: true }),
+    supabase.from("megler_profiler").select("*", { count: "exact", head: true }),
+    supabase.from("privatkunde_profiler").select("*", { count: "exact", head: true }),
     supabase.from("oppdrag").select("*", { count: "exact", head: true }),
     supabase.from("fylke_synlighet").select("*", { count: "exact", head: true }).eq("er_aktiv", true),
     supabase.from("bestillinger").select("*", { count: "exact", head: true }).eq("status", "ny"),
     supabase.from("abonnementer").select("id, status, maanedlig_belop, proveperiode_slutt, company_id"),
     supabase.from("user_profiles").select("id, navn, rolle, created_at").order("created_at", { ascending: false }).limit(8),
+    supabase.from("takstmann_profiler").select("user_id, navn, created_at").order("created_at", { ascending: false }).limit(8),
     supabase.from("oppdrag").select("id, tittel, status, oppdrag_type, created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("bestillinger").select("id, status, oppdrag_type, adresse, created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("fylke_synlighet").select("fylke_id, er_aktiv").eq("er_aktiv", true),
@@ -41,6 +41,17 @@ export default async function AdminDashboardPage() {
     supabase.from("meldinger").select("*", { count: "exact", head: true }).eq("lest", false),
     supabase.from("megler_vurderinger").select("*", { count: "exact", head: true }),
   ]);
+
+  const totalBrukere = (totalTakstmenn ?? 0) + (totalMeglere ?? 0) + (totalKunder ?? 0);
+
+  // Slå sammen siste brukere fra user_profiles og takstmann_profiler
+  const userProfileIds = new Set((userProfilesBrukere ?? []).map(u => u.id));
+  const sisteBrukere = [
+    ...(userProfilesBrukere ?? []).map(u => ({ id: u.id, navn: u.navn, rolle: u.rolle, created_at: u.created_at })),
+    ...(takstmannBrukere ?? [])
+      .filter(t => t.user_id && !userProfileIds.has(t.user_id))
+      .map(t => ({ id: t.user_id!, navn: t.navn, rolle: "takstmann" as const, created_at: t.created_at })),
+  ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).slice(0, 8);
 
   // Beregn abonnement-statistikk
   const proveperioder = abonnementer?.filter(a => a.status === "proveperiode").length ?? 0;
