@@ -91,8 +91,10 @@ export async function POST(req: NextRequest) {
 
   // Send "rapport klar"-varsel hvis dokumentet er en rapport
   if (erRapport) {
-    const mottaker = (oppdrag.megler as unknown as { navn: string; epost: string | null } | null)
-      ?? (oppdrag.privatkunde as unknown as { navn: string; epost: string | null } | null)
+    type KontaktInfo = { navn: string; epost: string | null }
+    const megler = Array.isArray(oppdrag.megler) ? oppdrag.megler[0] : oppdrag.megler
+    const privatkunde = Array.isArray(oppdrag.privatkunde) ? oppdrag.privatkunde[0] : oppdrag.privatkunde
+    const mottaker = (megler as KontaktInfo | null) ?? (privatkunde as KontaktInfo | null)
     if (mottaker?.epost) {
       try {
         await sendNyRapportVarsel({
