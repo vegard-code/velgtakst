@@ -231,4 +231,20 @@ export default async function BloggPost({ params }: Props) {
               },
               {
                 "@type": "Article",
-                
+                headline: post.tittel,
+                description: post.ingress,
+                datePublished: post.dato,
+                url: `https://www.takstmann.net/blogg/${post.id}`,
+                publisher: {
+                  "@type": "Organization",
+                  name: "VelgTakst",
+                  url: "https://www.takstmann.net",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+    </>
+  );
+}
