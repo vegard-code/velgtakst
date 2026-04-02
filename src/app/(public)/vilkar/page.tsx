@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Salgsvilkår | VelgTakst",
+  title: "Salgsvilkår | takstmann.net",
   description:
-    "Salgsvilkår og betingelser for bruk av VelgTakst – Norges portal for takstmenn.",
+    "Salgsvilkår og betingelser for bruk av takstmann.net – Norges portal for takstmenn.",
 };
 
 export default function VilkarPage() {
@@ -22,14 +22,14 @@ export default function VilkarPage() {
             1. Generelt
           </h2>
           <p>
-            Disse salgsvilkårene gjelder for kjøp av tjenester fra VelgTakst,
+            Disse salgsvilkårene gjelder for kjøp av tjenester fra takstmann.net,
             levert av Validert AS (org.nr. 936 714 080), heretter kalt
-            &laquo;VelgTakst&raquo; eller &laquo;vi&raquo;.
+            &laquo;takstmann.net&raquo; eller &laquo;vi&raquo;.
           </p>
           <p className="mt-3">
-            Ved å opprette en konto og tegne abonnement hos VelgTakst, godtar du
+            Ved å opprette en konto og tegne abonnement hos takstmann.net, godtar du
             disse vilkårene. Vilkårene utgjør sammen med din bestilling den
-            fullstendige avtalen mellom deg og VelgTakst.
+            fullstendige avtalen mellom deg og takstmann.net.
           </p>
         </section>
 
@@ -39,7 +39,7 @@ export default function VilkarPage() {
             2. Tjenesten
           </h2>
           <p>
-            VelgTakst er en nettbasert portal som kobler takstmenn med kunder
+            takstmann.net er en nettbasert portal som kobler takstmenn med kunder
             som trenger takseringstjenester. Takstmenn kan tegne abonnement for
             å bli oppført i ett eller flere fylker, slik at potensielle kunder
             enkelt kan finne og kontakte dem.
@@ -67,11 +67,11 @@ export default function VilkarPage() {
           </p>
           <p className="mt-3">
             Betaling skjer via Vipps. Ved å godkjenne betalingsavtalen i Vipps,
-            samtykker du til at VelgTakst trekker det månedlige beløpet
+            samtykker du til at takstmann.net trekker det månedlige beløpet
             automatisk. Du vil motta varsel i Vipps før hvert trekk.
           </p>
           <p className="mt-3">
-            Ved forsinket betaling forbeholder VelgTakst seg retten til å
+            Ved forsinket betaling forbeholder takstmann.net seg retten til å
             deaktivere din oppføring inntil betaling er mottatt.
           </p>
         </section>
@@ -91,10 +91,10 @@ export default function VilkarPage() {
             For å benytte angreretten må du gi oss melding om dette innen
             fristen. Du kan kontakte oss på{" "}
             <a
-              href="mailto:post@velgtakst.no"
+              href="mailto:post@takstmann.net"
               className="text-accent hover:text-accent/80 transition-colors"
             >
-              post@velgtakst.no
+              post@takstmann.net
             </a>{" "}
             eller bruke{" "}
             <a
@@ -137,7 +137,7 @@ export default function VilkarPage() {
             6. Retur og refusjon
           </h2>
           <p>
-            Ettersom VelgTakst leverer en digital tjeneste, gjelder ikke
+            Ettersom takstmann.net leverer en digital tjeneste, gjelder ikke
             tradisjonell returrett. Dersom du opplever tekniske problemer som
             gjør tjenesten utilgjengelig over en lengre periode, kan du ha krav
             på forholdsmessig refusjon. Ta kontakt med oss for en vurdering.
@@ -161,10 +161,10 @@ export default function VilkarPage() {
             <li>
               E-post:{" "}
               <a
-                href="mailto:post@velgtakst.no"
+                href="mailto:post@takstmann.net"
                 className="text-accent hover:text-accent/80 transition-colors"
               >
-                post@velgtakst.no
+                post@takstmann.net
               </a>
             </li>
           </ul>
@@ -213,7 +213,7 @@ export default function VilkarPage() {
             9. Endringer i vilkårene
           </h2>
           <p>
-            VelgTakst forbeholder seg retten til å endre disse vilkårene. Ved
+            takstmann.net forbeholder seg retten til å endre disse vilkårene. Ved
             vesentlige endringer vil du bli varslet via e-post eller i portalen
             minst 30 dager før endringene trer i kraft. Fortsatt bruk av
             tjenesten etter at endringene har trådt i kraft, anses som
@@ -231,10 +231,10 @@ export default function VilkarPage() {
           <p>
             E-post:{" "}
             <a
-              href="mailto:post@velgtakst.no"
+              href="mailto:post@takstmann.net"
               className="text-accent hover:text-accent/80 transition-colors"
             >
-              post@velgtakst.no
+              post@takstmann.net
             </a>
           </p>
         </section>

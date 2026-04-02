@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = data.bloggposter.find((p) => p.id === slug);
   if (!post) return {};
   return {
-    title: `${post.tittel} | VelgTakst`,
+    title: `${post.tittel} | takstmann.net`,
     description: post.ingress,
     openGraph: {
       title: post.tittel,
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `https://www.takstmann.net/blogg/${post.id}`,
       type: "article",
       publishedTime: post.dato,
-      siteName: "VelgTakst",
+      siteName: "takstmann.net",
       locale: "nb_NO",
     },
   };
@@ -101,7 +101,7 @@ export default async function BloggPost({ params }: Props) {
         <nav aria-label="Brødsmulesti" className="mb-8">
           <ol className="flex items-center gap-2 text-sm text-gray-500">
             <li>
-              <Link href="/" className="hover:text-white transition-colors">VelgTakst</Link>
+              <Link href="/" className="hover:text-white transition-colors">takstmann.net</Link>
             </li>
             <li>/</li>
             <li>
@@ -212,7 +212,7 @@ export default async function BloggPost({ params }: Props) {
                   {
                     "@type": "ListItem",
                     position: 1,
-                    name: "VelgTakst",
+                    name: "takstmann.net",
                     item: "https://www.takstmann.net",
                   },
                   {
@@ -237,7 +237,7 @@ export default async function BloggPost({ params }: Props) {
                 url: `https://www.takstmann.net/blogg/${post.id}`,
                 publisher: {
                   "@type": "Organization",
-                  name: "VelgTakst",
+                  name: "takstmann.net",
                   url: "https://www.takstmann.net",
                 },
               },

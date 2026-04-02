@@ -3,7 +3,7 @@ import Link from "next/link";
 import RegistrerMeglerForm from "./RegistrerMeglerForm";
 
 export const metadata: Metadata = {
-  title: "Registrer deg som megler | VelgTakst",
+  title: "Registrer deg som megler | takstmann.net",
 };
 
 export default function RegistrerMeglerPage() {

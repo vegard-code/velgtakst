@@ -4,16 +4,16 @@ import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "VelgTakst - Velg en sertifisert takstmann",
+  title: "takstmann.net - Velg en sertifisert takstmann",
   description:
     "Finn sertifiserte takstmenn i hele Norge. Søk etter takstmenn i ditt fylke for tilstandsrapporter, verditakster og skadetakster.",
   metadataBase: new URL("https://www.takstmann.net"),
   openGraph: {
-    title: "VelgTakst - Velg en sertifisert takstmann",
+    title: "takstmann.net - Velg en sertifisert takstmann",
     description:
       "Finn sertifiserte takstmenn i hele Norge. Søk etter takstmenn i ditt fylke for tilstandsrapporter, verditakster og skadetakster.",
     url: "https://www.takstmann.net",
-    siteName: "VelgTakst",
+    siteName: "takstmann.net",
     locale: "nb_NO",
     type: "website",
   },

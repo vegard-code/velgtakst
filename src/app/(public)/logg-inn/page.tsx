@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LoggInnForm from "./LoggInnForm";
 
 export const metadata: Metadata = {
-  title: "Logg inn | VelgTakst",
+  title: "Logg inn | takstmann.net",
 };
 
 export default function LoggInnPage() {
@@ -13,7 +13,7 @@ export default function LoggInnPage() {
           <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center text-white font-bold text-lg mx-auto mb-4">
             VT
           </div>
-          <h1 className="text-2xl font-bold text-white">Logg inn på VelgTakst</h1>
+          <h1 className="text-2xl font-bold text-white">Logg inn på takstmann.net</h1>
           <p className="text-gray-400 mt-2 text-sm">
             Hvem logger inn?
           </p>

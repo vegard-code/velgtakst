@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) return {};
   const d = data as unknown as Pick<TakstmannProfil, "navn" | "spesialitet">;
   return {
-    title: `${d.navn} – Takstmann | VelgTakst`,
+    title: `${d.navn} – Takstmann | takstmann.net`,
     description: `Se profil, sertifiseringer og kontaktinfo for ${d.navn}. ${d.spesialitet ?? ""}`,
   };
 }
