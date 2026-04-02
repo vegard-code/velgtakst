@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannMedFylker } from "@/lib/supabase/types";
 import { KOMMUNER, getKommunerForFylke } from "@/data/kommuner";
-import { kommuneSEOContent } from "@/data/kommune-seo-content";
+import { KOMMUNE_SEO_CONTENT } from "@/data/kommune-seo-content";
 
 export const revalidate = 900;
 
@@ -29,8 +29,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
   if (!fylke || !kommune) return {};
 
-  const title = `Takstmann i ${kommune.navn} | VelgTakst.no`;
-  const description = `Finn sertifisert takstmann i ${kommune.navn}. Bestill tilstandsrapport, verditakst eller skadetakst i ${kommune.navn}. Sammenlign sertifiserte takstmenn i ${fylke.navn} og få tilbud i dag.`;
+  const seoContent = KOMMUNE_SEO_CONTENT[kommuneId];
+
+  const title = seoContent?.seoTitle
+    ? `${seoContent.seoTitle} | takstmann.net`
+    : `Takstmann i ${kommune.navn} | VelgTakst.no`;
+  const description = seoContent?.metaDescription
+    || `Finn sertifisert takstmann i ${kommune.navn}. Bestill tilstandsrapport, verditakst eller skadetakst i ${kommune.navn}. Sammenlign sertifiserte takstmenn i ${fylke.navn} og få tilbud i dag.`;
   const keywords = `takstmann ${kommune.navn}, takst ${kommune.navn}, skadetakst ${kommune.navn}, tilstandsrapport ${kommune.navn}, verditakst ${kommune.navn}, takstmenn ${fylke.navn}, bestill takst ${kommune.navn}`;
   const url = `https://www.velgtakst.no/${fylkeId}/${kommuneId}`;
 
@@ -194,14 +199,26 @@ export default async function KommunePage({ params }: Props) {
   if (!fylke || !kommune) notFound();
 
   const takstmenn = await hentTakstmennIKommune(fylkeId, kommuneId);
-  const seoContent = kommuneSEOContent[kommuneId];
+  const seoContent = KOMMUNE_SEO_CONTENT[kommuneId];
   const faq = seoContent?.faqItems?.length
-    ? seoContent.faqItems.map((item) => ({ sporsmal: item.question, svar: item.answer }))
-    : getKommuneFAQ(kommune.navn, fylke.navn);
+    ? seoContent.faqItems
+    : getKommuneFAQ(kommune.navn, fylke.navn).map((f) => ({
+        sporsmal: f.sporsmal,
+        svar: f.svar,
+      }));
   const intro = seoContent?.intro || getKommuneIntro(kommune.navn, fylke.navn);
   const andreKommuner = getKommunerForFylke(fylkeId).filter(
     (k) => k.id !== kommuneId
   );
+
+  // Nearby kommuner from SEO content (excluding self)
+  const naerliggendeKommuner = seoContent?.naerliggendeKommuner
+    ? KOMMUNER.filter(
+        (k) =>
+          seoContent.naerliggendeKommuner.includes(k.id) &&
+          k.id !== kommuneId
+      )
+    : [];
 
   return (
     <>
@@ -233,16 +250,18 @@ export default async function KommunePage({ params }: Props) {
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 glow-text">
-          Takstmann i {kommune.navn}
+          {seoContent?.h1 || `Takstmann i ${kommune.navn}`}
         </h1>
         <p className="text-lg text-gray-400 leading-relaxed max-w-3xl mb-4">
           {intro}
         </p>
-        <p className="text-gray-400 leading-relaxed max-w-3xl">
-          Takstmennene nedenfor dekker {kommune.navn} og øvrige kommuner i{" "}
-          {fylke.navn}. Se profiler, sammenlign spesialiteter og ta kontakt
-          direkte.
-        </p>
+        {!seoContent && (
+          <p className="text-gray-400 leading-relaxed max-w-3xl">
+            Takstmennene nedenfor dekker {kommune.navn} og øvrige kommuner i{" "}
+            {fylke.navn}. Se profiler, sammenlign spesialiteter og ta kontakt
+            direkte.
+          </p>
+        )}
         <p className="text-gray-500 text-sm leading-relaxed max-w-3xl mt-3">
           Vanlige søk:{" "}
           <span className="text-gray-400">takstmann {kommune.navn}</span>{" · "}
@@ -259,18 +278,26 @@ export default async function KommunePage({ params }: Props) {
         </p>
       </section>
 
-      {/* Unique SEO sections for top 50 municipalities */}
-      {seoContent?.sections?.length > 0 && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {seoContent.sections.map((s, i) => (
-              <div key={i} className="bg-card-bg border border-card-border rounded-xl p-5">
-                <h2 className="text-white font-semibold text-base mb-2">{s.title}</h2>
-                <p className="text-gray-400 text-sm leading-relaxed">{s.content}</p>
+      {/* SEO Sections (rich content for top 50 kommuner) */}
+      {seoContent?.sections && seoContent.sections.length > 0 && (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 space-y-8">
+          {seoContent.sections.map((section, i) => (
+            <section key={i}>
+              <h2 className="text-xl font-bold text-white mb-3">
+                {section.heading}
+              </h2>
+              <div className="text-gray-400 leading-relaxed max-w-3xl">
+                {section.content.split("\n").map((para, j) =>
+                  para.trim() ? (
+                    <p key={j} className="mb-2">
+                      {para.trim()}
+                    </p>
+                  ) : null
+                )}
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
+          ))}
+        </div>
       )}
 
       {/* Tjenester */}
@@ -508,6 +535,33 @@ export default async function KommunePage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {/* Nærliggende områder (SEO content) */}
+      {seoContent?.naerliggendeText && (
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-xl font-bold text-white mb-4">
+              Nærliggende områder
+            </h2>
+            <p className="text-gray-400 leading-relaxed mb-4">
+              {seoContent.naerliggendeText}
+            </p>
+            {naerliggendeKommuner.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {naerliggendeKommuner.map((k) => (
+                  <Link
+                    key={k.id}
+                    href={`/${k.fylkeId}/${k.id}`}
+                    className="text-sm text-gray-400 hover:text-accent border border-card-border hover:border-accent/30 rounded-lg px-3 py-1.5 transition-colors"
+                  >
+                    Takstmann i {k.navn}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Andre kommuner i fylket */}
       {andreKommuner.length > 0 && (
