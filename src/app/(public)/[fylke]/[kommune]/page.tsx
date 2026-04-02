@@ -162,7 +162,7 @@ function getKommuneFAQ(kommuneNavn: string, _fylkeNavn: string) {
     },
     {
       sporsmal: `Er det krav om tilstandsrapport ved boligsalg i ${kommuneNavn}?`,
-      svar: `Ja. Etter endringene i avhendingsloven som trådte i kraft 1. januar 2022, er det i praksis nødvendig med en tilstandsrapport etter NS 3600 ved salg av bolig i ${kommuneNavn} og resten av Norge. Selger kan ikke lenger ta generelle «som den er»-forbehold, og en godkjent tilstandsrapport gir bedre vern for både kjøper og selger.`,
+      svar: `Det er ikke et lovkrav å ha tilstandsrapport ved boligsalg, men det er sterkt anbefalt. Etter endringene i avhendingsloven fra 2022 kan selger ikke lenger ta «som den er»-forbehold, noe som betyr at selger har et større ansvar for å opplyse om boligens tilstand. I praksis har rundt 99 % av alle bruktboligtransaksjoner i Norge en tilstandsrapport etter NS 3600 vedlagt. For de fleste selgere i ${kommuneNavn} er det derfor en selvfølge å bestille en.`,
     },
     {
       sporsmal: `Hvordan finner jeg en god takstmann i ${kommuneNavn}?`,
