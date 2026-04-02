@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannMedFylker } from "@/lib/supabase/types";
 import { KOMMUNER, getKommunerForFylke } from "@/data/kommuner";
+import { kommuneSEOContent } from "@/data/kommune-seo-content";
 
 export const revalidate = 900;
 
@@ -193,8 +194,11 @@ export default async function KommunePage({ params }: Props) {
   if (!fylke || !kommune) notFound();
 
   const takstmenn = await hentTakstmennIKommune(fylkeId, kommuneId);
-  const faq = getKommuneFAQ(kommune.navn, fylke.navn);
-  const intro = getKommuneIntro(kommune.navn, fylke.navn);
+  const seoContent = kommuneSEOContent[kommuneId];
+  const faq = seoContent?.faqItems?.length
+    ? seoContent.faqItems.map((item) => ({ sporsmal: item.question, svar: item.answer }))
+    : getKommuneFAQ(kommune.navn, fylke.navn);
+  const intro = seoContent?.intro || getKommuneIntro(kommune.navn, fylke.navn);
   const andreKommuner = getKommunerForFylke(fylkeId).filter(
     (k) => k.id !== kommuneId
   );
@@ -254,6 +258,20 @@ export default async function KommunePage({ params }: Props) {
             : `Ingen takstmenn registrert i ${fylke.navn} ennå`}
         </p>
       </section>
+
+      {/* Unique SEO sections for top 50 municipalities */}
+      {seoContent?.sections?.length > 0 && (
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {seoContent.sections.map((s, i) => (
+              <div key={i} className="bg-card-bg border border-card-border rounded-xl p-5">
+                <h2 className="text-white font-semibold text-base mb-2">{s.title}</h2>
+                <p className="text-gray-400 text-sm leading-relaxed">{s.content}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Tjenester */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
