@@ -105,7 +105,7 @@ export default async function AdminDashboardPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-[#1e293b]">Dashboard</h1>
-          <p className="text-sm text-[#64748b]">Oversikt over VelgTakst-plattformen</p>
+          <p className="text-sm text-[#64748b]">Oversikt over takstmann.net-plattformen</p>
         </div>
         <p className="text-xs text-[#94a3b8]">
           Oppdatert {new Date().toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}

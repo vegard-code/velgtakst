@@ -94,7 +94,7 @@ export class FikenKlient {
     await this.request(`/sales-invoices/${fakturaId}/send`, 'POST', {
       method: 'email',
       emailSendTo: epost,
-      message: 'Faktura fra VelgTakst. Vennligst betal innen forfall.',
+      message: 'Faktura fra takstmann.net. Vennligst betal innen forfall.',
     })
   }
 

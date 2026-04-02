@@ -65,7 +65,7 @@ export async function startVippsAbonnement(companyId: string) {
     const result = await opprettAgreement({
       customerPhone: takstmann.telefon || undefined,
       monthlyAmountOre: maanedligOre,
-      productName: `VelgTakst Fylkesynlighet`,
+      productName: `takstmann.net Fylkesynlighet`,
       reference: `velgtakst-${companyId}`,
       returnUrl: `${siteUrl}/portal/takstmann/abonnement?status=ok`,
       notificationUrl: `${siteUrl}/api/vipps/recurring-webhook`,

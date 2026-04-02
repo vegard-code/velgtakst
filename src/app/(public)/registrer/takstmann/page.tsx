@@ -4,13 +4,13 @@ import RegistrerTakstmannForm from "./RegistrerTakstmannForm";
 import { FYLKE_PRIS } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
-  title: "Registrer deg som takstmann | Bli synlig på VelgTakst",
+  title: "Registrer deg som takstmann | Bli synlig på takstmann.net",
   description:
-    "Bli synlig for boligkjøpere, meglere og privatpersoner i ditt fylke. Registrer deg som takstmann på VelgTakst og motta henvendelser for tilstandsrapport, verditakst og skadetakst.",
+    "Bli synlig for boligkjøpere, meglere og privatpersoner i ditt fylke. Registrer deg som takstmann på takstmann.net og motta henvendelser for tilstandsrapport, verditakst og skadetakst.",
   openGraph: {
-    title: "Registrer deg som takstmann | VelgTakst",
+    title: "Registrer deg som takstmann | takstmann.net",
     description:
-      "Bli synlig for kunder i ditt fylke. Registrer deg på VelgTakst og motta henvendelser for tilstandsrapport, verditakst og skadetakst.",
+      "Bli synlig for kunder i ditt fylke. Registrer deg på takstmann.net og motta henvendelser for tilstandsrapport, verditakst og skadetakst.",
     url: "https://www.takstmann.net/registrer/takstmann",
   },
 };
@@ -23,7 +23,7 @@ export default function RegistrerTakstmannPage() {
         <nav aria-label="Brødsmulesti" className="mb-8">
           <ol className="flex items-center gap-2 text-sm text-gray-500">
             <li>
-              <Link href="/" className="hover:text-white transition-colors">VelgTakst</Link>
+              <Link href="/" className="hover:text-white transition-colors">takstmann.net</Link>
             </li>
             <li>/</li>
             <li className="text-gray-300">Registrer takstmann</li>
@@ -35,7 +35,7 @@ export default function RegistrerTakstmannPage() {
             Registrer deg som takstmann
           </h1>
           <p className="text-gray-400 max-w-xl mx-auto leading-relaxed">
-            VelgTakst kobler sertifiserte takstmenn med boligkjøpere, meglere og
+            takstmann.net kobler sertifiserte takstmenn med boligkjøpere, meglere og
             privatpersoner som trenger hjelp med{" "}
             <Link href="/blogg/tilstandsrapport-guide" className="text-accent hover:underline">tilstandsrapport</Link>,{" "}
             <Link href="/blogg/verditakst-hva-er-det" className="text-accent hover:underline">verditakst</Link>,{" "}
@@ -46,7 +46,7 @@ export default function RegistrerTakstmannPage() {
 
         {/* Fordeler */}
         <div className="bg-card-bg border border-card-border rounded-xl p-6 mb-10">
-          <h2 className="text-lg font-semibold text-white mb-4 text-center">Hvorfor VelgTakst?</h2>
+          <h2 className="text-lg font-semibold text-white mb-4 text-center">Hvorfor takstmann.net?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { tittel: "Synlighet i ditt fylke", beskrivelse: "Vis profilen din for alle som søker takstmann i dine aktive fylker." },
@@ -102,7 +102,7 @@ export default function RegistrerTakstmannPage() {
               {
                 "@type": "ListItem",
                 position: 1,
-                name: "VelgTakst",
+                name: "takstmann.net",
                 item: "https://www.takstmann.net",
               },
               {

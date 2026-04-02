@@ -62,7 +62,7 @@ export default function KundeSidebar({ navn, ulesteMeldinger = 0 }: { navn: stri
       <div className="p-6 border-b border-[#e2e8f0]">
         <Link href="/" className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-[#285982] flex items-center justify-center text-white font-bold text-sm">VT</div>
-          <span className="text-[#1e293b] font-semibold">VelgTakst</span>
+          <span className="text-[#1e293b] font-semibold">takstmann.net</span>
         </Link>
         <div className="mt-4">
           <p className="text-[#1e293b] font-medium text-sm truncate">{navn}</p>

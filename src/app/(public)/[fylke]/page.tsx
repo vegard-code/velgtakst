@@ -24,10 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const fylke = FYLKER.find((f) => f.id === fylkeId);
   if (!fylke) return {};
   return {
-    title: `Takstmann i ${fylke.navn} | Finn sertifisert takstmann | VelgTakst`,
+    title: `Takstmann i ${fylke.navn} | Finn sertifisert takstmann | takstmann.net`,
     description: `Finn sertifiserte takstmenn i ${fylke.navn}. Sammenlign erfarne takstmenn for tilstandsrapport, verditakst, skadetakst og andre taksttjenester i ${fylke.navn}.`,
     openGraph: {
-      title: `Takstmann i ${fylke.navn} | VelgTakst`,
+      title: `Takstmann i ${fylke.navn} | takstmann.net`,
       description: `Finn sertifiserte takstmenn i ${fylke.navn}. Tilstandsrapport, verditakst, skadetakst og mer.`,
       url: `https://www.takstmann.net/${fylkeId}`,
     },
@@ -66,7 +66,7 @@ function getFAQ(fylkeNavn: string) {
     },
     {
       sporsmal: `Hvordan finner jeg en god takstmann i ${fylkeNavn}?`,
-      svar: `På VelgTakst kan du se tilgjengelige takstmenn i ${fylkeNavn}, sammenligne fagområder og sertifiseringer, og velge den som passer ditt oppdrag best. Se etter takstmenn med relevant erfaring, godkjente sertifiseringer og tydelig spesialisering innen det du trenger hjelp med.`,
+      svar: `På takstmann.net kan du se tilgjengelige takstmenn i ${fylkeNavn}, sammenligne fagområder og sertifiseringer, og velge den som passer ditt oppdrag best. Se etter takstmenn med relevant erfaring, godkjente sertifiseringer og tydelig spesialisering innen det du trenger hjelp med.`,
     },
     {
       sporsmal: `Hva er forskjellen mellom verditakst og tilstandsrapport?`,
@@ -160,7 +160,7 @@ export default async function FylkePage({ params }: Props) {
       <nav aria-label="Brødsmulesti" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <ol className="flex items-center gap-2 text-sm text-gray-500">
           <li>
-            <Link href="/" className="hover:text-white transition-colors">VelgTakst</Link>
+            <Link href="/" className="hover:text-white transition-colors">takstmann.net</Link>
           </li>
           <li>/</li>
           <li className="text-gray-300">{fylke.navn}</li>
@@ -449,7 +449,7 @@ export default async function FylkePage({ params }: Props) {
             Er du takstmann i {fylke.navn}?
           </h2>
           <p className="text-gray-400 leading-relaxed mb-5 text-sm">
-            Bli synlig på VelgTakst og la kunder i {fylke.navn} finne deg.
+            Bli synlig på takstmann.net og la kunder i {fylke.navn} finne deg.
             Registrer deg, aktiver profilen din og start å motta henvendelser.
           </p>
           <Link
@@ -474,7 +474,7 @@ export default async function FylkePage({ params }: Props) {
                   {
                     "@type": "ListItem",
                     position: 1,
-                    name: "VelgTakst",
+                    name: "takstmann.net",
                     item: "https://www.takstmann.net",
                   },
                   {

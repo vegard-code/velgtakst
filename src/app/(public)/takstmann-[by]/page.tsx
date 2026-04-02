@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonicalUrl = `https://www.takstmann.net/${fylke.id}/${kommune.id}`;
 
   return {
-    title: `Takstmann i ${kommune.navn} | VelgTakst`,
+    title: `Takstmann i ${kommune.navn} | takstmann.net`,
     description: `Finn sertifiserte takstmenn i ${kommune.navn}, ${fylke.navn}. Tilstandsrapport, verditakst og skadetakst.`,
     alternates: {
       canonical: canonicalUrl,

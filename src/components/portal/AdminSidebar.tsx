@@ -99,7 +99,7 @@ export default function AdminSidebar({ navn }: Props) {
           <div className="w-8 h-8 rounded-lg bg-[#dc2626] flex items-center justify-center text-white font-bold text-sm">
             VT
           </div>
-          <span className="text-[#1e293b] font-semibold">VelgTakst</span>
+          <span className="text-[#1e293b] font-semibold">takstmann.net</span>
         </Link>
         <div className="mt-4">
           <p className="text-[#1e293b] font-medium text-sm truncate">{navn}</p>
@@ -127,7 +127,7 @@ export default function AdminSidebar({ navn }: Props) {
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>
-          VelgTakst.no
+          takstmann.net.no
         </Link>
         <form action={loggUt}>
           <button

@@ -5,11 +5,11 @@ import { FYLKER } from "@/lib/supabase/types";
 import data from "@/data/takstmenn.json";
 
 export const metadata: Metadata = {
-  title: "VelgTakst | Finn sertifisert takstmann i ditt fylke",
+  title: "takstmann.net | Finn sertifisert takstmann i ditt fylke",
   description:
     "Finn sertifiserte takstmenn i hele Norge. Velg fylke, sammenlign takstmenn og få hjelp til tilstandsrapport, verditakst, skadetakst og andre taksttjenester.",
   openGraph: {
-    title: "VelgTakst | Finn sertifisert takstmann i ditt fylke",
+    title: "takstmann.net | Finn sertifisert takstmann i ditt fylke",
     description:
       "Finn sertifiserte takstmenn i hele Norge. Velg fylke, sammenlign takstmenn og få hjelp til tilstandsrapport, verditakst, skadetakst og andre taksttjenester.",
     url: "https://www.takstmann.net",
@@ -61,7 +61,7 @@ export default async function Home() {
             Finn sertifisert takstmann i ditt fylke
           </h1>
           <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto mb-4">
-            VelgTakst gjør det enklere å finne sertifiserte takstmenn i Norge.
+            takstmann.net gjør det enklere å finne sertifiserte takstmenn i Norge.
             Velg fylke, sammenlign aktuelle takstmenn og finn riktig fagperson
             til tilstandsrapport, verditakst, skadetakst og andre taksttjenester.
           </p>
@@ -116,7 +116,7 @@ export default async function Home() {
             <Link href="/blogg/tilstandsrapport-guide" className="text-accent hover:underline">tilstandsrapport ved boligsalg</Link>,{" "}
             <Link href="/blogg/verditakst-hva-er-det" className="text-accent hover:underline">verditakst ved refinansiering eller arv</Link>,{" "}
             <Link href="/blogg/hva-er-skadetakst" className="text-accent hover:underline">skadetakst ved forsikringssaker</Link>{" "}
-            og vurdering av byggteknisk tilstand. På VelgTakst samler vi takstmenn etter fylke, slik
+            og vurdering av byggteknisk tilstand. På takstmann.net samler vi takstmenn etter fylke, slik
             at det blir enklere å finne riktig kompetanse der du bor.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -140,11 +140,11 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Slik bruker du VelgTakst */}
+      {/* Slik bruker du takstmann.net */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="bg-card-bg border border-card-border rounded-2xl p-8 sm:p-12 max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Slik bruker du VelgTakst
+            Slik bruker du takstmann.net
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -211,7 +211,7 @@ export default async function Home() {
             Er du takstmann?
           </h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Bli synlig på VelgTakst og gjør det enklere for kunder i ditt fylke
+            Bli synlig på takstmann.net og gjør det enklere for kunder i ditt fylke
             å finne deg. Registrer deg, aktiver profilen din og start å motta
             henvendelser fra relevante oppdrag.
           </p>
@@ -234,7 +234,7 @@ export default async function Home() {
               {
                 "@type": "Organization",
                 "@id": "https://www.takstmann.net/#organization",
-                name: "VelgTakst",
+                name: "takstmann.net",
                 url: "https://www.takstmann.net",
                 description: "Norges portal for å finne sertifiserte takstmenn.",
               },
@@ -242,7 +242,7 @@ export default async function Home() {
                 "@type": "WebSite",
                 "@id": "https://www.takstmann.net/#website",
                 url: "https://www.takstmann.net",
-                name: "VelgTakst",
+                name: "takstmann.net",
                 publisher: { "@id": "https://www.takstmann.net/#organization" },
                 inLanguage: "nb-NO",
               },

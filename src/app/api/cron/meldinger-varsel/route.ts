@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
-const FROM = process.env.EMAIL_FROM ?? 'noreply@velgtakst.no'
+const FROM = process.env.EMAIL_FROM ?? 'noreply@takstmann.net'
 const RESEND_URL = 'https://api.resend.com/emails'
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://takstmann.net'
 
@@ -146,11 +146,11 @@ export async function GET(request: Request) {
         body: JSON.stringify({
           from: FROM,
           to: [info.epost],
-          subject: `Du har ${info.antall} ulest${info.antall === 1 ? '' : 'e'} melding${info.antall === 1 ? '' : 'er'} på VelgTakst`,
+          subject: `Du har ${info.antall} ulest${info.antall === 1 ? '' : 'e'} melding${info.antall === 1 ? '' : 'er'} på takstmann.net`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
               <div style="background: #285982; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-                <h1 style="margin: 0; font-size: 20px;">VelgTakst – Nye meldinger</h1>
+                <h1 style="margin: 0; font-size: 20px;">takstmann.net – Nye meldinger</h1>
               </div>
               <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 8px 8px; border: 1px solid #e2e8f0;">
                 <p>Hei ${info.navn},</p>

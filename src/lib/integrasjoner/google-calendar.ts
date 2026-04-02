@@ -162,7 +162,7 @@ export async function opprettKalenderHendelse(
     hendelse.kundNavn ? `Kunde: ${hendelse.kundNavn}` : null,
     hendelse.kundTelefon ? `Telefon: ${hendelse.kundTelefon}` : null,
     hendelse.beskrivelse ? `\nBeskrivelse: ${hendelse.beskrivelse}` : null,
-    `\nPortal: ${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://velgtakst.no'}/portal/takstmann/oppdrag/${hendelse.oppdragId}`,
+    `\nPortal: ${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://takstmann.net'}/portal/takstmann/oppdrag/${hendelse.oppdragId}`,
   ]
     .filter(Boolean)
     .join('\n')
@@ -184,8 +184,8 @@ export async function opprettKalenderHendelse(
         },
         colorId: '5', // Gul – skiller seg ut i kalenderen
         source: {
-          title: 'VelgTakst',
-          url: `${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://velgtakst.no'}/portal/takstmann/oppdrag/${hendelse.oppdragId}`,
+          title: 'takstmann.net',
+          url: `${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://takstmann.net'}/portal/takstmann/oppdrag/${hendelse.oppdragId}`,
         },
       },
     })

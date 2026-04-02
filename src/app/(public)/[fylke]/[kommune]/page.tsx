@@ -33,11 +33,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = seoContent?.seoTitle
     ? `${seoContent.seoTitle} | takstmann.net`
-    : `Takstmann i ${kommune.navn} | VelgTakst.no`;
+    : `Takstmann i ${kommune.navn} | takstmann.net`;
   const description = seoContent?.metaDescription
     || `Finn sertifisert takstmann i ${kommune.navn}. Bestill tilstandsrapport, verditakst eller skadetakst i ${kommune.navn}. Sammenlign sertifiserte takstmenn i ${fylke.navn} og få tilbud i dag.`;
   const keywords = `takstmann ${kommune.navn}, takst ${kommune.navn}, skadetakst ${kommune.navn}, tilstandsrapport ${kommune.navn}, verditakst ${kommune.navn}, takstmenn ${fylke.navn}, bestill takst ${kommune.navn}`;
-  const url = `https://www.velgtakst.no/${fylkeId}/${kommuneId}`;
+  const url = `https://www.takstmann.net/${fylkeId}/${kommuneId}`;
 
   return {
     title,
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url,
       type: "website",
-      siteName: "VelgTakst.no",
+      siteName: "takstmann.net",
     },
     twitter: {
       card: "summary",
@@ -230,7 +230,7 @@ export default async function KommunePage({ params }: Props) {
         <ol className="flex items-center gap-2 text-sm text-gray-500">
           <li>
             <Link href="/" className="hover:text-white transition-colors">
-              VelgTakst
+              takstmann.net
             </Link>
           </li>
           <li>/</li>
@@ -616,7 +616,7 @@ export default async function KommunePage({ params }: Props) {
             Er du takstmann i {kommune.navn}?
           </h2>
           <p className="text-gray-400 leading-relaxed mb-5 text-sm">
-            Bli synlig på VelgTakst og la kunder i {kommune.navn} finne deg.
+            Bli synlig på takstmann.net og la kunder i {kommune.navn} finne deg.
             Registrer deg, aktiver profilen din og start å motta henvendelser.
           </p>
           <Link
@@ -641,7 +641,7 @@ export default async function KommunePage({ params }: Props) {
                   {
                     "@type": "ListItem",
                     position: 1,
-                    name: "VelgTakst",
+                    name: "takstmann.net",
                     item: "https://www.takstmann.net",
                   },
                   {
@@ -660,9 +660,9 @@ export default async function KommunePage({ params }: Props) {
               },
               {
                 "@type": "ProfessionalService",
-                name: `Takstmann i ${kommune.navn} – VelgTakst.no`,
+                name: `Takstmann i ${kommune.navn} – takstmann.net`,
                 description: `Finn sertifisert takstmann i ${kommune.navn} for tilstandsrapport, verditakst, skadetakst og næringstakst.`,
-                url: `https://www.velgtakst.no/${fylkeId}/${kommuneId}`,
+                url: `https://www.takstmann.net/${fylkeId}/${kommuneId}`,
                 areaServed: [
                   {
                     "@type": "City",
@@ -689,8 +689,8 @@ export default async function KommunePage({ params }: Props) {
                 },
                 provider: {
                   "@type": "Organization",
-                  name: "VelgTakst.no",
-                  url: "https://www.velgtakst.no",
+                  name: "takstmann.net",
+                  url: "https://www.takstmann.net",
                 },
               },
               {

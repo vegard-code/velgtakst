@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import data from "@/data/takstmenn.json";
 
 export const metadata: Metadata = {
-  title: "Blogg om takst og bolig | Fagartikler og tips | VelgTakst",
+  title: "Blogg om takst og bolig | Fagartikler og tips | takstmann.net",
   description:
     "Les fagartikler om tilstandsrapport, verditakst, skadetakst, nye regler for boligsalg og tips for boligkjøpere og -selgere. Oppdatert innhold fra takstbransjen.",
   openGraph: {
-    title: "Blogg om takst og bolig | VelgTakst",
+    title: "Blogg om takst og bolig | takstmann.net",
     description:
       "Fagartikler om tilstandsrapport, verditakst, skadetakst og tips for boligkjøpere og -selgere.",
     url: "https://www.takstmann.net/blogg",
@@ -26,7 +26,7 @@ export default function BloggPage() {
         <nav aria-label="Brødsmulesti" className="mb-8">
           <ol className="flex items-center gap-2 text-sm text-gray-500">
             <li>
-              <Link href="/" className="hover:text-white transition-colors">VelgTakst</Link>
+              <Link href="/" className="hover:text-white transition-colors">takstmann.net</Link>
             </li>
             <li>/</li>
             <li className="text-gray-300">Blogg</li>
@@ -94,7 +94,7 @@ export default function BloggPage() {
               {
                 "@type": "ListItem",
                 position: 1,
-                name: "VelgTakst",
+                name: "takstmann.net",
                 item: "https://www.takstmann.net",
               },
               {

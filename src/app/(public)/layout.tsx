@@ -19,7 +19,7 @@ export default async function PublicLayout({
             <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">
               VT
             </div>
-            <span className="text-lg font-semibold text-white">VelgTakst</span>
+            <span className="text-lg font-semibold text-white">takstmann.net</span>
           </Link>
           <nav className="flex items-center gap-6 text-sm">
             <Link
@@ -71,7 +71,7 @@ export default async function PublicLayout({
                 <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">
                   VT
                 </div>
-                <span className="text-lg font-semibold text-white">VelgTakst</span>
+                <span className="text-lg font-semibold text-white">takstmann.net</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
                 Norges ledende portal for å finne sertifiserte takstmenn i ditt
@@ -116,7 +116,7 @@ export default async function PublicLayout({
             <div>
               <h3 className="text-white font-semibold mb-4">Kontakt</h3>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li>post@velgtakst.no</li>
+                <li>post@takstmann.net</li>
                 <li>Tlf: 22 33 44 55</li>
                 <li>Storgata 1, 0155 Oslo</li>
               </ul>
@@ -124,7 +124,7 @@ export default async function PublicLayout({
           </div>
           <div className="gradient-line mt-8 mb-6" />
           <p className="text-center text-xs text-gray-500">
-            &copy; {new Date().getFullYear()} VelgTakst. Alle rettigheter reservert.
+            &copy; {new Date().getFullYear()} takstmann.net. Alle rettigheter reservert.
           </p>
         </div>
       </footer>

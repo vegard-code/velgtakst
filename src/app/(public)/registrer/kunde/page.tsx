@@ -3,7 +3,7 @@ import Link from "next/link";
 import RegistrerKundeForm from "./RegistrerKundeForm";
 
 export const metadata: Metadata = {
-  title: "Bestill takst | VelgTakst",
+  title: "Bestill takst | takstmann.net",
 };
 
 interface Props {
