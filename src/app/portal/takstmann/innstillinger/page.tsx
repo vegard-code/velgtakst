@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import InnstillingerForm from "./InnstillingerForm";
+import SlettKontoSeksjon from "@/components/portal/SlettKontoSeksjon";
 import { Suspense } from "react";
 
 export default async function InnstillingerPage() {
@@ -50,6 +51,9 @@ export default async function InnstillingerPage() {
           googleKoblet={googleKoblet}
         />
       </Suspense>
+      <div className="mt-8">
+        <SlettKontoSeksjon />
+      </div>
     </div>
   );
 }

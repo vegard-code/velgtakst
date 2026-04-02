@@ -96,6 +96,13 @@ export default function RegistrerMeglerForm() {
           </div>
         )}
 
+        <p className="text-xs text-gray-500">
+          Ved å opprette konto godtar du våre{" "}
+          <a href="/vilkar" className="underline hover:text-gray-300">vilkår</a>
+          {" "}og{" "}
+          <a href="/personvern" className="underline hover:text-gray-300">personvernerklæring</a>.
+        </p>
+
         <button
           type="submit"
           disabled={laster}

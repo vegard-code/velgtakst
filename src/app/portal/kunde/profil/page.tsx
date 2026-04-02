@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import KundeProfilForm from "./KundeProfilForm";
+import SlettKontoSeksjon from "@/components/portal/SlettKontoSeksjon";
 
 export default async function KundeProfilPage() {
   const supabase = await createClient();
@@ -13,9 +14,12 @@ export default async function KundeProfilPage() {
     .single();
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-[#1e293b] mb-6">Min profil</h1>
-      <KundeProfilForm profil={profil} />
+    <div className="max-w-2xl mx-auto space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-[#1e293b] mb-6">Min profil</h1>
+        <KundeProfilForm profil={profil} />
+      </div>
+      <SlettKontoSeksjon />
     </div>
   );
 }
