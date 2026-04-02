@@ -19,7 +19,9 @@
       "Bash(git config:*)",
       "Bash(git branch:*)",
       "Bash(git remote:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(ls -la \"/c/Users/vegar/takstportal/.claude/worktrees/agitated-thompson/src/app/\\(public\\)/layout.tsx\")",
+      "Bash(git stash:*)"
     ]
   }
 }

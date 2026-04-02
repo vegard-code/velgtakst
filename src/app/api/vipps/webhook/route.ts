@@ -13,6 +13,12 @@ import { captureVippsBetaling } from '@/lib/vipps/payment'
  *   - FAILED → noe gikk galt
  */
 export async function POST(request: NextRequest) {
+  // Fail-closed: reject if secret is not configured or doesn't match
+  const webhookSecret = process.env.VIPPS_WEBHOOK_SECRET
+  if (!webhookSecret || request.headers.get('Authorization') !== `Bearer ${webhookSecret}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
     const body = await request.json()
 

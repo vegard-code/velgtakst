@@ -106,6 +106,11 @@ export default async function PublicLayout({
                     Salgsvilkår
                   </Link>
                 </li>
+                <li>
+                  <Link href="/personvern" className="hover:text-white transition-colors">
+                    Personvernerklæring
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>

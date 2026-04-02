@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { cookies } from "next/headers";
+import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,18 +19,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const consentCookie = cookieStore.get("cookie_consent");
+  const hasConsent = consentCookie?.value === "granted" ? true : null;
+
   return (
     <html lang="no" className="h-full antialiased">
       <head>
         <meta name="google-site-verification" content="4Ig1-eNP19cN_ZAjorv7Xw4BeoPtqx89fku953BPAaQ" />
       </head>
       <body className="min-h-full flex flex-col">
-        <GoogleAnalytics />
+        <CookieConsent initialConsent={hasConsent} />
         {children}
       </body>
     </html>
