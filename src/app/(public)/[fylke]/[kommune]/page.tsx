@@ -150,23 +150,35 @@ function getKommuneIntro(kommuneNavn: string, fylkeNavn: string): string {
   return `Leter du etter takstmann i ${kommuneNavn}? Her finner du sertifiserte takstmenn som tilbyr tilstandsrapport, verditakst, skadetakst og næringstakst i ${kommuneNavn} og resten av ${fylkeNavn}. Enten du skal selge bolig og trenger tilstandsrapport i ${kommuneNavn}, refinansiere og trenger verditakst, eller dokumentere en forsikringsskade med skadetakst i ${kommuneNavn} — vi hjelper deg å finne riktig fagperson.`;
 }
 
-function getKommuneFAQ(kommuneNavn: string, fylkeNavn: string) {
+function getKommuneFAQ(kommuneNavn: string, _fylkeNavn: string) {
   return [
     {
       sporsmal: `Hva koster en takstmann i ${kommuneNavn}?`,
-      svar: `Prisen for takst i ${kommuneNavn} varierer etter type oppdrag. En tilstandsrapport for en enebolig koster typisk mellom 10 000 og 20 000 kroner, mens en verditakst ofte ligger på 3 000–8 000 kroner. Prisen avhenger av boligens størrelse og kompleksitet. Be alltid om tilbud fra flere takstmenn for å sammenligne.`,
+      svar: `Prisen på en takstmann i ${kommuneNavn} avhenger av type oppdrag og boligens størrelse. En tilstandsrapport for en vanlig enebolig ligger typisk på mellom 8 000 og 20 000 kroner, mens en verdivurdering ofte koster fra 3 000 til 8 000 kroner. Nøyaktig pris får du ved å be om tilbud fra takstmenn som opererer i ${kommuneNavn}.`,
     },
     {
-      sporsmal: `Trenger jeg tilstandsrapport ved boligsalg i ${kommuneNavn}?`,
-      svar: `Det er ikke lovpålagt, men i praksis er det nærmest nødvendig. Endringene i avhendingslova fra 1. januar 2022 fjernet selgers mulighet til å selge bolig «som den er» til forbrukere. Uten tilstandsrapport sitter selger med all risikoen. Fra 1. juli 2026 gjelder den nye standarden NS 3600:2025. En sertifisert takstmann i ${kommuneNavn} sikrer at rapporten oppfyller gjeldende krav.`,
+      sporsmal: `Hva er forskjellen på en tilstandsrapport og en verdivurdering?`,
+      svar: `En tilstandsrapport er en grundig teknisk gjennomgang av boligen etter NS 3600-standarden, der tilstanden på alt fra tak til grunnmur vurderes og graderes. En verdivurdering er et kortere dokument som fastsetter boligens markedsverdi, ofte brukt ved refinansiering eller arveoppgjør. Ved boligsalg i ${kommuneNavn} er det tilstandsrapporten som er lovpålagt etter avhendingsloven.`,
+    },
+    {
+      sporsmal: `Er det krav om tilstandsrapport ved boligsalg i ${kommuneNavn}?`,
+      svar: `Ja. Etter endringene i avhendingsloven som trådte i kraft 1. januar 2022, er det i praksis nødvendig med en tilstandsrapport etter NS 3600 ved salg av bolig i ${kommuneNavn} og resten av Norge. Selger kan ikke lenger ta generelle «som den er»-forbehold, og en godkjent tilstandsrapport gir bedre vern for både kjøper og selger.`,
     },
     {
       sporsmal: `Hvordan finner jeg en god takstmann i ${kommuneNavn}?`,
-      svar: `På VelgTakst kan du se takstmenn som dekker ${kommuneNavn} og ${fylkeNavn}. Sammenlign fagområder, sertifiseringer og vurderinger for å velge den som passer ditt oppdrag best.`,
+      svar: `Det viktigste er at takstmannen holder seg oppdatert på gjeldende lover og forskrifter. Mange får dette gjennom medlemskap i fagorganisasjoner som BMTF, Norsk Takst eller lignende. Sjekk også at takstmannen har erfaring med boliger i ${kommuneNavn}-området. På takstmann.net kan du sammenligne takstmenn som dekker ${kommuneNavn}.`,
     },
     {
-      sporsmal: `Hva er forskjellen mellom verditakst og tilstandsrapport?`,
-      svar: `En verditakst fastsetter markedsverdien og brukes ved refinansiering, arv eller skifte. En tilstandsrapport dokumenterer den tekniske tilstanden med tilstandsgrader (TG0–TG3) og er i praksis nødvendig ved boligsalg. Mange takstmenn som dekker ${kommuneNavn} tilbyr begge tjenestene.`,
+      sporsmal: `Hvor lang tid tar det å få en tilstandsrapport i ${kommuneNavn}?`,
+      svar: `Selve befaringen tar vanligvis 2–4 timer avhengig av boligens størrelse. Etter befaring kan du normalt forvente ferdig rapport innen 3–5 virkedager. I perioder med høy aktivitet i boligmarkedet i ${kommuneNavn} kan ventetiden for å få en avtale være noe lenger, så det lønner seg å bestille i god tid før planlagt salg.`,
+    },
+    {
+      sporsmal: `Når trenger jeg en takstmann i ${kommuneNavn}?`,
+      svar: `De vanligste situasjonene er ved boligsalg (tilstandsrapport), boligkjøp (kjøpsrådgivning), refinansiering (verdivurdering), arveoppgjør, forsikringssaker etter skade, og ved reklamasjon på feil og mangler. En takstmann i ${kommuneNavn} kan også bistå med vurdering før større oppussingsprosjekter.`,
+    },
+    {
+      sporsmal: `Hva bør jeg forberede før takstmannen kommer?`,
+      svar: `Sørg for at takstmannen har tilgang til alle rom, inkludert loft, kjeller, krypkjeller og tekniske rom. Ha gjerne dokumentasjon klar — som tegninger, tidligere tilstandsrapporter, oversikt over utførte oppgraderinger og kvitteringer fra håndverkere. Jo bedre tilgang og dokumentasjon, desto grundigere og mer nøyaktig blir rapporten.`,
     },
   ];
 }
