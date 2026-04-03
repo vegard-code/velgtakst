@@ -13,7 +13,7 @@ export default async function AdminPortalLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/logg-inn");
+  if (!user) redirect("/admin/logg-inn");
 
   const { data: profilRaw } = await supabase
     .from("user_profiles")

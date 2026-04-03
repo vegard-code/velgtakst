@@ -118,8 +118,11 @@ export async function GET(request: NextRequest) {
       (u) => u.email === email
     )
 
-    // Rollen brukeren valgte på innloggingssiden (eller default privatkunde)
-    const valgtRolle = savedState.rolle || 'privatkunde'
+    // Rollen brukeren valgte på innloggingssiden (kun tillatte roller for nye brukere)
+    const ALLOWED_REGISTRATION_ROLES = ['privatkunde', 'takstmann_admin', 'megler']
+    const valgtRolle = ALLOWED_REGISTRATION_ROLES.includes(savedState.rolle)
+      ? savedState.rolle
+      : 'privatkunde'
 
     let userId: string
 
@@ -188,25 +191,14 @@ export async function GET(request: NextRequest) {
 
     let redirectUrl: string
 
-    if (faktiskRolle === 'admin' && eksplisittRedirect) {
-      // Bruk eksplisitt redirect (f.eks. /portal/admin fra admin-innloggingssiden)
-      redirectUrl = eksplisittRedirect
+    if (faktiskRolle === 'admin') {
+      redirectUrl = eksplisittRedirect ?? '/portal/admin'
+    } else if (faktiskRolle === 'takstmann_admin' || faktiskRolle === 'takstmann') {
+      redirectUrl = '/portal/takstmann'
+    } else if (faktiskRolle === 'megler') {
+      redirectUrl = '/portal/megler'
     } else {
-      // For admin-brukere: bruk valgt rolle fra innloggingssiden for redirect
-      // (admin har tilgang til alle portaler via middleware)
-      const rolleForRedirect = faktiskRolle === 'admin' ? valgtRolle : faktiskRolle
-
-      if (rolleForRedirect === 'takstmann_admin' || rolleForRedirect === 'takstmann') {
-        redirectUrl = '/portal/takstmann'
-      } else if (rolleForRedirect === 'megler') {
-        redirectUrl = '/portal/megler'
-      } else if (rolleForRedirect === 'privatkunde') {
-        redirectUrl = '/portal/kunde'
-      } else if (faktiskRolle === 'admin') {
-        redirectUrl = '/portal/admin'
-      } else {
-        redirectUrl = '/portal/kunde'
-      }
+      redirectUrl = '/portal/kunde'
     }
 
     // --- 5. Generer en Supabase-session for brukeren ---

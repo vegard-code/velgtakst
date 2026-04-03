@@ -31,6 +31,16 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
+  // Omdiriger admin til dedikert admin-innlogging hvis ikke logget inn
+  if (pathname.startsWith('/portal/admin') && !user) {
+    return NextResponse.redirect(new URL('/admin/logg-inn', request.url))
+  }
+
+  // Omdiriger innloggede brukere bort fra admin-innloggingssiden
+  if (pathname === '/admin/logg-inn' && user) {
+    return NextResponse.redirect(new URL('/portal', request.url))
+  }
+
   // Beskytt portal-ruter
   if (pathname.startsWith('/portal')) {
     if (!user) {
