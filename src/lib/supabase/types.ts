@@ -63,6 +63,8 @@ export interface UserProfile {
   created_at: string
 }
 
+export type Sertifisering = 'BMTF' | 'Norsk Takst' | 'Annet'
+
 export interface TakstmannProfil {
   id: string
   user_id: string | null
@@ -77,6 +79,8 @@ export interface TakstmannProfil {
   epost: string | null
   bilde_url: string | null
   sertifiseringer: string[]
+  sertifisering: Sertifisering | null
+  sertifisering_annet: string | null
   created_at: string
   updated_at: string
 }

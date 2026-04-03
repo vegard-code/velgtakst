@@ -7,6 +7,7 @@ import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannMedFylker } from "@/lib/supabase/types";
 import { KOMMUNER, getKommunerForFylke } from "@/data/kommuner";
 import { KOMMUNE_SEO_CONTENT } from "@/data/kommune-seo-content";
+import SertifiseringBadge from "@/components/SertifiseringBadge";
 
 export const revalidate = 900;
 
@@ -99,7 +100,7 @@ async function hentTakstmennIKommune(fylkeId: string, kommuneId: string): Promis
       `
       takstmann_id,
       takstmann_profiler!inner (
-        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, tjenester, created_at, updated_at, user_id, company_id,
+        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id,
         company:companies(navn)
       )
     `
@@ -461,7 +462,15 @@ export default async function KommunePage({ params }: Props) {
                         </div>
                       )}
 
-                      {t.sertifiseringer?.length > 0 && (
+                      {t.sertifisering && (
+                        <div>
+                          <SertifiseringBadge
+                            sertifisering={t.sertifisering}
+                            sertifiseringAnnet={t.sertifisering_annet}
+                          />
+                        </div>
+                      )}
+                      {!t.sertifisering && t.sertifiseringer?.length > 0 && (
                         <div>
                           <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">
                             Sertifisering

@@ -20,6 +20,9 @@ export async function oppdaterInnstillinger(formData: FormData) {
     // Hent tjenester fra formdata (multiple checkboxes)
     const tjenester = formData.getAll('tjenester').map(String).filter(Boolean)
 
+    const sertifisering = (formData.get('sertifisering') as string) || null
+    const sertifiseringAnnet = (formData.get('sertifisering_annet') as string) || null
+
     // Oppdater takstmann-profil
     await supabase
       .from('takstmann_profiler')
@@ -30,6 +33,8 @@ export async function oppdaterInnstillinger(formData: FormData) {
         spesialitet_2: (formData.get('spesialitet_2') as string) || null,
         tjenester,
         bio: (formData.get('bio') as string) || null,
+        sertifisering: sertifisering || null,
+        sertifisering_annet: sertifisering === 'Annet' ? sertifiseringAnnet : null,
       })
       .eq('user_id', user.id)
 

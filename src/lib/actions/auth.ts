@@ -13,6 +13,8 @@ export async function registrerTakstmann(formData: FormData) {
   const spesialitet = formData.get('spesialitet') as string | null
   const spesialitet2 = formData.get('spesialitet_2') as string | null
   const tjenester = formData.getAll('tjenester').map(String).filter(Boolean)
+  const sertifisering = (formData.get('sertifisering') as string) || null
+  const sertifiseringAnnet = (formData.get('sertifisering_annet') as string) || null
   const firmanavn = formData.get('firmanavn') as string
   const orgnr = formData.get('orgnr') as string | null
   const telefonFirma = formData.get('telefon_firma') as string | null
@@ -85,6 +87,8 @@ export async function registrerTakstmann(formData: FormData) {
     spesialitet: spesialitet || null,
     spesialitet_2: spesialitet2 || null,
     tjenester,
+    sertifisering: sertifisering || null,
+    sertifisering_annet: sertifisering === 'Annet' ? sertifiseringAnnet : null,
   })
 
   if (takstmannError) {

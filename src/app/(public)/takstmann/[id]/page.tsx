@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannProfil, MeglerVurdering, FylkeSynlighet } from "@/lib/supabase/types";
 import BestillTakstKnapp from "./BestillTakstKnapp";
+import SertifiseringBadge from "@/components/SertifiseringBadge";
 
 export const revalidate = 900;
 
@@ -138,7 +139,17 @@ export default async function TakstmannProfilPage({ params }: Props) {
               <p className="text-gray-400 mb-2">{companyNavn}</p>
             )}
             {profil.tittel && (
-              <p className="text-gray-500 text-sm mb-3">{profil.tittel}</p>
+              <p className="text-gray-500 text-sm mb-2">{profil.tittel}</p>
+            )}
+
+            {profil.sertifisering && (
+              <div className="mb-3">
+                <SertifiseringBadge
+                  sertifisering={profil.sertifisering}
+                  sertifiseringAnnet={profil.sertifisering_annet}
+                  size="md"
+                />
+              </div>
             )}
 
             {/* Vurderingsstjerner */}

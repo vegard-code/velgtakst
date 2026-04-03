@@ -42,6 +42,9 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
   const [spes1, setSpes1] = useState(takstmannProfil?.spesialitet ?? "");
   const [spes2, setSpes2] = useState(takstmannProfil?.spesialitet_2 ?? "");
 
+  // Sertifisering
+  const [sertifisering, setSertifisering] = useState(takstmannProfil?.sertifisering ?? "");
+
   // Tjenester (checkboxes)
   const [valgteTjenester, setValgteTjenester] = useState<string[]>(
     takstmannProfil?.tjenester ?? []
@@ -235,6 +238,39 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
             <div className="border-t border-[#e2e8f0] pt-5">
               <label className="block text-sm font-medium text-[#374151] mb-1.5">Om deg (vises på profilen)</label>
               <textarea name="bio" defaultValue={takstmannProfil?.bio ?? ""} rows={4} className="portal-input resize-none" placeholder="Beskriv din bakgrunn og erfaring..." />
+            </div>
+
+            {/* Forbundstilknytning */}
+            <div className="border-t border-[#e2e8f0] pt-5">
+              <h3 className="text-[#1e293b] font-medium mb-1">Forbundstilknytning</h3>
+              <p className="text-[#64748b] text-sm mb-4">Valgfritt. Vises som et merke på din offentlige profil.</p>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-[#64748b] mb-1.5">Organisasjon</label>
+                  <select
+                    name="sertifisering"
+                    value={sertifisering}
+                    onChange={(e) => setSertifisering(e.target.value)}
+                    className="portal-input"
+                  >
+                    <option value="">Ingen tilknytning</option>
+                    <option value="BMTF">BMTF (Byggmesternes og Takstingeniørenes Forening)</option>
+                    <option value="Norsk Takst">Norsk Takst</option>
+                    <option value="Annet">Annet</option>
+                  </select>
+                </div>
+                {sertifisering === "Annet" && (
+                  <div>
+                    <label className="block text-xs font-medium text-[#64748b] mb-1.5">Spesifiser forbund</label>
+                    <input
+                      name="sertifisering_annet"
+                      defaultValue={takstmannProfil?.sertifisering_annet ?? ""}
+                      className="portal-input"
+                      placeholder="Navn på forbund eller organisasjon"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Bedriftsinformasjon */}

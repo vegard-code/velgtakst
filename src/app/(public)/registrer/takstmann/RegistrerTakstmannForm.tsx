@@ -26,6 +26,9 @@ export default function RegistrerTakstmannForm() {
   const [spes2, setSpes2] = useState("");
   const [valgteTjenester, setValgteTjenester] = useState<string[]>([]);
 
+  // Steg 3: Sertifisering
+  const [sertifisering, setSertifisering] = useState("");
+
   function toggleTjeneste(t: string) {
     setValgteTjenester((prev) =>
       prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
@@ -290,6 +293,30 @@ export default function RegistrerTakstmannForm() {
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1.5">Mobilnummer</label>
                 <input name="telefon" className={inputClass} placeholder="400 00 000" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                  Forbundstilknytning{" "}
+                  <span className="text-gray-500 font-normal">(valgfritt)</span>
+                </label>
+                <select
+                  name="sertifisering"
+                  value={sertifisering}
+                  onChange={(e) => setSertifisering(e.target.value)}
+                  className={selectClass}
+                >
+                  <option value="">Ingen tilknytning</option>
+                  <option value="BMTF">BMTF (Byggmesternes og Takstingeniørenes Forening)</option>
+                  <option value="Norsk Takst">Norsk Takst</option>
+                  <option value="Annet">Annet</option>
+                </select>
+                {sertifisering === "Annet" && (
+                  <input
+                    name="sertifisering_annet"
+                    className={`${inputClass} mt-2`}
+                    placeholder="Spesifiser forbund eller organisasjon"
+                  />
+                )}
               </div>
             </div>
 

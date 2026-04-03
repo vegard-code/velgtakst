@@ -7,6 +7,7 @@ import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannMedFylker } from "@/lib/supabase/types";
 import { getKommunerForFylke } from "@/data/kommuner";
 import RandomSpinnerWrapper from "@/components/RandomSpinnerWrapper";
+import SertifiseringBadge from "@/components/SertifiseringBadge";
 import data from "@/data/takstmenn.json";
 
 export const revalidate = 900;
@@ -100,7 +101,7 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
       `
       takstmann_id,
       takstmann_profiler!inner (
-        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, tjenester, created_at, updated_at, user_id, company_id,
+        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id,
         company:companies(navn)
       )
     `
@@ -338,7 +339,15 @@ export default async function FylkePage({ params }: Props) {
                         </div>
                       )}
 
-                      {t.sertifiseringer?.length > 0 && (
+                      {t.sertifisering && (
+                        <div>
+                          <SertifiseringBadge
+                            sertifisering={t.sertifisering}
+                            sertifiseringAnnet={t.sertifisering_annet}
+                          />
+                        </div>
+                      )}
+                      {!t.sertifisering && t.sertifiseringer?.length > 0 && (
                         <div>
                           <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Sertifisering</p>
                           <p className="text-gray-300 text-sm flex items-center gap-1">
