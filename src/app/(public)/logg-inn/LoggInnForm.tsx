@@ -95,7 +95,7 @@ export default function LoggInnForm() {
       return;
     }
 
-    router.push(redirect || "/portal");
+    router.push(redirect || aktivRolle?.redirect || "/portal");
     router.refresh();
   }
 

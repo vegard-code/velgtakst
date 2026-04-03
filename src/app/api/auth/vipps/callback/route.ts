@@ -183,21 +183,30 @@ export async function GET(request: NextRequest) {
 
     const faktiskRolle = (profilData as { rolle?: string } | null)?.rolle ?? 'privatkunde'
 
-    // For admin-brukere: bruk valgt rolle fra innloggingssiden for redirect
-    // (admin har tilgang til alle portaler via middleware)
-    const rolleForRedirect = faktiskRolle === 'admin' ? valgtRolle : faktiskRolle
+    // For admin-brukere: bruk eksplisitt redirect fra cookie hvis satt (f.eks. fra /admin/logg-inn)
+    const eksplisittRedirect = savedState.redirect && savedState.redirect.startsWith('/portal/') ? savedState.redirect : null
+
     let redirectUrl: string
 
-    if (rolleForRedirect === 'takstmann_admin' || rolleForRedirect === 'takstmann') {
-      redirectUrl = '/portal/takstmann'
-    } else if (rolleForRedirect === 'megler') {
-      redirectUrl = '/portal/megler'
-    } else if (rolleForRedirect === 'privatkunde') {
-      redirectUrl = '/portal/kunde'
-    } else if (faktiskRolle === 'admin') {
-      redirectUrl = '/portal/admin'
+    if (faktiskRolle === 'admin' && eksplisittRedirect) {
+      // Bruk eksplisitt redirect (f.eks. /portal/admin fra admin-innloggingssiden)
+      redirectUrl = eksplisittRedirect
     } else {
-      redirectUrl = '/portal/kunde'
+      // For admin-brukere: bruk valgt rolle fra innloggingssiden for redirect
+      // (admin har tilgang til alle portaler via middleware)
+      const rolleForRedirect = faktiskRolle === 'admin' ? valgtRolle : faktiskRolle
+
+      if (rolleForRedirect === 'takstmann_admin' || rolleForRedirect === 'takstmann') {
+        redirectUrl = '/portal/takstmann'
+      } else if (rolleForRedirect === 'megler') {
+        redirectUrl = '/portal/megler'
+      } else if (rolleForRedirect === 'privatkunde') {
+        redirectUrl = '/portal/kunde'
+      } else if (faktiskRolle === 'admin') {
+        redirectUrl = '/portal/admin'
+      } else {
+        redirectUrl = '/portal/kunde'
+      }
     }
 
     // --- 5. Generer en Supabase-session for brukeren ---

@@ -20,7 +20,7 @@ export default async function KundePortalLayout({
     .single();
   const profil = profilRaw as { rolle: string; navn: string } | null;
 
-  if (!profil || profil.rolle !== "privatkunde") redirect("/portal");
+  if (!profil || (profil.rolle !== "privatkunde" && profil.rolle !== "admin")) redirect("/portal");
 
   const ulesteMeldinger = await hentAntallUleste();
 

@@ -23,7 +23,7 @@ export default async function TakstmannPortalLayout({
     .single();
   const profil = profilRaw as { rolle: string; navn: string; company_id: string | null } | null;
 
-  if (!profil || (profil.rolle !== "takstmann" && profil.rolle !== "takstmann_admin")) {
+  if (!profil || (profil.rolle !== "takstmann" && profil.rolle !== "takstmann_admin" && profil.rolle !== "admin")) {
     redirect("/portal");
   }
 

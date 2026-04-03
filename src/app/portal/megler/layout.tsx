@@ -20,7 +20,7 @@ export default async function MeglerPortalLayout({
     .single();
   const profil = profilRaw as { rolle: string; navn: string; company_id: string | null } | null;
 
-  if (!profil || profil.rolle !== "megler") redirect("/portal");
+  if (!profil || (profil.rolle !== "megler" && profil.rolle !== "admin")) redirect("/portal");
 
   const ulesteMeldinger = await hentAntallUleste();
 
