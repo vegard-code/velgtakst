@@ -101,8 +101,7 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
       `
       takstmann_id,
       takstmann_profiler!inner (
-        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id,
-        company:companies(navn)
+        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id
       )
     `
     )
@@ -116,7 +115,25 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
     fylke_synlighet: [],
     snittKarakter: null as number | null,
     antallVurderinger: 0,
+    company: null as { navn: string } | null,
   }));
+
+  // Hent selskaper separat for å unngå join-feil
+  const companyIds = [...new Set(takstmenn.filter((t) => t.company_id).map((t) => t.company_id!))];
+  if (companyIds.length > 0) {
+    const { data: companies } = await supabase
+      .from("companies")
+      .select("id, navn")
+      .in("id", companyIds);
+    if (companies) {
+      const companyMap = new Map((companies as { id: string; navn: string }[]).map((c) => [c.id, c.navn]));
+      for (const t of takstmenn) {
+        if (t.company_id && companyMap.has(t.company_id)) {
+          t.company = { navn: companyMap.get(t.company_id)! };
+        }
+      }
+    }
+  }
 
   // Hent vurderinger for alle takstmenn
   if (takstmenn.length > 0) {
@@ -276,7 +293,7 @@ export default async function FylkePage({ params }: Props) {
                 (tj) => tj !== t.spesialitet && tj !== t.spesialitet_2
               );
               const visNavn = t.navn ?? "Ukjent";
-              const companyNavn = (t as unknown as { company?: { navn: string } | null }).company?.navn;
+              const companyNavn = t.company?.navn;
 
               return (
                 <div
