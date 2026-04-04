@@ -33,36 +33,39 @@ export default function BestillTakstKnapp({
   const [laster, setLaster] = useState(false);
   const [feil, setFeil] = useState<string | null>(null);
 
-  const isGuest = isLoggedIn && !kundeProfilId && !meglerProfilId;
   // Not logged in at all, or logged in but no profile
   const trengerKontaktInfo = !kundeProfilId && !meglerProfilId;
 
   async function handleSend() {
     if (trengerKontaktInfo && !guestNavn.trim()) {
-      setFeil("Skriv inn navnet ditt.");
+      setFeil("Du må skrive inn navnet ditt før du kan sende bestillingen.");
       return;
     }
     setFeil(null);
     setLaster(true);
 
-    const result = await opprettBestillingFraPublikk({
-      takstmannId,
-      tjeneste: tjeneste || undefined,
-      adresse: adresse.trim() || undefined,
-      melding: melding.trim() || undefined,
-      kundeProfilId,
-      meglerProfilId,
-      guestNavn: trengerKontaktInfo ? guestNavn.trim() : undefined,
-      guestEpost: trengerKontaktInfo ? guestEpost.trim() : undefined,
-      guestTelefon: trengerKontaktInfo ? guestTelefon.trim() : undefined,
-    });
+    try {
+      const result = await opprettBestillingFraPublikk({
+        takstmannId,
+        tjeneste: tjeneste || undefined,
+        adresse: adresse.trim() || undefined,
+        melding: melding.trim() || undefined,
+        kundeProfilId,
+        meglerProfilId,
+        guestNavn: trengerKontaktInfo ? guestNavn.trim() : undefined,
+        guestEpost: trengerKontaktInfo ? guestEpost.trim() : undefined,
+        guestTelefon: trengerKontaktInfo ? guestTelefon.trim() : undefined,
+      });
 
-    setLaster(false);
-
-    if (result.error) {
-      setFeil(result.error);
-    } else {
-      setSteg("sendt");
+      if (result.error) {
+        setFeil(`Kunne ikke sende bestillingen: ${result.error}`);
+      } else {
+        setSteg("sendt");
+      }
+    } catch {
+      setFeil("En uventet feil oppstod. Vennligst prøv igjen eller kontakt oss direkte.");
+    } finally {
+      setLaster(false);
     }
   }
 
@@ -85,6 +88,41 @@ export default function BestillTakstKnapp({
   if (steg === "skjema") {
     return (
       <div className="space-y-3">
+        {/* Kontaktinfo for gjester — øverst så det ikke overses */}
+        {trengerKontaktInfo && (
+          <div className="bg-accent/10 border border-accent/30 rounded-lg p-3 space-y-2">
+            <p className="text-accent text-xs font-semibold uppercase tracking-wide">Din kontaktinfo (påkrevd)</p>
+            <input
+              type="text"
+              value={guestNavn}
+              onChange={(e) => setGuestNavn(e.target.value)}
+              placeholder="Fullt navn *"
+              className="w-full bg-gray-800 border border-gray-600 text-white text-sm rounded-lg px-3 py-2 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-accent"
+            />
+            <input
+              type="tel"
+              value={guestTelefon}
+              onChange={(e) => setGuestTelefon(e.target.value)}
+              placeholder="Telefonnummer"
+              className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-accent"
+            />
+            <input
+              type="email"
+              value={guestEpost}
+              onChange={(e) => setGuestEpost(e.target.value)}
+              placeholder="E-postadresse"
+              className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-accent"
+            />
+            <p className="text-xs text-gray-500">
+              Eller{" "}
+              <a href="/logg-inn" className="text-accent hover:underline">
+                logg inn
+              </a>{" "}
+              for å bruke din profil.
+            </p>
+          </div>
+        )}
+
         {/* Tjenestetype */}
         {tjenester.length > 0 && (
           <div>
@@ -125,42 +163,15 @@ export default function BestillTakstKnapp({
           />
         </div>
 
-        {/* Kontaktinfo for gjester */}
-        {trengerKontaktInfo && (
-          <div className="border-t border-gray-700 pt-3 space-y-2">
-            <p className="text-xs text-gray-500">Din kontaktinformasjon</p>
-            <input
-              type="text"
-              value={guestNavn}
-              onChange={(e) => setGuestNavn(e.target.value)}
-              placeholder="Navn *"
-              className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-accent"
-            />
-            <input
-              type="tel"
-              value={guestTelefon}
-              onChange={(e) => setGuestTelefon(e.target.value)}
-              placeholder="Telefonnummer"
-              className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-accent"
-            />
-            <input
-              type="email"
-              value={guestEpost}
-              onChange={(e) => setGuestEpost(e.target.value)}
-              placeholder="E-postadresse"
-              className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-accent"
-            />
-            <p className="text-xs text-gray-600">
-              Eller{" "}
-              <a href="/logg-inn" className="text-accent hover:underline">
-                logg inn
-              </a>{" "}
-              for å bruke din profil.
-            </p>
+        {/* Feilmelding */}
+        {feil && (
+          <div className="flex items-start gap-2 bg-red-500/10 border border-red-500/40 rounded-lg px-3 py-2.5">
+            <svg className="w-4 h-4 text-red-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            </svg>
+            <p className="text-red-300 text-sm">{feil}</p>
           </div>
         )}
-
-        {feil && <p className="text-red-400 text-xs">{feil}</p>}
 
         <div className="flex gap-2 pt-1">
           <button
