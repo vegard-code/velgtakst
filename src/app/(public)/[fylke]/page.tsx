@@ -270,19 +270,26 @@ export default async function FylkePage({ params }: Props) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {takstmenn.map((t) => {
-              const andreTjenester = (t.tjenester ?? []).filter(
+              const alleTjenester = t.tjenester ?? [];
+              const primærTjenester = [t.spesialitet, t.spesialitet_2].filter(Boolean) as string[];
+              const andreTjenester = alleTjenester.filter(
                 (tj) => tj !== t.spesialitet && tj !== t.spesialitet_2
               );
+              const visTjenester = [...primærTjenester, ...andreTjenester].slice(0, 4);
+              const ekstraTjenester = alleTjenester.length - visTjenester.length;
+              const companyNavn = (t as unknown as { company?: { navn: string } | null }).company?.navn;
 
               return (
-                <Link
+                <div
                   key={t.id}
-                  href={`/takstmann/${t.id}`}
-                  className="card-hover block bg-card-bg border border-card-border rounded-xl overflow-hidden"
+                  className="card-hover bg-card-bg border border-card-border rounded-2xl overflow-hidden flex flex-col"
                 >
-                  {/* Profilbilde – stor, sentrert */}
-                  <div className="flex justify-center pt-6 pb-4">
-                    <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent/20 relative bg-accent/10">
+                  {/* Fargestripe øverst */}
+                  <div className="h-1 bg-gradient-to-r from-accent to-blue-400" />
+
+                  {/* Profilbilde + navn + firma */}
+                  <div className="flex flex-col items-center pt-6 pb-3 px-5">
+                    <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-accent/30 relative bg-accent/10 mb-3 shadow-lg shadow-accent/10">
                       {t.bilde_url ? (
                         <Image
                           src={t.bilde_url}
@@ -292,82 +299,99 @@ export default async function FylkePage({ params }: Props) {
                           unoptimized
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-accent font-bold text-3xl">
-                          {t.navn.charAt(0)}
+                        <div className="w-full h-full flex items-center justify-center text-accent font-bold text-2xl">
+                          {t.navn ? t.navn.charAt(0).toUpperCase() : "T"}
                         </div>
                       )}
                     </div>
-                  </div>
-
-                  {/* Innhold */}
-                  <div className="px-5 pb-5 text-center">
-                    <h3 className="text-white font-semibold text-lg">{t.navn}</h3>
+                    <h3 className="text-white font-bold text-lg leading-tight text-center">{t.navn}</h3>
+                    {companyNavn && (
+                      <p className="text-gray-400 text-sm mt-0.5 text-center">{companyNavn}</p>
+                    )}
+                    {!companyNavn && t.tittel && (
+                      <p className="text-gray-500 text-xs mt-0.5 text-center">{t.tittel}</p>
+                    )}
 
                     {/* Vurdering */}
                     {t.snittKarakter !== null ? (
-                      <div className="flex items-center justify-center gap-1.5 mt-1">
+                      <div className="flex items-center gap-1.5 mt-2">
                         <div className="flex">
                           {[1, 2, 3, 4, 5].map((s) => (
-                            <svg key={s} className={`w-3.5 h-3.5 ${s <= Math.round(t.snittKarakter!) ? "text-yellow-400" : "text-gray-600"}`} fill="currentColor" viewBox="0 0 20 20">
+                            <svg key={s} className={`w-3.5 h-3.5 ${s <= Math.round(t.snittKarakter!) ? "text-yellow-400" : "text-gray-700"}`} fill="currentColor" viewBox="0 0 20 20">
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
                           ))}
                         </div>
-                        <span className="text-gray-400 text-xs">({t.antallVurderinger})</span>
+                        <span className="text-gray-400 text-xs">{t.snittKarakter.toFixed(1)} ({t.antallVurderinger})</span>
                       </div>
                     ) : (
-                      <p className="text-gray-600 text-xs mt-1">Ingen vurderinger ennå</p>
+                      <p className="text-gray-600 text-xs mt-2">Ingen vurderinger ennå</p>
+                    )}
+                  </div>
+
+                  {/* Separator */}
+                  <div className="mx-5 border-t border-card-border" />
+
+                  {/* Tjenester som badges */}
+                  <div className="px-5 pt-4 pb-3 flex-1">
+                    {visTjenester.length > 0 ? (
+                      <div className="flex flex-wrap gap-1.5">
+                        {visTjenester.map((tj, i) => (
+                          <span
+                            key={tj}
+                            className={`text-xs rounded-full px-2.5 py-1 border ${
+                              i === 0
+                                ? "bg-accent/15 text-accent border-accent/30 font-medium"
+                                : "bg-white/5 text-gray-300 border-white/10"
+                            }`}
+                          >
+                            {tj}
+                          </span>
+                        ))}
+                        {ekstraTjenester > 0 && (
+                          <span className="text-xs text-gray-500 self-center">+{ekstraTjenester}</span>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-gray-600 text-xs">Taksttjenester tilgjengelig</p>
                     )}
 
-                    {/* Spesialitet */}
-                    <div className="mt-4 text-left space-y-2">
-                      {t.spesialitet && (
-                        <div>
-                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Spesialitet</p>
-                          <p className="text-accent text-sm">
-                            {t.spesialitet}
-                            {t.spesialitet_2 && <span className="text-gray-500"> · </span>}
-                            {t.spesialitet_2 && <span>{t.spesialitet_2}</span>}
-                          </p>
-                        </div>
-                      )}
-
-                      {andreTjenester.length > 0 && (
-                        <div>
-                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Utfører også</p>
-                          <p className="text-gray-300 text-sm">{andreTjenester.slice(0, 4).join(", ")}{andreTjenester.length > 4 ? ` +${andreTjenester.length - 4}` : ""}</p>
-                        </div>
-                      )}
-
-                      {t.sertifisering && (
-                        <div>
+                    {/* Sertifisering */}
+                    {(t.sertifisering || (t.sertifiseringer?.length > 0)) && (
+                      <div className="mt-3">
+                        {t.sertifisering ? (
                           <SertifiseringBadge
                             sertifisering={t.sertifisering}
                             sertifiseringAnnet={t.sertifisering_annet}
                           />
-                        </div>
-                      )}
-                      {!t.sertifisering && t.sertifiseringer?.length > 0 && (
-                        <div>
-                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">Sertifisering</p>
-                          <p className="text-gray-300 text-sm flex items-center gap-1">
-                            <svg className="w-3.5 h-3.5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-xs text-green-400">
+                            <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             {t.sertifiseringer[0]}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* CTA */}
-                    <div className="mt-4 pt-4 border-t border-card-border">
-                      <span className="inline-flex items-center gap-2 text-accent text-sm font-medium">
-                        Se profil &rarr;
-                      </span>
-                    </div>
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
-                </Link>
+
+                  {/* CTA-knapper */}
+                  <div className="px-5 pb-5 pt-2 flex gap-2">
+                    <Link
+                      href={`/takstmann/${t.id}`}
+                      className="flex-1 bg-accent hover:bg-accent/90 text-white text-sm font-semibold py-2.5 px-4 rounded-xl text-center transition-colors"
+                    >
+                      Be om tilbud
+                    </Link>
+                    <Link
+                      href={`/takstmann/${t.id}`}
+                      className="text-gray-400 hover:text-white border border-card-border hover:border-accent/40 text-sm py-2.5 px-3 rounded-xl transition-colors"
+                    >
+                      Profil
+                    </Link>
+                  </div>
+                </div>
               );
             })}
           </div>
