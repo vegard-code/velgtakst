@@ -1,165 +1,91 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { opprettOppdrag } from "@/lib/actions/oppdrag";
 import type { OppdragType } from "@/lib/supabase/types";
+import { OPPDRAG_TYPE_LABELS } from "@/lib/supabase/types";
 
-interface Props {
+export default function NyttOppdragForm({
+  oppdragTyper,
+}: {
   oppdragTyper: Record<OppdragType, string>;
-}
-
-export default function NyttOppdragForm({ oppdragTyper }: Props) {
-  const formRef = useRef<HTMLFormElement>(null);
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [feil, setFeil] = useState<string | null>(null);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setFeil(null);
-    const formData = new FormData(e.currentTarget);
-
-    startTransition(async () => {
-      const result = await opprettOppdrag(formData);
-      if (result?.error) {
-        setFeil(result.error);
-      }
-      // On success, opprettOppdrag redirects via Next.js redirect()
-    });
-  }
-
+}) {
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
+    <form action={opprettOppdrag as unknown as (formData: FormData) => void} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-[#374151] mb-1.5">
-          Tittel <span className="text-red-500">*</span>
-        </label>
+        <label className="block text-sm font-medium text-[#374151] mb-1">Tittel *</label>
         <input
           name="tittel"
           required
-          placeholder="F.eks. Tilstandsrapport Storgata 12"
-          className="portal-input w-full"
+          className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
         />
       </div>
-
       <div>
-        <label className="block text-sm font-medium text-[#374151] mb-1.5">
-          Type oppdrag <span className="text-red-500">*</span>
-        </label>
-        <select name="oppdrag_type" required className="portal-input w-full">
-          <option value="">Velg type...</option>
-          {Object.entries(oppdragTyper).map(([k, v]) => (
-            <option key={k} value={k}>{v}</option>
+        <label className="block text-sm font-medium text-[#374151] mb-1">Type oppdrag *</label>
+        <select
+          name="oppdrag_type"
+          required
+          className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
+        >
+          <option value="">Velg type</option>
+          {Object.entries(oppdragTyper).map(([value, label]) => (
+            <option key={value} value={value}>{label}</option>
           ))}
         </select>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="sm:col-span-2">
-          <label className="block text-sm font-medium text-[#374151] mb-1.5">
-            Adresse
-          </label>
-          <input
-            name="adresse"
-            placeholder="Gateadresse"
-            className="portal-input w-full"
-          />
-        </div>
+      <div>
+        <label className="block text-sm font-medium text-[#374151] mb-1">Adresse</label>
+        <input
+          name="adresse"
+          className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-[#374151] mb-1.5">
-            Postnummer
-          </label>
+          <label className="block text-sm font-medium text-[#374151] mb-1">Postnr</label>
           <input
             name="postnr"
-            placeholder="0000"
-            maxLength={4}
-            className="portal-input w-full"
+            className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-[#374151] mb-1">By</label>
+          <input
+            name="by"
+            className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
           />
         </div>
       </div>
-
       <div>
-        <label className="block text-sm font-medium text-[#374151] mb-1.5">
-          By/sted
-        </label>
+        <label className="block text-sm font-medium text-[#374151] mb-1">Befaringsdato</label>
         <input
-          name="by"
-          placeholder="Oslo"
-          className="portal-input w-full"
+          type="date"
+          name="befaringsdato"
+          className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
         />
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-[#374151] mb-1.5">
-            Befaringsdato
-          </label>
-          <input
-            name="befaringsdato"
-            type="date"
-            className="portal-input w-full"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-[#374151] mb-1.5">
-            Frist
-          </label>
-          <input
-            name="frist"
-            type="date"
-            className="portal-input w-full"
-          />
-        </div>
-      </div>
-
       <div>
-        <label className="block text-sm font-medium text-[#374151] mb-1.5">
-          Pris (kr)
-        </label>
+        <label className="block text-sm font-medium text-[#374151] mb-1">Pris (kr)</label>
         <input
-          name="pris"
           type="number"
-          min={0}
-          placeholder="0"
-          className="portal-input w-full"
+          name="pris"
+          min="0"
+          className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
         />
       </div>
-
       <div>
-        <label className="block text-sm font-medium text-[#374151] mb-1.5">
-          Beskrivelse
-        </label>
+        <label className="block text-sm font-medium text-[#374151] mb-1">Beskrivelse</label>
         <textarea
           name="beskrivelse"
-          rows={4}
-          placeholder="Beskriv oppdraget..."
-          className="portal-input w-full resize-y"
+          rows={3}
+          className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
         />
       </div>
-
-      {feil && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">
-          {feil}
-        </div>
-      )}
-
-      <div className="flex gap-3 pt-2">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="portal-btn-secondary flex-1"
-        >
-          Avbryt
-        </button>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="portal-btn-primary flex-1"
-        >
-          {isPending ? "Oppretter..." : "Opprett oppdrag"}
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="w-full bg-[#285982] hover:bg-[#1e4266] text-white font-medium py-2.5 rounded-lg transition-colors"
+      >
+        Opprett oppdrag
+      </button>
     </form>
   );
 }

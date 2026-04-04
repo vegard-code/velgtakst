@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import TakstmannSidebar from "@/components/portal/TakstmannSidebar";
 import PortalHeader from "@/components/portal/PortalHeader";
-import { hentAntallUleste } from "@/lib/actions/meldinger";
+import { hentAntallUleste } from "@/lib/actions/meldinger"
+import { hentAntallNyeBestillinger } from "@/lib/actions/bestillinger";
 
 export default async function TakstmannPortalLayout({
   children,
@@ -35,7 +36,10 @@ export default async function TakstmannPortalLayout({
         .single()
     : { data: null };
 
-  const ulesteMeldinger = await hentAntallUleste();
+  const [ulesteMeldinger, nyeBestillinger] = await Promise.all([
+    hentAntallUleste(),
+    hentAntallNyeBestillinger(),
+  ]);
 
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">
@@ -44,6 +48,7 @@ export default async function TakstmannPortalLayout({
         firmanavn={company?.navn}
         rolle={profil.rolle}
         ulesteMeldinger={ulesteMeldinger}
+        nyeBestillinger={nyeBestillinger}
       />
       <div className="flex-1 flex flex-col min-w-0">
         <PortalHeader navn={profil.navn} portalType="takstmann" />

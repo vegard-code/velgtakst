@@ -16,11 +16,31 @@ const navItems = [
     ),
   },
   {
+    href: "/portal/kunde/innboks",
+    label: "Innboks",
+    badge: "innboks",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+    ),
+  },
+  {
     href: "/portal/kunde/finn-takstmann",
     label: "Finn takstmann",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/portal/kunde/bestillinger",
+    label: "Mine bestillinger",
+    badge: "bestillinger",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
       </svg>
     ),
   },
@@ -36,7 +56,7 @@ const navItems = [
   {
     href: "/portal/kunde/meldinger",
     label: "Meldinger",
-    hasBadge: true,
+    badge: "meldinger",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -54,8 +74,24 @@ const navItems = [
   },
 ];
 
-export default function KundeSidebar({ navn, ulesteMeldinger = 0 }: { navn: string; ulesteMeldinger?: number }) {
+export default function KundeSidebar({
+  navn,
+  ulesteMeldinger = 0,
+  nyeBestillinger = 0,
+}: {
+  navn: string;
+  ulesteMeldinger?: number;
+  nyeBestillinger?: number;
+}) {
   const pathname = usePathname();
+  const totalUlest = ulesteMeldinger + nyeBestillinger;
+
+  function getBadge(badge?: string): number {
+    if (badge === "meldinger") return ulesteMeldinger;
+    if (badge === "bestillinger") return nyeBestillinger;
+    if (badge === "innboks") return totalUlest;
+    return 0;
+  }
 
   return (
     <aside className="w-64 bg-white border-r border-[#e2e8f0] flex flex-col min-h-screen hidden lg:flex">
@@ -66,29 +102,40 @@ export default function KundeSidebar({ navn, ulesteMeldinger = 0 }: { navn: stri
         </Link>
         <div className="mt-4">
           <p className="text-[#1e293b] font-medium text-sm truncate">{navn}</p>
-          <span className="inline-block mt-1.5 text-[10px] font-semibold bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full uppercase tracking-wide">
-            Privatkunde
-          </span>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[10px] font-semibold bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full uppercase tracking-wide">
+              Privatkunde
+            </span>
+            {totalUlest > 0 && (
+              <Link href="/portal/kunde/innboks">
+                <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[11px] font-bold flex items-center justify-center">
+                  {totalUlest > 9 ? "9+" : totalUlest}
+                </span>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
       <nav className="flex-1 p-4 space-y-1">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`portal-sidebar-link ${
-              item.exact ? pathname === item.href : pathname.startsWith(item.href) ? "active" : ""
-            }`}
-          >
-            {item.icon}
-            <span className="flex-1">{item.label}</span>
-            {"hasBadge" in item && item.hasBadge && ulesteMeldinger > 0 && (
-              <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center">
-                {ulesteMeldinger > 9 ? "9+" : ulesteMeldinger}
-              </span>
-            )}
-          </Link>
-        ))}
+        {navItems.map((item) => {
+          const count = "badge" in item ? getBadge(item.badge) : 0;
+          const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`portal-sidebar-link ${isActive ? "active" : ""}`}
+            >
+              {item.icon}
+              <span className="flex-1">{item.label}</span>
+              {count > 0 && (
+                <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center">
+                  {count > 9 ? "9+" : count}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
       <div className="p-4 border-t border-[#e2e8f0]">
         <form action={loggUt}>

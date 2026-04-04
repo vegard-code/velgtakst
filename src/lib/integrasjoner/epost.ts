@@ -483,6 +483,158 @@ export async function sendStatusOppdateringVarsel({
 // Ny rapport tilgjengelig
 // ============================================================
 
+// ============================================================
+// Tilbud fra takstmann til privatkunde
+// ============================================================
+
+export async function sendTilbudTilKunde({
+  til,
+  kundeNavn,
+  takstmannNavn,
+  takstmannTelefon,
+  takstmannEpost,
+  tilbudspris,
+  estimertLeveringstid,
+  oppdragType,
+  adresse,
+  bestillingId,
+}: {
+  til: string
+  kundeNavn: string
+  takstmannNavn: string
+  takstmannTelefon?: string | null
+  takstmannEpost?: string | null
+  tilbudspris: number
+  estimertLeveringstid: string
+  oppdragType?: string | null
+  adresse?: string | null
+  bestillingId: string
+}) {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://takstmann.net'
+  const typeLabel = oppdragType
+    ? oppdragType.charAt(0).toUpperCase() + oppdragType.slice(1).replace(/_/g, ' ')
+    : null
+
+  await sendEpost({
+    til,
+    emne: `Tilbud fra ${takstmannNavn} – ${tilbudspris.toLocaleString('nb-NO')} kr`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
+        <div style="background: #285982; padding: 24px 32px; border-radius: 12px 12px 0 0;">
+          <p style="margin: 0; color: rgba(255,255,255,0.85); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Takstmann.net</p>
+          <h1 style="margin: 6px 0 0; color: #ffffff; font-size: 22px; font-weight: 700;">Du har mottatt et tilbud</h1>
+        </div>
+        <div style="background: #f8fafc; padding: 32px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;">
+          <p style="margin: 0 0 20px; color: #1e293b; font-size: 15px;">Hei ${kundeNavn},</p>
+          <p style="margin: 0 0 24px; color: #475569; font-size: 15px;">
+            <strong style="color: #1e293b;">${takstmannNavn}</strong> har sendt deg et tilbud på din forespørsel.
+            Du har <strong>48 timer</strong> på å akseptere eller avslå.
+          </p>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; background: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+            ${typeLabel ? `<tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px; width: 40%;">Type oppdrag</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 13px; font-weight: 600;">${typeLabel}</td></tr>` : ''}
+            ${adresse ? `<tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px;">Adresse</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 13px;">${adresse}</td></tr>` : ''}
+            <tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px;">Pris</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 16px; font-weight: 700;">${tilbudspris.toLocaleString('nb-NO')} kr</td></tr>
+            <tr><td style="padding: 12px 16px; color: #64748b; font-size: 13px;">Estimert leveringstid</td><td style="padding: 12px 16px; color: #1e293b; font-size: 13px;">${estimertLeveringstid}</td></tr>
+          </table>
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+            <p style="margin: 0 0 8px; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Kontakt takstmann</p>
+            <p style="margin: 0 0 4px; color: #1e293b; font-size: 14px; font-weight: 600;">${takstmannNavn}</p>
+            ${takstmannTelefon ? `<p style="margin: 0 0 4px; color: #475569; font-size: 13px;">${takstmannTelefon}</p>` : ''}
+            ${takstmannEpost ? `<p style="margin: 0; color: #475569; font-size: 13px;">${takstmannEpost}</p>` : ''}
+          </div>
+          <div style="text-align: center;">
+            <a href="${appUrl}/portal/kunde/bestillinger"
+               style="display: inline-block; background: #285982; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px;">
+              Svar på tilbudet
+            </a>
+          </div>
+          <p style="margin-top: 20px; color: #94a3b8; font-size: 12px; text-align: center;">Tilbudet utløper om 48 timer.</p>
+        </div>
+        <div style="background: #f1f5f9; padding: 16px 32px; border-radius: 0 0 12px 12px; border: 1px solid #e2e8f0; border-top: none;">
+          <p style="margin: 0; color: #94a3b8; font-size: 12px; text-align: center;">Takstmann.net · post@takstmann.net</p>
+        </div>
+      </div>
+    `,
+  })
+}
+
+// ============================================================
+// Kunde aksepterte tilbud – varsel til takstmann
+// ============================================================
+
+export async function sendAkseptTilTakstmann({
+  til,
+  takstmannNavn,
+  kundeNavn,
+  kundeEpost,
+  befaringsdato,
+  noekkelinfo,
+  parkering,
+  tilgang,
+  oppdragType,
+  adresse,
+  bestillingId,
+}: {
+  til: string
+  takstmannNavn: string
+  kundeNavn: string
+  kundeEpost?: string | null
+  befaringsdato: string
+  noekkelinfo?: string | null
+  parkering?: string | null
+  tilgang?: string | null
+  oppdragType?: string | null
+  adresse?: string | null
+  bestillingId: string
+}) {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://takstmann.net'
+  const typeLabel = oppdragType
+    ? oppdragType.charAt(0).toUpperCase() + oppdragType.slice(1).replace(/_/g, ' ')
+    : null
+
+  const befaringFormatert = new Date(befaringsdato).toLocaleDateString('nb-NO', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  })
+
+  await sendEpost({
+    til,
+    emne: `${kundeNavn} aksepterte tilbudet ditt – befaring ${befaringFormatert}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
+        <div style="background: #10b981; padding: 24px 32px; border-radius: 12px 12px 0 0;">
+          <p style="margin: 0; color: rgba(255,255,255,0.85); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Takstmann.net</p>
+          <h1 style="margin: 6px 0 0; color: #ffffff; font-size: 22px; font-weight: 700;">Tilbud akseptert ✓</h1>
+        </div>
+        <div style="background: #f8fafc; padding: 32px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;">
+          <p style="margin: 0 0 20px; color: #1e293b; font-size: 15px;">Hei ${takstmannNavn},</p>
+          <p style="margin: 0 0 24px; color: #475569; font-size: 15px;">
+            <strong style="color: #1e293b;">${kundeNavn}</strong> har akseptert tilbudet ditt og fylt inn praktisk informasjon.
+            Bekreft oppdraget i portalen for å opprette det og synkronisere med kalenderen din.
+          </p>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; background: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+            ${typeLabel ? `<tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px; width: 40%;">Type oppdrag</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 13px; font-weight: 600;">${typeLabel}</td></tr>` : ''}
+            ${adresse ? `<tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px;">Adresse</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 13px;">${adresse}</td></tr>` : ''}
+            <tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px;">Befaringsdato</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 13px; font-weight: 700;">${befaringFormatert}</td></tr>
+            ${kundeEpost ? `<tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px;">Kundens e-post</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 13px;">${kundeEpost}</td></tr>` : ''}
+            ${noekkelinfo ? `<tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px;">Nøkkelinfo</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 13px;">${noekkelinfo}</td></tr>` : ''}
+            ${parkering ? `<tr><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 13px;">Parkering</td><td style="padding: 12px 16px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 13px;">${parkering}</td></tr>` : ''}
+            ${tilgang ? `<tr><td style="padding: 12px 16px; color: #64748b; font-size: 13px;">Tilgang</td><td style="padding: 12px 16px; color: #1e293b; font-size: 13px;">${tilgang}</td></tr>` : ''}
+          </table>
+          <div style="text-align: center;">
+            <a href="${appUrl}/portal/takstmann/bestillinger"
+               style="display: inline-block; background: #10b981; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px;">
+              Bekreft oppdraget
+            </a>
+          </div>
+        </div>
+        <div style="background: #f1f5f9; padding: 16px 32px; border-radius: 0 0 12px 12px; border: 1px solid #e2e8f0; border-top: none;">
+          <p style="margin: 0; color: #94a3b8; font-size: 12px; text-align: center;">Takstmann.net · post@takstmann.net</p>
+        </div>
+      </div>
+    `,
+  })
+}
+
 export async function sendNyRapportVarsel({
   til,
   bestillerNavn,

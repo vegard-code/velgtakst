@@ -7,7 +7,13 @@ import type { BestillingStatus, Bestilling, TakstmannProfil, Oppdrag, OppdragTyp
 import {
   sendNyForespørselTilTakstmann,
   sendForespørselAkseptertVarsel,
+  sendTilbudTilKunde,
+  sendAkseptTilTakstmann,
 } from '@/lib/integrasjoner/epost'
+import {
+  opprettKalenderHendelse,
+  hentTokenForTakstmann,
+} from '@/lib/integrasjoner/google-calendar'
 
 // ============================================================
 // Rate limiting – sliding window per IP (in-memory, warm instances)
@@ -61,6 +67,9 @@ export async function opprettBestilling(
 ) {
   const supabase = await createClient()
 
+  // Privatkunder bruker ny tilbudsflyt, meglere bruker gammel flyt
+  const bestillingStatus = meglerEllerKundeId.kundeProfilId ? 'forespørsel' : 'ny'
+
   const { data, error } = await supabase
     .from('bestillinger')
     .insert({
@@ -68,7 +77,7 @@ export async function opprettBestilling(
       bestilt_av_megler_id: meglerEllerKundeId.meglerProfilId ?? null,
       bestilt_av_kunde_id: meglerEllerKundeId.kundeProfilId ?? null,
       melding,
-      status: 'ny',
+      status: bestillingStatus,
       oppdrag_type: oppdragType ?? null,
       adresse: adresse ?? null,
     })
@@ -184,6 +193,9 @@ export async function opprettBestillingFraPublikk(input: {
 
   const oppdragType = tjeneste ? TJENESTE_TIL_OPPDRAG_TYPE[tjeneste] : undefined
 
+  // Autentiserte privatkunder bruker ny tilbudsflyt
+  const bestillingStatus = kundeProfilId ? 'forespørsel' : 'ny'
+
   const { data, error } = await serviceClient
     .from('bestillinger')
     .insert({
@@ -191,7 +203,7 @@ export async function opprettBestillingFraPublikk(input: {
       bestilt_av_megler_id: meglerProfilId ?? null,
       bestilt_av_kunde_id: kundeProfilId ?? null,
       melding: meldingTekst || null,
-      status: 'ny',
+      status: bestillingStatus,
       oppdrag_type: oppdragType ?? null,
       adresse: adresse ?? null,
     })
@@ -358,4 +370,347 @@ export async function hentMinebestillinger(rolle: 'megler' | 'kunde'): Promise<B
 
     return (data ?? []) as unknown as BestillingMedInfo[]
   }
+}
+
+// ============================================================
+// Privatkunde tilbudsflyt
+// ============================================================
+
+export async function sendTilbud(
+  bestillingId: string,
+  tilbudspris: number,
+  estimertLeveringstid: string
+) {
+  const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Ikke autentisert' }
+
+  const { data: bestilling } = await serviceClient
+    .from('bestillinger')
+    .select(`
+      oppdrag_type, adresse,
+      kunde:privatkunde_profiler(navn, epost),
+      takstmann:takstmann_profiler(navn, telefon, epost)
+    `)
+    .eq('id', bestillingId)
+    .single()
+
+  const { error } = await serviceClient
+    .from('bestillinger')
+    .update({
+      status: 'tilbud_sendt',
+      tilbudspris,
+      estimert_leveringstid: estimertLeveringstid,
+      tilbud_sendt_at: new Date().toISOString(),
+    })
+    .eq('id', bestillingId)
+
+  if (error) return { error: error.message }
+
+  // Send e-post til kunde
+  if (bestilling) {
+    try {
+      type TakstmannInfo = { navn: string; telefon: string | null; epost: string | null }
+      type KundeInfo = { navn: string; epost: string | null }
+      const rawTakstmann = Array.isArray(bestilling.takstmann) ? bestilling.takstmann[0] : bestilling.takstmann
+      const rawKunde = Array.isArray(bestilling.kunde) ? bestilling.kunde[0] : bestilling.kunde
+      const takstmann = rawTakstmann as TakstmannInfo | null
+      const kunde = rawKunde as KundeInfo | null
+
+      if (kunde?.epost && takstmann) {
+        await sendTilbudTilKunde({
+          til: kunde.epost,
+          kundeNavn: kunde.navn,
+          takstmannNavn: takstmann.navn,
+          takstmannTelefon: takstmann.telefon,
+          takstmannEpost: takstmann.epost,
+          tilbudspris,
+          estimertLeveringstid,
+          oppdragType: bestilling.oppdrag_type,
+          adresse: bestilling.adresse,
+          bestillingId,
+        })
+      }
+    } catch (err) {
+      console.error('[sendTilbud] E-post feilet:', err)
+    }
+  }
+
+  revalidatePath('/portal/takstmann/bestillinger')
+  return { success: true }
+}
+
+export async function aksepterTilbud(
+  bestillingId: string,
+  befaringsdato: string,
+  noekkelinfo: string,
+  parkering: string,
+  tilgang: string
+) {
+  const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Ikke autentisert' }
+
+  const { data: bestilling } = await serviceClient
+    .from('bestillinger')
+    .select(`
+      oppdrag_type, adresse, tilbudspris, estimert_leveringstid,
+      takstmann:takstmann_profiler(navn, epost, telefon),
+      kunde:privatkunde_profiler(navn, epost)
+    `)
+    .eq('id', bestillingId)
+    .single()
+
+  const { error } = await serviceClient
+    .from('bestillinger')
+    .update({
+      status: 'akseptert',
+      befaringsdato,
+      noekkelinfo: noekkelinfo || null,
+      parkering: parkering || null,
+      tilgang: tilgang || null,
+      sist_sett_kunde: new Date().toISOString(),
+    })
+    .eq('id', bestillingId)
+
+  if (error) return { error: error.message }
+
+  // Varsle takstmann
+  if (bestilling) {
+    try {
+      type TakstmannInfo = { navn: string; epost: string | null; telefon: string | null }
+      type KundeInfo = { navn: string; epost: string | null }
+      const rawTakstmann = Array.isArray(bestilling.takstmann) ? bestilling.takstmann[0] : bestilling.takstmann
+      const rawKunde = Array.isArray(bestilling.kunde) ? bestilling.kunde[0] : bestilling.kunde
+      const takstmann = rawTakstmann as TakstmannInfo | null
+      const kunde = rawKunde as KundeInfo | null
+
+      if (takstmann?.epost && kunde) {
+        await sendAkseptTilTakstmann({
+          til: takstmann.epost,
+          takstmannNavn: takstmann.navn,
+          kundeNavn: kunde.navn,
+          kundeEpost: kunde.epost,
+          befaringsdato,
+          noekkelinfo: noekkelinfo || null,
+          parkering: parkering || null,
+          tilgang: tilgang || null,
+          oppdragType: bestilling.oppdrag_type,
+          adresse: bestilling.adresse,
+          bestillingId,
+        })
+      }
+    } catch (err) {
+      console.error('[aksepterTilbud] E-post feilet:', err)
+    }
+  }
+
+  revalidatePath('/portal/kunde/bestillinger')
+  return { success: true }
+}
+
+export async function avslaaTilbud(bestillingId: string) {
+  const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Ikke autentisert' }
+
+  const { error } = await serviceClient
+    .from('bestillinger')
+    .update({ status: 'avslått', sist_sett_kunde: new Date().toISOString() })
+    .eq('id', bestillingId)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/portal/kunde/bestillinger')
+  return { success: true }
+}
+
+export async function bekreftBestilling(bestillingId: string) {
+  const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Ikke autentisert' }
+
+  const { data: profil } = await serviceClient
+    .from('user_profiles')
+    .select('company_id')
+    .eq('id', user.id)
+    .single()
+
+  const { data: takstmannProfil } = await serviceClient
+    .from('takstmann_profiler')
+    .select('id')
+    .eq('user_id', user.id)
+    .single()
+
+  const { data: bestilling } = await serviceClient
+    .from('bestillinger')
+    .select(`
+      oppdrag_type, adresse, befaringsdato, tilbudspris, noekkelinfo, parkering, tilgang,
+      kunde:privatkunde_profiler(id, navn)
+    `)
+    .eq('id', bestillingId)
+    .single()
+
+  if (!bestilling) return { error: 'Bestilling ikke funnet' }
+
+  type KundeInfo = { id: string; navn: string }
+  const rawKunde = Array.isArray(bestilling.kunde) ? bestilling.kunde[0] : bestilling.kunde
+  const kunde = rawKunde as KundeInfo | null
+
+  // Opprett oppdrag
+  const tittel = bestilling.oppdrag_type
+    ? bestilling.oppdrag_type.charAt(0).toUpperCase() + bestilling.oppdrag_type.slice(1).replace(/_/g, ' ')
+    : 'Takstoppdrag'
+
+  const beskrivelse = [
+    bestilling.noekkelinfo && `Nøkkelinfo: ${bestilling.noekkelinfo}`,
+    bestilling.parkering && `Parkering: ${bestilling.parkering}`,
+    bestilling.tilgang && `Tilgang: ${bestilling.tilgang}`,
+  ].filter(Boolean).join('\n') || null
+
+  const { data: nyttOppdrag, error: oppdragError } = await serviceClient
+    .from('oppdrag')
+    .insert({
+      company_id: profil?.company_id ?? null,
+      takstmann_id: takstmannProfil?.id ?? null,
+      privatkunde_id: kunde?.id ?? null,
+      tittel,
+      beskrivelse,
+      adresse: bestilling.adresse,
+      oppdrag_type: bestilling.oppdrag_type ?? 'annet',
+      status: 'akseptert',
+      befaringsdato: bestilling.befaringsdato ?? null,
+      pris: bestilling.tilbudspris ?? null,
+    })
+    .select('id')
+    .single()
+
+  if (oppdragError || !nyttOppdrag) return { error: oppdragError?.message ?? 'Kunne ikke opprette oppdrag' }
+
+  // Google Calendar sync
+  if (takstmannProfil?.id && bestilling.befaringsdato) {
+    try {
+      const harToken = await hentTokenForTakstmann(takstmannProfil.id)
+      if (harToken) {
+        const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
+          oppdragId: nyttOppdrag.id,
+          tittel,
+          beskrivelse,
+          adresse: bestilling.adresse,
+          by: null,
+          befaringsdato: bestilling.befaringsdato,
+          oppdragType: bestilling.oppdrag_type ?? 'annet',
+        })
+        if (googleEventId) {
+          await serviceClient
+            .from('oppdrag')
+            .update({ google_event_id: googleEventId })
+            .eq('id', nyttOppdrag.id)
+        }
+      }
+    } catch (err) {
+      console.error('[bekreftBestilling] Google Calendar feilet:', err)
+    }
+  }
+
+  // Oppdater bestilling
+  const { error } = await serviceClient
+    .from('bestillinger')
+    .update({
+      status: 'bekreftet',
+      oppdrag_id: nyttOppdrag.id,
+      sist_sett_takstmann: new Date().toISOString(),
+    })
+    .eq('id', bestillingId)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/portal/takstmann/bestillinger')
+  revalidatePath('/portal/takstmann/oppdrag')
+  return { success: true, oppdragId: nyttOppdrag.id }
+}
+
+export async function markerBestillingSett(
+  rolle: 'kunde' | 'takstmann',
+  bestillingIds: string[]
+) {
+  const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || bestillingIds.length === 0) return
+
+  const now = new Date().toISOString()
+  const oppdatering = rolle === 'kunde'
+    ? { sist_sett_kunde: now }
+    : { sist_sett_takstmann: now }
+
+  await serviceClient
+    .from('bestillinger')
+    .update(oppdatering)
+    .in('id', bestillingIds)
+}
+
+export async function hentAntallNyeBestillinger(): Promise<number> {
+  const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return 0
+
+  const { data: profil } = await supabase
+    .from('user_profiles')
+    .select('rolle')
+    .eq('user_id', user.id)
+    .single()
+    .then(r => r)
+
+  // Fallback: hent rolle fra user_profiles
+  const { data: profilData } = await serviceClient
+    .from('user_profiles')
+    .select('rolle')
+    .eq('id', user.id)
+    .single()
+
+  const rolle = (profilData as { rolle: string } | null)?.rolle
+
+  if (rolle === 'takstmann' || rolle === 'takstmann_admin') {
+    const { data: takstmannProfil } = await serviceClient
+      .from('takstmann_profiler')
+      .select('id')
+      .eq('user_id', user.id)
+      .single()
+    if (!takstmannProfil) return 0
+
+    const { count } = await serviceClient
+      .from('bestillinger')
+      .select('id', { count: 'exact', head: true })
+      .eq('takstmann_id', (takstmannProfil as { id: string }).id)
+      .or('sist_sett_takstmann.is.null,sist_sett_takstmann.lt.updated_at')
+      .in('status', ['forespørsel', 'akseptert'])
+
+    return count ?? 0
+  }
+
+  if (rolle === 'privatkunde') {
+    const { data: kundeProfil } = await serviceClient
+      .from('privatkunde_profiler')
+      .select('id')
+      .eq('user_id', user.id)
+      .single()
+    if (!kundeProfil) return 0
+
+    const { count } = await serviceClient
+      .from('bestillinger')
+      .select('id', { count: 'exact', head: true })
+      .eq('bestilt_av_kunde_id', (kundeProfil as { id: string }).id)
+      .or('sist_sett_kunde.is.null,sist_sett_kunde.lt.updated_at')
+      .in('status', ['tilbud_sendt', 'bekreftet'])
+
+    return count ?? 0
+  }
+
+  return 0
 }

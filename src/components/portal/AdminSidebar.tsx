@@ -6,18 +6,29 @@ import { loggUt } from "@/lib/actions/auth";
 
 interface Props {
   navn: string;
+  nyeBestillinger?: number;
 }
 
 const navItems = [
   {
     href: "/portal/admin",
     label: "Dashboard",
+    exact: true,
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
       </svg>
     ),
-    exact: true,
+  },
+  {
+    href: "/portal/admin/innboks",
+    label: "Innboks",
+    hasBadge: true,
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+    ),
   },
   {
     href: "/portal/admin/brukere",
@@ -84,7 +95,7 @@ const navItems = [
   },
 ];
 
-export default function AdminSidebar({ navn }: Props) {
+export default function AdminSidebar({ navn, nyeBestillinger = 0 }: Props) {
   const pathname = usePathname();
 
   function isActive(href: string, exact?: boolean) {
@@ -103,9 +114,18 @@ export default function AdminSidebar({ navn }: Props) {
         </Link>
         <div className="mt-4">
           <p className="text-[#1e293b] font-medium text-sm truncate">{navn}</p>
-          <span className="inline-block mt-1.5 text-[10px] font-semibold bg-red-50 text-red-600 px-2 py-0.5 rounded-full uppercase tracking-wide">
-            Administrator
-          </span>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[10px] font-semibold bg-red-50 text-red-600 px-2 py-0.5 rounded-full uppercase tracking-wide">
+              Administrator
+            </span>
+            {nyeBestillinger > 0 && (
+              <Link href="/portal/admin/innboks">
+                <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[11px] font-bold flex items-center justify-center">
+                  {nyeBestillinger > 9 ? "9+" : nyeBestillinger}
+                </span>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 
@@ -117,7 +137,12 @@ export default function AdminSidebar({ navn }: Props) {
             className={`portal-sidebar-link ${isActive(item.href, item.exact) ? "active" : ""}`}
           >
             {item.icon}
-            {item.label}
+            <span className="flex-1">{item.label}</span>
+            {"hasBadge" in item && item.hasBadge && nyeBestillinger > 0 && (
+              <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[11px] font-bold flex items-center justify-center">
+                {nyeBestillinger > 9 ? "9+" : nyeBestillinger}
+              </span>
+            )}
           </Link>
         ))}
       </nav>
@@ -130,10 +155,7 @@ export default function AdminSidebar({ navn }: Props) {
           takstmann.net.no
         </Link>
         <form action={loggUt}>
-          <button
-            type="submit"
-            className="portal-sidebar-link w-full text-left text-red-500 hover:bg-red-50 hover:text-red-600"
-          >
+          <button type="submit" className="portal-sidebar-link w-full text-left text-red-500 hover:bg-red-50 hover:text-red-600">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>

@@ -91,13 +91,18 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
               )}
             </div>
             <span className={`${
-              {
+              ({
                 ny: "portal-badge portal-badge-blue",
+                forespørsel: "portal-badge portal-badge-blue",
+                tilbud_sendt: "portal-badge portal-badge-blue",
                 akseptert: "portal-badge portal-badge-green",
                 avvist: "portal-badge portal-badge-red",
+                avslått: "portal-badge portal-badge-red",
+                utløpt: "portal-badge portal-badge-gray",
+                bekreftet: "portal-badge portal-badge-green",
                 kansellert: "portal-badge portal-badge-gray",
                 fullfort: "portal-badge portal-badge-green",
-              }[bestilling.status as BestillingStatus] ?? "portal-badge portal-badge-gray"
+              } as Partial<Record<BestillingStatus, string>>)[bestilling.status as BestillingStatus] ?? "portal-badge portal-badge-gray"
             }`}>
               {BESTILLING_STATUS_LABELS[bestilling.status as BestillingStatus] ?? bestilling.status}
             </span>
