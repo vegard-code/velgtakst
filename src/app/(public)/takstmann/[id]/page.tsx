@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { FYLKER } from "@/lib/supabase/types";
 import type { TakstmannProfil, MeglerVurdering, FylkeSynlighet } from "@/lib/supabase/types";
 import BestillTakstKnapp from "./BestillTakstKnapp";
@@ -43,6 +43,19 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
   if (!profilRaw) notFound();
   const profil = profilRaw as unknown as TakstmannProfil;
+
+  // Skjul profil fra offentlige sider hvis abonnementet er utløpt eller kansellert
+  if (profil.company_id) {
+    const serviceClient = await createServiceClient()
+    const { data: abonnement } = await serviceClient
+      .from('abonnementer')
+      .select('status')
+      .eq('company_id', profil.company_id)
+      .maybeSingle()
+    if (abonnement?.status === 'utlopt' || abonnement?.status === 'kansellert') {
+      notFound()
+    }
+  }
 
   // Hent vurderinger
   const { data: vurderingerRaw } = await supabase

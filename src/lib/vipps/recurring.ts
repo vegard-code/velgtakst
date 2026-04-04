@@ -2,7 +2,7 @@
  * Vipps Recurring API – abonnementer for takstmenn
  *
  * Flyten:
- * 1. Takstmann starter prøveperiode (90 dager gratis)
+ * 1. Takstmann starter prøveperiode (30 dager gratis)
  * 2. Mot slutten av prøveperioden oppretter vi en Vipps Recurring agreement
  * 3. Takstmann godkjenner i Vipps-appen
  * 4. Vi oppretter monthly charges basert på aktive fylker

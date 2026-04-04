@@ -33,9 +33,9 @@ export async function hentEllerOpprettAbonnement(companyId: string) {
     console.log('hentEllerOpprettAbonnement select:', selectError.code, selectError.message)
   }
 
-  // Opprett prøveperiode-abonnement (90 dager gratis)
+  // Opprett prøveperiode-abonnement (30 dager gratis)
   const now = new Date()
-  const slutt = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000)
+  const slutt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
 
   const { data: nyttAbonnement, error: insertError } = await supabase
     .from('abonnementer')
@@ -112,7 +112,7 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
     } else {
       // Ingen abonnement eller utløpt — opprett prøveperiode
       const now = new Date()
-      betaltTil = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000)
+      betaltTil = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
 
       await serviceClient.from('abonnementer').upsert(
         {
@@ -126,7 +126,7 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
       )
     }
   } else {
-    betaltTil = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
+    betaltTil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
   }
 
   const { error } = await supabase
