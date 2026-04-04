@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { KOMMUNER } from "@/data/kommuner";
 import { FYLKER } from "@/lib/supabase/types";
@@ -12,7 +13,7 @@ interface Props {
 interface Result {
   label: string;
   sublabel?: string;
-  path: string;
+  href: string;
 }
 
 export default function FylkeSøk({ fylker }: Props) {
@@ -34,7 +35,7 @@ export default function FylkeSøk({ fylker }: Props) {
               return {
                 label: k.navn,
                 sublabel: fylke?.navn,
-                path: `/${k.fylkeId}/${k.id}`,
+                href: `/${k.fylkeId}/${k.id}`,
               };
             });
           const fylkeHits: Result[] = fylker
@@ -42,13 +43,11 @@ export default function FylkeSøk({ fylker }: Props) {
               (f) =>
                 f.navn.toLowerCase().includes(q) &&
                 !kommuneHits.some(
-                  (r) =>
-                    r.path === `/${f.id}/${f.id}` ||
-                    r.label.toLowerCase() === f.navn.toLowerCase()
+                  (r) => r.label.toLowerCase() === f.navn.toLowerCase()
                 )
             )
             .slice(0, 3)
-            .map((f) => ({ label: f.navn, path: `/${f.id}` }));
+            .map((f) => ({ label: f.navn, href: `/${f.id}` }));
           return [...kommuneHits, ...fylkeHits].slice(0, 6);
         })()
       : [];
@@ -63,10 +62,14 @@ export default function FylkeSøk({ fylker }: Props) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function handleSelect(path: string) {
-    router.push(path);
-    setOpen(false);
-    setQuery("");
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" && results.length > 0) {
+      router.push(results[0].href);
+      setOpen(false);
+      setQuery("");
+    } else if (e.key === "Escape") {
+      setOpen(false);
+    }
   }
 
   return (
@@ -93,11 +96,13 @@ export default function FylkeSøk({ fylker }: Props) {
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
+          onKeyDown={handleKeyDown}
           placeholder="Søk etter kommune..."
           className="flex-1 outline-none text-slate-900 placeholder:text-slate-400 text-sm bg-transparent"
         />
         {query && (
           <button
+            type="button"
             onClick={() => {
               setQuery("");
               setOpen(false);
@@ -124,9 +129,13 @@ export default function FylkeSøk({ fylker }: Props) {
       {open && results.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden z-50">
           {results.map((r, i) => (
-            <button
-              key={`${r.path}-${i}`}
-              onClick={() => handleSelect(r.path)}
+            <Link
+              key={`${r.href}-${i}`}
+              href={r.href}
+              onClick={() => {
+                setOpen(false);
+                setQuery("");
+              }}
               className="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3 transition-colors"
             >
               <svg
@@ -155,7 +164,7 @@ export default function FylkeSøk({ fylker }: Props) {
                   </span>
                 )}
               </span>
-            </button>
+            </Link>
           ))}
         </div>
       )}
