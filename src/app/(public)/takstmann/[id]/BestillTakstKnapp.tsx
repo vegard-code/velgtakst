@@ -32,6 +32,7 @@ export default function BestillTakstKnapp({
   const [guestTelefon, setGuestTelefon] = useState("");
   const [laster, setLaster] = useState(false);
   const [feil, setFeil] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
 
   // Not logged in at all, or logged in but no profile
   const trengerKontaktInfo = !kundeProfilId && !meglerProfilId;
@@ -55,6 +56,7 @@ export default function BestillTakstKnapp({
         guestNavn: trengerKontaktInfo ? guestNavn.trim() : undefined,
         guestEpost: trengerKontaktInfo ? guestEpost.trim() : undefined,
         guestTelefon: trengerKontaktInfo ? guestTelefon.trim() : undefined,
+        honeypot: honeypot || undefined,
       });
 
       if (result.error) {
@@ -88,6 +90,20 @@ export default function BestillTakstKnapp({
   if (steg === "skjema") {
     return (
       <div className="space-y-3">
+        {/* Honeypot – skjult for brukere, bots fyller inn dette feltet */}
+        <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", opacity: 0, height: 0, width: 0, overflow: "hidden" }}>
+          <label htmlFor="website">Nettside (ikke fyll inn)</label>
+          <input
+            id="website"
+            type="text"
+            name="website"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
+
         {/* Kontaktinfo for gjester — øverst så det ikke overses */}
         {trengerKontaktInfo && (
           <div className="bg-accent/10 border border-accent/30 rounded-lg p-3 space-y-2">

@@ -1,12 +1,49 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import type { BestillingStatus, Bestilling, TakstmannProfil, Oppdrag, OppdragType } from '@/lib/supabase/types'
 import {
   sendNyForespørselTilTakstmann,
   sendForespørselAkseptertVarsel,
 } from '@/lib/integrasjoner/epost'
+
+// ============================================================
+// Rate limiting – sliding window per IP (in-memory, warm instances)
+// ============================================================
+
+const ipRateLog = new Map<string, number[]>()
+const RATE_LIMIT_MAX = 5
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000 // 1 time
+
+function sjekkRateLimit(ip: string): boolean {
+  const nå = Date.now()
+  const vinduStart = nå - RATE_LIMIT_WINDOW_MS
+  const tidspunkter = (ipRateLog.get(ip) ?? []).filter(t => t > vinduStart)
+
+  if (tidspunkter.length >= RATE_LIMIT_MAX) {
+    return false // blokkert
+  }
+
+  tidspunkter.push(nå)
+  ipRateLog.set(ip, tidspunkter)
+
+  // Rydd opp gamle IP-er periodisk for å unngå minnelekkasje
+  if (ipRateLog.size > 10_000) {
+    for (const [k, v] of ipRateLog) {
+      if (v.every(t => t <= vinduStart)) ipRateLog.delete(k)
+    }
+  }
+
+  return true // tillatt
+}
+
+function hentKlientIp(headersList: Awaited<ReturnType<typeof headers>>): string {
+  const forwarded = headersList.get('x-forwarded-for')
+  if (forwarded) return forwarded.split(',')[0].trim()
+  return headersList.get('x-real-ip') ?? 'unknown'
+}
 
 export interface BestillingMedInfo extends Bestilling {
   takstmann?: Pick<TakstmannProfil, 'id' | 'navn' | 'spesialitet' | 'telefon' | 'epost' | 'bilde_url'> | null
@@ -119,7 +156,22 @@ export async function opprettBestillingFraPublikk(input: {
   guestNavn?: string
   guestEpost?: string
   guestTelefon?: string
+  // Bot-beskyttelse
+  honeypot?: string
 }) {
+  // Honeypot – bots fyller inn skjulte felt, ekte brukere gjør ikke det
+  if (input.honeypot) {
+    // Stille avvisning – boten tror det gikk bra
+    return { success: true, id: 'bot' }
+  }
+
+  // Rate limiting per IP
+  const headersList = await headers()
+  const ip = hentKlientIp(headersList)
+  if (!sjekkRateLimit(ip)) {
+    return { error: 'Du har sendt for mange bestillinger den siste timen. Prøv igjen senere.' }
+  }
+
   // Bruker serviceClient for å unngå RLS-problemer med gjester (uinnloggede brukere)
   const serviceClient = await createServiceClient()
   const { takstmannId, tjeneste, adresse, kundeProfilId, meglerProfilId } = input
