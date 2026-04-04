@@ -56,9 +56,9 @@ export default async function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-slate-50 border-b border-slate-200">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(59,130,246,0.07)_0%,_transparent_70%)] pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10 text-center relative">
           {/* Trust pills */}
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
             {[
               { label: "Verifisert med Vipps", color: "bg-orange-50 text-orange-700 border-orange-200" },
               { label: "Sertifiserte fagfolk", color: "bg-green-50 text-green-700 border-green-200" },
@@ -80,11 +80,11 @@ export default async function Home() {
             ))}
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 tracking-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 tracking-tight">
             Finn takstmann.{" "}
             <span className="text-blue-600">Enkelt og trygt.</span>
           </h1>
-          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-8">
+          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-6">
             Sammenlign sertifiserte takstmenn i hele Norge og få gratis tilbud på
             tilstandsrapport, verditakst og mer.
           </p>
@@ -99,8 +99,8 @@ export default async function Home() {
       </section>
 
       {/* Fylker grid */}
-      <section id="fylker" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-10">
+      <section id="fylker" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+        <div className="text-center mb-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">
             Velg ditt fylke
           </h2>
@@ -150,9 +150,9 @@ export default async function Home() {
       </section>
 
       {/* Slik fungerer det */}
-      <section className="bg-slate-900 py-16">
+      <section className="bg-slate-900 py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
               Slik fungerer det
             </h2>
@@ -198,7 +198,7 @@ export default async function Home() {
 
       {/* Statistikk */}
       <section className="bg-white border-y border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { tall: "100%", label: "Verifiserte", sub: "via Vipps ID" },
@@ -219,7 +219,7 @@ export default async function Home() {
       </section>
 
       {/* Hva kan en takstmann hjelpe med? */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
             Hva kan en takstmann hjelpe med?
@@ -269,7 +269,7 @@ export default async function Home() {
       </section>
 
       {/* Blogg */}
-      <section id="blogg" className="bg-slate-50 py-16">
+      <section id="blogg" className="bg-slate-50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-slate-900">Fra bloggen</h2>
@@ -310,7 +310,7 @@ export default async function Home() {
       </section>
 
       {/* CTA banner */}
-      <section className="bg-slate-900 py-16">
+      <section className="bg-slate-900 py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
             Klar til å finne din takstmann?
