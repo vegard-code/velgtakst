@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import type { BestillingStatus, Bestilling, TakstmannProfil, Oppdrag, OppdragType } from '@/lib/supabase/types'
 import {
   sendNyForespørselTilTakstmann,
@@ -120,7 +120,8 @@ export async function opprettBestillingFraPublikk(input: {
   guestEpost?: string
   guestTelefon?: string
 }) {
-  const supabase = await createClient()
+  // Bruker serviceClient for å unngå RLS-problemer med gjester (uinnloggede brukere)
+  const serviceClient = await createServiceClient()
   const { takstmannId, tjeneste, adresse, kundeProfilId, meglerProfilId } = input
 
   // Build melding – prepend guest contact info when not authenticated
@@ -142,7 +143,7 @@ export async function opprettBestillingFraPublikk(input: {
 
   const oppdragType = tjeneste ? TJENESTE_TIL_OPPDRAG_TYPE[tjeneste] : undefined
 
-  const { data, error } = await supabase
+  const { data, error } = await serviceClient
     .from('bestillinger')
     .insert({
       takstmann_id: takstmannId,
@@ -160,7 +161,7 @@ export async function opprettBestillingFraPublikk(input: {
 
   // Send e-postvarsel til takstmann
   try {
-    const { data: takstmann } = await supabase
+    const { data: takstmann } = await serviceClient
       .from('takstmann_profiler')
       .select('navn, epost')
       .eq('id', takstmannId)
@@ -168,7 +169,7 @@ export async function opprettBestillingFraPublikk(input: {
 
     if (takstmann?.epost) {
       if (meglerProfilId) {
-        const { data: megler } = await supabase
+        const { data: megler } = await serviceClient
           .from('megler_profiler')
           .select('navn, telefon, epost')
           .eq('id', meglerProfilId)
@@ -178,7 +179,7 @@ export async function opprettBestillingFraPublikk(input: {
         bestillerEpost = (megler as { epost: string | null } | null)?.epost ?? null
         bestillerType = 'megler'
       } else if (kundeProfilId) {
-        const { data: kunde } = await supabase
+        const { data: kunde } = await serviceClient
           .from('privatkunde_profiler')
           .select('navn, telefon, epost')
           .eq('id', kundeProfilId)
@@ -213,9 +214,13 @@ export async function oppdaterBestillingStatus(
   nyStatus: BestillingStatus
 ) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Ikke autentisert' }
 
   // Hent bestillingen med relatert info før oppdatering
-  const { data: bestilling } = await supabase
+  const { data: bestilling } = await serviceClient
     .from('bestillinger')
     .select(`
       oppdrag_type, adresse,
@@ -226,7 +231,7 @@ export async function oppdaterBestillingStatus(
     .eq('id', bestillingId)
     .single()
 
-  const { error } = await supabase
+  const { error } = await serviceClient
     .from('bestillinger')
     .update({ status: nyStatus })
     .eq('id', bestillingId)

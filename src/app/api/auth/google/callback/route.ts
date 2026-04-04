@@ -64,7 +64,19 @@ export async function GET(request: NextRequest) {
   try {
     // Bytt code mot tokens
     const oauth2Client = lagOAuth2Client()
-    const { tokens } = await oauth2Client.getToken(code)
+    console.log('Google OAuth: Exchanging code for tokens. Redirect URI:', process.env.GOOGLE_REDIRECT_URI ?? 'NOT SET')
+
+    let tokens
+    try {
+      const tokenResponse = await oauth2Client.getToken(code)
+      tokens = tokenResponse.tokens
+    } catch (tokenErr: unknown) {
+      const errMsg = tokenErr instanceof Error ? tokenErr.message : String(tokenErr)
+      console.error('Google OAuth token exchange failed:', errMsg)
+      return NextResponse.redirect(
+        new URL(`${redirectBase}?fane=integrasjoner&error=token_feil&detalj=${encodeURIComponent(errMsg)}`, request.url)
+      )
+    }
 
     if (!tokens.access_token) {
       throw new Error('Ingen access_token mottatt fra Google')
@@ -72,11 +84,13 @@ export async function GET(request: NextRequest) {
 
     // Finn takstmann-profil for brukeren
     const supabase = await createServiceClient()
-    const { data: takstmannProfil } = await supabase
+    const { data: takstmannProfil, error: profilError } = await supabase
       .from('takstmann_profiler')
       .select('id')
       .eq('user_id', savedState.userId)
       .single()
+
+    console.log('Google OAuth: Takstmann profil lookup:', { userId: savedState.userId, found: !!takstmannProfil, error: profilError?.message })
 
     if (!takstmannProfil) {
       return NextResponse.redirect(

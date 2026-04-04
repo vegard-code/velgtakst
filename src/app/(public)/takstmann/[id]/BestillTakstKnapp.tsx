@@ -120,8 +120,8 @@ export default function BestillTakstKnapp({
             value={melding}
             onChange={(e) => setMelding(e.target.value)}
             placeholder={`Beskriv kort hva du trenger hjelp med...`}
-            rows={2}
-            className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 placeholder-gray-600 resize-none focus:outline-none focus:ring-1 focus:ring-accent"
+            rows={4}
+            className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded-lg px-3 py-2 placeholder-gray-600 resize-y focus:outline-none focus:ring-1 focus:ring-accent"
           />
         </div>
 

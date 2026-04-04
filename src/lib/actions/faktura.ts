@@ -1,15 +1,16 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { sendFaktura } from '@/lib/integrasjoner/regnskap'
 
 export async function sendFakturaForOppdrag(oppdragId: string) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: profil } = await supabase
+  const { data: profil } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
@@ -17,7 +18,7 @@ export async function sendFakturaForOppdrag(oppdragId: string) {
 
   if (!profil?.company_id) return { error: 'Ingen bedrift funnet' }
 
-  const { data: oppdrag } = await supabase
+  const { data: oppdrag } = await serviceClient
     .from('oppdrag')
     .select(`
       *,
@@ -45,7 +46,7 @@ export async function sendFakturaForOppdrag(oppdragId: string) {
   if (!resultat.success) return { error: resultat.error }
 
   // Lagre faktura-ID og oppdater status
-  await supabase
+  await serviceClient
     .from('oppdrag')
     .update({
       faktura_id: resultat.eksterntFakturaId,
@@ -53,7 +54,7 @@ export async function sendFakturaForOppdrag(oppdragId: string) {
     })
     .eq('id', oppdragId)
 
-  await supabase.from('status_logg').insert({
+  await serviceClient.from('status_logg').insert({
     oppdrag_id: oppdragId,
     fra_status: oppdrag.status,
     til_status: 'fakturert',
@@ -66,9 +67,9 @@ export async function sendFakturaForOppdrag(oppdragId: string) {
 }
 
 export async function synkroniserFakturaStatus(oppdragId: string) {
-  const supabase = await createClient()
+  const serviceClient = await createServiceClient()
 
-  const { data: oppdrag } = await supabase
+  const { data: oppdrag } = await serviceClient
     .from('oppdrag')
     .select('faktura_id, company_id, status')
     .eq('id', oppdragId)
@@ -76,7 +77,7 @@ export async function synkroniserFakturaStatus(oppdragId: string) {
 
   if (!oppdrag?.faktura_id || !oppdrag.company_id) return { oppdatert: false }
 
-  const { data: settings } = await supabase
+  const { data: settings } = await serviceClient
     .from('company_settings')
     .select('regnskap_system, fiken_api_token, fiken_company_id, tripletex_employee_token, tripletex_company_id')
     .eq('company_id', oppdrag.company_id)
@@ -103,12 +104,12 @@ export async function synkroniserFakturaStatus(oppdragId: string) {
   }
 
   if (betalt && oppdrag.status === 'fakturert') {
-    await supabase
+    await serviceClient
       .from('oppdrag')
       .update({ status: 'betalt' })
       .eq('id', oppdragId)
 
-    await supabase.from('status_logg').insert({
+    await serviceClient.from('status_logg').insert({
       oppdrag_id: oppdragId,
       fra_status: 'fakturert',
       til_status: 'betalt',

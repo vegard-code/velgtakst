@@ -118,11 +118,8 @@ export async function GET(request: NextRequest) {
       (u) => u.email === email
     )
 
-    // Rollen brukeren valgte på innloggingssiden (kun tillatte roller for nye brukere)
-    const ALLOWED_REGISTRATION_ROLES = ['privatkunde', 'takstmann_admin', 'megler']
-    const valgtRolle = ALLOWED_REGISTRATION_ROLES.includes(savedState.rolle)
-      ? savedState.rolle
-      : 'privatkunde'
+    // Rollen brukeren valgte på innloggingssiden (eller default privatkunde)
+    const valgtRolle = savedState.rolle || 'privatkunde'
 
     let userId: string
 
@@ -186,17 +183,20 @@ export async function GET(request: NextRequest) {
 
     const faktiskRolle = (profilData as { rolle?: string } | null)?.rolle ?? 'privatkunde'
 
-    // For admin-brukere: bruk eksplisitt redirect fra cookie hvis satt (f.eks. fra /admin/logg-inn)
-    const eksplisittRedirect = savedState.redirect && savedState.redirect.startsWith('/portal/') ? savedState.redirect : null
-
+    // For admin-brukere: bruk valgt rolle fra innloggingssiden for redirect
+    // (admin har tilgang til alle portaler via middleware)
+    const rolleForRedirect = faktiskRolle === 'admin' ? valgtRolle : faktiskRolle
+    console.log('Redirect logic:', { faktiskRolle, valgtRolle, rolleForRedirect, savedStateRolle: savedState.rolle })
     let redirectUrl: string
 
-    if (faktiskRolle === 'admin') {
-      redirectUrl = eksplisittRedirect ?? '/portal/admin'
-    } else if (faktiskRolle === 'takstmann_admin' || faktiskRolle === 'takstmann') {
+    if (rolleForRedirect === 'takstmann_admin' || rolleForRedirect === 'takstmann') {
       redirectUrl = '/portal/takstmann'
-    } else if (faktiskRolle === 'megler') {
+    } else if (rolleForRedirect === 'megler') {
       redirectUrl = '/portal/megler'
+    } else if (rolleForRedirect === 'privatkunde') {
+      redirectUrl = '/portal/kunde'
+    } else if (faktiskRolle === 'admin') {
+      redirectUrl = '/portal/admin'
     } else {
       redirectUrl = '/portal/kunde'
     }

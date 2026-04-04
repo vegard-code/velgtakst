@@ -1,15 +1,16 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { sendPurringEpost, sendInkassoVarsel } from '@/lib/integrasjoner/epost'
 
 export async function sendPurring(oppdragId: string, purreType: 'purring_1' | 'purring_2' | 'inkasso') {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: oppdrag } = await supabase
+  const { data: oppdrag } = await serviceClient
     .from('oppdrag')
     .select(`
       *,
@@ -52,7 +53,7 @@ export async function sendPurring(oppdragId: string, purreType: 'purring_1' | 'p
   }
 
   // Logg purringen
-  await supabase.from('purre_logg').insert({
+  await serviceClient.from('purre_logg').insert({
     oppdrag_id: oppdragId,
     purre_type: purreType,
     sendt_til: kunde.epost,
@@ -66,11 +67,12 @@ export async function sendPurring(oppdragId: string, purreType: 'purring_1' | 'p
 
 // Kjøres av cron – sjekker alle fakturerte oppdrag
 export async function kjorAutomatiskPurring() {
-  const supabase = await createClient()
+  // Cron-jobb har ingen autentisert bruker, må bruke serviceClient
+  const serviceClient = await createServiceClient()
   const naa = new Date()
 
   // Hent alle fakturerte oppdrag med bedriftssettings
-  const { data: oppdragsListe } = await supabase
+  const { data: oppdragsListe } = await serviceClient
     .from('oppdrag')
     .select(`
       id, tittel, pris, faktura_id, updated_at, company_id,
@@ -86,7 +88,7 @@ export async function kjorAutomatiskPurring() {
   for (const oppdrag of oppdragsListe) {
     if (!oppdrag.company_id) continue
 
-    const { data: settings } = await supabase
+    const { data: settings } = await serviceClient
       .from('company_settings')
       .select('purring_dager_1, purring_dager_2, inkasso_dager')
       .eq('company_id', oppdrag.company_id)
@@ -101,7 +103,7 @@ export async function kjorAutomatiskPurring() {
     const inkassoDager = settings?.inkasso_dager ?? 60
 
     // Hent eksisterende purringer
-    const { data: purringer } = await supabase
+    const { data: purringer } = await serviceClient
       .from('purre_logg')
       .select('purre_type')
       .eq('oppdrag_id', oppdrag.id)
@@ -117,15 +119,15 @@ export async function kjorAutomatiskPurring() {
     try {
       if (!harInkasso && dagerSidenstatus >= inkassoDager) {
         await sendInkassoVarsel({ til: kunde.epost, kundeNavn: kunde.navn, fakturaNummer: oppdrag.faktura_id ?? 'UKJENT', belopKroner: oppdrag.pris ?? 0 })
-        await supabase.from('purre_logg').insert({ oppdrag_id: oppdrag.id, purre_type: 'inkasso', sendt_til: kunde.epost, status: 'sendt' })
+        await serviceClient.from('purre_logg').insert({ oppdrag_id: oppdrag.id, purre_type: 'inkasso', sendt_til: kunde.epost, status: 'sendt' })
         behandlet++
       } else if (!harPurring2 && dagerSidenstatus >= purring2Dager) {
         await sendPurringEpost({ til: kunde.epost, kundeNavn: kunde.navn, fakturaNummer: oppdrag.faktura_id ?? 'UKJENT', belopKroner: oppdrag.pris ?? 0, forfallsDato: '-', purreNummer: 2 })
-        await supabase.from('purre_logg').insert({ oppdrag_id: oppdrag.id, purre_type: 'purring_2', sendt_til: kunde.epost, status: 'sendt' })
+        await serviceClient.from('purre_logg').insert({ oppdrag_id: oppdrag.id, purre_type: 'purring_2', sendt_til: kunde.epost, status: 'sendt' })
         behandlet++
       } else if (!harPurring1 && dagerSidenstatus >= purring1Dager) {
         await sendPurringEpost({ til: kunde.epost, kundeNavn: kunde.navn, fakturaNummer: oppdrag.faktura_id ?? 'UKJENT', belopKroner: oppdrag.pris ?? 0, forfallsDato: '-', purreNummer: 1 })
-        await supabase.from('purre_logg').insert({ oppdrag_id: oppdrag.id, purre_type: 'purring_1', sendt_til: kunde.epost, status: 'sendt' })
+        await serviceClient.from('purre_logg').insert({ oppdrag_id: oppdrag.id, purre_type: 'purring_1', sendt_til: kunde.epost, status: 'sendt' })
         behandlet++
       }
     } catch (e) {

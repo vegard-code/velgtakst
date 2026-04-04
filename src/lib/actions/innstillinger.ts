@@ -1,14 +1,15 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 export async function oppdaterInnstillinger(formData: FormData) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: profil } = await supabase
+  const { data: profil } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
@@ -24,7 +25,7 @@ export async function oppdaterInnstillinger(formData: FormData) {
     const sertifiseringAnnet = (formData.get('sertifisering_annet') as string) || null
 
     // Oppdater takstmann-profil
-    await supabase
+    await serviceClient
       .from('takstmann_profiler')
       .update({
         navn: formData.get('navn') as string,
@@ -40,7 +41,7 @@ export async function oppdaterInnstillinger(formData: FormData) {
 
     // Oppdater bedrift
     if (profil?.company_id) {
-      await supabase
+      await serviceClient
         .from('companies')
         .update({
           navn: formData.get('firmanavn') as string,
@@ -68,7 +69,7 @@ export async function oppdaterInnstillinger(formData: FormData) {
       updates.inkasso_dager = Number(formData.get('inkasso_dager')) || 60
     }
 
-    const { error } = await supabase
+    const { error } = await serviceClient
       .from('company_settings')
       .upsert(updates, { onConflict: 'company_id' })
 

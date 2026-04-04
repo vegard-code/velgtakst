@@ -154,7 +154,9 @@ export async function opprettKalenderHendelse(
 
   const calendar = google.calendar({ version: 'v3', auth })
 
-  const startDato = (hendelse.befaringsdato ?? new Date().toISOString()).split('T')[0]
+  // Ekstraher YYYY-MM-DD fra datetime-local format (f.eks. "2026-04-06T10:00")
+  const rawDato = hendelse.befaringsdato ?? new Date().toISOString()
+  const startDato = rawDato.split('T')[0]
   const lokasjon = [hendelse.adresse, hendelse.by].filter(Boolean).join(', ')
 
   const beskrivelse = [
@@ -218,7 +220,7 @@ export async function oppdaterKalenderHendelse(
     })
 
     const oppdatertStart = hendelse.befaringsdato
-      ? hendelse.befaringsdato.split('T')[0]
+      ? hendelse.befaringsdato
       : (eksisterende.start?.date ?? eksisterende.start?.dateTime?.split('T')[0])
 
     const lokasjon = hendelse.adresse || hendelse.by

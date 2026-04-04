@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import type { OppdragStatus, OppdragType } from '@/lib/supabase/types'
 import {
   opprettKalenderHendelse,
@@ -25,18 +25,18 @@ export async function hentOppdragListe(filter?: {
   sok?: string
 }) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
 
-  // Hent brukerens company_id for å scope queries
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return []
 
-  const { data: profil } = await supabase
+  const { data: profil } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
     .single()
 
-  let query = supabase
+  let query = serviceClient
     .from('oppdrag')
     .select(`
       *,
@@ -70,8 +70,13 @@ export async function hentOppdragListe(filter?: {
 
 export async function hentOppdragDetaljer(id: string) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
 
-  const { data, error } = await supabase
+  // Verifiser at bruker er autentisert
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data, error } = await serviceClient
     .from('oppdrag')
     .select(`
       *,
@@ -94,11 +99,13 @@ export async function hentOppdragDetaljer(id: string) {
 // ============================================================
 export async function opprettOppdrag(formData: FormData) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: profil } = await supabase
+  // Bruk service client for å unngå RLS-rekursjon
+  const { data: profil } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
@@ -106,14 +113,13 @@ export async function opprettOppdrag(formData: FormData) {
 
   if (!profil?.company_id) return { error: 'Ingen bedrift funnet' }
 
-  // Finn takstmann-profil
-  const { data: takstmannProfil } = await supabase
+  const { data: takstmannProfil } = await serviceClient
     .from('takstmann_profiler')
     .select('id')
     .eq('user_id', user.id)
     .single()
 
-  const { data, error } = await supabase
+  const { data, error } = await serviceClient
     .from('oppdrag')
     .insert({
       company_id: profil.company_id,
@@ -134,8 +140,7 @@ export async function opprettOppdrag(formData: FormData) {
 
   if (error || !data) return { error: error?.message ?? 'Kunne ikke opprette oppdrag' }
 
-  // Logg opprettelse
-  await supabase.from('status_logg').insert({
+  await serviceClient.from('status_logg').insert({
     oppdrag_id: data.id,
     fra_status: null,
     til_status: 'ny',
@@ -143,11 +148,10 @@ export async function opprettOppdrag(formData: FormData) {
     notat: 'Oppdrag opprettet',
   })
 
-  // Google Calendar sync – kun hvis takstmann har koblet til
+  // Google Calendar sync
   if (takstmannProfil?.id) {
     const harToken = await hentTokenForTakstmann(takstmannProfil.id)
     if (harToken) {
-      // Hent kundenavn for hendelsen
       const befaringsdato = (formData.get('befaringsdato') as string) || null
       if (befaringsdato) {
         const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
@@ -161,7 +165,7 @@ export async function opprettOppdrag(formData: FormData) {
         })
 
         if (googleEventId) {
-          await supabase
+          await serviceClient
             .from('oppdrag')
             .update({ google_event_id: googleEventId })
             .eq('id', data.id)
@@ -183,10 +187,11 @@ export async function oppdaterOppdragStatus(
   notat?: string
 ) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: gammelt } = await supabase
+  const { data: gammelt } = await serviceClient
     .from('oppdrag')
     .select(`
       status, tittel,
@@ -196,14 +201,14 @@ export async function oppdaterOppdragStatus(
     .eq('id', oppdragId)
     .single()
 
-  const { error } = await supabase
+  const { error } = await serviceClient
     .from('oppdrag')
     .update({ status: nyStatus })
     .eq('id', oppdragId)
 
   if (error) return { error: error.message }
 
-  await supabase.from('status_logg').insert({
+  await serviceClient.from('status_logg').insert({
     oppdrag_id: oppdragId,
     fra_status: gammelt?.status ?? null,
     til_status: nyStatus,
@@ -221,7 +226,7 @@ export async function oppdaterOppdragStatus(
     if (bestiller?.epost && gammelt?.tittel) {
       if (nyStatus === 'rapport_levert') {
         // Hent navn på rapporten hvis den finnes
-        const { data: rapport } = await supabase
+        const { data: rapport } = await serviceClient
           .from('dokumenter')
           .select('navn')
           .eq('oppdrag_id', oppdragId)
@@ -261,18 +266,19 @@ export async function oppdaterOppdragStatus(
 // ============================================================
 export async function oppdaterOppdrag(id: string, formData: FormData) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
   // Hent eksisterende oppdrag for å få google_event_id
-  const { data: eksisterende } = await supabase
+  const { data: eksisterende } = await serviceClient
     .from('oppdrag')
     .select('google_event_id, takstmann_id')
     .eq('id', id)
     .single()
 
-  const { error } = await supabase
+  const { error } = await serviceClient
     .from('oppdrag')
     .update({
       tittel: formData.get('tittel') as string,
@@ -291,8 +297,7 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
 
   // Google Calendar sync
   if (eksisterende?.takstmann_id) {
-    // Hent takstmann_profil.id fra user
-    const { data: takstmannProfil } = await supabase
+    const { data: takstmannProfil } = await serviceClient
       .from('takstmann_profiler')
       .select('id')
       .eq('id', eksisterende.takstmann_id)
@@ -302,7 +307,6 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
       const nyBefaringsdato = (formData.get('befaringsdato') as string) || null
 
       if (eksisterende.google_event_id) {
-        // Oppdater eksisterende hendelse
         await oppdaterKalenderHendelse(takstmannProfil.id, eksisterende.google_event_id, {
           tittel: formData.get('tittel') as string,
           adresse: (formData.get('adresse') as string) || null,
@@ -310,7 +314,6 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
           befaringsdato: nyBefaringsdato ?? undefined,
         })
       } else if (nyBefaringsdato) {
-        // Opprett ny kalenderhendelse (ble ikke opprettet ved oppretting)
         const harToken = await hentTokenForTakstmann(takstmannProfil.id)
         if (harToken) {
           const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
@@ -323,7 +326,7 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
             oppdragType: formData.get('oppdrag_type') as string,
           })
           if (googleEventId) {
-            await supabase
+            await serviceClient
               .from('oppdrag')
               .update({ google_event_id: googleEventId })
               .eq('id', id)
@@ -342,15 +345,19 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
 // ============================================================
 export async function slettOppdrag(id: string) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Ikke autentisert' }
 
   // Hent google_event_id og takstmann_id før vi kansellerer
-  const { data: oppdrag } = await supabase
+  const { data: oppdrag } = await serviceClient
     .from('oppdrag')
     .select('google_event_id, takstmann_id')
     .eq('id', id)
     .single()
 
-  const { error } = await supabase
+  const { error } = await serviceClient
     .from('oppdrag')
     .update({ status: 'kansellert' })
     .eq('id', id)
@@ -371,11 +378,12 @@ export async function slettOppdrag(id: string) {
 // ============================================================
 export async function hentDashboardStats() {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: profil } = await supabase
+  const { data: profil } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
@@ -384,13 +392,13 @@ export async function hentDashboardStats() {
   if (!profil?.company_id) return null
 
   const [statusTeller, nyeOppdrag, kommendeFrister, nyeBestillinger] = await Promise.all([
-    supabase
+    serviceClient
       .from('oppdrag')
       .select('status')
       .eq('company_id', profil.company_id)
       .neq('status', 'kansellert'),
 
-    supabase
+    serviceClient
       .from('oppdrag')
       .select('id, tittel, adresse, by, oppdrag_type, created_at')
       .eq('company_id', profil.company_id)
@@ -398,7 +406,7 @@ export async function hentDashboardStats() {
       .order('created_at', { ascending: false })
       .limit(5),
 
-    supabase
+    serviceClient
       .from('oppdrag')
       .select('id, tittel, frist, status')
       .eq('company_id', profil.company_id)
@@ -407,7 +415,7 @@ export async function hentDashboardStats() {
       .order('frist', { ascending: true })
       .limit(5),
 
-    supabase
+    serviceClient
       .from('bestillinger')
       .select('id, melding, created_at, takstmann_id')
       .eq('status', 'ny')

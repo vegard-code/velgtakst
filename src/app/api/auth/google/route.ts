@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     .eq('id', user.id)
     .single()
 
-  if (!profil || (profil.rolle !== 'takstmann' && profil.rolle !== 'takstmann_admin')) {
+  if (!profil || (profil.rolle !== 'takstmann' && profil.rolle !== 'takstmann_admin' && profil.rolle !== 'admin')) {
     return NextResponse.json({ error: 'Ikke autorisert' }, { status: 403 })
   }
 
