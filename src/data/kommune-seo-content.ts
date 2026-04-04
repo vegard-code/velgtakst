@@ -690,7 +690,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Tromsø",
-        "content": "Takstmann.net har etablert nettverk av takstmenn i Tromsø som daglig jobber med boligevurderinger. Du kan søke etter den beste tilgjengelige i ditt området—enten Tromsø sentrum, Tromsdalen, Kvaløysletta eller Kroken—og sammenligne både pris og erfaring før bestilling. Plattformen viser responstid, slik at du kan prioritere takstmenn som kan starte raskt i perioder med høy etterspørsel."
+        "content": "Takstmann.net har takstmenn som dekker hele Tromsø — sentrum, Tromsdalen, Kvaløysletta og Kroken. Du sammenligner profiler, ser pris og erfaring, og bestiller direkte. Du kan filtrere på tilgjengelighet og velge en takstmann med ledig kapasitet i perioder med mye å gjøre."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Tromsø?",
@@ -810,15 +810,15 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Nordre Follo",
-        "content": "Takstmann.net har etablert nettverk i Nordre Follo-området, inkludert Ski, Kolbotn, Langhus og Sofiemyr. Du kan søke etter takstmenn basert på område, pris og tilgjengelighet, og sammenligne profiler før bestilling. Fordi boligmarkedet her er aktivt og kjemisk konkurransen høy, prioriterer mange takstmenn raskt svar og kort leveringstid."
+        "content": "Takstmann.net dekker Nordre Follo-området, inkludert Ski, Kolbotn, Langhus og Sofiemyr. Du kan søke etter takstmenn basert på område, pris og tilgjengelighet, og sammenligne profiler før bestilling. Markedet er aktivt og de fleste takstmenn i området er vant til å svare raskt og holde god leveringstid."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Nordre Follo?",
-        "content": "Tilstandsrapport er standarden ved alle transaksjoner. Fordi boligprisene er høye, krever både kjøper og selger dokumentasjon av tilstanden. Verditakst er også populær når eiere refinansiert eller skal estimere markedsverdi. Skadetakst brukes ved erstatningskrav eller når mangler avdekkes under prosess. Overtakelsestakst etterspørres når boligselskap skal bekreftet tilstanden ved overtakelse."
+        "content": "Tilstandsrapport er standarden ved boligtransaksjoner i Nordre Follo. Fordi boligprisene er høye, er grundig dokumentasjon viktig for begge parter. Verditakst brukes ved refinansiering og markedsvurdering. Skadetakst bestilles ved erstatningskrav eller når mangler avdekkes. Overtakelsestakst benyttes når boligselskaper skal dokumentere tilstanden ved overtakelse."
       },
       {
         "heading": "Slik fungerer det",
-        "content": "Søk takstmann i Nordre Follo-området. Sammenlign tilgjengelighet, erfaring og pris. Send forespørsel til en eller flere. De fleste svarer raskt—ofte innen samme dag—fordi konkurransen er høy. Avtale tid for befaring. Takstmannen inspiserer boligen systematisk og leverer rapport digitalt innen 3-5 arbeidsdager. Du kan følge prosessen via takstmann.net og stille spørsmål underveis."
+        "content": "Søk etter takstmann i Nordre Follo-området. Sammenlign tilgjengelighet, erfaring og pris, og send forespørsel direkte til den du vil bruke. De fleste takstmenn svarer raskt. Avtal tid for befaring — takstmannen inspiserer boligen og leverer rapport digitalt innen 3–5 arbeidsdager."
       },
       {
         "heading": "Pris på takst i Nordre Follo",
@@ -826,7 +826,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Nordre Follo",
-        "content": "Meglerkontorer i Nordre Follo bruker takstmann.net som standard platform for tilstandsrapporter. Plattformen gir deg oversikt over tilgjengelige takstmenn, pris, og leveringstid. Mange meglere etablerer fast samarbeid med utvalgte takstmenn for volument og bedre responstid. Du kan også tilby tilstandsrapport som del av salgspakke, noe som styrker tillit hos kjøper."
+        "content": "Meglerkontorer i Nordre Follo bruker takstmann.net for å administrere tilstandsrapporter. Plattformen gir oversikt over tilgjengelige takstmenn, priser og leveringstider. Mange meglere etablerer fast samarbeid med utvalgte takstmenn for bedre responstid og forutsigbarhet."
       }
     ],
     "faqItems": [
@@ -991,7 +991,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Ålesund",
-        "content": "Takstmann.net har etablert nettverk i Ålesund sentrum, Spjelkavik, Moa og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Fordi Ålesund har mange historiske bygg, kan det være fordelaktig å finne takstmenn med erfaring på Jugendstil-eiendom og bevaringskrav."
+        "content": "Takstmann.net dekker Ålesund sentrum, Spjelkavik, Moa og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Ålesund har mange historiske Jugendstil-bygg, og det kan være en fordel å velge en takstmann med erfaring fra bevaringsverdig bebyggelse."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Ålesund?",
@@ -1108,7 +1108,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Bodø",
-        "content": "Takstmann.net har etablert nettverk i Bodø sentrum, Mørkved, Hunstad, Tverlandet og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring med nordnorske bygninger. Fordi klimaet er krevende, kan erfaring med vindeksponering og værslitasje være viktig ved valg av takstmann."
+        "content": "Takstmann.net dekker Bodø sentrum, Mørkved, Hunstad, Tverlandet og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Bodø er vindeksponert og klimaet er krevende for bygninger, så erfaring med nordnorsk klima og værslitasje bør vektlegges ved valg av takstmann."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Bodø?",
@@ -1166,7 +1166,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Moss",
-        "content": "Takstmann.net har etablert nettverk i Moss sentrum, Jeløy, Kambo og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Fordi Moss har variert boligstock og både prestasjons- og industriområder, kan det være fordelaktig å finne takstmenn som kjenner lokale markeder godt."
+        "content": "Takstmann.net dekker Moss sentrum, Jeløy, Kambo og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Moss har en variert boligmasse med alt fra eldre trehusbebyggelse på Jeløy til nyere utbyggingsområder i sentrum, og lokal kjennskap er en fordel."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Moss?",
@@ -1251,7 +1251,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor fort kan jeg få gjort taksten?",
-        "svar": "De fleste takstmenn i Lørenskog kan gjennomføre boligtakst innen 1–2 uker. I perioder med høy etterspørsel (særlig våren) kan det ta litt lengere. Når du bestiller gjennom takstmann.net, ser du disponibel tid hos hver takstmann og kan velge en som passer ditt tidsskjema."
+        "svar": "De fleste takstmenn i Lørenskog kan gjennomføre boligtakst innen 1–2 uker. I perioder med høy etterspørsel (særlig våren) kan det ta noe lenger. Når du bestiller gjennom takstmann.net, ser du disponibel tid hos hver takstmann og kan velge en som passer ditt tidsskjema."
       },
       {
         "sporsmal": "Hvilken type takst trenger jeg?",
@@ -1300,7 +1300,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Larvik",
-        "content": "Meglere i Larvik og Stavern bruker takstmann.net for å sikre rask booking av kvalitatiivt taksttjenester. Plattformen lar deg administrere flere oppdrag, holde styr på priser og ventetider, og få rapporter levert digitalt direkte til dine klienter. Ved regelmessig bruk kan du forhandle om volume-rabatter. Integrasjon med meglerverktøy gjør bookingen smidig og del av din normale arbeidsprosess."
+        "content": "Meglere i Larvik og Stavern bruker takstmann.net for rask bestilling av takstmenn. Plattformen gir oversikt over tilgjengelige fagpersoner, priser og ventetider, og rapporter leveres digitalt. Meglere som bruker plattformen jevnlig kan ofte forhandle om volumrabatt."
       }
     ],
     "faqItems": [
@@ -1310,7 +1310,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan takstmannen komme i Larvik?",
-        "svar": "Hentet fra gjennomsnittlig ventetid er det 1–2 uker for de fleste takstmenn i Larvik. I sommermånedene (mai–august) og ved salgssesonger kan ventetiden være litt lengre. Når du bestiller via takstmann.net, ser du umiddelbar tilgjengelighet og kan velge en takstmann som passer ditt tidsskjema."
+        "svar": "Hentet fra gjennomsnittlig ventetid er det 1–2 uker for de fleste takstmenn i Larvik. I sommermånedene (mai–august) og ved salgssesonger kan ventetiden være noe lenger. Når du bestiller via takstmann.net, ser du umiddelbar tilgjengelighet og kan velge en takstmann som passer ditt tidsskjema."
       },
       {
         "sporsmal": "Hva må en takst omfatte for kystbygninger?",
@@ -1322,7 +1322,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Kan privatpersoner få samme pris som meglere?",
-        "svar": "De fleste takstmenn gir samme pris til privatpersoner og meglere, men meglere som bestiller regelmessig kan forhandle volume-rabatt. Som privatperson får du full pris for en enkeltbestilling, men det er samme kvalitet og grundighet som meglerbestillinger."
+        "svar": "De fleste takstmenn gir samme pris til privatpersoner og meglere, men meglere som bestiller regelmessig kan forhandle volumrabatt. Som privatperson får du full pris for en enkeltbestilling, men det er samme kvalitet og grundighet som meglerbestillinger."
       },
       {
         "sporsmal": "Hvilken takstmann bør jeg velge i Larvik?",
@@ -1423,7 +1423,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Arendal",
-        "content": "Meglere i Arendal bruker takstmann.net for effektiv booking og administrering av takstoppdrag. Plattformen gjør det mulig å sammenligne priser, sikre rask tilgang og få rapporter levert digitalt. Du kan integrer bookingene i din normale arbeidsprosess og forhandle volume-rabatter ved regelmessig bruk. Arendal-markedet har godt oppsving, og rask takstlevetid er viktig konkurranse-faktor."
+        "content": "Meglere i Arendal bruker takstmann.net for å administrere takstoppdrag effektivt. Plattformen gjør det enkelt å sammenligne priser og tilgjengelighet, og rapporter leveres digitalt. Markedet i Arendal er aktivt, og rask leveringstid er viktig for å holde salgsprosessen i gang."
       }
     ],
     "faqItems": [
@@ -1441,7 +1441,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor fort kan jeg få taksten gjort?",
-        "svar": "De fleste takstmenn i Arendal kan gjennomføre oppdrag innen 1–2 uker. I sommermåneder (mai–august) når turisme og sommerhuskjøp er høye, kan ventetiden være litt lengre. Når du bestiller via takstmann.net ser du tilgjengelig tid umiddelbart."
+        "svar": "De fleste takstmenn i Arendal kan gjennomføre oppdrag innen 1–2 uker. I sommermåneder (mai–august) når turisme og sommerhuskjøp er høye, kan ventetiden være noe lenger. Når du bestiller via takstmann.net ser du tilgjengelig tid umiddelbart."
       },
       {
         "sporsmal": "Bruker meglere i Arendal tilstandsrapport?",
@@ -1482,7 +1482,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Ullensaker",
-        "content": "Meglere i Ullensaker bruker takstmann.net for effektiv booking av takstmenn i høyt volum. Området har stor aktivitet, og rask og pålitelig takstlevetid er viktig. Plattformen lar deg sammenligne priser, administrere mange oppdrag samtidig og få rapporter raskt. Ved regelmessig bestilling kan du forhandle volume-rabatter og sikre prioritet hos takstmennene."
+        "content": "Meglere i Ullensaker bruker takstmann.net for å administrere takstoppdrag effektivt. Området har stor aktivitet, og rask og pålitelig leveringstid er viktig. Plattformen lar deg sammenligne priser, administrere mange oppdrag samtidig og få rapporter raskt. Meglere som bestiller regelmessig kan forhandle om volumrabatt."
       }
     ],
     "faqItems": [
@@ -1540,7 +1540,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Karmøy",
-        "content": "Meglere i Karmøy bruker takstmann.net for å sikre rask booking av takstmenn. Plattformen lar deg administrere oppdrag, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din normale meglerrutine og forhandle volume-rabatter ved regelmessig bruk. I et marked med høy skadetakst-etterspørsel er det viktig å ha pålitelige samarbeidspartnere."
+        "content": "Meglere i Karmøy bruker takstmann.net for å sikre rask booking av takstmenn. Plattformen lar deg administrere oppdrag, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din normale meglerrutine og forhandle volumrabatt ved regelmessig bruk. I et marked med høy skadetakst-etterspørsel er det viktig å ha pålitelige samarbeidspartnere."
       }
     ],
     "faqItems": [
@@ -1599,7 +1599,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Øygarden",
-        "content": "Meglere i Øygarden bruker takstmann.net for effektiv booking av takstmenn. Plattformen lar deg administrere flere oppdrag, sammenligne priser og sikre rask levering. Du kan integrere bestillinger i din arbeidsprosess og forhandle volume-rabatter ved regelmessig bruk. Markedet for fritidshytter i området gjør takstlevetid viktig."
+        "content": "Meglere i Øygarden bruker takstmann.net for effektiv booking av takstmenn. Plattformen lar deg administrere flere oppdrag, sammenligne priser og sikre rask levering. Du kan integrere bestillinger i din arbeidsprosess og forhandle volumrabatt ved regelmessig bruk. Markedet for fritidshytter i området gjør leveringstid viktig."
       }
     ],
     "faqItems": [
@@ -1659,7 +1659,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Haugesund",
-        "content": "Meglere i Haugesund bruker takstmann.net for å sikre rask og effektiv booking av takstmenn. Plattformen lar deg administrere mange oppdrag samtidig, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din normale meglerflyt og forhandle volume-rabatter. Haugesund-markedet er aktivt, så tilgang til pålitelige takstmenn er viktig konkurransefordel."
+        "content": "Meglere i Haugesund bruker takstmann.net for å sikre rask og effektiv booking av takstmenn. Plattformen lar deg administrere mange oppdrag samtidig, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din normale meglerflyt og forhandle volumrabatt. Haugesund-markedet er aktivt, så tilgang til pålitelige takstmenn er viktig konkurransefordel."
       }
     ],
     "faqItems": [
@@ -1669,7 +1669,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor fort leveres rapporten?",
-        "svar": "De fleste takstmenn i Haugesund kan gjennomføre boligtakst innen 1–2 uker fra bestilling. I perioder med høy etterspørsel kan ventetiden bli litt lengre. Når du bestiller, ser du umiddelbar tilgjengelighet hos hver takstmann."
+        "svar": "De fleste takstmenn i Haugesund kan gjennomføre boligtakst innen 1–2 uker fra bestilling. I perioder med høy etterspørsel kan ventetiden bli noe lenger. Når du bestiller, ser du umiddelbar tilgjengelighet hos hver takstmann."
       },
       {
         "sporsmal": "Hvilken type takst trenger jeg for investeringseiendom?",
@@ -1718,7 +1718,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Porsgrunn",
-        "content": "Meglere i Porsgrunn bruker takstmann.net for effektiv booking av takstmenn. Plattformen lar deg administrere oppdrag, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din meglerflyt og forhandle volume-rabatter. Porsgrunn og Brevik tilsammen danner et aktivt marked hvor takstlevetid er viktig."
+        "content": "Meglere i Porsgrunn bruker takstmann.net for å bestille og administrere takstoppdrag. Plattformen gir oversikt over tilgjengelige takstmenn, priser og leveringstider. Porsgrunn og Brevik har et aktivt boligmarked, og rask levering av tilstandsrapporter er viktig for å holde framdriften i salgsprosessen."
       }
     ],
     "faqItems": [
@@ -2441,7 +2441,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan en takstmann komme til Lier?",
-        "svar": "Mange takstmenn i Lier kan tilby besøk innen få dager. På takstmann.net ser du responstid for hver takstmann. I påkoblet perioder eller sommeren kan det ta litt lengre tid."
+        "svar": "Mange takstmenn i Lier kan tilby besøk innen få dager. På takstmann.net ser du responstid for hver takstmann. I påkoblet perioder eller sommeren kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen på tilstandsrapport, verditakst og skadetakst?",
@@ -2471,7 +2471,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "seoTitle": "Takstmann Eidsvoll | Finn og bestill takstmann i Eidsvoll",
     "metaDescription": "Finn takstmann i Eidsvoll for tilstandsrapport, verditakst, skadetakst og overtakelse. Sammenlign profiler og bestill direkte.",
     "h1": "Takstmann i Eidsvoll",
-    "intro": "Eidsvoll er kjent som grunnlovskommunen og ligger i Akershus, med stor historisk betydning og et variert boligmarked. Området består av både tradisjonelle landbruksområder, charming bebygde områder som Dal og Minnesund, og modernere boligfelt nær sentrum. Som en kommune i sterk vekst med mange nye boligprosjekter og tradisjonstunge gårder, er det stor behov for profesjonell taksering. Eidsvoll tiltrekker seg både lokale kjøpere, investorer og familier fra Oslo-området som leter etter rolige omgivelser. En grundig tilstandsrapport er essensiell når du kjøper eller selger her, og takstmann.net gjør det enkelt å finne den rette takstmannen raskt. Du kan sammenligne profiler fra lokale fagfolk, se priser transparant og bestille direkte – alt digitalt.",
+    "intro": "Eidsvoll er kjent som grunnlovskommunen og ligger i Akershus med stor historisk betydning. Kommunen har en blanding av tradisjonelle landbrukseiendommer, eldre tettstedsbebyggelse i Dal og Minnesund, og nyere boligfelt nær sentrum. Eidsvoll er i sterk vekst og tiltrekker seg familier fra Oslo-regionen som ønsker rolige omgivelser med god togforbindelse. En grundig tilstandsrapport er viktig ved kjøp og salg her, og takstmann.net gjør det enkelt å finne riktig fagperson.",
     "sections": [
       {
         "heading": "Finn takstmann i Eidsvoll",
@@ -2559,7 +2559,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan takstmannen komme til Horten?",
-        "svar": "De fleste takstmenn kan komme innen 1–3 uker. I sommermånedene eller høysesong kan det ta litt lengre tid. Du ser estimert responstid på hver profil."
+        "svar": "De fleste takstmenn kan komme innen 1–3 uker. I sommermånedene eller høysesong kan det ta noe lenger tid. Du ser estimert responstid på hver profil."
       },
       {
         "sporsmal": "Hva skal jeg velge – tilstandsrapport eller verditakst?",
@@ -2719,7 +2719,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Bjørnafjorden?",
-        "content": "Tilstandsrapport er standard ved boligkjøp i Bjørnafjorden. Verditakst brukes for forsikring, arv og større transaksjoner. Siden området har både tradisjonelle småbruk, moderne kystboliger og feriehytter, kreves takstmenn med erfaring fra variert bebyggelse. Skadetakst for stormskader og værrelaterte problemer er også relevant."
+        "content": "Tilstandsrapport er standard ved boligkjøp i Bjørnafjorden. Verditakst brukes ved forsikring, arv og refinansiering. Kommunen har en blanding av tradisjonelle gårdsbruk, kystboliger og fritidshytter — takstmannen bør ha erfaring med alle disse. Skadetakst er relevant for boliger utsatt for storm og fukt langs kysten."
       },
       {
         "heading": "Slik fungerer det",
@@ -2800,7 +2800,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan en takstmann møte i Nittedal?",
-        "svar": "De fleste takstmenn kan komme innen 1–3 uker. I sommermånedene eller høysesong kan det ta litt lengre tid. Du ser estimert responstid på profilen."
+        "svar": "De fleste takstmenn kan komme innen 1–3 uker. I sommermånedene eller høysesong kan det ta noe lenger tid. Du ser estimert responstid på profilen."
       },
       {
         "sporsmal": "Hva er forskjellen på tilstandsrapport og verditakst?",
@@ -2889,7 +2889,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "seoTitle": "Takstmann Grimstad | Finn og bestill takstmann i Grimstad",
     "metaDescription": "Finn takstmann i Grimstad for tilstandsrapport, verditakst, skadetakst og overtakelse. Sammenlign profiler og bestill direkte.",
     "h1": "Takstmann i Grimstad",
-    "intro": "Grimstad er en sjarmerende kystby i Agder, kjent for sin maritime historie, kulturelle tilbud og som hjemmet for Universitetet i Agder. Området tiltrekker seg både studenter, unge familier og pensjonister som søker et litt mindre urbant alternativ enn større byer. Boligmarkedet i Grimstad består av eldre charming bebyggelse ved sjøen, moderne leiligheter i sentrum og villaer i bydeler som Fevik, Fjære og Landvik. En tilstandsrapport er nesten alltid brukt ved boligkjøp her, og takstmann.net gjør det enkelt å finne lokale takstmenn raskt. Du sammenligner profiler, ser priser transparent og bestiller direkte på plattformen.",
+    "intro": "Grimstad er en liten kystby i Agder, kjent for sin maritime historie, kulturelle tilbud og som hjemsted for Universitetet i Agder. Området tiltrekker seg både studenter, unge familier og pensjonister som søker et roligere alternativ til større byer. Boligmarkedet i Grimstad består av eldre trehusbebyggelse langs sjøen, moderne leiligheter i sentrum og eneboliger i bydeler som Fevik, Fjære og Landvik. En tilstandsrapport er nesten alltid brukt ved boligkjøp her, og takstmann.net gjør det enkelt å finne lokale takstmenn raskt. Du sammenligner profiler, ser priser og bestiller direkte på plattformen.",
     "sections": [
       {
         "heading": "Finn takstmann i Grimstad",
@@ -2897,7 +2897,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Grimstad?",
-        "content": "Tilstandsrapport er mest etterspurt ved boligkjøp i Grimstad. Verditakst brukes for arv, forsikring og større transaksjoner. Siden området har både eldre charming boliger ved sjøen og moderne bygg, kreves takstmenn med erfaring fra variert bebyggelse. Skadetakst for værutsatte og sjøfronteiendommer er også relevant."
+        "content": "Tilstandsrapport er den mest brukte tjenesten ved boligkjøp i Grimstad. Verditakst bestilles ved arv, forsikring og refinansiering. Boligmassen spenner fra eldre trehusbebyggelse langs sjøen til nyere leiligheter og eneboliger, noe som krever bred erfaring hos takstmannen. Skadetakst er aktuelt for sjøfronteiendom og boliger eksponert for vær og vind."
       },
       {
         "heading": "Slik fungerer det",
@@ -2948,7 +2948,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "seoTitle": "Takstmann Harstad | Finn og bestill takstmann i Harstad",
     "metaDescription": "Finn takstmann i Harstad for tilstandsrapport, verditakst, skadetakst og overtakelse. Sammenlign profiler og bestill direkte.",
     "h1": "Takstmann i Harstad",
-    "intro": "Harstad er en større by i Nord-Troms, kjent som et viktig marinebasis med Bjerkvik militæranlegg, samt som handels- og serviceknutepunkt for Nord-Troms regionen. Området kombinerer moderne bybebyggelse med tradisjonelle nordnorske boliger, og har både moderne boligfelt og eldre bebyggelse omkring sentrum og bydeler som Kanebogen og Medkila. Boligmarkedet i Harstad er relativt stabilt, preget av både lokale arbeidere og folk tilknyttet militærbaser. En tilstandsrapport er vanlig ved boligkjøp her, og takstmann.net gjør det enkelt å finne lokale takstmenn. Du sammenligner profiler, ser priser transparent og bestiller direkte på plattformen.",
+    "intro": "Harstad er en større by i Nord-Troms, kjent som et viktig marinebasis med Bjerkvik militæranlegg, samt som handels- og serviceknutepunkt for Nord-Troms regionen. Området kombinerer moderne bybebyggelse med tradisjonelle nordnorske boliger, og har både moderne boligfelt og eldre bebyggelse omkring sentrum og bydeler som Kanebogen og Medkila. Boligmarkedet i Harstad er relativt stabilt, preget av både lokale arbeidere og folk tilknyttet militærbaser. En tilstandsrapport er vanlig ved boligkjøp her, og takstmann.net gjør det enkelt å finne lokale takstmenn. Du sammenligner profiler, ser priser og bestiller direkte på plattformen.",
     "sections": [
       {
         "heading": "Finn takstmann i Harstad",
@@ -2956,7 +2956,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Harstad?",
-        "content": "Tilstandsrapport er standard ved boligkjøp i Harstad. Verditakst brukes for arv, forsikring og større transaksjoner. Siden området har både eldre norske boliger og moderne bygg, kreves takstmenn med erfaring fra variert bebyggelse. Skadetakst for forsikring etterspørres også regelmessig."
+        "content": "Tilstandsrapport er standard ved boligkjøp i Harstad. Verditakst brukes ved arv, forsikring og refinansiering. Boligmassen består av alt fra eldre etterkrigsboliger til nyere felt i Kanebogen og Medkila — dette krever takstmenn med erfaring fra begge typer. Skadetakst bestilles jevnlig i forbindelse med forsikringssaker."
       },
       {
         "heading": "Slik fungerer det",
@@ -4941,7 +4941,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Elverum?",
-        "svar": "De fleste takstmenn på takstmann.net kan komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker etter befaringen. I travle perioder kan det ta litt lengre tid."
+        "svar": "De fleste takstmenn på takstmann.net kan komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker etter befaringen. I travle perioder kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -4997,7 +4997,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Kongsvinger?",
-        "svar": "De fleste takstmenn tilbyr befaring innen 3–5 virkedager etter bestilling gjennom takstmann.net. Rapporten er vanligvis klar innen 1–2 uker. I høysesong kan prosessen ta litt lengre tid."
+        "svar": "De fleste takstmenn tilbyr befaring innen 3–5 virkedager etter bestilling gjennom takstmann.net. Rapporten er vanligvis klar innen 1–2 uker. I høysesong kan prosessen ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -5053,7 +5053,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Stange?",
-        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten er klar innen 1–2 uker etter befaringen. I travle perioder kan det ta litt lengre tid."
+        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten er klar innen 1–2 uker etter befaringen. I travle perioder kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -5165,7 +5165,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Nord-Odal?",
-        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker etter befaringen. I travle perioder kan det ta litt lengre tid."
+        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker etter befaringen. I travle perioder kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -5221,7 +5221,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Sør-Odal?",
-        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker. I høysesong kan det ta litt lengre tid."
+        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker. I høysesong kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -5333,7 +5333,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Grue?",
-        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker. I høysesong kan det ta litt lengre tid."
+        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker. I høysesong kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -5389,7 +5389,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Åsnes?",
-        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker. I høysesong kan det ta litt lengre tid."
+        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker. I høysesong kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -5501,7 +5501,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Trysil?",
-        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker. I høysesong (vinterstid) kan det ta litt lengre tid grunnet høy etterspørsel."
+        "svar": "Takstmenn på takstmann.net kan vanligvis komme på befaring innen 3–5 virkedager etter bestilling. Rapporten leveres typisk innen 1–2 uker. I høysesong (vinterstid) kan det ta noe lenger tid grunnet høy etterspørsel."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -5613,7 +5613,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Stor-Elvdal?",
-        "svar": "De fleste takstmenn kan komme innen 1–2 uker, men store avstander i kommunen kan påvirke tidsplanen. Rapporten leveres normalt innen 5–7 virkedager etter befaringen. For eiendommer langt fra sentrum kan det ta litt lengre tid."
+        "svar": "De fleste takstmenn kan komme innen 1–2 uker, men store avstander i kommunen kan påvirke tidsplanen. Rapporten leveres normalt innen 5–7 virkedager etter befaringen. For eiendommer langt fra sentrum kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -6509,7 +6509,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Ringebu?",
-        "svar": "Takstmenn kan vanligvis gjennomføre befaring innen 1–2 uker. For kulturhistoriske eiendommer kan det ta litt lengre tid. Anbefales å bestille tidlig."
+        "svar": "Takstmenn kan vanligvis gjennomføre befaring innen 1–2 uker. For kulturhistoriske eiendommer kan det ta noe lenger tid. Anbefales å bestille tidlig."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -6565,7 +6565,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Sør-Fron?",
-        "svar": "Takstmenn kan vanligvis gjennomføre befaring innen 1–2 uker. For større gårdseiendommer kan det ta litt lengre tid. Anbefales å bestille tidlig i prosessen."
+        "svar": "Takstmenn kan vanligvis gjennomføre befaring innen 1–2 uker. For større gårdseiendommer kan det ta noe lenger tid. Anbefales å bestille tidlig i prosessen."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -6733,7 +6733,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Vågå?",
-        "svar": "Takstmenn kan vanligvis gjennomføre befaring innen 1–2 uker. For tradisjonelle eller større eiendommer kan det ta litt lengre tid. Anbefales å bestille tidlig."
+        "svar": "Takstmenn kan vanligvis gjennomføre befaring innen 1–2 uker. For tradisjonelle eller større eiendommer kan det ta noe lenger tid. Anbefales å bestille tidlig."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -9589,7 +9589,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Time?",
-        "svar": "Takstmenn i Time kan typisk gjennomføre inspeksjon innen 2-7 dager, og rapporten leveres innen 1-2 uker. High-demand perioder (vår/høst) kan kreve litt lengre ventetid."
+        "svar": "Takstmenn i Time kan typisk gjennomføre befaring innen 2–7 dager, og rapporten leveres innen 1–2 uker. I vår- og høstsesongene kan ventetiden bli noe lenger."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -10429,7 +10429,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Stord?",
-        "svar": "De fleste takstmennene i Stord kan møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. I travle perioder på våren og høsten kan det ta litt lenger, men takstmann.net hjelper deg finne de raskeste leverandørene. Mange tilbyr også ekspressturnaround mot en mindre tilleggsavgift."
+        "svar": "De fleste takstmennene i Stord kan møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. I travle perioder på våren og høsten kan det ta litt lenger, men takstmann.net hjelper deg finne de raskeste leverandørene. Mange tilbyr også rask levering mot en mindre tilleggsavgift."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -10541,7 +10541,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Kvinnherad?",
-        "svar": "Takstmenn i Kvinnherad kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. Høysesongen for turisme og boligsalg (mai-september) kan føre til litt lengre ventetid. Mange takstmenn tilbyr ekspressturnaround for umiddelbar behov."
+        "svar": "Takstmenn i Kvinnherad kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. Høysesongen for turisme og boligsalg (mai-september) kan føre til noe lenger ventetid. Mange takstmenn tilbyr prioritert behandling for tidskritiske oppdrag."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -10597,7 +10597,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Odda?",
-        "svar": "Takstmenn i Odda kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. I sommermånedene når turismen er på sitt høyeste, kan det være litt mer etterspørsel og dermed lengre ventetid. Mange tilbyr ekspressturnaround hvis det haster."
+        "svar": "Takstmenn i Odda kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. I sommermånedene når turismen er på sitt høyeste, kan det være litt mer etterspørsel og dermed lengre ventetid. Mange tilbyr rask levering hvis det haster."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -10653,7 +10653,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Voss?",
-        "svar": "Takstmenn i Voss kan typisk møte deg innen 2-3 arbeidsdager og levere rapport innen 5-7 dager. Det aktive markedet gjør at mange takstmenn er veldig effektive med planlegging. Flere tilbyr også ekspressturnaround for klienter som trenger rapport veldig raskt."
+        "svar": "Takstmenn i Voss kan typisk møte deg innen 2-3 arbeidsdager og levere rapport innen 5-7 dager. Det aktive markedet gjør at takstmennene er godt vant til å planlegge effektivt. Flere tilbyr også prioritert behandling for de som har knappe tidsfrister."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -10709,7 +10709,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Osterøy?",
-        "svar": "Takstmenn i Osterøy kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. Siden Osterøy er nær Bergen og pendlere fra Bergen er viktige klienter, er takstmennene ofte flinke til å håndtere raskt oppdrag. Mange tilbyr ekspressturnaround."
+        "svar": "Takstmenn i Osterøy kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. Siden Osterøy er nær Bergen og pendlere fra Bergen er viktige klienter, er takstmennene ofte flinke til å håndtere raskt oppdrag. Mange tilbyr rask levering."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -10755,7 +10755,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Samnanger",
-        "content": "Meglere i Samnanger (de som finnes) bruker takstmenn for å dokumentere tilstand og sikre riktig prising i et mindre aktivt marked. En god tilstandsrapport kan være avgjørende for å selge eiendom raskt, spesielt eldre gårder. Takstmann.net gjør det enkelt å få kontakt med takstmenn selv når markedet er mindre aktivt. Meglerne setter pris på tilgang til kilder utenfor området som kan tilby ekspressturnaround."
+        "content": "Meglere i Samnanger bruker takstmenn for å dokumentere tilstand og sikre riktig prising i et stille marked. En god tilstandsrapport kan være avgjørende for å selge eiendom, spesielt eldre gårdseiendommer. Takstmann.net gjør det enkelt å finne takstmenn som dekker området, også de som reiser fra nærliggende kommuner."
       }
     ],
     "faqItems": [
@@ -10877,7 +10877,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Fusa?",
-        "svar": "Takstmenn i Fusa kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. Siden Fusa ligger nær Bergen og pendlere er viktige klienter, er takstmennene ofte effektive. Mange tilbyr ekspressturnaround."
+        "svar": "Takstmenn i Fusa kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. Siden Fusa ligger nær Bergen og pendlere er viktige klienter, er takstmennene ofte effektive. Mange tilbyr rask levering."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -11045,7 +11045,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Etne?",
-        "svar": "Takstmenn i Etne kan vanligvis møte deg innen 4-6 arbeidsdager og levere rapport innen 8-12 dager. Siden markedet er mindre aktivt, kan ventetiden være litt lengre. Takstmann.net hjelper finne de raskeste alternativene."
+        "svar": "Takstmenn i Etne kan vanligvis møte deg innen 4-6 arbeidsdager og levere rapport innen 8-12 dager. Siden markedet er mindre aktivt, kan ventetiden være noe lenger. Takstmann.net hjelper finne de raskeste alternativene."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -11101,7 +11101,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Sveio?",
-        "svar": "Takstmenn i Sveio kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. Siden området ligger mellom Haugesund og Stord, er takstmennene ofte godt tilgjengelige. Mange tilbyr ekspressturnaround."
+        "svar": "Takstmenn i Sveio kan vanligvis møte deg innen 3-5 arbeidsdager og levere rapport innen 7-10 dager. Siden området ligger mellom Haugesund og Stord, er takstmennene ofte godt tilgjengelige. Mange tilbyr rask levering."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -11269,7 +11269,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Masfjorden?",
-        "svar": "Takstmenn i Masfjorden kan vanligvis møte deg innen 4-6 arbeidsdager og levere rapport innen 8-12 dager. Siden området er mindre aktivt, kan ventetiden være litt lengre. Takstmann.net hjelper finne beste alternativ."
+        "svar": "Takstmenn i Masfjorden kan vanligvis møte deg innen 4-6 arbeidsdager og levere rapport innen 8-12 dager. Siden området er mindre aktivt, kan ventetiden være noe lenger. Takstmann.net hjelper finne beste alternativ."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -11493,7 +11493,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Askvoll?",
-        "svar": "Takstmenn i Askvoll kan typisk gjennomføre inspeksjon innen 3–5 arbeidsdager. For øyeiendommer som krever båtreise kan det ta litt lengre tid å koordinere. Rapporten blir vanligvis klar innen 7–10 dager etter inspeksjon."
+        "svar": "Takstmenn i Askvoll kan typisk gjennomføre inspeksjon innen 3–5 arbeidsdager. For øyeiendommer som krever båtreise kan det ta noe lenger tid å koordinere. Rapporten blir vanligvis klar innen 7–10 dager etter inspeksjon."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -11717,7 +11717,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Bremanger?",
-        "svar": "Takstmenn i Bremanger kan normalt gjennomføre inspeksjon innen 3–5 arbeidsdager. Som mindre marked kan det være litt lengre vei til fagfolk. Rapporten leveres vanligvis innen 7–10 dager etter inspeksjon."
+        "svar": "Takstmenn i Bremanger kan normalt gjennomføre inspeksjon innen 3–5 arbeidsdager. Som mindre marked kan det være noe lenger vei til fagfolk. Rapporten leveres vanligvis innen 7–10 dager etter inspeksjon."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -12445,7 +12445,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Volda?",
-        "svar": "De fleste takstmenn i Volda kan gjennomføre inspeksjon innen 2–3 dager og levere rapport innen en uke. I høysesong (mai–juni og august–september) kan det ta litt lengre tid på grunn av økt etterspørsel fra meglere."
+        "svar": "De fleste takstmenn i Volda kan gjennomføre inspeksjon innen 2–3 dager og levere rapport innen en uke. I høysesong (mai–juni og august–september) kan det ta noe lenger tid på grunn av økt etterspørsel fra meglere."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -15581,7 +15581,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Narvik?",
-        "svar": "De fleste takstmenn i Narvik kan gjennomføre inspeksjon innen 3-5 arbeidsdager etter bestilling. En ferdig rapport leveres vanligvis innen 1-2 uker etter inspeksjon. I mindre travle perioder kan det gå raskere, mens i høysesongen kan det ta litt lengre tid."
+        "svar": "De fleste takstmenn i Narvik kan gjennomføre inspeksjon innen 3-5 arbeidsdager etter bestilling. En ferdig rapport leveres vanligvis innen 1-2 uker etter inspeksjon. I mindre travle perioder kan det gå raskere, mens i høysesongen kan det ta noe lenger tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -15637,7 +15637,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Vefsn?",
-        "svar": "Takstmenn i Vefsn kan gjennomføre inspeksjon innen 3-5 arbeidsdager fra bestilling. Rapporten leveres vanligvis innen 1-2 uker. I høysesongen kan ventetiden være litt lengre, mens sommeren og vinterhalvåret oftere har raskere gjennomkjøring."
+        "svar": "Takstmenn i Vefsn kan gjennomføre inspeksjon innen 3-5 arbeidsdager fra bestilling. Rapporten leveres vanligvis innen 1-2 uker. I høysesongen kan ventetiden være noe lenger, mens sommeren og vinterhalvåret oftere har raskere gjennomkjøring."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -16757,7 +16757,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Vestvågøy?",
-        "svar": "De fleste takstmenn på takstmann.net kan gjennomføre tilstandsrapport innen 1–2 uker fra bestilling. I høysesong (sommer) kan det ta litt lengre tid, og dårlig vær om vinteren kan også påvirke planleggingen. Kontakt takstmannen direkte for å få konkrete tidsangivelser."
+        "svar": "De fleste takstmenn på takstmann.net kan gjennomføre tilstandsrapport innen 1–2 uker fra bestilling. I høysesong (sommer) kan det ta noe lenger tid, og dårlig vær om vinteren kan også påvirke planleggingen. Kontakt takstmannen direkte for å få konkrete tidsangivelser."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -18045,7 +18045,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Salangen?",
-        "svar": "Takstmenn fra Narvik og Harstad som serverer Salangen kan gjennomføre inspeksjon innen 5-10 arbeidsdager. Responstiden kan være litt lengre enn i større sentre på grunn av reiseavstand."
+        "svar": "Takstmenn fra Narvik og Harstad som serverer Salangen kan gjennomføre inspeksjon innen 5-10 arbeidsdager. Responstiden kan være noe lenger enn i større sentre på grunn av reiseavstand."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -18213,7 +18213,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Lyngen?",
-        "svar": "Siden Lyngen er et mindre område med færre takstmenn, kan responstiden være litt lengre. Forvent 7-14 arbeidsdager for inspeksjon og 2-3 uker for rapport. Det er lurt å kontakte takstmannen i god tid."
+        "svar": "Siden Lyngen er et mindre område med færre takstmenn, kan responstiden være noe lenger. Forvent 7-14 arbeidsdager for inspeksjon og 2-3 uker for rapport. Det er lurt å kontakte takstmannen i god tid."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
@@ -18717,7 +18717,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Alta?",
-        "svar": "De fleste takstmenn i Alta kan gjennomføre en takst innen 3-5 arbeidsdager, ofte raskere. I høysesong (våren) kan det ta litt lengre tid, men du finner gjerne en ledig takstmann raskt gjennom takstmann.net."
+        "svar": "De fleste takstmenn i Alta kan gjennomføre en takst innen 3-5 arbeidsdager, ofte raskere. I høysesong (våren) kan det ta noe lenger tid, men du finner gjerne en ledig takstmann raskt gjennom takstmann.net."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",
