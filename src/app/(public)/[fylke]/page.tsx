@@ -278,8 +278,10 @@ export default async function FylkePage({ params }: Props) {
                 <Link
                   key={t.id}
                   href={`/takstmann/${t.id}`}
-                  className="card-hover block bg-card-bg border border-card-border rounded-xl overflow-hidden"
+                  className="card-hover block bg-card-bg border border-card-border rounded-xl overflow-hidden group"
                 >
+                  {/* Gradient accent stripe */}
+                  <div className="h-1 bg-gradient-to-r from-accent to-blue-400" />
                   {/* Profilbilde – stor, sentrert */}
                   <div className="flex justify-center pt-6 pb-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent/20 relative bg-accent/10">
@@ -302,6 +304,9 @@ export default async function FylkePage({ params }: Props) {
                   {/* Innhold */}
                   <div className="px-5 pb-5 text-center">
                     <h3 className="text-white font-semibold text-lg">{t.navn}</h3>
+                    {t.company?.navn && (
+                      <p className="text-gray-500 text-xs mt-0.5">{t.company.navn}</p>
+                    )}
 
                     {/* Vurdering */}
                     {t.snittKarakter !== null ? (
@@ -361,9 +366,10 @@ export default async function FylkePage({ params }: Props) {
                     </div>
 
                     {/* CTA */}
-                    <div className="mt-4 pt-4 border-t border-card-border">
-                      <span className="inline-flex items-center gap-2 text-accent text-sm font-medium">
-                        Se profil &rarr;
+                    <div className="mt-4 pt-4 border-t border-card-border flex items-center justify-between gap-2">
+                      <span className="text-gray-500 text-xs">Se profil</span>
+                      <span className="inline-flex items-center gap-1.5 bg-accent/10 group-hover:bg-accent text-accent group-hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                        Be om tilbud &rarr;
                       </span>
                     </div>
                   </div>

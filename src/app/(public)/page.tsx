@@ -87,18 +87,21 @@ export default async function Home() {
               <Link
                 key={fylke.id}
                 href={`/${fylke.id}`}
-                className="card-hover block bg-card-bg border border-card-border rounded-xl p-6 text-center"
+                className="card-hover block bg-card-bg border border-card-border rounded-xl overflow-hidden text-center group"
               >
-                <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
+                <div className="h-0.5 bg-gradient-to-r from-transparent via-accent/40 to-transparent group-hover:via-accent transition-all duration-300" />
+                <div className="p-6">
+                  <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/20 group-hover:border-accent/50 flex items-center justify-center mx-auto mb-3 transition-colors">
+                    <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-white font-semibold mb-1">{fylke.navn}</h3>
+                  <p className="text-xs text-gray-500">
+                    {antall > 0 ? `${antall} takstmenn` : "Ingen registrert ennå"}
+                  </p>
                 </div>
-                <h3 className="text-white font-semibold mb-1">{fylke.navn}</h3>
-                <p className="text-xs text-gray-500">
-                  {antall > 0 ? `${antall} takstmenn` : "Ingen registrert ennå"}
-                </p>
               </Link>
             );
           })}
@@ -140,25 +143,111 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Slik bruker du takstmann.net */}
+      {/* Slik fungerer det */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="bg-card-bg border border-card-border rounded-2xl p-8 sm:p-12 max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Slik bruker du takstmann.net
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { steg: "1", tittel: "Velg fylket ditt", beskrivelse: "Bla gjennom alle 15 fylker og finn ditt område." },
-              { steg: "2", tittel: "Se takstmenn", beskrivelse: "Se tilgjengelige takstmenn med fagområder og erfaring." },
-              { steg: "3", tittel: "Sammenlign", beskrivelse: "Les profiler, sertifiseringer og vurderinger." },
-              { steg: "4", tittel: "Ta kontakt", beskrivelse: "Kontakt takstmannen som passer oppdraget ditt best." },
-            ].map((s) => (
-              <div key={s.steg} className="text-center">
-                <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center mx-auto mb-3 text-accent font-bold text-sm">
+        <h2 className="text-2xl font-bold text-white mb-12 text-center">
+          Slik fungerer det
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          {[
+            {
+              steg: "1",
+              tittel: "Velg fylke",
+              beskrivelse: "Bla gjennom alle 15 fylker og velg ditt område for å se tilgjengelige takstmenn.",
+              ikon: (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              ),
+            },
+            {
+              steg: "2",
+              tittel: "Finn takstmann",
+              beskrivelse: "Se profiler, sertifiseringer og fagområder. Sammenlign og velg den som passer deg best.",
+              ikon: (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              ),
+            },
+            {
+              steg: "3",
+              tittel: "Be om tilbud",
+              beskrivelse: "Send en forespørsel direkte til takstmannen og avtal pris og tidspunkt.",
+              ikon: (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ),
+            },
+          ].map((s) => (
+            <div key={s.steg} className="text-center">
+              <div className="w-20 h-20 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-4 text-accent relative">
+                {s.ikon}
+                <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-accent text-white text-xs font-bold flex items-center justify-center">
                   {s.steg}
+                </span>
+              </div>
+              <h3 className="text-white font-semibold text-lg mb-2">{s.tittel}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">{s.beskrivelse}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Hvorfor bruke takstmann.net */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="bg-card-bg border border-card-border rounded-2xl p-8 sm:p-12 max-w-5xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-10 text-center">
+            Hvorfor bruke takstmann.net?
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                ikon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                ),
+                tittel: "Kun sertifiserte",
+                beskrivelse: "Alle takstmenn på plattformen er faglig kvalifiserte og sertifiserte.",
+              },
+              {
+                ikon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                ),
+                tittel: "Lokalt nærvær",
+                beskrivelse: "Finn takstmenn med lokal kunnskap i ditt fylke og din kommune.",
+              },
+              {
+                ikon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                ),
+                tittel: "Raskt og enkelt",
+                beskrivelse: "Send forespørsel på minutter. Ingen lange skjemaer eller unødvendig venting.",
+              },
+              {
+                ikon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ),
+                tittel: "Gratis for deg",
+                beskrivelse: "Tjenesten er helt gratis for deg som trenger takstmann. Ingen skjulte kostnader.",
+              },
+            ].map((fordel) => (
+              <div key={fordel.tittel} className="text-center">
+                <div className="w-14 h-14 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-4 text-accent">
+                  {fordel.ikon}
                 </div>
-                <h3 className="text-white font-semibold text-sm mb-1">{s.tittel}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed">{s.beskrivelse}</p>
+                <h3 className="text-white font-semibold mb-2">{fordel.tittel}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{fordel.beskrivelse}</p>
               </div>
             ))}
           </div>
