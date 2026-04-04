@@ -2,14 +2,17 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-interface Fylke {
-  id: string;
-  navn: string;
-}
+import { KOMMUNER } from "@/data/kommuner";
+import { FYLKER } from "@/lib/supabase/types";
 
 interface Props {
-  fylker: Fylke[];
+  fylker: { id: string; navn: string }[];
+}
+
+interface Result {
+  label: string;
+  sublabel?: string;
+  fylkeId: string;
 }
 
 export default function FylkeSøk({ fylker }: Props) {
@@ -18,11 +21,36 @@ export default function FylkeSøk({ fylker }: Props) {
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
 
-  const results =
+  const results: Result[] =
     query.trim().length >= 1
-      ? fylker
-          .filter((f) => f.navn.toLowerCase().includes(query.toLowerCase()))
-          .slice(0, 6)
+      ? (() => {
+          const q = query.toLowerCase();
+          const kommuneHits: Result[] = KOMMUNER.filter((k) =>
+            k.navn.toLowerCase().includes(q)
+          )
+            .slice(0, 5)
+            .map((k) => {
+              const fylke = FYLKER.find((f) => f.id === k.fylkeId);
+              return {
+                label: k.navn,
+                sublabel: fylke?.navn,
+                fylkeId: k.fylkeId,
+              };
+            });
+          const fylkeHits: Result[] = fylker
+            .filter(
+              (f) =>
+                f.navn.toLowerCase().includes(q) &&
+                !kommuneHits.some(
+                  (r) =>
+                    r.fylkeId === f.id &&
+                    r.label.toLowerCase() === f.navn.toLowerCase()
+                )
+            )
+            .slice(0, 3)
+            .map((f) => ({ label: f.navn, fylkeId: f.id }));
+          return [...kommuneHits, ...fylkeHits].slice(0, 6);
+        })()
       : [];
 
   useEffect(() => {
@@ -35,8 +63,8 @@ export default function FylkeSøk({ fylker }: Props) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function handleSelect(id: string) {
-    router.push(`/${id}`);
+  function handleSelect(fylkeId: string) {
+    router.push(`/${fylkeId}`);
     setOpen(false);
     setQuery("");
   }
@@ -65,7 +93,7 @@ export default function FylkeSøk({ fylker }: Props) {
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
-          placeholder="Søk etter fylke..."
+          placeholder="Søk etter kommune..."
           className="flex-1 outline-none text-slate-900 placeholder:text-slate-400 text-sm bg-transparent"
         />
         {query && (
@@ -95,10 +123,10 @@ export default function FylkeSøk({ fylker }: Props) {
       </div>
       {open && results.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden z-50">
-          {results.map((f) => (
+          {results.map((r, i) => (
             <button
-              key={f.id}
-              onClick={() => handleSelect(f.id)}
+              key={`${r.fylkeId}-${r.label}-${i}`}
+              onClick={() => handleSelect(r.fylkeId)}
               className="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3 transition-colors"
             >
               <svg
@@ -119,7 +147,14 @@ export default function FylkeSøk({ fylker }: Props) {
                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              {f.navn}
+              <span className="flex-1">
+                {r.label}
+                {r.sublabel && (
+                  <span className="text-slate-400 ml-1.5 text-xs">
+                    ({r.sublabel})
+                  </span>
+                )}
+              </span>
             </button>
           ))}
         </div>
