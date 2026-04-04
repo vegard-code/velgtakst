@@ -256,7 +256,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
         {/* Høyre kolonne: Send forespørsel + fylker */}
         <div className="space-y-6">
           {/* Bestill takst */}
-          <div className="bg-card-bg border border-card-border rounded-xl p-6">
+          <div id="bestill" className="bg-card-bg border border-card-border rounded-xl p-6">
             <h2 className="text-white font-semibold mb-2">Trenger du takst?</h2>
             <p className="text-gray-400 text-sm mb-4">
               Send en bestilling til {profil.navn.split(" ")[0]}, så avtaler dere pris og tidspunkt.

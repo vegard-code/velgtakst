@@ -140,25 +140,112 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Slik bruker du takstmann.net */}
+      {/* Slik fungerer det */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="bg-card-bg border border-card-border rounded-2xl p-8 sm:p-12 max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Slik bruker du takstmann.net
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { steg: "1", tittel: "Velg fylket ditt", beskrivelse: "Bla gjennom alle 15 fylker og finn ditt område." },
-              { steg: "2", tittel: "Se takstmenn", beskrivelse: "Se tilgjengelige takstmenn med fagområder og erfaring." },
-              { steg: "3", tittel: "Sammenlign", beskrivelse: "Les profiler, sertifiseringer og vurderinger." },
-              { steg: "4", tittel: "Ta kontakt", beskrivelse: "Kontakt takstmannen som passer oppdraget ditt best." },
-            ].map((s) => (
-              <div key={s.steg} className="text-center">
-                <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center mx-auto mb-3 text-accent font-bold text-sm">
+        <h2 className="text-2xl font-bold text-white mb-3 text-center">Slik fungerer det</h2>
+        <p className="text-gray-400 text-center mb-10 max-w-xl mx-auto">Tre enkle steg til riktig takstmann for ditt oppdrag</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {[
+            {
+              steg: "1",
+              ikon: (
+                <svg className="w-7 h-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              ),
+              tittel: "Velg fylke",
+              beskrivelse: "Velg ditt fylke fra oversikten og se alle tilgjengelige sertifiserte takstmenn i ditt område.",
+            },
+            {
+              steg: "2",
+              ikon: (
+                <svg className="w-7 h-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              ),
+              tittel: "Finn takstmann",
+              beskrivelse: "Sammenlign profiler, fagområder, sertifiseringer og vurderinger. Finn den som passer ditt oppdrag best.",
+            },
+            {
+              steg: "3",
+              ikon: (
+                <svg className="w-7 h-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ),
+              tittel: "Be om tilbud",
+              beskrivelse: "Send en henvendelse direkte til takstmannen og få tilbud på ditt oppdrag raskt og enkelt.",
+            },
+          ].map((s, i) => (
+            <div key={s.steg} className="relative flex flex-col items-center text-center">
+              {/* Connector line */}
+              {i < 2 && (
+                <div className="hidden md:block absolute top-10 left-[calc(50%+2.5rem)] right-0 h-px bg-gradient-to-r from-accent/40 to-transparent" />
+              )}
+              <div className="w-20 h-20 rounded-2xl bg-accent/10 border border-accent/20 flex flex-col items-center justify-center mb-4 relative">
+                {s.ikon}
+                <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-accent text-white text-xs font-bold flex items-center justify-center shadow-lg">
                   {s.steg}
+                </span>
+              </div>
+              <h3 className="text-white font-semibold text-base mb-2">{s.tittel}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">{s.beskrivelse}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Hvorfor bruke takstmann.net */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="bg-surface border border-white/8 rounded-2xl p-8 sm:p-12">
+          <h2 className="text-2xl font-bold text-white mb-3 text-center">Hvorfor bruke takstmann.net?</h2>
+          <p className="text-gray-400 text-center mb-10 max-w-lg mx-auto">Vi gjør det trygt og enkelt å finne riktig takstekspert</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                ikon: (
+                  <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                ),
+                tittel: "Sertifiserte takstmenn",
+                beskrivelse: "Kun godkjente og sertifiserte takstmenn med dokumentert fagkompetanse.",
+              },
+              {
+                ikon: (
+                  <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                ),
+                tittel: "Enkel bestilling",
+                beskrivelse: "Send forespørsel direkte fra profilen. Ingen mellommann, ingen skjulte gebyrer.",
+              },
+              {
+                ikon: (
+                  <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ),
+                tittel: "Rask respons",
+                beskrivelse: "Takstmenn på takstmann.net svarer raskt på henvendelser fra interesserte kunder.",
+              },
+              {
+                ikon: (
+                  <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                ),
+                tittel: "Trygg prosess",
+                beskrivelse: "Vurderinger fra meglere og kunder gir deg et ærlig bilde av takstmannens kvalitet.",
+              },
+            ].map((fordel) => (
+              <div key={fordel.tittel} className="flex flex-col items-center text-center sm:items-start sm:text-left">
+                <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-3 shrink-0">
+                  {fordel.ikon}
                 </div>
-                <h3 className="text-white font-semibold text-sm mb-1">{s.tittel}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed">{s.beskrivelse}</p>
+                <h3 className="text-white font-semibold text-sm mb-1.5">{fordel.tittel}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{fordel.beskrivelse}</p>
               </div>
             ))}
           </div>
