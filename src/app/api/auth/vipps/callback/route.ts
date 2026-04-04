@@ -194,7 +194,11 @@ export async function GET(request: NextRequest) {
     } else if (rolleForRedirect === 'megler') {
       redirectUrl = '/portal/megler'
     } else if (rolleForRedirect === 'privatkunde') {
-      redirectUrl = '/portal/kunde'
+      // Bruk savedState.redirect for å sende tilbake til siden brukeren kom fra (f.eks. takstmann-profil)
+      const safeRedirect = savedState.redirect &&
+        savedState.redirect.startsWith('/') &&
+        !savedState.redirect.startsWith('//')
+      redirectUrl = safeRedirect ? savedState.redirect : '/portal/kunde'
     } else if (faktiskRolle === 'admin') {
       redirectUrl = '/portal/admin'
     } else {

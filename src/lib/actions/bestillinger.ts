@@ -149,13 +149,9 @@ export async function opprettBestillingFraPublikk(input: {
   tjeneste?: string
   adresse?: string
   melding?: string
-  // Authenticated user
+  // Authenticated user (required)
   kundeProfilId?: string
   meglerProfilId?: string
-  // Guest info (unauthenticated)
-  guestNavn?: string
-  guestEpost?: string
-  guestTelefon?: string
   // Bot-beskyttelse
   honeypot?: string
 }) {
@@ -165,6 +161,11 @@ export async function opprettBestillingFraPublikk(input: {
     return { success: true, id: 'bot' }
   }
 
+  // Krev autentisering – kun innloggede brukere kan bestille
+  if (!input.kundeProfilId && !input.meglerProfilId) {
+    return { error: 'Du må være innlogget via Vipps for å sende en bestilling.' }
+  }
+
   // Rate limiting per IP
   const headersList = await headers()
   const ip = hentKlientIp(headersList)
@@ -172,26 +173,14 @@ export async function opprettBestillingFraPublikk(input: {
     return { error: 'Du har sendt for mange bestillinger den siste timen. Prøv igjen senere.' }
   }
 
-  // Bruker serviceClient for å unngå RLS-problemer med gjester (uinnloggede brukere)
   const serviceClient = await createServiceClient()
   const { takstmannId, tjeneste, adresse, kundeProfilId, meglerProfilId } = input
 
-  // Build melding – prepend guest contact info when not authenticated
-  let meldingTekst = input.melding ?? ''
+  const meldingTekst = input.melding ?? ''
   let bestillerNavn = 'Ukjent'
   let bestillerType: 'megler' | 'privatkunde' = 'privatkunde'
   let bestillerTelefon: string | null = null
   let bestillerEpost: string | null = null
-
-  if (!kundeProfilId && !meglerProfilId && input.guestNavn) {
-    const kontaktLinjer = [`Kontaktinfo: ${input.guestNavn}`]
-    if (input.guestTelefon) kontaktLinjer.push(`Tlf: ${input.guestTelefon}`)
-    if (input.guestEpost) kontaktLinjer.push(`E-post: ${input.guestEpost}`)
-    meldingTekst = kontaktLinjer.join('\n') + (meldingTekst ? '\n\n' + meldingTekst : '')
-    bestillerNavn = input.guestNavn
-    bestillerTelefon = input.guestTelefon ?? null
-    bestillerEpost = input.guestEpost ?? null
-  }
 
   const oppdragType = tjeneste ? TJENESTE_TIL_OPPDRAG_TYPE[tjeneste] : undefined
 

@@ -268,6 +268,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
               kundeProfilId={kundeProfilId}
               meglerProfilId={meglerProfilId}
               isLoggedIn={!!user}
+              vippsLoginUrl={`/api/auth/vipps?rolle=privatkunde&redirect=/takstmann/${id}`}
             />
           </div>
 
