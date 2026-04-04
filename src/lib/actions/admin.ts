@@ -92,6 +92,22 @@ export async function forlengProveperiode(
       .eq('takstmann_id', takstmannId)
   }
 
+  // Logg hendelsen (best effort – ikke blokkér ved feil)
+  void supabase
+    .from('admin_hendelse_logg')
+    .insert({
+      admin_user_id: admin.id,
+      hendelse_type: 'forleng_proveperiode',
+      target_id: takstmannId,
+      target_type: 'takstmann',
+      detaljer: {
+        antall_dager: antallDager,
+        gammel_slutt: ab.proveperiode_slutt,
+        ny_slutt: nySluttDato.toISOString(),
+        reaktivert: reaktiver,
+      },
+    })
+
   revalidatePath(`/portal/admin/takstmenn/${takstmannId}`)
   revalidatePath('/portal/admin/takstmenn')
   revalidatePath('/portal/admin/abonnementer')

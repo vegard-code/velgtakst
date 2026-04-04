@@ -56,6 +56,14 @@ export default async function AdminTakstmannProfilPage({
     .eq('takstmann_id', id)
     .order('fylke_id')
 
+  // Hent admin-logg for denne takstmannen
+  const { data: logg } = await supabase
+    .from('admin_hendelse_logg')
+    .select('id, hendelse_type, detaljer, created_at')
+    .eq('target_id', id)
+    .order('created_at', { ascending: false })
+    .limit(10)
+
   const now = new Date()
   const dagerIgjen = abonnement?.status === 'proveperiode' && abonnement.proveperiode_slutt
     ? Math.max(0, Math.ceil((new Date(abonnement.proveperiode_slutt).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
@@ -210,6 +218,37 @@ export default async function AdminTakstmannProfilPage({
           <p className="px-6 py-8 text-sm text-[#94a3b8] text-center">Ingen fylker registrert.</p>
         )}
       </div>
+
+      {/* Admin-logg */}
+      {logg && logg.length > 0 && (
+        <div className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden mt-4">
+          <div className="px-6 py-4 border-b border-[#e2e8f0] bg-[#f8fafc]">
+            <h2 className="text-sm font-semibold text-[#1e293b]">Admin-logg</h2>
+          </div>
+          <ul className="divide-y divide-[#f1f5f9]">
+            {logg.map((h: { id: string; hendelse_type: string; detaljer: Record<string, unknown> | null; created_at: string }) => (
+              <li key={h.id} className="px-6 py-3 text-sm">
+                <div className="flex items-baseline justify-between gap-4">
+                  <span className="text-[#1e293b] font-medium">
+                    {h.hendelse_type === 'forleng_proveperiode'
+                      ? `Prøveperiode forlenget med ${h.detaljer?.antall_dager ?? '?'} dager`
+                      : h.hendelse_type}
+                  </span>
+                  <span className="text-xs text-[#94a3b8] whitespace-nowrap">
+                    {new Date(h.created_at).toLocaleString('nb-NO')}
+                  </span>
+                </div>
+                {Boolean(h.detaljer?.ny_slutt) && (
+                  <p className="text-xs text-[#64748b] mt-0.5">
+                    Ny sluttdato: {new Date(h.detaljer!.ny_slutt as string).toLocaleDateString('nb-NO')}
+                    {h.detaljer!.reaktivert === true ? ' — abonnement reaktivert' : ''}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }
