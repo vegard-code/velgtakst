@@ -76,7 +76,7 @@ export default async function Home() {
       </section>
 
       {/* Fylker grid */}
-      <section id="fylker" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <section id="fylker" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <h2 className="text-2xl font-bold text-white mb-8 text-center">
           Velg fylke
         </h2>
@@ -105,35 +105,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Hva kan en takstmann hjelpe med? */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">
-            Hva kan en takstmann hjelpe med?
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              { tittel: "Tilstandsrapport", beskrivelse: "Obligatorisk ved boligsalg. Dokumenterer boligens tekniske tilstand med tilstandsgrader.", href: "/blogg/tilstandsrapport-guide" },
-              { tittel: "Verditakst", beskrivelse: "Profesjonell verdivurdering ved refinansiering, arv, skifte eller generell oversikt.", href: "/blogg/verditakst-hva-er-det" },
-              { tittel: "Skadetakst", beskrivelse: "Dokumenterer skadeomfang og beregner reparasjonskostnader for forsikringsoppgjør.", href: "/blogg/hva-er-skadetakst" },
-              { tittel: "Næringstakst", beskrivelse: "Verdivurdering av kontorer, butikker, lager og andre kommersielle eiendommer.", href: "/blogg/naeringstakst-bedrifter" },
-            ].map((tjeneste) => (
-              <Link
-                key={tjeneste.tittel}
-                href={tjeneste.href}
-                className="card-hover bg-card-bg border border-card-border rounded-xl p-5 block"
-              >
-                <h3 className="text-white font-semibold mb-2">{tjeneste.tittel}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{tjeneste.beskrivelse}</p>
-                <span className="text-accent text-xs font-medium mt-2 inline-block">Les mer &rarr;</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Slik fungerer det */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <h2 className="text-2xl font-bold text-white mb-3 text-center">Slik fungerer det</h2>
         <p className="text-gray-400 text-center mb-10 max-w-xl mx-auto">Tre enkle steg til riktig takstmann for ditt oppdrag</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
@@ -189,7 +162,7 @@ export default async function Home() {
       </section>
 
       {/* Hvorfor bruke takstmann.net */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <div className="bg-surface border border-white/8 rounded-2xl p-8 sm:p-12">
           <h2 className="text-2xl font-bold text-white mb-3 text-center">Hvorfor bruke takstmann.net?</h2>
           <p className="text-gray-400 text-center mb-10 max-w-lg mx-auto">Vi gjør det trygt og enkelt å finne riktig takstekspert</p>
@@ -244,8 +217,35 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Hva kan en takstmann hjelpe med? */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">
+            Hva kan en takstmann hjelpe med?
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { tittel: "Tilstandsrapport", beskrivelse: "Obligatorisk ved boligsalg. Dokumenterer boligens tekniske tilstand med tilstandsgrader.", href: "/blogg/tilstandsrapport-guide" },
+              { tittel: "Verditakst", beskrivelse: "Profesjonell verdivurdering ved refinansiering, arv, skifte eller generell oversikt.", href: "/blogg/verditakst-hva-er-det" },
+              { tittel: "Skadetakst", beskrivelse: "Dokumenterer skadeomfang og beregner reparasjonskostnader for forsikringsoppgjør.", href: "/blogg/hva-er-skadetakst" },
+              { tittel: "Næringstakst", beskrivelse: "Verdivurdering av kontorer, butikker, lager og andre kommersielle eiendommer.", href: "/blogg/naeringstakst-bedrifter" },
+            ].map((tjeneste) => (
+              <Link
+                key={tjeneste.tittel}
+                href={tjeneste.href}
+                className="card-hover bg-card-bg border border-card-border rounded-xl p-5 block"
+              >
+                <h3 className="text-white font-semibold mb-2">{tjeneste.tittel}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{tjeneste.beskrivelse}</p>
+                <span className="text-accent text-xs font-medium mt-2 inline-block">Les mer &rarr;</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Blogg – strategisk utvalg */}
-      <section id="blogg" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <section id="blogg" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-white">Fra bloggen</h2>
           <Link href="/blogg" className="text-accent text-sm font-medium hover:underline">
@@ -284,7 +284,7 @@ export default async function Home() {
       </section>
 
       {/* CTA for takstmenn */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="bg-gradient-to-r from-accent/10 to-blue-500/10 border border-accent/20 rounded-2xl p-8 sm:p-12 text-center max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-4">
             Er du takstmann?

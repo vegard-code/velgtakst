@@ -95,42 +95,53 @@ interface TakstmannKort extends TakstmannMedFylker {
 
 async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
   const supabase = await createClient();
-
-  // Steg 1: hent aktive takstmann-IDs for dette fylket
-  const { data: synligheter, error: synError } = await supabase
+  const { data, error } = await supabase
     .from("fylke_synlighet")
-    .select("takstmann_id")
+    .select(
+      `
+      takstmann_id,
+      takstmann_profiler!inner (
+        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id
+      )
+    `
+    )
     .eq("fylke_id", fylkeId)
     .eq("er_aktiv", true);
 
-  if (synError || !synligheter || synligheter.length === 0) return [];
-
-  const ids = (synligheter as { takstmann_id: string }[]).map((s) => s.takstmann_id);
-
-  // Steg 2: hent profildata for disse IDs
-  const { data, error } = await supabase
-    .from("takstmann_profiler")
-    .select(
-      "id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id, company:companies(navn)"
-    )
-    .in("id", ids);
-
   if (error || !data) return [];
 
-  const takstmenn = (data as unknown as TakstmannKort[]).map((profil) => ({
-    ...profil,
+  const takstmenn = (data as unknown as { takstmann_profiler: TakstmannKort }[]).map((row) => ({
+    ...row.takstmann_profiler,
     fylke_synlighet: [],
     snittKarakter: null as number | null,
     antallVurderinger: 0,
+    company: null as { navn: string } | null,
   }));
+
+  // Hent selskaper separat for å unngå join-feil
+  const companyIds = [...new Set(takstmenn.filter((t) => t.company_id).map((t) => t.company_id!))];
+  if (companyIds.length > 0) {
+    const { data: companies } = await supabase
+      .from("companies")
+      .select("id, navn")
+      .in("id", companyIds);
+    if (companies) {
+      const companyMap = new Map((companies as { id: string; navn: string }[]).map((c) => [c.id, c.navn]));
+      for (const t of takstmenn) {
+        if (t.company_id && companyMap.has(t.company_id)) {
+          t.company = { navn: companyMap.get(t.company_id)! };
+        }
+      }
+    }
+  }
 
   // Hent vurderinger for alle takstmenn
   if (takstmenn.length > 0) {
-    const takstmannIds = takstmenn.map((t) => t.id);
+    const ids = takstmenn.map((t) => t.id);
     const { data: vurderinger } = await supabase
       .from("megler_vurderinger")
       .select("takstmann_id, karakter")
-      .in("takstmann_id", takstmannIds);
+      .in("takstmann_id", ids);
 
     if (vurderinger) {
       const vurderingMap = new Map<string, number[]>();
@@ -282,7 +293,7 @@ export default async function FylkePage({ params }: Props) {
                 (tj) => tj !== t.spesialitet && tj !== t.spesialitet_2
               );
               const visNavn = t.navn ?? "Ukjent";
-              const companyNavn = (t as unknown as { company?: { navn: string } | null }).company?.navn;
+              const companyNavn = t.company?.navn;
 
               return (
                 <div
