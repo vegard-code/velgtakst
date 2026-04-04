@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { FYLKER, getFylkePris } from "@/lib/supabase/types";
+import ForlengProveperiodeForm from "./ForlengProveperiodeForm";
 
 const FYLKE_NAVN: Record<string, string> = {
   oslo: "Oslo", rogaland: "Rogaland", vestland: "Vestland", trondelag: "Trøndelag",
@@ -111,6 +112,7 @@ export default async function AdminAbonnementerPage() {
                 <th className="text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider px-6 py-3">Vipps</th>
                 <th className="text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider px-6 py-3">Mnd. beløp</th>
                 <th className="text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider px-6 py-3">Opprettet</th>
+                <th className="text-left text-xs font-semibold text-[#64748b] uppercase tracking-wider px-6 py-3">Forleng prøveperiode</th>
               </tr>
             </thead>
             <tbody>
@@ -120,6 +122,8 @@ export default async function AdminAbonnementerPage() {
                     ? Math.max(0, Math.ceil((new Date(a.proveperiode_slutt).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
                     : null;
                   const company = a.companies as { id: string; navn: string } | null;
+                  const kanForlenges = a.status === "proveperiode" || a.status === "utlopt" || a.status === "kansellert";
+                  const reaktiver = a.status === "utlopt" || a.status === "kansellert";
 
                   return (
                     <tr key={a.id} className="border-b border-[#f1f5f9] hover:bg-[#f8fafc] transition-colors">
@@ -161,12 +165,22 @@ export default async function AdminAbonnementerPage() {
                       <td className="px-6 py-4 text-sm text-[#94a3b8]">
                         {new Date(a.created_at).toLocaleDateString("nb-NO")}
                       </td>
+                      <td className="px-6 py-4">
+                        {kanForlenges ? (
+                          <ForlengProveperiodeForm
+                            abonnementId={a.id}
+                            reaktiver={reaktiver}
+                          />
+                        ) : (
+                          <span className="text-xs text-[#cbd5e1]">–</span>
+                        )}
+                      </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-sm text-[#94a3b8]">
+                  <td colSpan={7} className="px-6 py-12 text-center text-sm text-[#94a3b8]">
                     Ingen abonnementer registrert ennå.
                   </td>
                 </tr>
