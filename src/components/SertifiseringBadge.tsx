@@ -16,10 +16,10 @@ export default function SertifiseringBadge({ sertifisering, sertifiseringAnnet, 
 
   const colorClass =
     sertifisering === "BMTF"
-      ? "bg-blue-900/40 border-blue-500/30 text-blue-300"
+      ? "bg-blue-50 border-blue-200 text-blue-700"
       : sertifisering === "Norsk Takst"
-      ? "bg-green-900/40 border-green-500/30 text-green-300"
-      : "bg-gray-700/40 border-gray-500/30 text-gray-300";
+      ? "bg-green-50 border-green-200 text-green-700"
+      : "bg-slate-100 border-slate-200 text-slate-600";
 
   const textSize = size === "md" ? "text-sm" : "text-xs";
   const iconSize = size === "md" ? "w-4 h-4" : "w-3.5 h-3.5";
@@ -28,7 +28,6 @@ export default function SertifiseringBadge({ sertifisering, sertifiseringAnnet, 
     <span
       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border ${colorClass} ${textSize} font-medium`}
     >
-      {/* Shield / badge icon */}
       <svg
         className={`${iconSize} shrink-0`}
         fill="none"

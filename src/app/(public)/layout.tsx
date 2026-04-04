@@ -13,31 +13,31 @@ export default async function PublicLayout({
 
   return (
     <>
-      <header className="border-b border-card-border bg-surface/80 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
               VT
             </div>
-            <span className="text-lg font-semibold text-white">takstmann.net</span>
+            <span className="text-lg font-semibold text-slate-900">takstmann.net</span>
           </Link>
           <nav className="flex items-center gap-6 text-sm">
             <Link
               href="/#fylker"
-              className="text-gray-400 hover:text-white transition-colors hidden sm:block"
+              className="text-slate-600 hover:text-slate-900 transition-colors hidden sm:block"
             >
               Finn takstmann
             </Link>
             <Link
               href="/blogg"
-              className="text-gray-400 hover:text-white transition-colors hidden sm:block"
+              className="text-slate-600 hover:text-slate-900 transition-colors hidden sm:block"
             >
               Blogg
             </Link>
             {user ? (
               <Link
                 href="/portal"
-                className="bg-accent hover:bg-accent/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Min portal
               </Link>
@@ -45,13 +45,13 @@ export default async function PublicLayout({
               <div className="flex items-center gap-3">
                 <Link
                   href="/logg-inn"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   Logg inn
                 </Link>
                 <Link
                   href="/logg-inn"
-                  className="bg-accent hover:bg-accent/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
                   Kom i gang
                 </Link>
@@ -63,23 +63,23 @@ export default async function PublicLayout({
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-white/8 bg-surface mt-20">
+      <footer className="bg-slate-900 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
             {/* Brand */}
             <div className="md:col-span-2">
-              <Link href="/" className="flex items-center gap-3 mb-4 group w-fit">
-                <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-accent/30 group-hover:shadow-accent/50 transition-shadow">
+              <Link href="/" className="flex items-center gap-3 mb-4 w-fit">
+                <div className="w-9 h-9 rounded-xl bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
                   T
                 </div>
                 <span className="text-lg font-bold text-white">takstmann.net</span>
               </Link>
-              <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+              <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
                 Norges portal for å finne sertifiserte takstmenn. Velg fylke, sammenlign profiler og få hjelp til tilstandsrapport, verditakst og mer.
               </p>
             </div>
 
-            {/* Lenker */}
+            {/* Tjenester */}
             <div>
               <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Tjenester</h3>
               <ul className="space-y-2.5 text-sm">
@@ -91,7 +91,7 @@ export default async function PublicLayout({
                   { href: "/blogg", label: "Blogg" },
                 ].map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-gray-400 hover:text-white transition-colors">
+                    <Link href={l.href} className="text-slate-400 hover:text-white transition-colors">
                       {l.label}
                     </Link>
                   </li>
@@ -99,6 +99,7 @@ export default async function PublicLayout({
               </ul>
             </div>
 
+            {/* Om oss */}
             <div>
               <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Om oss</h3>
               <ul className="space-y-2.5 text-sm">
@@ -109,19 +110,17 @@ export default async function PublicLayout({
                   { href: "/personvern", label: "Personvernerklæring" },
                 ].map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-gray-400 hover:text-white transition-colors">
+                    <Link href={l.href} className="text-slate-400 hover:text-white transition-colors">
                       {l.label}
                     </Link>
                   </li>
                 ))}
-                <li className="text-gray-500 text-xs pt-1">post@takstmann.net</li>
+                <li className="text-slate-600 text-xs pt-1">post@takstmann.net</li>
               </ul>
             </div>
           </div>
 
-          <div className="gradient-line mb-6" />
-
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+          <div className="border-t border-slate-700 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
             <p>&copy; 2026 takstmann.net. Alle rettigheter reservert.</p>
             <p>Bygget for sertifiserte takstmenn i Norge</p>
           </div>

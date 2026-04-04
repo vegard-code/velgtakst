@@ -40,11 +40,11 @@ export default function RandomSpinnerWrapper({
   const current = takstmenn[displayIndex];
 
   return (
-    <div className="bg-card-bg border border-card-border rounded-2xl p-8 text-center mb-12">
+    <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center shadow-sm">
       <button
         onClick={spin}
         disabled={spinning}
-        className="bg-accent hover:bg-accent/80 disabled:opacity-50 text-white font-semibold px-8 py-3 rounded-xl transition-all glow-border cursor-pointer disabled:cursor-wait"
+        className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-semibold px-8 py-3 rounded-xl transition-all cursor-pointer disabled:cursor-wait shadow-sm"
       >
         {spinning
           ? "Spinner..."
@@ -53,7 +53,7 @@ export default function RandomSpinnerWrapper({
 
       {(spinning || selected) && current && (
         <div className="mt-8 animate-fade-in-up">
-          <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-accent/40 mb-4 relative bg-accent/10">
+          <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-blue-200 mb-4 relative bg-gradient-to-br from-blue-500 to-blue-700">
             {current.bilde_url ? (
               <Image
                 src={current.bilde_url}
@@ -63,14 +63,14 @@ export default function RandomSpinnerWrapper({
                 unoptimized
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-accent font-bold text-3xl">
+              <div className="w-full h-full flex items-center justify-center text-white font-bold text-3xl">
                 {current.navn.charAt(0)}
               </div>
             )}
           </div>
           <p
-            className={`text-xl font-bold text-white mb-1 transition-opacity ${
-              spinning ? "opacity-50" : "opacity-100"
+            className={`text-xl font-bold text-slate-900 mb-1 transition-opacity ${
+              spinning ? "opacity-40" : "opacity-100"
             }`}
           >
             {current.navn}
@@ -79,18 +79,18 @@ export default function RandomSpinnerWrapper({
           {selected && !spinning && (
             <div className="mt-4 space-y-1 animate-fade-in-up">
               {selected.spesialitet && (
-                <p className="text-accent font-medium">{selected.spesialitet}</p>
+                <p className="text-blue-600 font-medium">{selected.spesialitet}</p>
               )}
               {selected.telefon && (
-                <p className="text-gray-400 text-sm">{selected.telefon}</p>
+                <p className="text-slate-500 text-sm">{selected.telefon}</p>
               )}
               {selected.epost && (
-                <p className="text-gray-400 text-sm">{selected.epost}</p>
+                <p className="text-slate-500 text-sm">{selected.epost}</p>
               )}
               <div className="pt-3">
                 <Link
                   href={`/takstmann/${selected.id}`}
-                  className="inline-block bg-accent/10 border border-accent/20 text-accent text-sm px-4 py-2 rounded-lg hover:bg-accent/20 transition-colors"
+                  className="inline-block bg-blue-50 border border-blue-200 text-blue-700 text-sm px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors"
                 >
                   Se full profil &rarr;
                 </Link>

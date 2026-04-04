@@ -35,7 +35,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Fylkebeskrivelser for SEO-innhold
 const FYLKE_INTRO: Record<string, string> = {
   oslo: "Oslo er Norges mest folkerike fylke med et aktivt boligmarked. Høy omsetning av leiligheter, rekkehus og eneboliger gjør at behovet for kvalifiserte takstmenn er stort hele året.",
   rogaland: "Rogaland har et aktivt boligmarked fra Stavanger-regionen til mindre steder langs kysten. Olje- og energisektoren gir jevnt behov for taksttjenester, både for boliger og næringseiendommer.",
@@ -54,7 +53,6 @@ const FYLKE_INTRO: Record<string, string> = {
   ostfold: "Østfold ligger nær Oslo og svenskegrensen, med byer som Fredrikstad, Sarpsborg og Moss. Regionens vekst og mange eldre boliger gir stort behov for tilstandsrapporter og verditakster.",
 };
 
-// FAQ-spørsmål tilpasset hvert fylke
 function getFAQ(fylkeNavn: string) {
   return [
     {
@@ -76,7 +74,6 @@ function getFAQ(fylkeNavn: string) {
   ];
 }
 
-// Relevante bloggposter for fylkesider
 const relevantePoster = [
   "hva-koster-takst",
   "tilstandsrapport-guide",
@@ -96,7 +93,6 @@ interface TakstmannKort extends TakstmannMedFylker {
 async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
   const supabase = await createClient();
 
-  // Steg 1: hent aktive takstmann-IDs – unngå !inner join som feiler i prod
   const { data: synligheter, error: synError } = await supabase
     .from("fylke_synlighet")
     .select("takstmann_id")
@@ -107,7 +103,6 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
 
   const ids = (synligheter as { takstmann_id: string }[]).map((s) => s.takstmann_id);
 
-  // Steg 2: hent profiler direkte
   const { data, error } = await supabase
     .from("takstmann_profiler")
     .select(
@@ -125,7 +120,6 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
     company: null as { navn: string } | null,
   }));
 
-  // Hent selskaper separat for å unngå join-feil
   const companyIds = [...new Set(takstmenn.filter((t) => t.company_id).map((t) => t.company_id!))];
   if (companyIds.length > 0) {
     const { data: companies } = await supabase
@@ -142,7 +136,6 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
     }
   }
 
-  // Hent vurderinger for alle takstmenn
   if (takstmenn.length > 0) {
     const ids = takstmenn.map((t) => t.id);
     const { data: vurderinger } = await supabase
@@ -182,33 +175,33 @@ export default async function FylkePage({ params }: Props) {
   return (
     <>
       {/* Breadcrumb */}
-      <nav aria-label="Brødsmulesti" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <ol className="flex items-center gap-2 text-sm text-gray-500">
+      <nav aria-label="Brødsmulesti" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <ol className="flex items-center gap-2 text-sm text-slate-400">
           <li>
-            <Link href="/" className="hover:text-white transition-colors">takstmann.net</Link>
+            <Link href="/" className="hover:text-slate-700 transition-colors">takstmann.net</Link>
           </li>
           <li>/</li>
-          <li className="text-gray-300">{fylke.navn}</li>
+          <li className="text-slate-600 font-medium">{fylke.navn}</li>
         </ol>
       </nav>
 
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 glow-text">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
           Takstmann i {fylke.navn}
         </h1>
-        <p className="text-lg text-gray-400 leading-relaxed max-w-3xl mb-4">
+        <p className="text-lg text-slate-600 leading-relaxed max-w-3xl mb-4">
           {intro}
         </p>
-        <p className="text-gray-400 leading-relaxed max-w-3xl">
+        <p className="text-slate-500 leading-relaxed max-w-3xl">
           Finn sertifiserte takstmenn i {fylke.navn} som kan hjelpe med{" "}
-          <Link href="/blogg/tilstandsrapport-guide" className="text-accent hover:underline">tilstandsrapport</Link>,{" "}
-          <Link href="/blogg/verditakst-hva-er-det" className="text-accent hover:underline">verditakst</Link>,{" "}
-          <Link href="/blogg/hva-er-skadetakst" className="text-accent hover:underline">skadetakst</Link>{" "}
+          <Link href="/blogg/tilstandsrapport-guide" className="text-blue-600 hover:underline">tilstandsrapport</Link>,{" "}
+          <Link href="/blogg/verditakst-hva-er-det" className="text-blue-600 hover:underline">verditakst</Link>,{" "}
+          <Link href="/blogg/hva-er-skadetakst" className="text-blue-600 hover:underline">skadetakst</Link>{" "}
           og andre taksttjenester.
         </p>
         <div className="gradient-line max-w-xs mt-6 mb-2" />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-slate-400">
           {takstmenn.length > 0
             ? `${takstmenn.length} sertifiserte takstmenn tilgjengelig i ${fylke.navn}`
             : `Ingen takstmenn registrert i ${fylke.navn} ennå`}
@@ -216,8 +209,8 @@ export default async function FylkePage({ params }: Props) {
       </section>
 
       {/* Tjenester folk trenger */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <h2 className="text-xl font-bold text-white mb-5">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+        <h2 className="text-xl font-bold text-slate-900 mb-5">
           Hva trenger folk takstmann til i {fylke.navn}?
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -230,11 +223,11 @@ export default async function FylkePage({ params }: Props) {
             <Link
               key={t.tittel}
               href={t.href}
-              className="card-hover bg-card-bg border border-card-border rounded-xl p-4 block"
+              className="card-hover bg-white border border-slate-200 rounded-xl p-4 block"
             >
-              <h3 className="text-white font-semibold text-sm mb-1">{t.tittel}</h3>
-              <p className="text-gray-500 text-xs leading-relaxed">{t.beskrivelse}</p>
-              <span className="text-accent text-xs font-medium mt-2 inline-block">Les mer &rarr;</span>
+              <h3 className="text-slate-900 font-semibold text-sm mb-1">{t.tittel}</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">{t.beskrivelse}</p>
+              <span className="text-blue-600 text-xs font-medium mt-2 inline-block">Les mer &rarr;</span>
             </Link>
           ))}
         </div>
@@ -245,8 +238,8 @@ export default async function FylkePage({ params }: Props) {
         const kommuner = getKommunerForFylke(fylkeId);
         if (kommuner.length === 0) return null;
         return (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-            <h2 className="text-xl font-bold text-white mb-5 text-center">
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+            <h2 className="text-xl font-bold text-slate-900 mb-5 text-center">
               Finn takstmann i din kommune i {fylke.navn}
             </h2>
             <div className="flex flex-wrap justify-center gap-2">
@@ -254,7 +247,7 @@ export default async function FylkePage({ params }: Props) {
                 <Link
                   key={k.id}
                   href={`/${fylkeId}/${k.id}`}
-                  className="text-sm text-gray-400 hover:text-accent border border-card-border hover:border-accent/30 rounded-lg px-3 py-1.5 transition-colors"
+                  className="text-sm text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors bg-white"
                 >
                   {k.navn}
                 </Link>
@@ -266,33 +259,33 @@ export default async function FylkePage({ params }: Props) {
 
       {/* Tilfeldig spinner */}
       {takstmenn.length > 0 && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
           <RandomSpinnerWrapper takstmenn={takstmenn} fylkeNavn={fylke.navn} />
         </section>
       )}
 
       {/* Alle takstmenn */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="text-xl font-bold text-white mb-6">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        <h2 className="text-xl font-bold text-slate-900 mb-6">
           {takstmenn.length > 0
             ? `Alle takstmenn i ${fylke.navn}`
             : `Takstmenn i ${fylke.navn}`}
         </h2>
 
         {takstmenn.length === 0 ? (
-          <div className="bg-card-bg border border-card-border rounded-xl p-12 text-center">
-            <p className="text-gray-400 mb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-12 text-center shadow-sm">
+            <p className="text-slate-500 mb-4">
               Ingen takstmenn har aktivert synlighet i {fylke.navn} ennå.
             </p>
             <Link
               href="/registrer/takstmann"
-              className="inline-block bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
               Er du takstmann? Registrer deg
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {takstmenn.map((t) => {
               const alleTjenester = t.tjenester ?? [];
               const spesialiteter = [t.spesialitet, t.spesialitet_2].filter(Boolean) as string[];
@@ -301,19 +294,20 @@ export default async function FylkePage({ params }: Props) {
               );
               const visNavn = t.navn ?? "Ukjent";
               const companyNavn = t.company?.navn;
+              const erVerifisert = t.sertifisering || (t.sertifiseringer?.length ?? 0) > 0;
 
               return (
                 <div
                   key={t.id}
-                  className="flex flex-col bg-surface border border-white/10 rounded-2xl overflow-hidden shadow-lg hover:shadow-accent/20 hover:border-accent/40 hover:-translate-y-1 transition-all duration-300"
+                  className="flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-blue-200 hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  {/* Fargestripe øverst */}
-                  <div className="h-1.5 bg-gradient-to-r from-accent via-blue-400 to-accent/50" />
+                  {/* Fargestripe */}
+                  <div className="h-1 bg-gradient-to-r from-blue-500 to-blue-400" />
 
                   {/* Profilhode */}
                   <div className="flex items-center gap-4 px-5 pt-5 pb-4">
                     <div className="relative shrink-0">
-                      <div className="w-16 h-16 rounded-xl overflow-hidden border-2 border-accent/30 bg-accent/10 relative">
+                      <div className="w-14 h-14 rounded-xl overflow-hidden border border-slate-200 bg-gradient-to-br from-blue-500 to-blue-700 relative">
                         {t.bilde_url ? (
                           <Image
                             src={t.bilde_url}
@@ -323,13 +317,13 @@ export default async function FylkePage({ params }: Props) {
                             unoptimized
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-accent font-bold text-2xl">
+                          <div className="w-full h-full flex items-center justify-center text-white font-bold text-2xl">
                             {visNavn.charAt(0).toUpperCase()}
                           </div>
                         )}
                       </div>
-                      {(t.sertifisering || (t.sertifiseringer?.length ?? 0) > 0) && (
-                        <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-surface flex items-center justify-center">
+                      {erVerifisert && (
+                        <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
                           <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
@@ -338,28 +332,33 @@ export default async function FylkePage({ params }: Props) {
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-white font-bold text-base leading-tight truncate">{visNavn}</h3>
-                      {companyNavn && (
-                        <p className="text-gray-400 text-xs mt-0.5 truncate">{companyNavn}</p>
-                      )}
-                      {t.tittel && !companyNavn && (
-                        <p className="text-gray-400 text-xs mt-0.5 truncate">{t.tittel}</p>
+                      <h3 className="text-slate-900 font-bold text-base leading-tight truncate">{visNavn}</h3>
+                      {companyNavn ? (
+                        <p className="text-slate-500 text-xs mt-0.5 truncate">{companyNavn}</p>
+                      ) : t.tittel ? (
+                        <p className="text-slate-500 text-xs mt-0.5 truncate">{t.tittel}</p>
+                      ) : null}
+
+                      {erVerifisert && (
+                        <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 border border-green-200 rounded-full px-2 py-0.5 mt-1 font-medium">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          Verifisert
+                        </span>
                       )}
 
-                      {/* Vurdering */}
-                      {t.snittKarakter !== null ? (
+                      {t.snittKarakter !== null && (
                         <div className="flex items-center gap-1 mt-1.5">
                           <div className="flex">
                             {[1, 2, 3, 4, 5].map((s) => (
-                              <svg key={s} className={`w-3 h-3 ${s <= Math.round(t.snittKarakter!) ? "text-yellow-400" : "text-gray-700"}`} fill="currentColor" viewBox="0 0 20 20">
+                              <svg key={s} className={`w-3 h-3 ${s <= Math.round(t.snittKarakter!) ? "text-amber-400" : "text-slate-200"}`} fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                               </svg>
                             ))}
                           </div>
-                          <span className="text-gray-500 text-xs">({t.antallVurderinger})</span>
+                          <span className="text-slate-400 text-xs">({t.antallVurderinger})</span>
                         </div>
-                      ) : (
-                        <p className="text-gray-600 text-xs mt-1">Ingen vurderinger ennå</p>
                       )}
                     </div>
                   </div>
@@ -375,15 +374,14 @@ export default async function FylkePage({ params }: Props) {
                     </div>
                   )}
 
-                  {/* Tjenester som badges */}
+                  {/* Tjeneste-badges */}
                   {(spesialiteter.length > 0 || andreTjenester.length > 0) && (
                     <div className="px-5 pb-4">
-                      <p className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Tjenester</p>
                       <div className="flex flex-wrap gap-1.5">
                         {spesialiteter.map((s) => (
                           <span
                             key={s}
-                            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-accent/15 text-accent border border-accent/25"
+                            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100"
                           >
                             {s}
                           </span>
@@ -391,13 +389,13 @@ export default async function FylkePage({ params }: Props) {
                         {andreTjenester.slice(0, 3).map((s) => (
                           <span
                             key={s}
-                            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-white/5 text-gray-300 border border-white/10"
+                            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200"
                           >
                             {s}
                           </span>
                         ))}
                         {andreTjenester.length > 3 && (
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-white/5 text-gray-500 border border-white/10">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-400 border border-slate-200">
                             +{andreTjenester.length - 3}
                           </span>
                         )}
@@ -405,17 +403,17 @@ export default async function FylkePage({ params }: Props) {
                     </div>
                   )}
 
-                  {/* Bunndel med knapper */}
-                  <div className="mt-auto px-5 pb-5 pt-3 border-t border-white/8 flex gap-2">
+                  {/* Knapper */}
+                  <div className="mt-auto px-5 pb-5 pt-3 border-t border-slate-100 flex gap-2">
                     <Link
                       href={`/takstmann/${t.id}`}
-                      className="flex-1 text-center py-2 rounded-lg text-sm font-medium text-gray-300 border border-white/10 hover:border-accent/40 hover:text-white transition-colors"
+                      className="flex-1 text-center py-2 rounded-lg text-sm font-medium text-slate-600 border border-slate-200 hover:border-blue-300 hover:text-blue-600 transition-colors"
                     >
                       Se profil
                     </Link>
                     <Link
                       href={`/takstmann/${t.id}#bestill`}
-                      className="flex-1 text-center py-2 rounded-lg text-sm font-semibold bg-accent hover:bg-accent/85 text-white transition-colors"
+                      className="flex-1 text-center py-2 rounded-lg text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-colors"
                     >
                       Be om tilbud
                     </Link>
@@ -428,37 +426,39 @@ export default async function FylkePage({ params }: Props) {
       </section>
 
       {/* FAQ */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Ofte stilte spørsmål om takst i {fylke.navn}
-          </h2>
-          <div className="space-y-4">
-            {faq.map((item, i) => (
-              <details
-                key={i}
-                className="bg-card-bg border border-card-border rounded-xl group"
-              >
-                <summary className="p-5 cursor-pointer text-white font-semibold flex items-center justify-between list-none">
-                  <span>{item.sporsmal}</span>
-                  <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="px-5 pb-5 text-gray-400 leading-relaxed text-sm">
-                  {item.svar}
-                </div>
-              </details>
-            ))}
+      <section className="bg-slate-50 py-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">
+              Ofte stilte spørsmål om takst i {fylke.navn}
+            </h2>
+            <div className="space-y-3">
+              {faq.map((item, i) => (
+                <details
+                  key={i}
+                  className="bg-white border border-slate-200 rounded-xl group shadow-sm"
+                >
+                  <summary className="p-5 cursor-pointer text-slate-900 font-semibold flex items-center justify-between list-none">
+                    <span>{item.sporsmal}</span>
+                    <svg className="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform shrink-0 ml-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <div className="px-5 pb-5 text-slate-600 leading-relaxed text-sm">
+                    {item.svar}
+                  </div>
+                </details>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Relevante blogginnlegg */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      {/* Blogginnlegg */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-white">Nyttige artikler om takst</h2>
-          <Link href="/blogg" className="text-accent text-sm font-medium hover:underline">
+          <h2 className="text-xl font-bold text-slate-900">Nyttige artikler om takst</h2>
+          <Link href="/blogg" className="text-blue-600 text-sm font-medium hover:underline">
             Se alle &rarr;
           </Link>
         </div>
@@ -467,17 +467,17 @@ export default async function FylkePage({ params }: Props) {
             <Link
               key={post.id}
               href={`/blogg/${post.id}`}
-              className="card-hover block bg-card-bg border border-card-border rounded-xl overflow-hidden"
+              className="card-hover block bg-white border border-slate-200 rounded-xl overflow-hidden"
             >
-              <div className="h-1 bg-gradient-to-r from-accent to-blue-400" />
+              <div className="h-1 bg-gradient-to-r from-blue-500 to-blue-400" />
               <div className="p-5">
-                <h3 className="text-white font-semibold text-sm mb-2 leading-snug">
+                <h3 className="text-slate-900 font-semibold text-sm mb-2 leading-snug">
                   {post.tittel}
                 </h3>
-                <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
+                <p className="text-slate-500 text-xs leading-relaxed line-clamp-2">
                   {post.ingress}
                 </p>
-                <span className="inline-block mt-3 text-accent text-xs font-medium">
+                <span className="inline-block mt-3 text-blue-600 text-xs font-medium">
                   Les mer &rarr;
                 </span>
               </div>
@@ -487,43 +487,45 @@ export default async function FylkePage({ params }: Props) {
       </section>
 
       {/* Andre fylker */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="text-xl font-bold text-white mb-5 text-center">
-          Se takstmenn i andre fylker
-        </h2>
-        <div className="flex flex-wrap justify-center gap-2">
-          {FYLKER.filter((f) => f.id !== fylkeId).map((f) => (
-            <Link
-              key={f.id}
-              href={`/${f.id}`}
-              className="text-sm text-gray-400 hover:text-accent border border-card-border hover:border-accent/30 rounded-lg px-3 py-1.5 transition-colors"
-            >
-              {f.navn}
-            </Link>
-          ))}
+      <section className="bg-slate-50 py-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-xl font-bold text-slate-900 mb-5 text-center">
+            Se takstmenn i andre fylker
+          </h2>
+          <div className="flex flex-wrap justify-center gap-2">
+            {FYLKER.filter((f) => f.id !== fylkeId).map((f) => (
+              <Link
+                key={f.id}
+                href={`/${f.id}`}
+                className="text-sm text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors bg-white"
+              >
+                {f.navn}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA for takstmenn */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="bg-gradient-to-r from-accent/10 to-blue-500/10 border border-accent/20 rounded-2xl p-8 sm:p-10 text-center max-w-3xl mx-auto">
+      {/* CTA */}
+      <section className="bg-slate-900 py-14">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-2xl mx-auto">
           <h2 className="text-xl font-bold text-white mb-3">
             Er du takstmann i {fylke.navn}?
           </h2>
-          <p className="text-gray-400 leading-relaxed mb-5 text-sm">
+          <p className="text-slate-400 leading-relaxed mb-6 text-sm">
             Bli synlig på takstmann.net og la kunder i {fylke.navn} finne deg.
             Registrer deg, aktiver profilen din og start å motta henvendelser.
           </p>
           <Link
             href="/registrer/takstmann"
-            className="inline-block bg-accent hover:bg-accent/90 text-white px-8 py-3 rounded-lg font-medium transition-colors"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors"
           >
             Registrer deg som takstmann
           </Link>
         </div>
       </section>
 
-      {/* Structured Data: BreadcrumbList + FAQPage */}
+      {/* Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

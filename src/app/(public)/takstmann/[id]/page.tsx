@@ -44,20 +44,18 @@ export default async function TakstmannProfilPage({ params }: Props) {
   if (!profilRaw) notFound();
   const profil = profilRaw as unknown as TakstmannProfil;
 
-  // Skjul profil fra offentlige sider hvis abonnementet er utløpt eller kansellert
   if (profil.company_id) {
-    const serviceClient = await createServiceClient()
+    const serviceClient = await createServiceClient();
     const { data: abonnement } = await serviceClient
-      .from('abonnementer')
-      .select('status')
-      .eq('company_id', profil.company_id)
-      .maybeSingle()
-    if (abonnement?.status === 'utlopt' || abonnement?.status === 'kansellert') {
-      notFound()
+      .from("abonnementer")
+      .select("status")
+      .eq("company_id", profil.company_id)
+      .maybeSingle();
+    if (abonnement?.status === "utlopt" || abonnement?.status === "kansellert") {
+      notFound();
     }
   }
 
-  // Hent vurderinger
   const { data: vurderingerRaw } = await supabase
     .from("megler_vurderinger")
     .select("*")
@@ -65,7 +63,6 @@ export default async function TakstmannProfilPage({ params }: Props) {
     .order("created_at", { ascending: false });
   const vurderinger = (vurderingerRaw ?? []) as unknown as MeglerVurdering[];
 
-  // Hent aktive fylker
   const { data: fylkerRaw } = await supabase
     .from("fylke_synlighet")
     .select("fylke_id")
@@ -73,13 +70,11 @@ export default async function TakstmannProfilPage({ params }: Props) {
     .eq("er_aktiv", true);
   const fylker = (fylkerRaw ?? []) as unknown as Pick<FylkeSynlighet, "fylke_id">[];
 
-  // Hent firmanavn
   const { data: companyRaw } = profil.company_id
     ? await supabase.from("companies").select("navn").eq("id", profil.company_id).single()
     : { data: null };
   const companyNavn = (companyRaw as { navn: string } | null)?.navn;
 
-  // Sjekk innlogget bruker og hent profilID for bestilling
   const { data: { user } } = await supabase.auth.getUser();
   let kundeProfilId: string | undefined;
   let meglerProfilId: string | undefined;
@@ -104,8 +99,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
   const snittKarakter =
     vurderinger && vurderinger.length > 0
-      ? vurderinger.reduce((sum, v) => sum + (v.karakter ?? 0), 0) /
-        vurderinger.length
+      ? vurderinger.reduce((sum, v) => sum + (v.karakter ?? 0), 0) / vurderinger.length
       : null;
 
   const andreTjenester = (profil.tjenester ?? []).filter(
@@ -114,11 +108,14 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
   const fylkeNavn = (id: string) => FYLKER.find((f) => f.id === id)?.navn ?? id;
 
+  const erVerifisert = profil.sertifisering || (profil.sertifiseringer?.length ?? 0) > 0;
+
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {/* Tilbake */}
       <Link
         href="/"
-        className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8 text-sm"
+        className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors mb-6 text-sm"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -127,32 +124,54 @@ export default async function TakstmannProfilPage({ params }: Props) {
       </Link>
 
       {/* Profil-header */}
-      <div className="bg-card-bg border border-card-border rounded-2xl p-8 mb-6">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 mb-5 shadow-sm">
         <div className="flex flex-col sm:flex-row gap-6 items-start">
-          <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-accent/30 shrink-0 relative bg-accent/10">
-            {profil.bilde_url ? (
-              <Image
-                src={profil.bilde_url}
-                alt={profil.navn}
-                fill
-                className="object-cover"
-                unoptimized
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-accent font-bold text-4xl">
-                {profil.navn.charAt(0)}
+          {/* Avatar */}
+          <div className="relative shrink-0">
+            <div className="w-24 h-24 rounded-2xl overflow-hidden border border-slate-200 bg-gradient-to-br from-blue-500 to-blue-700 relative">
+              {profil.bilde_url ? (
+                <Image
+                  src={profil.bilde_url}
+                  alt={profil.navn}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-white font-bold text-4xl">
+                  {profil.navn.charAt(0)}
+                </div>
+              )}
+            </div>
+            {erVerifisert && (
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
+                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
               </div>
             )}
           </div>
+
           <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">
-              {profil.navn}
-            </h1>
+            <div className="flex flex-wrap items-start gap-2 mb-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
+                {profil.navn}
+              </h1>
+              {erVerifisert && (
+                <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 border border-green-200 rounded-full px-2 py-0.5 font-medium mt-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Verifisert
+                </span>
+              )}
+            </div>
+
             {companyNavn && (
-              <p className="text-gray-400 mb-2">{companyNavn}</p>
+              <p className="text-slate-600 font-medium mb-1">{companyNavn}</p>
             )}
             {profil.tittel && (
-              <p className="text-gray-500 text-sm mb-2">{profil.tittel}</p>
+              <p className="text-slate-500 text-sm mb-2">{profil.tittel}</p>
             )}
 
             {profil.sertifisering && (
@@ -172,7 +191,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
                   {[1, 2, 3, 4, 5].map((s) => (
                     <svg
                       key={s}
-                      className={`w-5 h-5 ${s <= Math.round(snittKarakter) ? "text-yellow-400" : "text-gray-600"}`}
+                      className={`w-5 h-5 ${s <= Math.round(snittKarakter) ? "text-amber-400" : "text-slate-200"}`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -180,28 +199,28 @@ export default async function TakstmannProfilPage({ params }: Props) {
                     </svg>
                   ))}
                 </div>
-                <span className="text-white font-semibold">{snittKarakter.toFixed(1)}</span>
-                <span className="text-gray-400 text-sm">
+                <span className="text-slate-900 font-semibold">{snittKarakter.toFixed(1)}</span>
+                <span className="text-slate-500 text-sm">
                   ({vurderinger?.length} {vurderinger?.length === 1 ? "vurdering" : "vurderinger"})
                 </span>
               </div>
             ) : (
-              <p className="text-gray-600 text-sm mb-3">Ingen vurderinger ennå</p>
+              <p className="text-slate-400 text-sm mb-3">Ingen vurderinger ennå</p>
             )}
 
-            {/* Kontaktinfo inline */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+            {/* Kontaktinfo */}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
               {profil.telefon && (
-                <a href={`tel:${profil.telefon}`} className="flex items-center gap-1.5 hover:text-white transition-colors">
-                  <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <a href={`tel:${profil.telefon}`} className="flex items-center gap-1.5 hover:text-blue-600 transition-colors">
+                  <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   {profil.telefon}
                 </a>
               )}
               {profil.epost && (
-                <a href={`mailto:${profil.epost}`} className="flex items-center gap-1.5 hover:text-white transition-colors">
-                  <svg className="w-4 h-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <a href={`mailto:${profil.epost}`} className="flex items-center gap-1.5 hover:text-blue-600 transition-colors">
+                  <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   {profil.epost}
@@ -212,18 +231,22 @@ export default async function TakstmannProfilPage({ params }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        {/* Venstre kolonne: Tjenester, bio, sertifiseringer */}
-        <div className="md:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+        {/* Venstre: Tjenester + Bio + Sertifiseringer */}
+        <div className="md:col-span-2 space-y-5">
           {/* Spesialitet og tjenester */}
-          <div className="bg-card-bg border border-card-border rounded-xl p-6">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
             {profil.spesialitet && (
               <div className="mb-5">
-                <h2 className="text-gray-500 text-xs font-medium uppercase tracking-wide mb-2">Spesialitet</h2>
+                <h2 className="text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2">Spesialitet</h2>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-accent/15 border border-accent/25 text-accent text-sm px-3 py-1.5 rounded-lg font-medium">{profil.spesialitet}</span>
+                  <span className="bg-blue-50 border border-blue-200 text-blue-700 text-sm px-3 py-1.5 rounded-lg font-medium">
+                    {profil.spesialitet}
+                  </span>
                   {profil.spesialitet_2 && (
-                    <span className="bg-accent/15 border border-accent/25 text-accent text-sm px-3 py-1.5 rounded-lg font-medium">{profil.spesialitet_2}</span>
+                    <span className="bg-blue-50 border border-blue-200 text-blue-700 text-sm px-3 py-1.5 rounded-lg font-medium">
+                      {profil.spesialitet_2}
+                    </span>
                   )}
                 </div>
               </div>
@@ -231,10 +254,12 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
             {andreTjenester.length > 0 && (
               <div className="mb-5">
-                <h2 className="text-gray-500 text-xs font-medium uppercase tracking-wide mb-2">Utfører også</h2>
+                <h2 className="text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2">Utfører også</h2>
                 <div className="flex flex-wrap gap-2">
                   {andreTjenester.map((t) => (
-                    <span key={t} className="bg-gray-800/50 border border-gray-700 text-gray-300 text-sm px-3 py-1.5 rounded-lg">{t}</span>
+                    <span key={t} className="bg-slate-100 border border-slate-200 text-slate-600 text-sm px-3 py-1.5 rounded-lg">
+                      {t}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -242,11 +267,11 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
             {profil.sertifiseringer && profil.sertifiseringer.length > 0 && (
               <div>
-                <h2 className="text-gray-500 text-xs font-medium uppercase tracking-wide mb-2">Sertifiseringer</h2>
+                <h2 className="text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2">Sertifiseringer</h2>
                 <ul className="space-y-2">
                   {profil.sertifiseringer.map((sert, i) => (
-                    <li key={i} className="flex items-center gap-2 text-gray-300 text-sm">
-                      <svg className="w-4 h-4 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <li key={i} className="flex items-center gap-2 text-slate-700 text-sm">
+                      <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       {sert}
@@ -259,19 +284,19 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
           {/* Om meg */}
           {profil.bio && (
-            <div className="bg-card-bg border border-card-border rounded-xl p-6">
-              <h2 className="text-white font-semibold mb-3">Om meg</h2>
-              <p className="text-gray-400 leading-relaxed whitespace-pre-line">{profil.bio}</p>
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+              <h2 className="text-slate-900 font-semibold mb-3">Om meg</h2>
+              <p className="text-slate-600 leading-relaxed whitespace-pre-line text-sm">{profil.bio}</p>
             </div>
           )}
         </div>
 
-        {/* Høyre kolonne: Send forespørsel + fylker */}
-        <div className="space-y-6">
+        {/* Høyre: Bestill + Fylker */}
+        <div className="space-y-5">
           {/* Bestill takst */}
-          <div id="bestill" className="bg-card-bg border border-card-border rounded-xl p-6">
-            <h2 className="text-white font-semibold mb-2">Trenger du takst?</h2>
-            <p className="text-gray-400 text-sm mb-4">
+          <div id="bestill" className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            <h2 className="text-slate-900 font-semibold mb-2">Trenger du takst?</h2>
+            <p className="text-slate-500 text-sm mb-4">
               Send en bestilling til {profil.navn.split(" ")[0]}, så avtaler dere pris og tidspunkt.
             </p>
             <BestillTakstKnapp
@@ -287,14 +312,14 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
           {/* Aktiv i fylker */}
           {fylker && fylker.length > 0 && (
-            <div className="bg-card-bg border border-card-border rounded-xl p-6">
-              <h2 className="text-white font-semibold mb-3">Dekker disse fylkene</h2>
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+              <h2 className="text-slate-900 font-semibold mb-3">Dekker disse fylkene</h2>
               <div className="flex flex-wrap gap-2">
                 {fylker.map((f) => (
                   <Link
                     key={f.fylke_id}
                     href={`/${f.fylke_id}`}
-                    className="bg-accent/10 border border-accent/20 text-accent text-sm px-3 py-1.5 rounded-lg hover:bg-accent/20 transition-colors"
+                    className="bg-blue-50 border border-blue-200 text-blue-700 text-sm px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
                   >
                     {fylkeNavn(f.fylke_id)}
                   </Link>
@@ -306,8 +331,8 @@ export default async function TakstmannProfilPage({ params }: Props) {
       </div>
 
       {/* Vurderinger */}
-      <div className="bg-card-bg border border-card-border rounded-xl p-6">
-        <h2 className="text-white font-semibold mb-6">
+      <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <h2 className="text-slate-900 font-semibold mb-6">
           Vurderinger {vurderinger.length > 0 && `(${vurderinger.length})`}
         </h2>
         {vurderinger.length > 0 ? (
@@ -315,14 +340,14 @@ export default async function TakstmannProfilPage({ params }: Props) {
             {vurderinger.map((v: MeglerVurdering) => (
               <div
                 key={v.id}
-                className="border-b border-card-border pb-4 last:border-0 last:pb-0"
+                className="border-b border-slate-100 pb-4 last:border-0 last:pb-0"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <div className="flex">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <svg
                         key={s}
-                        className={`w-4 h-4 ${s <= (v.karakter ?? 0) ? "text-yellow-400" : "text-gray-600"}`}
+                        className={`w-4 h-4 ${s <= (v.karakter ?? 0) ? "text-amber-400" : "text-slate-200"}`}
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -330,18 +355,20 @@ export default async function TakstmannProfilPage({ params }: Props) {
                       </svg>
                     ))}
                   </div>
-                  <time className="text-gray-500 text-xs">
+                  <time className="text-slate-400 text-xs">
                     {new Date(v.created_at).toLocaleDateString("nb-NO")}
                   </time>
                 </div>
                 {v.kommentar && (
-                  <p className="text-gray-400 text-sm">{v.kommentar}</p>
+                  <p className="text-slate-600 text-sm">{v.kommentar}</p>
                 )}
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-500 text-sm">Ingen vurderinger ennå. Bli den første til å gi en tilbakemelding!</p>
+          <p className="text-slate-400 text-sm">
+            Ingen vurderinger ennå. Bli den første til å gi en tilbakemelding!
+          </p>
         )}
       </div>
     </div>
