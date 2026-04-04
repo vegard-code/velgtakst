@@ -12,7 +12,7 @@ interface Props {
 interface Result {
   label: string;
   sublabel?: string;
-  fylkeId: string;
+  path: string;
 }
 
 export default function FylkeSøk({ fylker }: Props) {
@@ -34,7 +34,7 @@ export default function FylkeSøk({ fylker }: Props) {
               return {
                 label: k.navn,
                 sublabel: fylke?.navn,
-                fylkeId: k.fylkeId,
+                path: `/${k.fylkeId}/${k.id}`,
               };
             });
           const fylkeHits: Result[] = fylker
@@ -43,12 +43,12 @@ export default function FylkeSøk({ fylker }: Props) {
                 f.navn.toLowerCase().includes(q) &&
                 !kommuneHits.some(
                   (r) =>
-                    r.fylkeId === f.id &&
+                    r.path === `/${f.id}/${f.id}` ||
                     r.label.toLowerCase() === f.navn.toLowerCase()
                 )
             )
             .slice(0, 3)
-            .map((f) => ({ label: f.navn, fylkeId: f.id }));
+            .map((f) => ({ label: f.navn, path: `/${f.id}` }));
           return [...kommuneHits, ...fylkeHits].slice(0, 6);
         })()
       : [];
@@ -63,8 +63,8 @@ export default function FylkeSøk({ fylker }: Props) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function handleSelect(fylkeId: string) {
-    router.push(`/${fylkeId}`);
+  function handleSelect(path: string) {
+    router.push(path);
     setOpen(false);
     setQuery("");
   }
@@ -125,8 +125,8 @@ export default function FylkeSøk({ fylker }: Props) {
         <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden z-50">
           {results.map((r, i) => (
             <button
-              key={`${r.fylkeId}-${r.label}-${i}`}
-              onClick={() => handleSelect(r.fylkeId)}
+              key={`${r.path}-${i}`}
+              onClick={() => handleSelect(r.path)}
               className="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3 transition-colors"
             >
               <svg
