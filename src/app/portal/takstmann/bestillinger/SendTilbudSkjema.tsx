@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { sendTilbud } from "@/lib/actions/bestillinger";
+import Toast from "@/components/Toast";
 
 export default function SendTilbudSkjema({ bestillingId }: { bestillingId: string }) {
   const [aapen, setAapen] = useState(false);
@@ -9,6 +10,7 @@ export default function SendTilbudSkjema({ bestillingId }: { bestillingId: strin
   const [pris, setPris] = useState("");
   const [leveringstid, setLeveringstid] = useState("");
   const [feil, setFeil] = useState<string | null>(null);
+  const [suksess, setSuksess] = useState<string | null>(null);
 
   async function handleSend() {
     if (!pris || !leveringstid) {
@@ -28,17 +30,23 @@ export default function SendTilbudSkjema({ bestillingId }: { bestillingId: strin
       setFeil(res.error);
     } else {
       setAapen(false);
+      setPris("");
+      setLeveringstid("");
+      setSuksess("Tilbud sendt!");
     }
   }
 
   if (!aapen) {
     return (
-      <button
-        onClick={() => setAapen(true)}
-        className="bg-[#285982] hover:bg-[#1e4266] text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-      >
-        Send tilbud
-      </button>
+      <>
+        <button
+          onClick={() => setAapen(true)}
+          className="bg-[#285982] hover:bg-[#1e4266] text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+        >
+          Send tilbud
+        </button>
+        <Toast melding={suksess} onClose={() => setSuksess(null)} />
+      </>
     );
   }
 

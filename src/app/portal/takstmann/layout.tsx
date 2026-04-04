@@ -28,18 +28,14 @@ export default async function TakstmannPortalLayout({
     redirect("/portal");
   }
 
-  const { data: company } = profil.company_id
-    ? await supabase
-        .from("companies")
-        .select("navn")
-        .eq("id", profil.company_id)
-        .single()
-    : { data: null };
-
-  const [ulesteMeldinger, nyeBestillinger] = await Promise.all([
+  const [companyResult, ulesteMeldinger, nyeBestillinger] = await Promise.all([
+    profil.company_id
+      ? supabase.from("companies").select("navn").eq("id", profil.company_id).single()
+      : Promise.resolve({ data: null }),
     hentAntallUleste(),
     hentAntallNyeBestillinger(),
   ]);
+  const company = companyResult.data;
 
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex">

@@ -6,6 +6,7 @@ import { oppdaterInnstillinger } from "@/lib/actions/innstillinger";
 import { ALLE_TJENESTER } from "@/lib/supabase/types";
 import type { CompanySettings, TakstmannProfil } from "@/lib/supabase/types";
 import ProfilbildeOpplaster from "@/components/portal/ProfilbildeOpplaster";
+import Toast from "@/components/Toast";
 
 interface Props {
   profil: {
@@ -441,14 +442,8 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
           </>
         )}
 
-        {melding && (
-          <div
-            className={`px-4 py-3 rounded-lg text-sm ${
-              melding.type === "ok"
-                ? "bg-green-50 border border-green-200 text-green-700"
-                : "bg-red-50 border border-red-200 text-red-700"
-            }`}
-          >
+        {melding?.type === "feil" && (
+          <div className="px-4 py-3 rounded-lg text-sm bg-red-50 border border-red-200 text-red-700">
             {melding.tekst}
           </div>
         )}
@@ -461,6 +456,10 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
           </div>
         )}
       </form>
+      <Toast
+        melding={melding?.type === "ok" ? melding.tekst : null}
+        onClose={() => setMelding(null)}
+      />
     </div>
   );
 }
