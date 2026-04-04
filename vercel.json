@@ -10,7 +10,11 @@
     },
     {
       "path": "/api/cron/meldinger-varsel",
-      "schedule": "0 9 * * *"
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/tilbud-utlopt",
+      "schedule": "0 */6 * * *"
     }
   ]
 }

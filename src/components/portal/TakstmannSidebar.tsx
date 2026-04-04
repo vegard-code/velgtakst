@@ -9,6 +9,7 @@ interface Props {
   firmanavn?: string | null;
   rolle: string;
   ulesteMeldinger?: number;
+  nyeBestillinger?: number;
 }
 
 const navItems = [
@@ -23,6 +24,16 @@ const navItems = [
     exact: true,
   },
   {
+    href: "/portal/takstmann/innboks",
+    label: "Innboks",
+    badge: "innboks",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+    ),
+  },
+  {
     href: "/portal/takstmann/oppdrag",
     label: "Oppdrag",
     icon: (
@@ -34,6 +45,7 @@ const navItems = [
   {
     href: "/portal/takstmann/bestillinger",
     label: "Innkommende",
+    badge: "bestillinger",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -43,12 +55,12 @@ const navItems = [
   {
     href: "/portal/takstmann/meldinger",
     label: "Meldinger",
+    badge: "meldinger",
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
       </svg>
     ),
-    hasBadge: true,
   },
   {
     href: "/portal/takstmann/kalender",
@@ -90,12 +102,20 @@ const navItems = [
   },
 ];
 
-export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMeldinger = 0 }: Props) {
+export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMeldinger = 0, nyeBestillinger = 0 }: Props) {
   const pathname = usePathname();
+  const totalUlest = ulesteMeldinger + nyeBestillinger;
 
   function isActive(href: string, exact?: boolean) {
     if (exact) return pathname === href;
     return pathname.startsWith(href);
+  }
+
+  function getBadge(badge?: string): number {
+    if (badge === "meldinger") return ulesteMeldinger;
+    if (badge === "bestillinger") return nyeBestillinger;
+    if (badge === "innboks") return totalUlest;
+    return 0;
   }
 
   return (
@@ -113,47 +133,53 @@ export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMelding
           {firmanavn && (
             <p className="text-[#64748b] text-xs truncate mt-0.5">{firmanavn}</p>
           )}
-          <span className="inline-block mt-1.5 text-[10px] font-semibold bg-[#e8f0f8] text-[#285982] px-2 py-0.5 rounded-full uppercase tracking-wide">
-            {rolle === "takstmann_admin" ? "Admin" : "Takstmann"}
-          </span>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[10px] font-semibold bg-[#e8f0f8] text-[#285982] px-2 py-0.5 rounded-full uppercase tracking-wide">
+              {rolle === "takstmann_admin" ? "Admin" : "Takstmann"}
+            </span>
+            {totalUlest > 0 && (
+              <Link href="/portal/takstmann/innboks">
+                <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[11px] font-bold flex items-center justify-center">
+                  {totalUlest > 9 ? "9+" : totalUlest}
+                </span>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 p-4 space-y-1">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`portal-sidebar-link ${isActive(item.href, item.exact) ? "active" : ""}`}
-          >
-            {item.icon}
-            <span className="flex-1">{item.label}</span>
-            {"hasBadge" in item && item.hasBadge && ulesteMeldinger > 0 && (
-              <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center">
-                {ulesteMeldinger > 9 ? "9+" : ulesteMeldinger}
-              </span>
-            )}
-          </Link>
-        ))}
+        {navItems.map((item) => {
+          const count = "badge" in item ? getBadge(item.badge) : 0;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`portal-sidebar-link ${isActive(item.href, item.exact) ? "active" : ""}`}
+            >
+              {item.icon}
+              <span className="flex-1">{item.label}</span>
+              {count > 0 && (
+                <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center">
+                  {count > 9 ? "9+" : count}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Footer */}
       <div className="p-4 border-t border-[#e2e8f0]">
-        <Link
-          href="/"
-          className="portal-sidebar-link mb-1"
-        >
+        <Link href="/" className="portal-sidebar-link mb-1">
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>
           takstmann.net.no
         </Link>
         <form action={loggUt}>
-          <button
-            type="submit"
-            className="portal-sidebar-link w-full text-left text-red-500 hover:bg-red-50 hover:text-red-600"
-          >
+          <button type="submit" className="portal-sidebar-link w-full text-left text-red-500 hover:bg-red-50 hover:text-red-600">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>

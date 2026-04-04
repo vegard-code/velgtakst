@@ -5,7 +5,7 @@ import type { BestillingMedInfo } from "@/lib/actions/bestillinger";
 import { BESTILLING_STATUS_LABELS } from "@/lib/supabase/types";
 import type { BestillingStatus } from "@/lib/supabase/types";
 
-const STATUS_BADGE: Record<BestillingStatus, string> = {
+const STATUS_BADGE: Partial<Record<BestillingStatus, string>> = {
   ny: "portal-badge portal-badge-blue",
   akseptert: "portal-badge portal-badge-green",
   avvist: "portal-badge portal-badge-red",

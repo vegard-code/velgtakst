@@ -32,7 +32,20 @@ export type OppdragType =
   | 'våtromsinspeksjon'
   | 'annet'
 
-export type BestillingStatus = 'ny' | 'akseptert' | 'avvist' | 'kansellert' | 'fullfort'
+// Megler-flyt: ny → akseptert / avvist / kansellert / fullfort
+// Privatkunde-flyt: forespørsel → tilbud_sendt → akseptert → bekreftet
+//                               ↘ avslått / utløpt
+export type BestillingStatus =
+  | 'ny'           // megler-bestilling (legacy)
+  | 'forespørsel'  // privatkunde sendt forespørsel
+  | 'tilbud_sendt' // takstmann sendt tilbud med pris
+  | 'akseptert'    // kunde aksepterte tilbud / takstmann aksepterte (megler-flyt)
+  | 'avvist'       // takstmann avviste (megler-flyt)
+  | 'avslått'      // kunde avslo tilbud
+  | 'utløpt'       // tilbud ikke besvart innen 48 timer
+  | 'bekreftet'    // takstmann bekreftet, oppdrag opprettet
+  | 'kansellert'
+  | 'fullfort'
 export type PurreType = 'purring_1' | 'purring_2' | 'inkasso'
 export type DokumentType = 'tilstandsrapport' | 'verditakst' | 'skadetakst' | 'foto' | 'annet'
 export type RegnskapSystem = 'fiken' | 'tripletex' | 'ingen'
@@ -158,6 +171,17 @@ export interface Bestilling {
   melding: string | null
   oppdrag_type: OppdragType | null
   adresse: string | null
+  // Privatkunde tilbudsflyt
+  tilbudspris: number | null
+  estimert_leveringstid: string | null
+  tilbud_sendt_at: string | null
+  befaringsdato: string | null
+  noekkelinfo: string | null
+  parkering: string | null
+  tilgang: string | null
+  // Ulest-sporing
+  sist_sett_kunde: string | null
+  sist_sett_takstmann: string | null
   created_at: string
   updated_at: string
 }
@@ -301,7 +325,7 @@ export type Database = {
       }
       bestillinger: {
         Row: Bestilling
-        Insert: Omit<Bestilling, 'id' | 'created_at' | 'updated_at'>
+        Insert: Omit<Bestilling, 'id' | 'created_at' | 'updated_at' | 'tilbudspris' | 'estimert_leveringstid' | 'tilbud_sendt_at' | 'befaringsdato' | 'noekkelinfo' | 'parkering' | 'tilgang' | 'sist_sett_kunde' | 'sist_sett_takstmann'>
         Update: Partial<Omit<Bestilling, 'id' | 'created_at' | 'updated_at'>>
       }
       status_logg: {
@@ -519,8 +543,13 @@ export const OPPDRAG_TYPE_LABELS: Record<OppdragType, string> = {
 
 export const BESTILLING_STATUS_LABELS: Record<BestillingStatus, string> = {
   ny: 'Ny forespørsel',
+  forespørsel: 'Forespørsel',
+  tilbud_sendt: 'Tilbud sendt',
   akseptert: 'Akseptert',
   avvist: 'Avvist',
+  avslått: 'Avslått',
+  utløpt: 'Utløpt',
+  bekreftet: 'Bekreftet',
   kansellert: 'Kansellert',
   fullfort: 'Fullført',
 }

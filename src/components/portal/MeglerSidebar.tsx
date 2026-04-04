@@ -16,6 +16,16 @@ const navItems = [
     ),
   },
   {
+    href: "/portal/megler/innboks",
+    label: "Innboks",
+    badge: true,
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+    ),
+  },
+  {
     href: "/portal/megler/finn-takstmann",
     label: "Finn takstmann",
     icon: (
@@ -66,31 +76,44 @@ export default function MeglerSidebar({ navn, ulesteMeldinger = 0 }: { navn: str
         </Link>
         <div className="mt-4">
           <p className="text-[#1e293b] font-medium text-sm truncate">{navn}</p>
-          <span className="inline-block mt-1.5 text-[10px] font-semibold bg-[#fef9c3] text-[#a16207] px-2 py-0.5 rounded-full uppercase tracking-wide">
-            Megler
-          </span>
+          <div className="flex items-center gap-2 mt-1.5">
+            <span className="text-[10px] font-semibold bg-[#fef9c3] text-[#a16207] px-2 py-0.5 rounded-full uppercase tracking-wide">
+              Megler
+            </span>
+            {ulesteMeldinger > 0 && (
+              <Link href="/portal/megler/innboks">
+                <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[11px] font-bold flex items-center justify-center">
+                  {ulesteMeldinger > 9 ? "9+" : ulesteMeldinger}
+                </span>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
       <nav className="flex-1 p-4 space-y-1">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`portal-sidebar-link ${
-              item.exact ? pathname === item.href : pathname.startsWith(item.href)
-                ? "active"
-                : ""
-            }`}
-          >
-            {item.icon}
-            <span className="flex-1">{item.label}</span>
-            {"hasBadge" in item && item.hasBadge && ulesteMeldinger > 0 && (
-              <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center">
-                {ulesteMeldinger > 9 ? "9+" : ulesteMeldinger}
-              </span>
-            )}
-          </Link>
-        ))}
+        {navItems.map((item) => {
+          const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`portal-sidebar-link ${isActive ? "active" : ""}`}
+            >
+              {item.icon}
+              <span className="flex-1">{item.label}</span>
+              {"hasBadge" in item && item.hasBadge && ulesteMeldinger > 0 && (
+                <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center">
+                  {ulesteMeldinger > 9 ? "9+" : ulesteMeldinger}
+                </span>
+              )}
+              {"badge" in item && item.badge && ulesteMeldinger > 0 && (
+                <span className="w-5 h-5 rounded-full bg-[#285982] text-white text-[11px] font-bold flex items-center justify-center">
+                  {ulesteMeldinger > 9 ? "9+" : ulesteMeldinger}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
       <div className="p-4 border-t border-[#e2e8f0]">
         <form action={loggUt}>

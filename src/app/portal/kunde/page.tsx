@@ -99,7 +99,7 @@ const FREMGANG_STEG = [
   { status: ["fullfort"], label: "Fullført" },
 ];
 
-const STATUS_BADGE: Record<BestillingStatus, string> = {
+const STATUS_BADGE: Partial<Record<BestillingStatus, string>> = {
   ny: "portal-badge portal-badge-blue",
   akseptert: "portal-badge portal-badge-green",
   avvist: "portal-badge portal-badge-red",
