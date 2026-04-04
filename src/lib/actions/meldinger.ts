@@ -195,36 +195,43 @@ export async function hentSamtaler() {
     return []
   }
 
-  // For each samtale, get the latest message and unread count
-  const result = await Promise.all(
-    (samtaler ?? []).map(async (s) => {
-      const { data: sisteMelding } = await supabase
-        .from('meldinger')
-        .select('innhold, created_at, avsender_id')
-        .eq('samtale_id', s.id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
+  if (!samtaler || samtaler.length === 0) return []
 
-      const { count } = await supabase
-        .from('meldinger')
-        .select('id', { count: 'exact', head: true })
-        .eq('samtale_id', s.id)
-        .neq('avsender_id', user.id)
-        .eq('lest', false)
+  const samtaleIds = samtaler.map((s) => s.id)
 
-      return {
-        ...s,
-        takstmann: s.takstmann as unknown as { id: string; navn: string; bilde_url: string | null } | null,
-        kunde: s.kunde as unknown as { id: string; navn: string } | null,
-        megler: s.megler as unknown as { id: string; navn: string } | null,
-        siste_melding: sisteMelding ?? null,
-        uleste: count ?? 0,
-      }
-    })
-  )
+  // Hent alle meldinger for alle samtaler i én spørring (unngår N+1)
+  const { data: alleMeldinger } = await supabase
+    .from('meldinger')
+    .select('samtale_id, innhold, created_at, avsender_id, lest')
+    .in('samtale_id', samtaleIds)
+    .order('created_at', { ascending: false })
 
-  // Sort by latest message
+  // Bygg opp lookup-maps i JavaScript
+  const sisteMeldingMap = new Map<string, { innhold: string; created_at: string; avsender_id: string }>()
+  const ulesteMap = new Map<string, number>()
+
+  for (const m of (alleMeldinger ?? [])) {
+    if (!sisteMeldingMap.has(m.samtale_id)) {
+      sisteMeldingMap.set(m.samtale_id, {
+        innhold: m.innhold,
+        created_at: m.created_at,
+        avsender_id: m.avsender_id,
+      })
+    }
+    if (!m.lest && m.avsender_id !== user.id) {
+      ulesteMap.set(m.samtale_id, (ulesteMap.get(m.samtale_id) ?? 0) + 1)
+    }
+  }
+
+  const result = samtaler.map((s) => ({
+    ...s,
+    takstmann: s.takstmann as unknown as { id: string; navn: string; bilde_url: string | null } | null,
+    kunde: s.kunde as unknown as { id: string; navn: string } | null,
+    megler: s.megler as unknown as { id: string; navn: string } | null,
+    siste_melding: sisteMeldingMap.get(s.id) ?? null,
+    uleste: ulesteMap.get(s.id) ?? 0,
+  }))
+
   result.sort((a, b) => {
     const aTime = a.siste_melding?.created_at ?? a.created_at
     const bTime = b.siste_melding?.created_at ?? b.created_at

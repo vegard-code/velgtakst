@@ -660,14 +660,6 @@ export async function hentAntallNyeBestillinger(): Promise<number> {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return 0
 
-  const { data: profil } = await supabase
-    .from('user_profiles')
-    .select('rolle')
-    .eq('user_id', user.id)
-    .single()
-    .then(r => r)
-
-  // Fallback: hent rolle fra user_profiles
   const { data: profilData } = await serviceClient
     .from('user_profiles')
     .select('rolle')

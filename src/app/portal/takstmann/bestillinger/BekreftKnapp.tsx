@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { bekreftBestilling } from "@/lib/actions/bestillinger";
+import Toast from "@/components/Toast";
 
 export default function BekreftKnapp({ bestillingId }: { bestillingId: string }) {
   const [laster, setLaster] = useState(false);
@@ -22,15 +23,18 @@ export default function BekreftKnapp({ bestillingId }: { bestillingId: string })
   }
 
   return (
-    <div>
-      <button
-        onClick={handleBekreft}
-        disabled={laster}
-        className="bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-      >
-        {laster ? "Oppretter oppdrag..." : "Bekreft og opprett oppdrag"}
-      </button>
-      {feil && <p className="text-red-600 text-xs mt-1">{feil}</p>}
-    </div>
+    <>
+      <div>
+        <button
+          onClick={handleBekreft}
+          disabled={laster}
+          className="bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+        >
+          {laster ? "Oppretter oppdrag..." : "Bekreft og opprett oppdrag"}
+        </button>
+        {feil && <p className="text-red-600 text-xs mt-1">{feil}</p>}
+      </div>
+      <Toast melding={feil} type="error" onClose={() => setFeil(null)} />
+    </>
   );
 }
