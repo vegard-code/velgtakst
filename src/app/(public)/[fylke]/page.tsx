@@ -95,23 +95,30 @@ interface TakstmannKort extends TakstmannMedFylker {
 
 async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
+
+  // Steg 1: hent aktive takstmann-IDs – unngå !inner join som feiler i prod
+  const { data: synligheter, error: synError } = await supabase
     .from("fylke_synlighet")
-    .select(
-      `
-      takstmann_id,
-      takstmann_profiler!inner (
-        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id
-      )
-    `
-    )
+    .select("takstmann_id")
     .eq("fylke_id", fylkeId)
     .eq("er_aktiv", true);
 
+  if (synError || !synligheter || synligheter.length === 0) return [];
+
+  const ids = (synligheter as { takstmann_id: string }[]).map((s) => s.takstmann_id);
+
+  // Steg 2: hent profiler direkte
+  const { data, error } = await supabase
+    .from("takstmann_profiler")
+    .select(
+      "id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id"
+    )
+    .in("id", ids);
+
   if (error || !data) return [];
 
-  const takstmenn = (data as unknown as { takstmann_profiler: TakstmannKort }[]).map((row) => ({
-    ...row.takstmann_profiler,
+  const takstmenn = (data as unknown as TakstmannKort[]).map((profil) => ({
+    ...profil,
     fylke_synlighet: [],
     snittKarakter: null as number | null,
     antallVurderinger: 0,
