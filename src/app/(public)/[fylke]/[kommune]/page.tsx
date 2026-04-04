@@ -228,9 +228,9 @@ export default async function KommunePage({ params }: Props) {
         aria-label="Brødsmulesti"
         className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8"
       >
-        <ol className="flex items-center gap-2 text-sm text-gray-500">
+        <ol className="flex items-center gap-2 text-sm text-slate-400">
           <li>
-            <Link href="/" className="hover:text-white transition-colors">
+            <Link href="/" className="hover:text-slate-700 transition-colors">
               takstmann.net
             </Link>
           </li>
@@ -238,41 +238,41 @@ export default async function KommunePage({ params }: Props) {
           <li>
             <Link
               href={`/${fylkeId}`}
-              className="hover:text-white transition-colors"
+              className="hover:text-slate-700 transition-colors"
             >
               {fylke.navn}
             </Link>
           </li>
           <li>/</li>
-          <li className="text-gray-300">{kommune.navn}</li>
+          <li className="text-slate-600 font-medium">{kommune.navn}</li>
         </ol>
       </nav>
 
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 glow-text">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
           {seoContent?.h1 || `Takstmann i ${kommune.navn}`}
         </h1>
-        <p className="text-lg text-gray-400 leading-relaxed max-w-3xl mb-4">
+        <p className="text-lg text-slate-600 leading-relaxed max-w-3xl mb-4">
           {intro}
         </p>
         {!seoContent && (
-          <p className="text-gray-400 leading-relaxed max-w-3xl">
+          <p className="text-slate-600 leading-relaxed max-w-3xl">
             Takstmennene nedenfor dekker {kommune.navn} og øvrige kommuner i{" "}
             {fylke.navn}. Se profiler, sammenlign spesialiteter og ta kontakt
             direkte.
           </p>
         )}
-        <p className="text-gray-500 text-sm leading-relaxed max-w-3xl mt-3">
+        <p className="text-slate-500 text-sm leading-relaxed max-w-3xl mt-3">
           Vanlige søk:{" "}
-          <span className="text-gray-400">takstmann {kommune.navn}</span>{" · "}
-          <span className="text-gray-400">skadetakst {kommune.navn}</span>{" · "}
-          <span className="text-gray-400">tilstandsrapport {kommune.navn}</span>{" · "}
-          <span className="text-gray-400">verditakst {kommune.navn}</span>{" · "}
-          <span className="text-gray-400">takst {kommune.navn}</span>
+          <span className="text-slate-600">takstmann {kommune.navn}</span>{" · "}
+          <span className="text-slate-600">skadetakst {kommune.navn}</span>{" · "}
+          <span className="text-slate-600">tilstandsrapport {kommune.navn}</span>{" · "}
+          <span className="text-slate-600">verditakst {kommune.navn}</span>{" · "}
+          <span className="text-slate-600">takst {kommune.navn}</span>
         </p>
         <div className="gradient-line max-w-xs mt-6 mb-2" />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-slate-400">
           {takstmenn.length > 0
             ? `${takstmenn.length} takstmenn tilgjengelig i ${fylke.navn}`
             : `Ingen takstmenn registrert i ${fylke.navn} ennå`}
@@ -284,10 +284,10 @@ export default async function KommunePage({ params }: Props) {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 space-y-8">
           {seoContent.sections.map((section, i) => (
             <section key={i}>
-              <h2 className="text-xl font-bold text-white mb-3">
+              <h2 className="text-xl font-bold text-slate-900 mb-3">
                 {section.heading}
               </h2>
-              <div className="text-gray-400 leading-relaxed max-w-3xl">
+              <div className="text-slate-600 leading-relaxed max-w-3xl">
                 {section.content.split("\n").map((para, j) =>
                   para.trim() ? (
                     <p key={j} className="mb-2">
@@ -303,7 +303,7 @@ export default async function KommunePage({ params }: Props) {
 
       {/* Tjenester */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <h2 className="text-xl font-bold text-white mb-5">
+        <h2 className="text-xl font-bold text-slate-900 mb-5">
           Vanlige taksttjenester i {kommune.navn}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -334,15 +334,15 @@ export default async function KommunePage({ params }: Props) {
             <Link
               key={t.tittel}
               href={t.href}
-              className="card-hover bg-card-bg border border-card-border rounded-xl p-4 block"
+              className="card-hover bg-white border border-slate-200 rounded-xl p-4 block"
             >
-              <h3 className="text-white font-semibold text-sm mb-1">
+              <h3 className="text-slate-900 font-semibold text-sm mb-1">
                 {t.tittel}
               </h3>
-              <p className="text-gray-500 text-xs leading-relaxed">
+              <p className="text-slate-500 text-xs leading-relaxed">
                 {t.beskrivelse}
               </p>
-              <span className="text-accent text-xs font-medium mt-2 inline-block">
+              <span className="text-blue-600 text-xs font-medium mt-2 inline-block">
                 Les mer &rarr;
               </span>
             </Link>
@@ -352,20 +352,20 @@ export default async function KommunePage({ params }: Props) {
 
       {/* Alle takstmenn */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="text-xl font-bold text-white mb-6">
+        <h2 className="text-xl font-bold text-slate-900 mb-6">
           {takstmenn.length > 0
             ? `Takstmenn som dekker ${kommune.navn}`
             : `Takstmenn i ${kommune.navn}`}
         </h2>
 
         {takstmenn.length === 0 ? (
-          <div className="bg-card-bg border border-card-border rounded-xl p-12 text-center">
-            <p className="text-gray-400 mb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-12 text-center shadow-sm">
+            <p className="text-slate-500 mb-4">
               Ingen takstmenn har aktivert synlighet i {fylke.navn} ennå.
             </p>
             <Link
               href="/registrer/takstmann"
-              className="inline-block bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
               Er du takstmann? Registrer deg
             </Link>
@@ -381,10 +381,10 @@ export default async function KommunePage({ params }: Props) {
                 <Link
                   key={t.id}
                   href={`/takstmann/${t.id}`}
-                  className="card-hover block bg-card-bg border border-card-border rounded-xl overflow-hidden"
+                  className="card-hover block bg-white border border-slate-200 rounded-xl overflow-hidden"
                 >
                   <div className="flex justify-center pt-6 pb-4">
-                    <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent/20 relative bg-accent/10">
+                    <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-blue-200 relative bg-blue-50">
                       {t.bilde_url ? (
                         <Image
                           src={t.bilde_url}
@@ -394,7 +394,7 @@ export default async function KommunePage({ params }: Props) {
                           unoptimized
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-accent font-bold text-3xl">
+                        <div className="w-full h-full flex items-center justify-center text-blue-600 font-bold text-3xl">
                           {t.navn.charAt(0)}
                         </div>
                       )}
@@ -402,7 +402,7 @@ export default async function KommunePage({ params }: Props) {
                   </div>
 
                   <div className="px-5 pb-5 text-center">
-                    <h3 className="text-white font-semibold text-lg">
+                    <h3 className="text-slate-900 font-semibold text-lg">
                       {t.navn}
                     </h3>
 
@@ -412,7 +412,7 @@ export default async function KommunePage({ params }: Props) {
                           {[1, 2, 3, 4, 5].map((s) => (
                             <svg
                               key={s}
-                              className={`w-3.5 h-3.5 ${s <= Math.round(t.snittKarakter!) ? "text-yellow-400" : "text-gray-600"}`}
+                              className={`w-3.5 h-3.5 ${s <= Math.round(t.snittKarakter!) ? "text-yellow-400" : "text-slate-200"}`}
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -420,12 +420,12 @@ export default async function KommunePage({ params }: Props) {
                             </svg>
                           ))}
                         </div>
-                        <span className="text-gray-400 text-xs">
+                        <span className="text-slate-400 text-xs">
                           ({t.antallVurderinger})
                         </span>
                       </div>
                     ) : (
-                      <p className="text-gray-600 text-xs mt-1">
+                      <p className="text-slate-400 text-xs mt-1">
                         Ingen vurderinger ennå
                       </p>
                     )}
@@ -433,13 +433,13 @@ export default async function KommunePage({ params }: Props) {
                     <div className="mt-4 text-left space-y-2">
                       {t.spesialitet && (
                         <div>
-                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">
+                          <p className="text-slate-500 text-xs font-medium uppercase tracking-wide">
                             Spesialitet
                           </p>
-                          <p className="text-accent text-sm">
+                          <p className="text-blue-600 text-sm">
                             {t.spesialitet}
                             {t.spesialitet_2 && (
-                              <span className="text-gray-500"> · </span>
+                              <span className="text-slate-400"> · </span>
                             )}
                             {t.spesialitet_2 && (
                               <span>{t.spesialitet_2}</span>
@@ -450,10 +450,10 @@ export default async function KommunePage({ params }: Props) {
 
                       {andreTjenester.length > 0 && (
                         <div>
-                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">
+                          <p className="text-slate-500 text-xs font-medium uppercase tracking-wide">
                             Utfører også
                           </p>
-                          <p className="text-gray-300 text-sm">
+                          <p className="text-slate-700 text-sm">
                             {andreTjenester.slice(0, 4).join(", ")}
                             {andreTjenester.length > 4
                               ? ` +${andreTjenester.length - 4}`
@@ -472,12 +472,12 @@ export default async function KommunePage({ params }: Props) {
                       )}
                       {!t.sertifisering && t.sertifiseringer?.length > 0 && (
                         <div>
-                          <p className="text-gray-500 text-xs font-medium uppercase tracking-wide">
+                          <p className="text-slate-500 text-xs font-medium uppercase tracking-wide">
                             Sertifisering
                           </p>
-                          <p className="text-gray-300 text-sm flex items-center gap-1">
+                          <p className="text-slate-700 text-sm flex items-center gap-1">
                             <svg
-                              className="w-3.5 h-3.5 text-green-400 shrink-0"
+                              className="w-3.5 h-3.5 text-green-500 shrink-0"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -495,8 +495,8 @@ export default async function KommunePage({ params }: Props) {
                       )}
                     </div>
 
-                    <div className="mt-4 pt-4 border-t border-card-border">
-                      <span className="inline-flex items-center gap-2 text-accent text-sm font-medium">
+                    <div className="mt-4 pt-4 border-t border-slate-200">
+                      <span className="inline-flex items-center gap-2 text-blue-600 text-sm font-medium">
                         Se profil &rarr;
                       </span>
                     </div>
@@ -509,50 +509,52 @@ export default async function KommunePage({ params }: Props) {
       </section>
 
       {/* FAQ */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8 text-center">
-            Ofte stilte spørsmål om takst i {kommune.navn}
-          </h2>
-          <div className="space-y-4">
-            {faq.map((item, i) => (
-              <details
-                key={i}
-                className="bg-card-bg border border-card-border rounded-xl group"
-              >
-                <summary className="p-5 cursor-pointer text-white font-semibold flex items-center justify-between list-none">
-                  <span>{item.sporsmal}</span>
-                  <svg
-                    className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform shrink-0 ml-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </summary>
-                <div className="px-5 pb-5 text-gray-400 leading-relaxed text-sm">
-                  {item.svar}
-                </div>
-              </details>
-            ))}
+      <section className="bg-slate-50 py-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">
+              Ofte stilte spørsmål om takst i {kommune.navn}
+            </h2>
+            <div className="space-y-3">
+              {faq.map((item, i) => (
+                <details
+                  key={i}
+                  className="bg-white border border-slate-200 rounded-xl group shadow-sm"
+                >
+                  <summary className="p-5 cursor-pointer text-slate-900 font-semibold flex items-center justify-between list-none">
+                    <span>{item.sporsmal}</span>
+                    <svg
+                      className="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform shrink-0 ml-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </summary>
+                  <div className="px-5 pb-5 text-slate-600 leading-relaxed text-sm">
+                    {item.svar}
+                  </div>
+                </details>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Nærliggende områder (SEO content) */}
       {seoContent?.naerliggendeText && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-xl font-bold text-white mb-4">
+            <h2 className="text-xl font-bold text-slate-900 mb-4">
               Nærliggende områder
             </h2>
-            <p className="text-gray-400 leading-relaxed mb-4">
+            <p className="text-slate-600 leading-relaxed mb-4">
               {seoContent.naerliggendeText}
             </p>
             {naerliggendeKommuner.length > 0 && (
@@ -561,7 +563,7 @@ export default async function KommunePage({ params }: Props) {
                   <Link
                     key={k.id}
                     href={`/${k.fylkeId}/${k.id}`}
-                    className="text-sm text-gray-400 hover:text-accent border border-card-border hover:border-accent/30 rounded-lg px-3 py-1.5 transition-colors"
+                    className="text-sm text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors bg-white"
                   >
                     Takstmann i {k.navn}
                   </Link>
@@ -575,7 +577,7 @@ export default async function KommunePage({ params }: Props) {
       {/* Andre kommuner i fylket */}
       {andreKommuner.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <h2 className="text-xl font-bold text-white mb-5 text-center">
+          <h2 className="text-xl font-bold text-slate-900 mb-5 text-center">
             Andre kommuner i {fylke.navn}
           </h2>
           <div className="flex flex-wrap justify-center gap-2">
@@ -583,7 +585,7 @@ export default async function KommunePage({ params }: Props) {
               <Link
                 key={k.id}
                 href={`/${fylkeId}/${k.id}`}
-                className="text-sm text-gray-400 hover:text-accent border border-card-border hover:border-accent/30 rounded-lg px-3 py-1.5 transition-colors"
+                className="text-sm text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors bg-white"
               >
                 {k.navn}
               </Link>
@@ -591,7 +593,7 @@ export default async function KommunePage({ params }: Props) {
             {andreKommuner.length > 30 && (
               <Link
                 href={`/${fylkeId}`}
-                className="text-sm text-accent hover:underline px-3 py-1.5"
+                className="text-sm text-blue-600 hover:underline px-3 py-1.5"
               >
                 Se alle i {fylke.navn} &rarr;
               </Link>
@@ -601,36 +603,38 @@ export default async function KommunePage({ params }: Props) {
       )}
 
       {/* Se andre fylker */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="text-xl font-bold text-white mb-5 text-center">
-          Se takstmenn i andre fylker
-        </h2>
-        <div className="flex flex-wrap justify-center gap-2">
-          {FYLKER.filter((f) => f.id !== fylkeId).map((f) => (
-            <Link
-              key={f.id}
-              href={`/${f.id}`}
-              className="text-sm text-gray-400 hover:text-accent border border-card-border hover:border-accent/30 rounded-lg px-3 py-1.5 transition-colors"
-            >
-              {f.navn}
-            </Link>
-          ))}
+      <section className="bg-slate-50 py-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-xl font-bold text-slate-900 mb-5 text-center">
+            Se takstmenn i andre fylker
+          </h2>
+          <div className="flex flex-wrap justify-center gap-2">
+            {FYLKER.filter((f) => f.id !== fylkeId).map((f) => (
+              <Link
+                key={f.id}
+                href={`/${f.id}`}
+                className="text-sm text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors bg-white"
+              >
+                {f.navn}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="bg-gradient-to-r from-accent/10 to-blue-500/10 border border-accent/20 rounded-2xl p-8 sm:p-10 text-center max-w-3xl mx-auto">
+      <section className="bg-slate-900 py-14">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-xl font-bold text-white mb-3">
             Er du takstmann i {kommune.navn}?
           </h2>
-          <p className="text-gray-400 leading-relaxed mb-5 text-sm">
+          <p className="text-slate-400 leading-relaxed mb-5 text-sm max-w-xl mx-auto">
             Bli synlig på takstmann.net og la kunder i {kommune.navn} finne deg.
             Registrer deg, aktiver profilen din og start å motta henvendelser.
           </p>
           <Link
             href="/registrer/takstmann"
-            className="inline-block bg-accent hover:bg-accent/90 text-white px-8 py-3 rounded-lg font-medium transition-colors"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors"
           >
             Registrer deg som takstmann
           </Link>
