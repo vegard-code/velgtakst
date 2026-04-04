@@ -167,10 +167,10 @@ export default async function AdminTakstmannDetalj({
       </div>
 
       {/* Forleng prøveperiode */}
-      {abonnement && (abonnement.status === 'proveperiode' || abonnement.status === 'utlopt') && (
+      {abonnement && abonnement.status !== 'aktiv' && (
         <div className="mb-6">
           <ForlengProveperiodeForm
-            takstmannId={id}
+            abonnementId={abonnement.id}
             naaSluttdato={abonnement.proveperiode_slutt}
             status={abonnement.status}
           />
