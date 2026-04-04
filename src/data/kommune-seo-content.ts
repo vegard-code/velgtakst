@@ -690,7 +690,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Tromsø",
-        "content": "Takstmann.net har etablert nettverk av takstmenn i Tromsø som daglig jobber med boligevurderinger. Du kan søke etter den beste tilgjengelige i ditt området—enten Tromsø sentrum, Tromsdalen, Kvaløysletta eller Kroken—og sammenligne både pris og erfaring før bestilling. Plattformen viser responstid, slik at du kan prioritere takstmenn som kan starte raskt i perioder med høy etterspørsel."
+        "content": "Takstmann.net har takstmenn som dekker hele Tromsø — sentrum, Tromsdalen, Kvaløysletta og Kroken. Du sammenligner profiler, ser pris og erfaring, og bestiller direkte. Du kan filtrere på tilgjengelighet og velge en takstmann med ledig kapasitet i perioder med mye å gjøre."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Tromsø?",
@@ -810,7 +810,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Nordre Follo",
-        "content": "Takstmann.net har etablert nettverk i Nordre Follo-området, inkludert Ski, Kolbotn, Langhus og Sofiemyr. Du kan søke etter takstmenn basert på område, pris og tilgjengelighet, og sammenligne profiler før bestilling. Fordi boligmarkedet her er aktivt og kjemisk konkurransen høy, prioriterer mange takstmenn raskt svar og kort leveringstid."
+        "content": "Takstmann.net dekker Nordre Follo-området, inkludert Ski, Kolbotn, Langhus og Sofiemyr. Du kan søke etter takstmenn basert på område, pris og tilgjengelighet, og sammenligne profiler før bestilling. Markedet er aktivt og de fleste takstmenn i området er vant til å svare raskt og holde god leveringstid."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Nordre Follo?",
@@ -991,7 +991,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Ålesund",
-        "content": "Takstmann.net har etablert nettverk i Ålesund sentrum, Spjelkavik, Moa og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Fordi Ålesund har mange historiske bygg, kan det være fordelaktig å finne takstmenn med erfaring på Jugendstil-eiendom og bevaringskrav."
+        "content": "Takstmann.net dekker Ålesund sentrum, Spjelkavik, Moa og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Ålesund har mange historiske Jugendstil-bygg, og det kan være en fordel å velge en takstmann med erfaring fra bevaringsverdig bebyggelse."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Ålesund?",
@@ -1108,7 +1108,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Bodø",
-        "content": "Takstmann.net har etablert nettverk i Bodø sentrum, Mørkved, Hunstad, Tverlandet og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring med nordnorske bygninger. Fordi klimaet er krevende, kan erfaring med vindeksponering og værslitasje være viktig ved valg av takstmann."
+        "content": "Takstmann.net dekker Bodø sentrum, Mørkved, Hunstad, Tverlandet og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Bodø er vindeksponert og klimaet er krevende for bygninger, så erfaring med nordnorsk klima og værslitasje bør vektlegges ved valg av takstmann."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Bodø?",
@@ -1166,7 +1166,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
     "sections": [
       {
         "heading": "Finn takstmann i Moss",
-        "content": "Takstmann.net har etablert nettverk i Moss sentrum, Jeløy, Kambo og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Fordi Moss har variert boligstock og både prestasjons- og industriområder, kan det være fordelaktig å finne takstmenn som kjenner lokale markeder godt."
+        "content": "Takstmann.net dekker Moss sentrum, Jeløy, Kambo og omkringliggende områder. Du kan søke etter takstmenn basert på område, pris og erfaring. Moss har en variert boligmasse med alt fra eldre trehusbebyggelse på Jeløy til nyere utbyggingsområder i sentrum, og lokal kjennskap er en fordel."
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Moss?",
@@ -1251,7 +1251,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor fort kan jeg få gjort taksten?",
-        "svar": "De fleste takstmenn i Lørenskog kan gjennomføre boligtakst innen 1–2 uker. I perioder med høy etterspørsel (særlig våren) kan det ta litt lengere. Når du bestiller gjennom takstmann.net, ser du disponibel tid hos hver takstmann og kan velge en som passer ditt tidsskjema."
+        "svar": "De fleste takstmenn i Lørenskog kan gjennomføre boligtakst innen 1–2 uker. I perioder med høy etterspørsel (særlig våren) kan det ta noe lenger. Når du bestiller gjennom takstmann.net, ser du disponibel tid hos hver takstmann og kan velge en som passer ditt tidsskjema."
       },
       {
         "sporsmal": "Hvilken type takst trenger jeg?",
@@ -1300,7 +1300,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Larvik",
-        "content": "Meglere i Larvik og Stavern bruker takstmann.net for å sikre rask booking av kvalitatiivt taksttjenester. Plattformen lar deg administrere flere oppdrag, holde styr på priser og ventetider, og få rapporter levert digitalt direkte til dine klienter. Ved regelmessig bruk kan du forhandle om volumerabatter. Integrasjon med meglerverktøy gjør bookingen smidig og del av din normale arbeidsprosess."
+        "content": "Meglere i Larvik og Stavern bruker takstmann.net for å sikre rask booking av kvalitatiivt taksttjenester. Plattformen lar deg administrere flere oppdrag, holde styr på priser og ventetider, og få rapporter levert digitalt direkte til dine klienter. Ved regelmessig bruk kan du forhandle om volumrabatt. Integrasjon med meglerverktøy gjør bookingen smidig og del av din normale arbeidsprosess."
       }
     ],
     "faqItems": [
@@ -1322,7 +1322,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Kan privatpersoner få samme pris som meglere?",
-        "svar": "De fleste takstmenn gir samme pris til privatpersoner og meglere, men meglere som bestiller regelmessig kan forhandle volumerabatt. Som privatperson får du full pris for en enkeltbestilling, men det er samme kvalitet og grundighet som meglerbestillinger."
+        "svar": "De fleste takstmenn gir samme pris til privatpersoner og meglere, men meglere som bestiller regelmessig kan forhandle volumrabatt. Som privatperson får du full pris for en enkeltbestilling, men det er samme kvalitet og grundighet som meglerbestillinger."
       },
       {
         "sporsmal": "Hvilken takstmann bør jeg velge i Larvik?",
@@ -1423,7 +1423,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Arendal",
-        "content": "Meglere i Arendal bruker takstmann.net for effektiv booking og administrering av takstoppdrag. Plattformen gjør det mulig å sammenligne priser, sikre rask tilgang og få rapporter levert digitalt. Du kan integrer bookingene i din normale arbeidsprosess og forhandle volumerabatter ved regelmessig bruk. Arendal-markedet har godt oppsving, og rask takstlevetid er viktig konkurranse-faktor."
+        "content": "Meglere i Arendal bruker takstmann.net for å administrere takstoppdrag effektivt. Plattformen gjør det enkelt å sammenligne priser og tilgjengelighet, og rapporter leveres digitalt. Markedet i Arendal er aktivt, og rask leveringstid er viktig for å holde salgsprosessen i gang."
       }
     ],
     "faqItems": [
@@ -1482,7 +1482,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Ullensaker",
-        "content": "Meglere i Ullensaker bruker takstmann.net for effektiv booking av takstmenn i høyt volum. Området har stor aktivitet, og rask og pålitelig takstlevetid er viktig. Plattformen lar deg sammenligne priser, administrere mange oppdrag samtidig og få rapporter raskt. Ved regelmessig bestilling kan du forhandle volumerabatter og sikre prioritet hos takstmennene."
+        "content": "Meglere i Ullensaker bruker takstmann.net for å administrere takstoppdrag effektivt. Området har stor aktivitet, og rask og pålitelig leveringstid er viktig. Plattformen lar deg sammenligne priser, administrere mange oppdrag samtidig og få rapporter raskt. Meglere som bestiller regelmessig kan forhandle om volumrabatt."
       }
     ],
     "faqItems": [
@@ -1540,7 +1540,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Karmøy",
-        "content": "Meglere i Karmøy bruker takstmann.net for å sikre rask booking av takstmenn. Plattformen lar deg administrere oppdrag, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din normale meglerrutine og forhandle volumerabatter ved regelmessig bruk. I et marked med høy skadetakst-etterspørsel er det viktig å ha pålitelige samarbeidspartnere."
+        "content": "Meglere i Karmøy bruker takstmann.net for å sikre rask booking av takstmenn. Plattformen lar deg administrere oppdrag, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din normale meglerrutine og forhandle volumrabatt ved regelmessig bruk. I et marked med høy skadetakst-etterspørsel er det viktig å ha pålitelige samarbeidspartnere."
       }
     ],
     "faqItems": [
@@ -1599,7 +1599,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Øygarden",
-        "content": "Meglere i Øygarden bruker takstmann.net for effektiv booking av takstmenn. Plattformen lar deg administrere flere oppdrag, sammenligne priser og sikre rask levering. Du kan integrere bestillinger i din arbeidsprosess og forhandle volumerabatter ved regelmessig bruk. Markedet for fritidshytter i området gjør takstlevetid viktig."
+        "content": "Meglere i Øygarden bruker takstmann.net for effektiv booking av takstmenn. Plattformen lar deg administrere flere oppdrag, sammenligne priser og sikre rask levering. Du kan integrere bestillinger i din arbeidsprosess og forhandle volumrabatt ved regelmessig bruk. Markedet for fritidshytter i området gjør leveringstid viktig."
       }
     ],
     "faqItems": [
@@ -1659,7 +1659,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Haugesund",
-        "content": "Meglere i Haugesund bruker takstmann.net for å sikre rask og effektiv booking av takstmenn. Plattformen lar deg administrere mange oppdrag samtidig, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din normale meglerflyt og forhandle volumerabatter. Haugesund-markedet er aktivt, så tilgang til pålitelige takstmenn er viktig konkurransefordel."
+        "content": "Meglere i Haugesund bruker takstmann.net for å sikre rask og effektiv booking av takstmenn. Plattformen lar deg administrere mange oppdrag samtidig, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din normale meglerflyt og forhandle volumrabatt. Haugesund-markedet er aktivt, så tilgang til pålitelige takstmenn er viktig konkurransefordel."
       }
     ],
     "faqItems": [
@@ -1718,7 +1718,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "For meglere i Porsgrunn",
-        "content": "Meglere i Porsgrunn bruker takstmann.net for effektiv booking av takstmenn. Plattformen lar deg administrere oppdrag, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din meglerflyt og forhandle volumerabatter. Porsgrunn og Brevik tilsammen danner et aktivt marked hvor takstlevetid er viktig."
+        "content": "Meglere i Porsgrunn bruker takstmann.net for effektiv booking av takstmenn. Plattformen lar deg administrere oppdrag, sammenligne priser og få rapporter raskt. Du kan integrere bestillinger i din meglerflyt og forhandle volumrabatt. Porsgrunn og Brevik har et aktivt boligmarked, og rask levering av tilstandsrapporter er viktig for å holde framdriften i salgsprosessen."
       }
     ],
     "faqItems": [
@@ -2719,7 +2719,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Bjørnafjorden?",
-        "content": "Tilstandsrapport er standard ved boligkjøp i Bjørnafjorden. Verditakst brukes for forsikring, arv og større transaksjoner. Siden området har både tradisjonelle småbruk, moderne kystboliger og feriehytter, kreves takstmenn med erfaring fra variert bebyggelse. Skadetakst for stormskader og værrelaterte problemer er også relevant."
+        "content": "Tilstandsrapport er standard ved boligkjøp i Bjørnafjorden. Verditakst brukes ved forsikring, arv og refinansiering. Kommunen har en blanding av tradisjonelle gårdsbruk, kystboliger og fritidshytter — takstmannen bør ha erfaring med alle disse. Skadetakst er relevant for boliger utsatt for storm og fukt langs kysten."
       },
       {
         "heading": "Slik fungerer det",
@@ -2897,7 +2897,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Grimstad?",
-        "content": "Tilstandsrapport er mest etterspurt ved boligkjøp i Grimstad. Verditakst brukes for arv, forsikring og større transaksjoner. Siden området har både eldre boliger langs sjøen og moderne bygg, kreves takstmenn med erfaring fra variert bebyggelse. Skadetakst for værutsatte og sjøfronteiendommer er også relevant."
+        "content": "Tilstandsrapport er den mest brukte tjenesten ved boligkjøp i Grimstad. Verditakst bestilles ved arv, forsikring og refinansiering. Boligmassen spenner fra eldre trehusbebyggelse langs sjøen til nyere leiligheter og eneboliger, noe som krever bred erfaring hos takstmannen. Skadetakst er aktuelt for sjøfronteiendom og boliger eksponert for vær og vind."
       },
       {
         "heading": "Slik fungerer det",
@@ -2956,7 +2956,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "heading": "Hvilke taksttjenester er vanlige i Harstad?",
-        "content": "Tilstandsrapport er standard ved boligkjøp i Harstad. Verditakst brukes for arv, forsikring og større transaksjoner. Siden området har både eldre norske boliger og moderne bygg, kreves takstmenn med erfaring fra variert bebyggelse. Skadetakst for forsikring etterspørres også regelmessig."
+        "content": "Tilstandsrapport er standard ved boligkjøp i Harstad. Verditakst brukes ved arv, forsikring og refinansiering. Boligmassen består av alt fra eldre etterkrigsboliger til nyere felt i Kanebogen og Medkila — dette krever takstmenn med erfaring fra begge typer. Skadetakst bestilles jevnlig i forbindelse med forsikringssaker."
       },
       {
         "heading": "Slik fungerer det",
@@ -9589,7 +9589,7 @@ export const KOMMUNE_SEO_CONTENT: Record<string, KommuneSEOContent> = {
       },
       {
         "sporsmal": "Hvor raskt kan jeg få takst i Time?",
-        "svar": "Takstmenn i Time kan typisk gjennomføre inspeksjon innen 2-7 dager, og rapporten leveres innen 1-2 uker. High-demand perioder (vår/høst) kan kreve litt lengre ventetid."
+        "svar": "Takstmenn i Time kan typisk gjennomføre befaring innen 2–7 dager, og rapporten leveres innen 1–2 uker. I vår- og høstsesongene kan ventetiden bli noe lenger."
       },
       {
         "sporsmal": "Hva er forskjellen mellom tilstandsrapport og verditakst?",

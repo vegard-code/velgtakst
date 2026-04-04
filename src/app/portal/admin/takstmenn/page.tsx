@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createServiceClient } from "@/lib/supabase/server";
 
 export default async function AdminTakstmennPage() {
@@ -48,8 +49,10 @@ export default async function AdminTakstmennPage() {
                   return (
                     <tr key={t.id} className="border-b border-[#f1f5f9] hover:bg-[#f8fafc] transition-colors">
                       <td className="px-6 py-4">
-                        <p className="text-sm font-medium text-[#1e293b]">{t.navn}</p>
-                        {t.tittel && <p className="text-xs text-[#94a3b8]">{t.tittel}</p>}
+                        <Link href={`/portal/admin/takstmenn/${t.id}`} className="hover:underline">
+                          <p className="text-sm font-medium text-[#285982]">{t.navn}</p>
+                          {t.tittel && <p className="text-xs text-[#94a3b8]">{t.tittel}</p>}
+                        </Link>
                       </td>
                       <td className="px-6 py-4 text-sm text-[#64748b]">{t.epost ?? "–"}</td>
                       <td className="px-6 py-4 text-sm text-[#64748b]">{t.telefon ?? "–"}</td>

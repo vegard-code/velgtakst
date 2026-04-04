@@ -38,9 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // Fylkebeskrivelser for SEO-innhold
 const FYLKE_INTRO: Record<string, string> = {
   oslo: "Oslo er Norges mest folkerike fylke med et aktivt boligmarked. Høy omsetning av leiligheter, rekkehus og eneboliger gjør at behovet for kvalifiserte takstmenn er stort hele året.",
-  rogaland: "Rogaland har et variert boligmarked fra Stavanger-regionen til mindre tettsteder langs kysten. Oljebyen Stavanger skaper stor etterspørsel etter både bolig- og næringstakster.",
-  vestland: "Vestland fylke, med Bergen som sentrum, har et mangfoldig boligmarked preget av både bymessig bebyggelse og spredt bosetting. Fukt og klima gjør tilstandsvurderinger ekstra viktige her.",
-  trondelag: "Trøndelag, med Trondheim som regionhovedstad, har et voksende boligmarked. Studentbyen skaper høy etterspørsel etter utleieboliger og tilhørende taksttjenester.",
+  rogaland: "Rogaland har et aktivt boligmarked fra Stavanger-regionen til mindre steder langs kysten. Olje- og energisektoren gir jevnt behov for taksttjenester, både for boliger og næringseiendommer.",
+  vestland: "Vestland fylke, med Bergen som sentrum, har et mangfoldig boligmarked med både tett bymessig bebyggelse og spredt bosetting langs fjordene. Det fuktige vestlandsklima gjør tilstandsvurderinger ekstra viktige her.",
+  trondelag: "Trøndelag, med Trondheim som regionhovedstad, er et voksende boligmarked med høy omsetning. Studentmiljøet gir stort innslag av utleieboliger, og behovet for tilstandsrapporter og verditakster er jevnt gjennom hele året.",
   akershus: "Akershus omringer Oslo og har noen av landets mest attraktive boligområder. Stor tilflytting og høye boligpriser gjør at profesjonell takst er ekstra viktig ved kjøp og salg.",
   innlandet: "Innlandet er Norges største fylke i areal, med et variert boligmarked fra byene Hamar og Lillehammer til hytteområder i fjellheimen. Både bolig- og fritidstakst er etterspurt.",
   vestfold: "Vestfold har en blanding av kystbyer som Tønsberg, Sandefjord og Larvik, med et aktivt boligmarked særlig i sommersesongen. Mange eldre boliger krever grundig tilstandsvurdering.",

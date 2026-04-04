@@ -19,44 +19,55 @@ async function sjekkAdmin() {
 }
 
 /**
- * Forleng prøveperiode for et abonnement.
- * Hvis status er 'utlopt' eller 'kansellert', settes status tilbake til
- * 'proveperiode' og alle fylke- og kommune-synligheter reaktiveres.
+ * Forleng prøveperiode for en takstmann.
+ * Oppdaterer proveperiode_slutt i abonnementer (fra maks av nå og nåværende slutt).
+ * Reaktiverer status og fylke-/kommunesynlighet hvis abonnementet er utløpt eller kansellert.
  */
 export async function forlengProveperiode(
-  abonnementId: string,
-  ekstraDager: number
-): Promise<{ success?: boolean; error?: string }> {
+  takstmannId: string,
+  antallDager: number
+): Promise<{ success?: boolean; error?: string; nySluttDato?: string }> {
   const admin = await sjekkAdmin()
   if (!admin) return { error: 'Ikke autorisert' }
 
-  if (!Number.isInteger(ekstraDager) || ekstraDager < 1 || ekstraDager > 3650) {
+  if (!takstmannId) return { error: 'Mangler takstmannId' }
+  if (!Number.isInteger(antallDager) || antallDager < 1 || antallDager > 3650) {
     return { error: 'Ugyldig antall dager (1–3650)' }
   }
 
   const supabase = await createServiceClient()
 
-  // Hent abonnementet
-  const { data: ab, error: fetchError } = await supabase
-    .from('abonnementer')
-    .select('id, company_id, status, proveperiode_slutt')
-    .eq('id', abonnementId)
+  // Hent company_id via takstmann_profiler
+  const { data: takstmann, error: takstmannError } = await supabase
+    .from('takstmann_profiler')
+    .select('id, company_id')
+    .eq('id', takstmannId)
     .single()
 
-  if (fetchError || !ab) return { error: 'Abonnement ikke funnet' }
+  if (takstmannError || !takstmann?.company_id) {
+    return { error: 'Fant ikke takstmann' }
+  }
+
+  // Hent nåværende abonnement
+  const { data: ab, error: abError } = await supabase
+    .from('abonnementer')
+    .select('id, status, proveperiode_slutt')
+    .eq('company_id', takstmann.company_id)
+    .single()
+
+  if (abError || !ab) {
+    return { error: 'Fant ikke abonnement' }
+  }
 
   const now = new Date()
-  const tillegg = ekstraDager * 24 * 60 * 60 * 1000
   const reaktiver = ab.status === 'utlopt' || ab.status === 'kansellert'
 
-  // Nytt utløpstidspunkt: forleng fra nåværende slutt hvis aktiv, ellers fra nå
-  const gjeldendeSlutt = ab.proveperiode_slutt
-    ? new Date(ab.proveperiode_slutt)
-    : now
+  // Beregn ny slutt: maks av nå og nåværende slutt, pluss antallDager
+  const gjeldendeSlutt = ab.proveperiode_slutt ? new Date(ab.proveperiode_slutt) : now
   const base = gjeldendeSlutt > now ? gjeldendeSlutt : now
-  const nySluttDato = new Date(base.getTime() + tillegg)
+  const nySluttDato = new Date(base.getTime() + antallDager * 24 * 60 * 60 * 1000)
 
-  // Oppdater abonnementet
+  // Oppdater abonnement
   const { error: updateError } = await supabase
     .from('abonnementer')
     .update({
@@ -64,36 +75,27 @@ export async function forlengProveperiode(
       ...(reaktiver ? { status: 'proveperiode' } : {}),
       updated_at: now.toISOString(),
     })
-    .eq('id', abonnementId)
+    .eq('id', ab.id)
 
   if (updateError) return { error: updateError.message }
 
   // Reaktiver fylker og kommuner hvis abonnementet var utløpt/kansellert
   if (reaktiver) {
-    const { data: profiler } = await supabase
-      .from('takstmann_profiler')
-      .select('id')
-      .eq('company_id', ab.company_id)
+    await supabase
+      .from('fylke_synlighet')
+      .update({ er_aktiv: true, betalt_til: nySluttDato.toISOString() })
+      .eq('takstmann_id', takstmannId)
 
-    if (profiler && profiler.length > 0) {
-      const takstmannIds = profiler.map((p) => p.id)
-
-      await supabase
-        .from('fylke_synlighet')
-        .update({
-          er_aktiv: true,
-          betalt_til: nySluttDato.toISOString(),
-        })
-        .in('takstmann_id', takstmannIds)
-
-      await supabase
-        .from('kommune_synlighet')
-        .update({ er_aktiv: true })
-        .in('takstmann_id', takstmannIds)
-    }
+    await supabase
+      .from('kommune_synlighet')
+      .update({ er_aktiv: true })
+      .eq('takstmann_id', takstmannId)
   }
 
+  revalidatePath(`/portal/admin/takstmenn/${takstmannId}`)
+  revalidatePath('/portal/admin/takstmenn')
   revalidatePath('/portal/admin/abonnementer')
   revalidatePath('/', 'layout')
-  return { success: true }
+
+  return { success: true, nySluttDato: nySluttDato.toISOString() }
 }
