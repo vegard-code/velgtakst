@@ -59,6 +59,32 @@ export async function sendVurdering({
     return { error: 'Fant ikke din profil' }
   }
 
+  // Sjekk at brukeren har en fullført bestilling hos denne takstmannen
+  {
+    const baseQuery = meglerId
+      ? supabase
+          .from('bestillinger')
+          .select('id')
+          .eq('takstmann_id', takstmannId)
+          .eq('status', 'fullfort')
+          .eq('bestilt_av_megler_id', meglerId)
+      : supabase
+          .from('bestillinger')
+          .select('id')
+          .eq('takstmann_id', takstmannId)
+          .eq('status', 'fullfort')
+          .eq('bestilt_av_kunde_id', kundeId!)
+
+    const { data: fullfortBestilling } = await (bestillingId
+      ? baseQuery.eq('id', bestillingId)
+      : baseQuery
+    ).maybeSingle()
+
+    if (!fullfortBestilling) {
+      return { error: 'Du kan bare gi vurdering til takstmenn du har en fullført bestilling hos' }
+    }
+  }
+
   // Sjekk om brukeren allerede har gitt vurdering for denne bestillingen
   if (bestillingId) {
     const { data: eksisterende } = await supabase
