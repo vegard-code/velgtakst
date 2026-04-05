@@ -52,8 +52,8 @@ export class PowerOfficeKlient {
 
     const params = new URLSearchParams({
       grant_type: 'client_credentials',
-      client_id: this.clientKey,
-      client_secret: this.clientSecret,
+      client_id: process.env.POWEROFFICE_APPLICATION_KEY ?? '',
+      client_secret: this.clientKey,
     })
 
     const response = await fetch(POWEROFFICE_TOKEN_URL, {

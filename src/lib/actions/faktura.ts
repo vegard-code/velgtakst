@@ -149,7 +149,7 @@ export async function synkroniserFakturaStatus(oppdragId: string) {
 
   const { data: settings } = await serviceClient
     .from('company_settings')
-    .select('regnskap_system, fiken_api_token, fiken_company_id, tripletex_employee_token, tripletex_company_id')
+    .select('regnskap_system, fiken_api_token, fiken_company_id, tripletex_employee_token, tripletex_company_id, poweroffice_client_key, poweroffice_client_secret')
     .eq('company_id', oppdrag.company_id)
     .single()
 
@@ -168,9 +168,15 @@ export async function synkroniserFakturaStatus(oppdragId: string) {
       const klient = new TripletexKlient(settings.tripletex_employee_token, settings.tripletex_company_id)
       const status = await klient.hentFakturaStatus(Number(oppdrag.faktura_id))
       betalt = status.betalt
+    } else if (settings.regnskap_system === 'poweroffice' && settings.poweroffice_client_key) {
+      const { PowerOfficeKlient } = await import('@/lib/integrasjoner/poweroffice')
+      const klient = new PowerOfficeKlient(settings.poweroffice_client_key, settings.poweroffice_client_secret ?? '')
+      const status = await klient.hentFakturaStatus(Number(oppdrag.faktura_id))
+      betalt = status.betalt
     }
-  } catch {
-    return { oppdatert: false }
+  } catch (err) {
+    console.error(`synkroniserFakturaStatus feil for oppdrag ${oppdragId}:`, err instanceof Error ? err.message : err)
+    return { oppdatert: false, feil: err instanceof Error ? err.message : 'Ukjent feil' }
   }
 
   if (betalt && oppdrag.status === 'fakturert') {

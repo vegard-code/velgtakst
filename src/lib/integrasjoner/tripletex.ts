@@ -10,7 +10,7 @@ const CONSUMER_TOKEN = process.env.TRIPLETEX_CONSUMER_TOKEN ?? ''
 export interface TripletexKunde {
   id?: number
   name: string
-  email?: string
+  emailAddress?: string
   phoneNumber?: string
   customerNumber?: number
   isCustomer: true

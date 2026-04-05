@@ -131,12 +131,16 @@ export async function sendFaktura(
       const ttxKlient = klient as TripletexKlient
 
       const kunder = await ttxKlient.sokKunde(input.kundeNavn)
-      let kunde = kunder.find((k) => true) // ta første
+      let kunde = kunder.find(
+        (k) =>
+          k.emailAddress?.toLowerCase() === input.kundeEpost.toLowerCase() ||
+          k.name.toLowerCase() === input.kundeNavn.toLowerCase()
+      )
 
       if (!kunde) {
         kunde = await ttxKlient.opprettKunde({
           name: input.kundeNavn,
-          email: input.kundeEpost,
+          emailAddress: input.kundeEpost,
           isCustomer: true,
         })
       }

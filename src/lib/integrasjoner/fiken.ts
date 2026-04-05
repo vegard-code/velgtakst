@@ -65,7 +65,18 @@ export class FikenKlient {
   }
 
   async hentKontakter(): Promise<FikenKontakt[]> {
-    return this.request<FikenKontakt[]>('/contacts?isCustomer=true')
+    const alle: FikenKontakt[] = []
+    let side = 0
+    const sidestorrelse = 100
+    while (true) {
+      const batch = await this.request<FikenKontakt[]>(
+        `/contacts?isCustomer=true&page=${side}&pageSize=${sidestorrelse}`
+      )
+      alle.push(...batch)
+      if (batch.length < sidestorrelse) break
+      side++
+    }
+    return alle
   }
 
   async opprettKontakt(kontakt: FikenKontakt): Promise<FikenKontakt> {
@@ -91,8 +102,8 @@ export class FikenKlient {
   }
 
   async sendFakturaEpost(fakturaId: number, epost: string): Promise<void> {
-    await this.request(`/sales-invoices/${fakturaId}/send`, 'POST', {
-      method: 'email',
+    await this.request(`/sales-invoices/${fakturaId}/send`, 'PUT', {
+      sendType: 'email',
       emailSendTo: epost,
       message: 'Faktura fra takstmann.net. Vennligst betal innen forfall.',
     })
