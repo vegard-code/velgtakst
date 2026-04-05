@@ -66,6 +66,76 @@ export async function sendFakturaForOppdrag(oppdragId: string) {
   return { success: true, fakturaNummerVisning: resultat.fakturaNummerVisning }
 }
 
+export interface FakturaSkjemaData {
+  beskrivelse: string
+  pris: number
+  betalingsfristDager: number
+  tilleggstekst?: string
+}
+
+export async function sendFakturaFraSkjema(oppdragId: string, skjema: FakturaSkjemaData) {
+  const supabase = await createClient()
+  const serviceClient = await createServiceClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Ikke autentisert' }
+
+  const { data: profil } = await serviceClient
+    .from('user_profiles')
+    .select('company_id')
+    .eq('id', user.id)
+    .single()
+
+  if (!profil?.company_id) return { error: 'Ingen bedrift funnet' }
+
+  const { data: oppdrag } = await serviceClient
+    .from('oppdrag')
+    .select(`
+      *,
+      megler:megler_profiler(navn, epost),
+      privatkunde:privatkunde_profiler(navn, epost)
+    `)
+    .eq('id', oppdragId)
+    .single()
+
+  if (!oppdrag) return { error: 'Oppdrag ikke funnet' }
+
+  const kunde = oppdrag.megler || oppdrag.privatkunde
+  if (!kunde?.epost) return { error: 'Ingen kundeadresse funnet på oppdraget' }
+
+  const tillegg = skjema.tilleggstekst?.trim()
+  const resultat = await sendFaktura(profil.company_id, {
+    oppdragId,
+    tittel: skjema.beskrivelse,
+    beskrivelse: tillegg || undefined,
+    pris: skjema.pris,
+    kundeEpost: kunde.epost,
+    kundeNavn: kunde.navn,
+    betalingsfristDager: skjema.betalingsfristDager,
+  })
+
+  if (!resultat.success) return { error: resultat.error }
+
+  await serviceClient
+    .from('oppdrag')
+    .update({
+      faktura_id: resultat.eksterntFakturaId,
+      status: 'fakturert',
+    })
+    .eq('id', oppdragId)
+
+  await serviceClient.from('status_logg').insert({
+    oppdrag_id: oppdragId,
+    fra_status: oppdrag.status,
+    til_status: 'fakturert',
+    endret_av: user.id,
+    notat: `Faktura sendt (${resultat.fakturaNummerVisning ?? resultat.eksterntFakturaId})`,
+  })
+
+  revalidatePath(`/portal/takstmann/oppdrag/${oppdragId}`)
+  revalidatePath(`/portal/takstmann/oppdrag/${oppdragId}/faktura`)
+  return { success: true, fakturaNummerVisning: resultat.fakturaNummerVisning, eksterntFakturaId: resultat.eksterntFakturaId }
+}
+
 export async function synkroniserFakturaStatus(oppdragId: string) {
   const serviceClient = await createServiceClient()
 
