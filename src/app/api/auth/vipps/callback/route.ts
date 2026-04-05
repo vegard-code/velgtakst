@@ -109,14 +109,43 @@ export async function GET(request: NextRequest) {
     // --- 3. Finn eller opprett bruker i Supabase ---
     const supabaseAdmin = await createServiceClient()
 
-    // Sjekk om brukeren allerede finnes (via epost)
-    const { data: existingUserData } = await supabaseAdmin.auth.admin.listUsers({
-      page: 1,
-      perPage: 1000,
-    })
-    const existingUser = existingUserData?.users?.find(
-      (u) => u.email === email
-    )
+    // Sjekk om brukeren allerede finnes
+    // 1) Først: sjekk via vipps_sub i user_metadata (mest presis)
+    // 2) Fallback: sjekk via epost
+    let existingUser: { id: string; email?: string; user_metadata?: Record<string, unknown> } | undefined
+
+    // Søk via vipps_sub i alle brukere (paginert for å støtte >1000 brukere)
+    let page = 1
+    let found = false
+    while (!found) {
+      const { data: batch } = await supabaseAdmin.auth.admin.listUsers({
+        page,
+        perPage: 500,
+      })
+      if (!batch?.users || batch.users.length === 0) break
+
+      // Sjekk for vipps_sub match
+      const subMatch = batch.users.find(
+        (u) => u.user_metadata?.vipps_sub === vippsSub
+      )
+      if (subMatch) {
+        existingUser = subMatch
+        found = true
+        break
+      }
+
+      // Sjekk for email match (kun hvis vi ikke allerede har funnet via sub)
+      if (!existingUser) {
+        const emailMatch = batch.users.find((u) => u.email === email)
+        if (emailMatch) {
+          existingUser = emailMatch
+        }
+      }
+
+      // Hvis vi har hentet alle brukere, stopp
+      if (batch.users.length < 500) break
+      page++
+    }
 
     // Rollen brukeren valgte på innloggingssiden (eller default privatkunde)
     const valgtRolle = savedState.rolle || 'privatkunde'
@@ -126,13 +155,20 @@ export async function GET(request: NextRequest) {
     if (existingUser) {
       userId = existingUser.id
 
-      // Oppdater Vipps-sub i metadata
-      await supabaseAdmin.auth.admin.updateUserById(userId, {
+      // Oppdater Vipps-sub i metadata + synkroniser epost hvis endret i Vipps
+      const updateData: { user_metadata: Record<string, unknown>; email?: string } = {
         user_metadata: {
           ...existingUser.user_metadata,
           vipps_sub: vippsSub,
         },
-      })
+      }
+      // Hvis brukerens epost i Vipps er annerledes (f.eks. endret epost i Vipps),
+      // oppdater eposten i Supabase også, men kun for brukere funnet via vipps_sub
+      if (existingUser.email !== email && existingUser.user_metadata?.vipps_sub === vippsSub) {
+        console.log('Vipps email changed, updating from', existingUser.email, 'to', email)
+        updateData.email = email
+      }
+      await supabaseAdmin.auth.admin.updateUserById(userId, updateData)
 
       // VIKTIG: Sjekk om user_profile finnes — opprett hvis den mangler
       const { data: eksisterendeProfil } = await supabaseAdmin
@@ -213,9 +249,13 @@ export async function GET(request: NextRequest) {
     }
 
     // --- 5. Generer en Supabase-session for brukeren ---
+    // Bruk brukerens registrerte e-post i Supabase (kan være annerledes enn Vipps-eposten)
+    const { data: freshUser } = await supabaseAdmin.auth.admin.getUserById(userId)
+    const sessionEmail = freshUser?.user?.email ?? email
+
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'magiclink',
-      email,
+      email: sessionEmail,
     })
 
     if (linkError || !linkData) {

@@ -58,10 +58,14 @@ export default async function TakstmannProfilPage({ params }: Props) {
 
   const { data: vurderingerRaw } = await supabase
     .from("megler_vurderinger")
-    .select("*")
+    .select(`
+      *,
+      megler:megler_profiler(navn),
+      kunde:privatkunde_profiler(navn)
+    `)
     .eq("takstmann_id", id)
     .order("created_at", { ascending: false });
-  const vurderinger = (vurderingerRaw ?? []) as unknown as MeglerVurdering[];
+  const vurderinger = (vurderingerRaw ?? []) as unknown as (MeglerVurdering & { megler: { navn: string } | null; kunde: { navn: string } | null })[];
 
   const { data: fylkerRaw } = await supabase
     .from("fylke_synlighet")
@@ -337,7 +341,10 @@ export default async function TakstmannProfilPage({ params }: Props) {
         </h2>
         {vurderinger.length > 0 ? (
           <div className="space-y-4">
-            {vurderinger.map((v: MeglerVurdering) => (
+            {vurderinger.map((v) => {
+              const avsenderNavn = (v.kunde as { navn: string } | null)?.navn ?? (v.megler as { navn: string } | null)?.navn ?? null;
+              const avsenderType = v.kunde ? "Kunde" : v.megler ? "Megler" : null;
+              return (
               <div
                 key={v.id}
                 className="border-b border-slate-100 pb-4 last:border-0 last:pb-0"
@@ -355,6 +362,12 @@ export default async function TakstmannProfilPage({ params }: Props) {
                       </svg>
                     ))}
                   </div>
+                  {avsenderNavn && (
+                    <span className="text-slate-700 text-sm font-medium">{avsenderNavn}</span>
+                  )}
+                  {avsenderType && (
+                    <span className="text-slate-400 text-xs">({avsenderType})</span>
+                  )}
                   <time className="text-slate-400 text-xs">
                     {new Date(v.created_at).toLocaleDateString("nb-NO")}
                   </time>
@@ -363,7 +376,8 @@ export default async function TakstmannProfilPage({ params }: Props) {
                   <p className="text-slate-600 text-sm">{v.kommentar}</p>
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <p className="text-slate-400 text-sm">
