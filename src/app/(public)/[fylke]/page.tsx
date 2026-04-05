@@ -208,55 +208,6 @@ export default async function FylkePage({ params }: Props) {
         </p>
       </section>
 
-      {/* Tjenester folk trenger */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-        <h2 className="text-xl font-bold text-slate-900 mb-5">
-          Hva trenger folk takstmann til i {fylke.navn}?
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            { tittel: "Tilstandsrapport", beskrivelse: "Obligatorisk ved boligsalg. Dokumenterer teknisk tilstand.", href: "/blogg/tilstandsrapport-guide" },
-            { tittel: "Verditakst", beskrivelse: "Verdivurdering ved refinansiering, arv eller skifte.", href: "/blogg/verditakst-hva-er-det" },
-            { tittel: "Skadetakst", beskrivelse: "Skadedokumentasjon for forsikringsoppgjør.", href: "/blogg/hva-er-skadetakst" },
-            { tittel: "Næringstakst", beskrivelse: "Verdivurdering av næringseiendommer.", href: "/blogg/naeringstakst-bedrifter" },
-          ].map((t) => (
-            <Link
-              key={t.tittel}
-              href={t.href}
-              className="card-hover bg-white border border-slate-200 rounded-xl p-4 block"
-            >
-              <h3 className="text-slate-900 font-semibold text-sm mb-1">{t.tittel}</h3>
-              <p className="text-slate-500 text-xs leading-relaxed">{t.beskrivelse}</p>
-              <span className="text-blue-600 text-xs font-medium mt-2 inline-block">Les mer &rarr;</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Kommuner i fylket */}
-      {(() => {
-        const kommuner = getKommunerForFylke(fylkeId);
-        if (kommuner.length === 0) return null;
-        return (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-            <h2 className="text-xl font-bold text-slate-900 mb-5 text-center">
-              Finn takstmann i din kommune i {fylke.navn}
-            </h2>
-            <div className="flex flex-wrap justify-center gap-2">
-              {kommuner.map((k) => (
-                <Link
-                  key={k.id}
-                  href={`/${fylkeId}/${k.id}`}
-                  className="text-sm text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors bg-white"
-                >
-                  {k.navn}
-                </Link>
-              ))}
-            </div>
-          </section>
-        );
-      })()}
-
       {/* Tilfeldig spinner */}
       {takstmenn.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
@@ -424,6 +375,55 @@ export default async function FylkePage({ params }: Props) {
           </div>
         )}
       </section>
+
+      {/* Tjenester folk trenger */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+        <h2 className="text-xl font-bold text-slate-900 mb-5">
+          Hva trenger folk takstmann til i {fylke.navn}?
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { tittel: "Tilstandsrapport", beskrivelse: "Obligatorisk ved boligsalg. Dokumenterer teknisk tilstand.", href: "/blogg/tilstandsrapport-guide" },
+            { tittel: "Verditakst", beskrivelse: "Verdivurdering ved refinansiering, arv eller skifte.", href: "/blogg/verditakst-hva-er-det" },
+            { tittel: "Skadetakst", beskrivelse: "Skadedokumentasjon for forsikringsoppgjør.", href: "/blogg/hva-er-skadetakst" },
+            { tittel: "Næringstakst", beskrivelse: "Verdivurdering av næringseiendommer.", href: "/blogg/naeringstakst-bedrifter" },
+          ].map((t) => (
+            <Link
+              key={t.tittel}
+              href={t.href}
+              className="card-hover bg-white border border-slate-200 rounded-xl p-4 block"
+            >
+              <h3 className="text-slate-900 font-semibold text-sm mb-1">{t.tittel}</h3>
+              <p className="text-slate-500 text-xs leading-relaxed">{t.beskrivelse}</p>
+              <span className="text-blue-600 text-xs font-medium mt-2 inline-block">Les mer &rarr;</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Kommuner i fylket */}
+      {(() => {
+        const kommuner = getKommunerForFylke(fylkeId);
+        if (kommuner.length === 0) return null;
+        return (
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+            <h2 className="text-xl font-bold text-slate-900 mb-5 text-center">
+              Finn takstmann i din kommune i {fylke.navn}
+            </h2>
+            <div className="flex flex-wrap justify-center gap-2">
+              {kommuner.map((k) => (
+                <Link
+                  key={k.id}
+                  href={`/${fylkeId}/${k.id}`}
+                  className="text-sm text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 transition-colors bg-white"
+                >
+                  {k.navn}
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* FAQ */}
       <section className="bg-slate-50 py-12">

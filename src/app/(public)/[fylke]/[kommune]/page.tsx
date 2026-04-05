@@ -249,105 +249,18 @@ export default async function KommunePage({ params }: Props) {
       </nav>
 
       {/* Hero */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-6">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
           {seoContent?.h1 || `Takstmann i ${kommune.navn}`}
         </h1>
-        <p className="text-lg text-slate-600 leading-relaxed max-w-3xl mb-4">
+        <p className="text-lg text-slate-600 leading-relaxed max-w-3xl mb-3">
           {intro}
         </p>
-        {!seoContent && (
-          <p className="text-slate-600 leading-relaxed max-w-3xl">
-            Takstmennene nedenfor dekker {kommune.navn} og øvrige kommuner i{" "}
-            {fylke.navn}. Se profiler, sammenlign spesialiteter og ta kontakt
-            direkte.
-          </p>
-        )}
-        <p className="text-slate-500 text-sm leading-relaxed max-w-3xl mt-3">
-          Vanlige søk:{" "}
-          <span className="text-slate-600">takstmann {kommune.navn}</span>{" · "}
-          <span className="text-slate-600">skadetakst {kommune.navn}</span>{" · "}
-          <span className="text-slate-600">tilstandsrapport {kommune.navn}</span>{" · "}
-          <span className="text-slate-600">verditakst {kommune.navn}</span>{" · "}
-          <span className="text-slate-600">takst {kommune.navn}</span>
-        </p>
-        <div className="gradient-line max-w-xs mt-6 mb-2" />
         <p className="text-sm text-slate-400">
           {takstmenn.length > 0
             ? `${takstmenn.length} takstmenn tilgjengelig i ${fylke.navn}`
             : `Ingen takstmenn registrert i ${fylke.navn} ennå`}
         </p>
-      </section>
-
-      {/* SEO Sections (rich content for top 50 kommuner) */}
-      {seoContent?.sections && seoContent.sections.length > 0 && (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 space-y-8">
-          {seoContent.sections.map((section, i) => (
-            <section key={i}>
-              <h2 className="text-xl font-bold text-slate-900 mb-3">
-                {section.heading}
-              </h2>
-              <div className="text-slate-600 leading-relaxed max-w-3xl">
-                {section.content.split("\n").map((para, j) =>
-                  para.trim() ? (
-                    <p key={j} className="mb-2">
-                      {para.trim()}
-                    </p>
-                  ) : null
-                )}
-              </div>
-            </section>
-          ))}
-        </div>
-      )}
-
-      {/* Tjenester */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <h2 className="text-xl font-bold text-slate-900 mb-5">
-          Vanlige taksttjenester i {kommune.navn}
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            {
-              tittel: "Tilstandsrapport",
-              beskrivelse:
-                "Obligatorisk ved boligsalg. Dokumenterer teknisk tilstand.",
-              href: "/blogg/tilstandsrapport-guide",
-            },
-            {
-              tittel: "Verditakst",
-              beskrivelse:
-                "Verdivurdering ved refinansiering, arv eller skifte.",
-              href: "/blogg/verditakst-hva-er-det",
-            },
-            {
-              tittel: "Skadetakst",
-              beskrivelse: "Skadedokumentasjon for forsikringsoppgjør.",
-              href: "/blogg/hva-er-skadetakst",
-            },
-            {
-              tittel: "Næringstakst",
-              beskrivelse: "Verdivurdering av næringseiendommer.",
-              href: "/blogg/naeringstakst-bedrifter",
-            },
-          ].map((t) => (
-            <Link
-              key={t.tittel}
-              href={t.href}
-              className="card-hover bg-white border border-slate-200 rounded-xl p-4 block"
-            >
-              <h3 className="text-slate-900 font-semibold text-sm mb-1">
-                {t.tittel}
-              </h3>
-              <p className="text-slate-500 text-xs leading-relaxed">
-                {t.beskrivelse}
-              </p>
-              <span className="text-blue-600 text-xs font-medium mt-2 inline-block">
-                Les mer &rarr;
-              </span>
-            </Link>
-          ))}
-        </div>
       </section>
 
       {/* Alle takstmenn */}
@@ -507,6 +420,77 @@ export default async function KommunePage({ params }: Props) {
           </div>
         )}
       </section>
+
+      {/* Tjenester */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <h2 className="text-xl font-bold text-slate-900 mb-5">
+          Vanlige taksttjenester i {kommune.navn}
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            {
+              tittel: "Tilstandsrapport",
+              beskrivelse:
+                "Obligatorisk ved boligsalg. Dokumenterer teknisk tilstand.",
+              href: "/blogg/tilstandsrapport-guide",
+            },
+            {
+              tittel: "Verditakst",
+              beskrivelse:
+                "Verdivurdering ved refinansiering, arv eller skifte.",
+              href: "/blogg/verditakst-hva-er-det",
+            },
+            {
+              tittel: "Skadetakst",
+              beskrivelse: "Skadedokumentasjon for forsikringsoppgjør.",
+              href: "/blogg/hva-er-skadetakst",
+            },
+            {
+              tittel: "Næringstakst",
+              beskrivelse: "Verdivurdering av næringseiendommer.",
+              href: "/blogg/naeringstakst-bedrifter",
+            },
+          ].map((t) => (
+            <Link
+              key={t.tittel}
+              href={t.href}
+              className="card-hover bg-white border border-slate-200 rounded-xl p-4 block"
+            >
+              <h3 className="text-slate-900 font-semibold text-sm mb-1">
+                {t.tittel}
+              </h3>
+              <p className="text-slate-500 text-xs leading-relaxed">
+                {t.beskrivelse}
+              </p>
+              <span className="text-blue-600 text-xs font-medium mt-2 inline-block">
+                Les mer &rarr;
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* SEO Sections (rich content for top 50 kommuner) */}
+      {seoContent?.sections && seoContent.sections.length > 0 && (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 space-y-8">
+          {seoContent.sections.map((section, i) => (
+            <section key={i}>
+              <h2 className="text-xl font-bold text-slate-900 mb-3">
+                {section.heading}
+              </h2>
+              <div className="text-slate-600 leading-relaxed max-w-3xl">
+                {section.content.split("\n").map((para, j) =>
+                  para.trim() ? (
+                    <p key={j} className="mb-2">
+                      {para.trim()}
+                    </p>
+                  ) : null
+                )}
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
 
       {/* FAQ */}
       <section className="bg-slate-50 py-12">
