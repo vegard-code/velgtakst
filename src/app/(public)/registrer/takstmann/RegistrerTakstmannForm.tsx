@@ -306,7 +306,7 @@ export default function RegistrerTakstmannForm() {
                   className={selectClass}
                 >
                   <option value="">Ingen tilknytning</option>
-                  <option value="BMTF">BMTF (Byggmesternes og Takstingeniørenes Forening)</option>
+                  <option value="BMTF">BMTF (Byggmestrenes Takseringsforbund)</option>
                   <option value="Norsk Takst">Norsk Takst</option>
                   <option value="Annet">Annet</option>
                 </select>
