@@ -81,7 +81,7 @@ export default function FakturaSkjema({
         </div>
         <h2 className="text-xl font-bold text-[#1e293b] mb-2">Faktura sendt!</h2>
         <p className="text-[#64748b] text-sm mb-1">
-          Fakturaen er sendt til <span className="font-medium text-[#1e293b]">{kundeEpost}</span> via {regnskapSystem === "fiken" ? "Fiken" : "Tripletex"}.
+          Fakturaen er sendt til <span className="font-medium text-[#1e293b]">{kundeEpost}</span> via {regnskapSystem === "fiken" ? "Fiken" : regnskapSystem === "tripletex" ? "Tripletex" : "PowerOffice GO"}.
         </p>
         {fakturaResultat?.fakturaNummerVisning && (
           <p className="text-[#64748b] text-sm mb-4">
@@ -89,7 +89,7 @@ export default function FakturaSkjema({
           </p>
         )}
         <p className="text-xs text-[#94a3b8] mb-6">
-          Oppdragsstatus er oppdatert til «Fakturert». Du vil se betalingsstatus automatisk oppdatert når {regnskapSystem === "fiken" ? "Fiken" : "Tripletex"} rapporterer betaling.
+          Oppdragsstatus er oppdatert til «Fakturert». Du vil se betalingsstatus automatisk oppdatert når {regnskapSystem === "fiken" ? "Fiken" : regnskapSystem === "tripletex" ? "Tripletex" : "PowerOffice GO"} rapporterer betaling.
         </p>
         <button
           onClick={() => router.push(`/portal/takstmann/oppdrag/${oppdragId}`)}
@@ -126,7 +126,7 @@ export default function FakturaSkjema({
               </div>
               <div>
                 <p className="text-[#94a3b8] text-xs uppercase tracking-wide">Sendes via</p>
-                <p className="text-[#1e293b] font-medium">{regnskapSystem === "fiken" ? "Fiken" : "Tripletex"}</p>
+                <p className="text-[#1e293b] font-medium">{regnskapSystem === "fiken" ? "Fiken" : regnskapSystem === "tripletex" ? "Tripletex" : "PowerOffice GO"}</p>
               </div>
               <div>
                 <p className="text-[#94a3b8] text-xs uppercase tracking-wide">Fakturadato</p>
@@ -262,7 +262,7 @@ export default function FakturaSkjema({
           <p className="text-[#64748b]">
             Faktura sendes til <span className="font-medium text-[#1e293b]">{kundeNavn}</span>{" "}
             (<span className="text-[#285982]">{kundeEpost}</span>) via{" "}
-            <span className="font-medium text-[#1e293b]">{regnskapSystem === "fiken" ? "Fiken" : "Tripletex"}</span>.
+            <span className="font-medium text-[#1e293b]">{regnskapSystem === "fiken" ? "Fiken" : regnskapSystem === "tripletex" ? "Tripletex" : "PowerOffice GO"}</span>.
           </p>
         </div>
       </div>

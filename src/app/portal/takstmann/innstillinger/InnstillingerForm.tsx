@@ -304,6 +304,7 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
                 <option value="ingen">Ingen integrasjon</option>
                 <option value="fiken">Fiken</option>
                 <option value="tripletex">Tripletex</option>
+                <option value="poweroffice">PowerOffice GO</option>
               </select>
             </div>
             <div className="border-t border-[#e2e8f0] pt-4">
@@ -329,6 +330,19 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
                 <div>
                   <label className="block text-sm font-medium text-[#374151] mb-1.5">Employee token</label>
                   <input name="tripletex_employee_token" type="password" defaultValue={settings?.tripletex_employee_token ?? ""} className="portal-input" placeholder="••••••••••••" />
+                </div>
+              </div>
+            </div>
+            <div className="border-t border-[#e2e8f0] pt-4">
+              <h3 className="text-sm font-semibold text-[#374151] mb-3">PowerOffice GO</h3>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-[#374151] mb-1.5">Client Key</label>
+                  <input name="poweroffice_client_key" defaultValue={settings?.poweroffice_client_key ?? ""} className="portal-input" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#374151] mb-1.5">Client Secret</label>
+                  <input name="poweroffice_client_secret" type="password" defaultValue={settings?.poweroffice_client_secret ?? ""} className="portal-input" placeholder="••••••••••••" />
                 </div>
               </div>
             </div>

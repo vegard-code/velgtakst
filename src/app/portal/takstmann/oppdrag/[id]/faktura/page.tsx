@@ -43,14 +43,15 @@ export default async function FakturaPage({ params }: Props) {
   // Hent regnskapsinnstillinger
   const { data: settings } = await serviceClient
     .from("company_settings")
-    .select("regnskap_system, fiken_api_token, fiken_company_id, tripletex_employee_token, tripletex_company_id")
+    .select("regnskap_system, fiken_api_token, fiken_company_id, tripletex_employee_token, tripletex_company_id, poweroffice_client_key, poweroffice_client_secret")
     .eq("company_id", profil.company_id)
     .single();
 
   const regnskapSystem = settings?.regnskap_system ?? "ingen";
   const harRegnskapKonfigurert =
     (regnskapSystem === "fiken" && !!settings?.fiken_api_token && !!settings?.fiken_company_id) ||
-    (regnskapSystem === "tripletex" && !!settings?.tripletex_employee_token && !!settings?.tripletex_company_id);
+    (regnskapSystem === "tripletex" && !!settings?.tripletex_employee_token && !!settings?.tripletex_company_id) ||
+    (regnskapSystem === "poweroffice" && !!settings?.poweroffice_client_key && !!settings?.poweroffice_client_secret);
 
   // Allerede fakturert
   const alleredeFakturert = oppdrag.status === "fakturert" || oppdrag.status === "betalt";
@@ -97,7 +98,7 @@ export default async function FakturaPage({ params }: Props) {
               </p>
               {oppdrag.faktura_id && (
                 <p className="text-[#64748b] text-sm mt-0.5">
-                  Faktura-ID: <span className="font-medium">{oppdrag.faktura_id}</span> i {regnskapSystem === "fiken" ? "Fiken" : "Tripletex"}
+                  Faktura-ID: <span className="font-medium">{oppdrag.faktura_id}</span> i {regnskapSystem === "fiken" ? "Fiken" : regnskapSystem === "tripletex" ? "Tripletex" : "PowerOffice GO"}
                 </p>
               )}
               <p className="text-[#94a3b8] text-xs mt-2">

@@ -4,6 +4,7 @@
 
 import { FikenKlient } from './fiken'
 import { TripletexKlient } from './tripletex'
+import { PowerOfficeKlient } from './poweroffice'
 import { createClient } from '@/lib/supabase/server'
 
 export interface FakturaInput {
@@ -56,6 +57,19 @@ export async function hentRegnskapsklient(companyId: string) {
         settings.tripletex_company_id
       ),
       system: 'tripletex' as const,
+    }
+  }
+
+  if (settings.regnskap_system === 'poweroffice') {
+    if (!settings.poweroffice_client_key || !settings.poweroffice_client_secret) {
+      return { klient: null, system: 'poweroffice' as const, feil: 'PowerOffice GO ikke konfigurert' }
+    }
+    return {
+      klient: new PowerOfficeKlient(
+        settings.poweroffice_client_key,
+        settings.poweroffice_client_secret
+      ),
+      system: 'poweroffice' as const,
     }
   }
 
@@ -145,6 +159,35 @@ export async function sendFaktura(
       return {
         eksterntFakturaId: String(faktura.id),
         fakturaNummerVisning: String(faktura.invoiceNumber),
+        success: true,
+      }
+    }
+
+    if (system === 'poweroffice') {
+      const poKlient = klient as PowerOfficeKlient
+
+      const kunde = await poKlient.hentEllerOpprettKunde(input.kundeEpost, input.kundeNavn)
+
+      const faktura = await poKlient.opprettFaktura({
+        orderDate: iDag,
+        invoiceDueDate: forfall,
+        customerId: kunde.id!,
+        lines: [
+          {
+            description: input.tittel + (input.beskrivelse ? ` – ${input.beskrivelse}` : ''),
+            quantity: 1,
+            unitPrice: input.pris,
+            vatCode: 'HIGH',
+          },
+        ],
+        ourReference: input.oppdragId,
+      })
+
+      await poKlient.sendFakturaEpost(faktura.id, input.kundeEpost)
+
+      return {
+        eksterntFakturaId: String(faktura.id),
+        fakturaNummerVisning: faktura.invoiceNo ? String(faktura.invoiceNo) : String(faktura.id),
         success: true,
       }
     }
