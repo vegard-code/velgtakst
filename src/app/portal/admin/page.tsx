@@ -10,6 +10,7 @@ export default async function AdminDashboardPage() {
     { count: totalTakstmenn },
     { count: totalMeglere },
     { count: totalKunder },
+    { count: totalAdmins },
     { count: totalOppdrag },
     { count: aktiveFylkerCount },
     { count: nyeBestillinger },
@@ -27,6 +28,7 @@ export default async function AdminDashboardPage() {
     supabase.from("takstmann_profiler").select("*", { count: "exact", head: true }),
     supabase.from("megler_profiler").select("*", { count: "exact", head: true }),
     supabase.from("privatkunde_profiler").select("*", { count: "exact", head: true }),
+    supabase.from("user_profiles").select("*", { count: "exact", head: true }).eq("rolle", "admin"),
     supabase.from("oppdrag").select("*", { count: "exact", head: true }),
     supabase.from("fylke_synlighet").select("*", { count: "exact", head: true }).eq("er_aktiv", true),
     supabase.from("bestillinger").select("*", { count: "exact", head: true }).eq("status", "ny"),
@@ -42,7 +44,7 @@ export default async function AdminDashboardPage() {
     supabase.from("megler_vurderinger").select("*", { count: "exact", head: true }),
   ]);
 
-  const totalBrukere = (totalTakstmenn ?? 0) + (totalMeglere ?? 0) + (totalKunder ?? 0);
+  const totalBrukere = (totalTakstmenn ?? 0) + (totalMeglere ?? 0) + (totalKunder ?? 0) + (totalAdmins ?? 0);
 
   // Slå sammen siste brukere fra user_profiles og takstmann_profiler
   const userProfileIds = new Set((userProfilesBrukere ?? []).map(u => u.id));

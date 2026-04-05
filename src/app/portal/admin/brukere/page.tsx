@@ -15,33 +15,50 @@ type BrukerRad = {
   created_at: string;
 };
 
+// Høyere tall = høyere prioritet ved duplikater
+const ROLLE_PRIO: Record<string, number> = {
+  takstmann_admin: 5,
+  takstmann: 4,
+  megler: 3,
+  privatkunde: 2,
+  admin: 1,
+};
+
 export default async function AdminBrukerePage({ searchParams }: Props) {
   const params = await searchParams;
   const supabase = await createServiceClient();
 
-  // Hent e-poster fra auth.users (brukes for admin-brukere uten epost i profiltabell)
-  const { data: authUsers } = await supabase.auth.admin.listUsers();
+  // perPage: 1000 hindrer at vi bare får første side (default 50)
+  const { data: authUsers } = await supabase.auth.admin.listUsers({ perPage: 1000 });
   const epostMap = new Map<string, string>();
   authUsers?.users?.forEach((u) => {
     if (u.email) epostMap.set(u.id, u.email);
   });
 
-  // Totaler fra riktige profiltabeller
+  // Totaler fra profiltabeller + admins
   const [
     { count: totalTakstmenn },
     { count: totalMeglere },
     { count: totalKunder },
+    { count: totalAdmins },
   ] = await Promise.all([
     supabase.from("takstmann_profiler").select("*", { count: "exact", head: true }),
     supabase.from("megler_profiler").select("*", { count: "exact", head: true }),
     supabase.from("privatkunde_profiler").select("*", { count: "exact", head: true }),
+    supabase.from("user_profiles").select("*", { count: "exact", head: true }).eq("rolle", "admin"),
   ]);
-  const totalBrukere = (totalTakstmenn ?? 0) + (totalMeglere ?? 0) + (totalKunder ?? 0);
+  const totalBrukere = (totalTakstmenn ?? 0) + (totalMeglere ?? 0) + (totalKunder ?? 0) + (totalAdmins ?? 0);
 
-  // Hent brukere fra riktige tabeller basert på rollefilter
   let brukere: BrukerRad[] = [];
-
   const sokFilter = params.sok ? `%${params.sok}%` : null;
+
+  // Hjelpefunksjon: legg til bruker i Map med rolle-prioritet (høyest vinner)
+  function leggTil(map: Map<string, BrukerRad>, rad: BrukerRad) {
+    const eksisterende = map.get(rad.id);
+    if (!eksisterende || (ROLLE_PRIO[rad.rolle] ?? 0) > (ROLLE_PRIO[eksisterende.rolle] ?? 0)) {
+      map.set(rad.id, rad);
+    }
+  }
 
   if (!params.rolle || params.rolle === "alle") {
     const [
@@ -64,13 +81,24 @@ export default async function AdminBrukerePage({ searchParams }: Props) {
         : supabase.from("user_profiles").select("id, navn, rolle, telefon, created_at").eq("rolle", "admin").order("created_at", { ascending: false }),
     ]);
 
-    const seenIds = new Set<string>();
-    brukere = [
-      ...(takstmenn ?? []).filter(t => t.user_id).map(t => { seenIds.add(t.user_id!); return { id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "takstmann", created_at: t.created_at }; }),
-      ...(meglere ?? []).filter(t => t.user_id).map(t => { seenIds.add(t.user_id!); return { id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "megler", created_at: t.created_at }; }),
-      ...(kunder ?? []).filter(t => t.user_id).map(t => { seenIds.add(t.user_id!); return { id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "privatkunde", created_at: t.created_at }; }),
-      ...(adminBrukere ?? []).filter(u => !seenIds.has(u.id)).map(u => ({ id: u.id, navn: u.navn, epost: epostMap.get(u.id) ?? null, telefon: u.telefon, rolle: u.rolle, created_at: u.created_at })),
-    ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    const brukerMap = new Map<string, BrukerRad>();
+
+    for (const t of (takstmenn ?? [])) {
+      if (t.user_id) leggTil(brukerMap, { id: t.user_id, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "takstmann", created_at: t.created_at });
+    }
+    for (const m of (meglere ?? [])) {
+      if (m.user_id) leggTil(brukerMap, { id: m.user_id, navn: m.navn, epost: m.epost, telefon: m.telefon, rolle: "megler", created_at: m.created_at });
+    }
+    for (const k of (kunder ?? [])) {
+      if (k.user_id) leggTil(brukerMap, { id: k.user_id, navn: k.navn, epost: k.epost, telefon: k.telefon, rolle: "privatkunde", created_at: k.created_at });
+    }
+    for (const u of (adminBrukere ?? [])) {
+      leggTil(brukerMap, { id: u.id, navn: u.navn, epost: epostMap.get(u.id) ?? null, telefon: u.telefon, rolle: u.rolle, created_at: u.created_at });
+    }
+
+    brukere = Array.from(brukerMap.values())
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
   } else if (params.rolle === "takstmann") {
     let q = supabase.from("takstmann_profiler").select("user_id, navn, epost, telefon, created_at").order("created_at", { ascending: false });
     if (sokFilter) q = q.ilike("navn", sokFilter);
