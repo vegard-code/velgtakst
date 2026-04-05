@@ -146,6 +146,13 @@ export async function GET(request: NextRequest) {
         await opprettProfiler(supabaseAdmin, userId, valgtRolle, navn, email, telefon)
       } else {
         console.log('Existing user with rolle:', eksisterendeProfil.rolle)
+        // Merk takstmann-profilen som Vipps-verifisert
+        if (eksisterendeProfil.rolle === 'takstmann_admin' || eksisterendeProfil.rolle === 'takstmann') {
+          await supabaseAdmin
+            .from('takstmann_profiler')
+            .update({ vipps_verifisert: true })
+            .eq('user_id', userId)
+        }
       }
     } else {
       // Ny bruker
@@ -297,6 +304,7 @@ async function opprettProfiler(
         navn,
         telefon: telefon || null,
         epost: email,
+        vipps_verifisert: true,
       })
     }
   } else if (rolle === 'megler') {

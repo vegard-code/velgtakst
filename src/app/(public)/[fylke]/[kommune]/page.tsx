@@ -67,6 +67,7 @@ interface TakstmannKort extends TakstmannMedFylker {
   snittKarakter: number | null;
   antallVurderinger: number;
   company?: { navn: string; by?: string | null } | null;
+  vipps_verifisert?: boolean;
 }
 
 async function hentTakstmennIKommune(fylkeId: string, kommuneId: string): Promise<TakstmannKort[]> {
@@ -115,7 +116,7 @@ async function hentTakstmennIKommune(fylkeId: string, kommuneId: string): Promis
   const { data, error } = await supabase
     .from("takstmann_profiler")
     .select(
-      "id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id"
+      "id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id, vipps_verifisert"
     )
     .in("id", ids);
 
@@ -312,7 +313,7 @@ export default async function KommunePage({ params }: Props) {
               const andreTjenester = (t.tjenester ?? []).filter(
                 (tj) => tj !== t.spesialitet && tj !== t.spesialitet_2
               );
-              const erVerifisert = !!t.user_id;
+              const erVerifisert = !!t.vipps_verifisert;
 
               return (
                 <div
