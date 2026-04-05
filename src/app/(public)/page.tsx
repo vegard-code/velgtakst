@@ -56,7 +56,7 @@ export default async function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-slate-50 border-b border-slate-200">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(59,130,246,0.07)_0%,_transparent_70%)] pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10 text-center relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6 text-center relative">
           {/* Trust pills */}
           <div className="flex flex-wrap justify-center gap-2 mb-6">
             {[
@@ -99,9 +99,9 @@ export default async function Home() {
       </section>
 
       {/* Fylker grid */}
-      <section id="fylker" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">
+      <section id="fylker" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-6">
+        <div className="text-center mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
             Velg ditt fylke
           </h2>
           <p className="text-slate-500 max-w-xl mx-auto">
@@ -150,9 +150,9 @@ export default async function Home() {
       </section>
 
       {/* Slik fungerer det */}
-      <section className="bg-slate-900 py-12">
+      <section className="bg-slate-900 py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
               Slik fungerer det
             </h2>

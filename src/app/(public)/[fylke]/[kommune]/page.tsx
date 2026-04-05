@@ -94,33 +94,50 @@ async function hentTakstmennIKommune(fylkeId: string, kommuneId: string): Promis
     if (takstmannIds.length === 0) return [];
   }
 
-  const query = supabase
+  // Hent takstmann_id-er fra fylke_synlighet
+  let synQuery = supabase
     .from("fylke_synlighet")
-    .select(
-      `
-      takstmann_id,
-      takstmann_profiler!inner (
-        id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id,
-        company:companies(navn)
-      )
-    `
-    )
+    .select("takstmann_id")
     .eq("fylke_id", fylkeId)
     .eq("er_aktiv", true);
 
   if (takstmannIds) {
-    query.in("takstmann_id", takstmannIds);
+    synQuery = synQuery.in("takstmann_id", takstmannIds);
   }
 
-  const { data, error } = await query;
+  const { data: synligheter, error: synError } = await synQuery;
+
+  if (synError || !synligheter || synligheter.length === 0) return [];
+
+  const ids = (synligheter as { takstmann_id: string }[]).map((s) => s.takstmann_id);
+
+  // Hent profiler separat
+  const { data, error } = await supabase
+    .from("takstmann_profiler")
+    .select(
+      "id, navn, tittel, spesialitet, spesialitet_2, bio, telefon, epost, bilde_url, sertifiseringer, sertifisering, sertifisering_annet, tjenester, created_at, updated_at, user_id, company_id"
+    )
+    .in("id", ids);
 
   if (error || !data) return [];
 
-  const takstmenn = (
-    data as unknown as { takstmann_profiler: TakstmannKort }[]
-  ).map((row) => ({
-    ...row.takstmann_profiler,
+  // Hent firmanavn
+  const companyIds = [...new Set((data as TakstmannKort[]).filter((t) => t.company_id).map((t) => t.company_id!))];
+  const companyMap = new Map<string, string>();
+  if (companyIds.length > 0) {
+    const { data: companies } = await supabase
+      .from("companies")
+      .select("id, navn")
+      .in("id", companyIds);
+    for (const c of (companies ?? []) as { id: string; navn: string }[]) {
+      companyMap.set(c.id, c.navn);
+    }
+  }
+
+  const takstmenn = (data as unknown as TakstmannKort[]).map((profil) => ({
+    ...profil,
     fylke_synlighet: [],
+    company: profil.company_id ? { navn: companyMap.get(profil.company_id) ?? "" } : null,
     snittKarakter: null as number | null,
     antallVurderinger: 0,
   }));
