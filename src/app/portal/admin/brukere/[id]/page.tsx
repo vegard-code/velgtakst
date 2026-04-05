@@ -116,7 +116,7 @@ export default async function AdminBrukerDetaljPage({ params }: Props) {
       <div className="bg-white rounded-xl border border-[#e2e8f0] p-6 mb-6">
         <div className="flex items-start gap-4">
           <div className="w-14 h-14 rounded-full bg-[#e8f0f8] flex items-center justify-center text-lg font-bold text-[#285982] shrink-0">
-            {navn.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
+            {navn.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap mb-1">
