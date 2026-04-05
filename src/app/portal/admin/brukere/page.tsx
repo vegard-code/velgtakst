@@ -116,6 +116,16 @@ export default async function AdminBrukerePage({ searchParams }: Props) {
     brukere = (data ?? []).filter(t => t.user_id).map(t => ({ id: t.user_id!, navn: t.navn, epost: t.epost, telefon: t.telefon, rolle: "privatkunde", created_at: t.created_at }));
   }
 
+  // Duplikat-deteksjon: finn navn som forekommer hos flere brukere
+  const navnTelling = new Map<string, number>();
+  for (const b of brukere) {
+    const key = b.navn?.toLowerCase().trim() ?? "";
+    if (key) navnTelling.set(key, (navnTelling.get(key) ?? 0) + 1);
+  }
+  const duplikatNavn = new Set(
+    Array.from(navnTelling.entries()).filter(([, n]) => n > 1).map(([navn]) => navn)
+  );
+
   const rolleFarger: Record<string, string> = {
     admin: "bg-red-100 text-red-700",
     takstmann_admin: "bg-green-100 text-green-700",
@@ -202,7 +212,14 @@ export default async function AdminBrukerePage({ searchParams }: Props) {
                         <div className="w-8 h-8 rounded-full bg-[#f1f5f9] flex items-center justify-center text-xs font-semibold text-[#64748b] shrink-0">
                           {bruker.navn?.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}
                         </div>
-                        <p className="text-sm font-medium text-[#1e293b]">{bruker.navn}</p>
+                        <div>
+                          <p className="text-sm font-medium text-[#1e293b]">{bruker.navn}</p>
+                          {duplikatNavn.has(bruker.navn?.toLowerCase().trim() ?? "") && (
+                            <span className="inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 mt-0.5">
+                              Mulig duplikat
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td className="px-5 py-3">
