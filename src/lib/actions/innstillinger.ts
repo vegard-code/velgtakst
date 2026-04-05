@@ -61,6 +61,7 @@ export async function oppdaterInnstillinger(formData: FormData) {
       updates.fiken_api_token = (formData.get('fiken_api_token') as string) || null
       updates.tripletex_company_id = (formData.get('tripletex_company_id') as string) || null
       updates.tripletex_employee_token = (formData.get('tripletex_employee_token') as string) || null
+      updates.poweroffice_client_key = (formData.get('poweroffice_client_key') as string) || null
     }
 
     if (fane === 'purring') {

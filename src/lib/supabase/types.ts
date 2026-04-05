@@ -48,7 +48,7 @@ export type BestillingStatus =
   | 'fullfort'
 export type PurreType = 'purring_1' | 'purring_2' | 'inkasso'
 export type DokumentType = 'tilstandsrapport' | 'verditakst' | 'skadetakst' | 'foto' | 'annet'
-export type RegnskapSystem = 'fiken' | 'tripletex' | 'ingen'
+export type RegnskapSystem = 'fiken' | 'tripletex' | 'poweroffice' | 'ingen'
 export type AbonnementStatus = 'proveperiode' | 'aktiv' | 'kansellert' | 'utlopt'
 
 // ============================================================
@@ -248,6 +248,7 @@ export interface CompanySettings {
   fiken_api_token: string | null
   tripletex_employee_token: string | null
   tripletex_company_id: string | null
+  poweroffice_client_key: string | null
   purring_dager_1: number
   purring_dager_2: number
   inkasso_dager: number
