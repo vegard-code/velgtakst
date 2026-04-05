@@ -87,7 +87,7 @@ interface TakstmannKort extends TakstmannMedFylker {
   tjenester: string[]
   snittKarakter: number | null
   antallVurderinger: number
-  company?: { navn: string } | null
+  company?: { navn: string; by?: string | null } | null
 }
 
 async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
@@ -117,20 +117,21 @@ async function hentTakstmennIFylke(fylkeId: string): Promise<TakstmannKort[]> {
     fylke_synlighet: [],
     snittKarakter: null as number | null,
     antallVurderinger: 0,
-    company: null as { navn: string } | null,
+    company: null as { navn: string; by?: string | null } | null,
   }));
 
   const companyIds = [...new Set(takstmenn.filter((t) => t.company_id).map((t) => t.company_id!))];
   if (companyIds.length > 0) {
     const { data: companies } = await supabase
       .from("companies")
-      .select("id, navn")
+      .select("id, navn, by")
       .in("id", companyIds);
     if (companies) {
-      const companyMap = new Map((companies as { id: string; navn: string }[]).map((c) => [c.id, c.navn]));
+      const companyMap = new Map((companies as { id: string; navn: string; by: string | null }[]).map((c) => [c.id, c]));
       for (const t of takstmenn) {
         if (t.company_id && companyMap.has(t.company_id)) {
-          t.company = { navn: companyMap.get(t.company_id)! };
+          const c = companyMap.get(t.company_id)!;
+          t.company = { navn: c.navn, by: c.by };
         }
       }
     }
@@ -245,7 +246,8 @@ export default async function FylkePage({ params }: Props) {
               );
               const visNavn = t.navn ?? "Ukjent";
               const companyNavn = t.company?.navn;
-              const erVerifisert = t.sertifisering || (t.sertifiseringer?.length ?? 0) > 0;
+              const companyBy = t.company?.by;
+              const erVerifisert = !!t.user_id;
 
               return (
                 <div
@@ -289,6 +291,15 @@ export default async function FylkePage({ params }: Props) {
                       ) : t.tittel ? (
                         <p className="text-slate-500 text-xs mt-0.5 truncate">{t.tittel}</p>
                       ) : null}
+                      {companyBy && (
+                        <p className="text-slate-400 text-xs mt-0.5 flex items-center gap-1">
+                          <svg className="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          {companyBy}
+                        </p>
+                      )}
 
                       {erVerifisert && (
                         <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 border border-green-200 rounded-full px-2 py-0.5 mt-1 font-medium">
@@ -315,13 +326,22 @@ export default async function FylkePage({ params }: Props) {
                   </div>
 
                   {/* Sertifisering */}
-                  {t.sertifisering && (
+                  {(t.sertifisering || (t.sertifiseringer?.length ?? 0) > 0) && (
                     <div className="px-5 pb-3">
-                      <SertifiseringBadge
-                        sertifisering={t.sertifisering}
-                        sertifiseringAnnet={t.sertifisering_annet}
-                        size="sm"
-                      />
+                      {t.sertifisering ? (
+                        <SertifiseringBadge
+                          sertifisering={t.sertifisering}
+                          sertifiseringAnnet={t.sertifisering_annet}
+                          size="sm"
+                        />
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border bg-slate-100 border-slate-200 text-slate-600 text-xs font-medium">
+                          <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                          </svg>
+                          {t.sertifiseringer[0]}
+                        </span>
+                      )}
                     </div>
                   )}
 
