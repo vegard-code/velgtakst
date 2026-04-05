@@ -10,11 +10,11 @@
     },
     {
       "path": "/api/cron/meldinger-varsel",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 */6 * * *"
     },
     {
       "path": "/api/cron/tilbud-utlopt",
-      "schedule": "0 * * * *"
+      "schedule": "0 */12 * * *"
     },
     {
       "path": "/api/cron/proveperiode-utlopt",

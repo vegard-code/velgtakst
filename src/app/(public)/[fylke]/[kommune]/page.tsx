@@ -9,7 +9,7 @@ import { KOMMUNER, getKommunerForFylke } from "@/data/kommuner";
 import { KOMMUNE_SEO_CONTENT } from "@/data/kommune-seo-content";
 import SertifiseringBadge from "@/components/SertifiseringBadge";
 
-export const revalidate = 900;
+export const revalidate = 3600;
 
 interface Props {
   params: Promise<{ fylke: string; kommune: string }>;

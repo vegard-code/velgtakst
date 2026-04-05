@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 900;
+export const revalidate = 3600;
 
 async function hentFylkeStatistikk() {
   try {

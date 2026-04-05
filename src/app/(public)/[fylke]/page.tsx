@@ -10,7 +10,7 @@ import RandomSpinnerWrapper from "@/components/RandomSpinnerWrapper";
 import SertifiseringBadge from "@/components/SertifiseringBadge";
 import data from "@/data/takstmenn.json";
 
-export const revalidate = 900;
+export const revalidate = 3600;
 
 interface Props {
   params: Promise<{ fylke: string }>;
