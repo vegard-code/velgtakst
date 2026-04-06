@@ -80,7 +80,27 @@ export class FikenKlient {
   }
 
   async opprettKontakt(kontakt: FikenKontakt): Promise<FikenKontakt> {
-    return this.request<FikenKontakt>('/contacts', 'POST', kontakt)
+    // Fiken svarer med 201 + Location-header, ingen JSON-body.
+    // Hent contact ID fra Location: /contacts/{id}
+    const response = await fetch(`${FIKEN_BASE_URL}/companies/${this.companySlug}/contacts`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(kontakt),
+    })
+
+    if (!response.ok) {
+      const tekst = await response.text()
+      throw new Error(`Fiken API feil ${response.status}: ${tekst}`)
+    }
+
+    const location = response.headers.get('Location')
+    const idMatch = location?.match(/\/contacts\/(\d+)$/)
+    if (!idMatch) throw new Error('Fiken returnerte ikke Location-header for ny kontakt')
+
+    return { ...kontakt, contactId: Number(idMatch[1]) }
   }
 
   async hentEllerOpprettKontakt(epost: string, navn: string): Promise<FikenKontakt> {

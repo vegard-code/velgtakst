@@ -20,11 +20,15 @@ export async function GET(request: Request) {
     .eq('status', 'fakturert')
     .not('faktura_id', 'is', null)
 
+  const alle = (fakturerte ?? []) as { id: string }[]
+  const BATCH_STORRELSE = 5
   let oppdatert = 0
-  for (const oppdrag of (fakturerte ?? []) as { id: string }[]) {
-    const resultat = await synkroniserFakturaStatus(oppdrag.id)
-    if (resultat.oppdatert) oppdatert++
+
+  for (let i = 0; i < alle.length; i += BATCH_STORRELSE) {
+    const batch = alle.slice(i, i + BATCH_STORRELSE)
+    const resultater = await Promise.all(batch.map((o) => synkroniserFakturaStatus(o.id)))
+    oppdatert += resultater.filter((r) => r.oppdatert).length
   }
 
-  return NextResponse.json({ success: true, sjekket: fakturerte?.length ?? 0, oppdatert })
+  return NextResponse.json({ success: true, sjekket: alle.length, oppdatert })
 }

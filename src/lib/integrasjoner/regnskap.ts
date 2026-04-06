@@ -151,9 +151,10 @@ export async function sendFaktura(
         customer: { id: kunde.id! },
         invoiceLines: [
           {
-            description: input.tittel,
+            description: input.tittel + (input.beskrivelse ? ` – ${input.beskrivelse}` : ''),
             count: 1,
             unitPriceExcludingVatCurrency: input.pris,
+            vatType: { id: 3 },  // Tripletex MVA-type 3 = 25% (HØYSATS)
           },
         ],
       })
@@ -181,7 +182,7 @@ export async function sendFaktura(
             description: input.tittel + (input.beskrivelse ? ` – ${input.beskrivelse}` : ''),
             quantity: 1,
             unitPrice: input.pris,
-            vatCode: 'HIGH',
+            vatCode: '3',  // PowerOffice GO: kode 3 = 25% MVA (høysats)
           },
         ],
         ourReference: input.oppdragId,

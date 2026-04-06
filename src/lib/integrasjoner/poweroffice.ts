@@ -5,7 +5,7 @@
 // ============================================================
 
 const POWEROFFICE_BASE = process.env.POWEROFFICE_API_URL ?? 'https://go.poweroffice.net/v2'
-const POWEROFFICE_TOKEN_URL = 'https://go.poweroffice.net/OAuth/token'
+const POWEROFFICE_TOKEN_URL = process.env.POWEROFFICE_TOKEN_URL ?? 'https://go.poweroffice.net/OAuth/token'
 
 export interface PowerOfficeKunde {
   id?: number
@@ -53,7 +53,7 @@ export class PowerOfficeKlient {
     const params = new URLSearchParams({
       grant_type: 'client_credentials',
       client_id: process.env.POWEROFFICE_APPLICATION_KEY ?? '',
-      client_secret: this.clientKey,
+      client_secret: this.clientSecret,
     })
 
     const response = await fetch(POWEROFFICE_TOKEN_URL, {
