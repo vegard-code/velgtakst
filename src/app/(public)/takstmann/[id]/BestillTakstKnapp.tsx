@@ -76,7 +76,7 @@ export default function BestillTakstKnapp({
     );
   }
 
-  // Ikke innlogget: vis Vipps-login-knapp
+  // Ikke innlogget: vis Vipps-login-knapp (for privatkunder) + megler-alternativ
   if (!isLoggedIn) {
     return (
       <div className="space-y-3">
@@ -95,6 +95,12 @@ export default function BestillTakstKnapp({
           </svg>
           Logg inn med Vipps for å bestille
         </a>
+        <p className="text-center text-gray-500 text-xs">
+          Er du megler?{" "}
+          <a href="/logg-inn" className="underline hover:text-gray-300 transition-colors">
+            Logg inn her
+          </a>
+        </p>
       </div>
     );
   }

@@ -14,16 +14,26 @@ export default async function MeglerSamtalePage({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
+  // Hent meglerens profil-ID for å verifisere eierskap
+  const { data: meglerProfil } = await supabase
+    .from('megler_profiler')
+    .select('id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!meglerProfil) notFound()
+
   const { data: samtale } = await supabase
     .from('samtaler')
     .select(`
-      id, takstmann_id,
+      id, takstmann_id, megler_id,
       takstmann:takstmann_profiler(navn)
     `)
     .eq('id', samtaleId)
     .single()
 
-  if (!samtale) notFound()
+  // Samtale finnes ikke, eller innlogget megler er ikke deltaker
+  if (!samtale || samtale.megler_id !== (meglerProfil as { id: string }).id) notFound()
 
   const takstmann = samtale.takstmann as unknown as { navn: string } | null
   const motpartNavn = takstmann?.navn ?? 'Ukjent'
