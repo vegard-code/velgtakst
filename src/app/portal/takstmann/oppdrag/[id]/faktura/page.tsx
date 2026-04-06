@@ -119,7 +119,7 @@ export default async function FakturaPage({ params }: Props) {
             <div>
               <p className="text-[#1e293b] font-semibold">Regnskapssystem ikke konfigurert</p>
               <p className="text-[#64748b] text-sm mt-1">
-                Du må koble til et regnskapssystem (Fiken, Tripletex eller PowerOffice GO) før du kan sende fakturaer. Gå til innstillinger og legg inn API-nøkler under «Regnskapssystem».
+                Du må koble til regnskapssystemet ditt før du kan sende fakturaer direkte herfra. Gå til innstillinger og legg inn API-nøkler under «Regnskapssystem». Om regnskapsprogrammet ditt ikke er et alternativ der kan du sende en mail til post@takstmann.net
               </p>
               <Link
                 href="/portal/takstmann/innstillinger"
