@@ -133,6 +133,8 @@ export async function opprettOppdrag(formData: FormData) {
       frist: (formData.get('frist') as string) || null,
       befaringsdato: (formData.get('befaringsdato') as string) || null,
       pris: formData.get('pris') ? Number(formData.get('pris')) : null,
+      kunde_epost: (formData.get('kunde_epost') as string) || null,
+      kunde_navn: (formData.get('kunde_navn') as string) || null,
       status: 'ny',
     })
     .select('id')

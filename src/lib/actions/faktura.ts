@@ -32,15 +32,17 @@ export async function sendFakturaForOppdrag(oppdragId: string) {
   if (!oppdrag.pris) return { error: 'Oppdraget mangler pris' }
 
   const kunde = oppdrag.megler || oppdrag.privatkunde
-  if (!kunde?.epost) return { error: 'Ingen kundeadresse funnet' }
+  const kundeEpost = kunde?.epost || oppdrag.kunde_epost
+  const kundeNavn = kunde?.navn || oppdrag.kunde_navn || ''
+  if (!kundeEpost) return { error: 'Ingen kundeadresse funnet' }
 
   const resultat = await sendFaktura(profil.company_id, {
     oppdragId,
     tittel: oppdrag.tittel,
     beskrivelse: oppdrag.beskrivelse ?? undefined,
     pris: oppdrag.pris,
-    kundeEpost: kunde.epost,
-    kundeNavn: kunde.navn,
+    kundeEpost,
+    kundeNavn,
   })
 
   if (!resultat.success) return { error: resultat.error }
@@ -105,7 +107,9 @@ export async function sendFakturaFraSkjema(oppdragId: string, skjema: FakturaSkj
   }
 
   const kunde = oppdrag.megler || oppdrag.privatkunde
-  if (!kunde?.epost) return { error: 'Ingen kundeadresse funnet på oppdraget' }
+  const kundeEpost = kunde?.epost || oppdrag.kunde_epost
+  const kundeNavn = kunde?.navn || oppdrag.kunde_navn || ''
+  if (!kundeEpost) return { error: 'Ingen kundeadresse funnet på oppdraget' }
 
   const tillegg = skjema.tilleggstekst?.trim()
   const resultat = await sendFaktura(profil.company_id, {
@@ -113,8 +117,8 @@ export async function sendFakturaFraSkjema(oppdragId: string, skjema: FakturaSkj
     tittel: skjema.beskrivelse,
     beskrivelse: tillegg || undefined,
     pris: skjema.pris,
-    kundeEpost: kunde.epost,
-    kundeNavn: kunde.navn,
+    kundeEpost,
+    kundeNavn,
     betalingsfristDager: skjema.betalingsfristDager,
   })
 
