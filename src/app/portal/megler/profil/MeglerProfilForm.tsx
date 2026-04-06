@@ -16,19 +16,45 @@ export default function MeglerProfilForm({ profil }: { profil: MeglerProfil | nu
     const formData = new FormData(e.currentTarget);
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      setMelding({ type: "feil", tekst: "Ikke innlogget" });
+      setLaster(false);
+      return;
+    }
 
-    const { error } = await supabase
-      .from("megler_profiler")
-      .update({
-        navn: formData.get("navn") as string,
-        telefon: (formData.get("telefon") as string) || null,
-        meglerforetak: (formData.get("meglerforetak") as string) || null,
-      })
-      .eq("user_id", user.id);
+    const verdier = {
+      navn: formData.get("navn") as string,
+      epost: (formData.get("epost") as string) || null,
+      telefon: (formData.get("telefon") as string) || null,
+      meglerforetak: (formData.get("meglerforetak") as string) || null,
+    };
 
-    setMelding(error
-      ? { type: "feil", tekst: error.message }
+    let feilmelding: string | null = null;
+
+    if (profil?.id) {
+      // Oppdater eksisterende rad — bruk id for å garantere at riktig rad matches
+      const { data: oppdatert, error } = await supabase
+        .from("megler_profiler")
+        .update(verdier)
+        .eq("id", profil.id)
+        .select("id");
+
+      if (error) {
+        feilmelding = error.message;
+      } else if (!oppdatert || oppdatert.length === 0) {
+        feilmelding = "Ingen rad ble oppdatert. Kontakt support.";
+      }
+    } else {
+      // Profil mangler — opprett den
+      const { error } = await supabase
+        .from("megler_profiler")
+        .insert({ ...verdier, user_id: user.id });
+
+      if (error) feilmelding = error.message;
+    }
+
+    setMelding(feilmelding
+      ? { type: "feil", tekst: feilmelding }
       : { type: "ok", tekst: "Profil oppdatert!" }
     );
     setLaster(false);
@@ -40,6 +66,10 @@ export default function MeglerProfilForm({ profil }: { profil: MeglerProfil | nu
         <div>
           <label className="block text-sm font-medium text-[#374151] mb-1.5">Fullt navn</label>
           <input name="navn" defaultValue={profil?.navn ?? ""} className="portal-input" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-[#374151] mb-1.5">E-post</label>
+          <input name="epost" type="email" defaultValue={profil?.epost ?? ""} className="portal-input" />
         </div>
         <div>
           <label className="block text-sm font-medium text-[#374151] mb-1.5">Telefon</label>
