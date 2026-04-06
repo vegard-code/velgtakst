@@ -35,13 +35,16 @@ export async function registrerTakstmann(formData: FormData) {
       orgnr: orgnr || null,
       telefon: telefonFirma || null,
       epost: epostFirma,
-      onboarding_fullfort: true,
+      onboarding_fullfort: false,
     })
     .select('id')
     .single()
 
   if (companyError || !company) {
     console.error('Company creation error:', companyError)
+    if ((companyError as { code?: string })?.code === '23505') {
+      return { error: 'Et firma med dette organisasjonsnummeret er allerede registrert.' }
+    }
     return { error: 'Kunne ikke opprette bedrift. Prøv igjen.' }
   }
 
@@ -94,6 +97,7 @@ export async function registrerTakstmann(formData: FormData) {
 
   if (takstmannError) {
     console.error('Takstmann profile creation error:', takstmannError)
+    return { error: 'Brukerkonto ble opprettet, men takstmann-profil kunne ikke lagres. Kontakt support.' }
   }
 
   return { success: true }
