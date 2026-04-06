@@ -41,6 +41,7 @@ export default async function RedigerOppdragPage({ params }: Props) {
             adresse: oppdrag.adresse,
             postnr: oppdrag.postnr,
             by: oppdrag.by,
+            kunde_epost: (oppdrag as unknown as { kunde_epost: string | null }).kunde_epost ?? null,
             befaringsdato: oppdrag.befaringsdato,
             frist: oppdrag.frist,
             pris: oppdrag.pris,

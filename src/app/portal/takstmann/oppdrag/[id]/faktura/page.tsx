@@ -58,6 +58,7 @@ export default async function FakturaPage({ params }: Props) {
 
   const kunde = (oppdrag.megler as unknown as { navn: string; epost: string } | null)
     ?? (oppdrag.privatkunde as unknown as { navn: string; epost: string } | null);
+  const kundeEpost = kunde?.epost || (oppdrag as unknown as { kunde_epost: string | null }).kunde_epost;
 
   const typeLabel =
     OPPDRAG_TYPE_LABELS[oppdrag.oppdrag_type as OppdragType] ?? oppdrag.oppdrag_type ?? "Takstoppdrag";
@@ -133,7 +134,7 @@ export default async function FakturaPage({ params }: Props) {
       )}
 
       {/* Ingen kundeepost */}
-      {!kunde?.epost && (
+      {!kundeEpost && (
         <div className="portal-card p-6 mb-6 border-l-4 border-red-400">
           <div className="flex items-start gap-3">
             <svg className="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -156,12 +157,12 @@ export default async function FakturaPage({ params }: Props) {
       )}
 
       {/* Skjema — vis bare når alt er klart */}
-      {harRegnskapKonfigurert && kunde?.epost && (
+      {harRegnskapKonfigurert && kundeEpost && (
         <FakturaSkjema
           oppdragId={id}
           oppdragTittel={defaultBeskrivelse}
-          kundeNavn={kunde.navn}
-          kundeEpost={kunde.epost}
+          kundeNavn={kunde?.navn ?? ''}
+          kundeEpost={kundeEpost}
           defaultPris={oppdrag.pris ?? 0}
           regnskapSystem={regnskapSystem}
         />
