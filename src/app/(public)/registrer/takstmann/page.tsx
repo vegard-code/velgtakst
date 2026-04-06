@@ -23,18 +23,18 @@ export default function RegistrerTakstmannPage() {
         <nav aria-label="Brødsmulesti" className="mb-8">
           <ol className="flex items-center gap-2 text-sm text-gray-500">
             <li>
-              <Link href="/" className="hover:text-white transition-colors">takstmann.net</Link>
+              <Link href="/" className="hover:text-slate-900 transition-colors">takstmann.net</Link>
             </li>
             <li>/</li>
-            <li className="text-gray-300">Registrer takstmann</li>
+            <li className="text-slate-500">Registrer takstmann</li>
           </ol>
         </nav>
 
         <div className="text-center mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
             Registrer deg som takstmann
           </h1>
-          <p className="text-gray-400 max-w-xl mx-auto leading-relaxed">
+          <p className="text-slate-600 max-w-xl mx-auto leading-relaxed">
             takstmann.net kobler sertifiserte takstmenn med boligkjøpere, meglere og
             privatpersoner som trenger hjelp med{" "}
             <Link href="/blogg/tilstandsrapport-guide" className="text-accent hover:underline">tilstandsrapport</Link>,{" "}
@@ -45,8 +45,8 @@ export default function RegistrerTakstmannPage() {
         </div>
 
         {/* Fordeler */}
-        <div className="bg-card-bg border border-card-border rounded-xl p-6 mb-10">
-          <h2 className="text-lg font-semibold text-white mb-4 text-center">Hvorfor takstmann.net?</h2>
+        <div className="bg-white border border-slate-200 rounded-xl p-6 mb-10">
+          <h2 className="text-lg font-semibold text-slate-800 mb-4 text-center">Hvorfor takstmann.net?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { tittel: "Synlighet i ditt fylke", beskrivelse: "Vis profilen din for alle som søker takstmann i dine aktive fylker." },
@@ -54,7 +54,7 @@ export default function RegistrerTakstmannPage() {
               { tittel: "Fleksibelt abonnement", beskrivelse: "Betal kun for de fylkene du vil dekke. Aktiver og deaktiver når du ønsker." },
             ].map((f) => (
               <div key={f.tittel} className="text-center">
-                <h3 className="text-white font-semibold text-sm mb-1">{f.tittel}</h3>
+                <h3 className="text-slate-800 font-semibold text-sm mb-1">{f.tittel}</h3>
                 <p className="text-gray-500 text-xs leading-relaxed">{f.beskrivelse}</p>
               </div>
             ))}
@@ -63,19 +63,19 @@ export default function RegistrerTakstmannPage() {
 
         {/* Prisoversikt */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-          <div className="bg-card-bg border border-card-border rounded-xl p-5">
-            <h3 className="text-white font-semibold mb-1">Standard fylker</h3>
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h3 className="text-slate-800 font-semibold mb-1">Standard fylker</h3>
             <p className="text-3xl font-bold text-accent mb-1">{FYLKE_PRIS.standard} kr</p>
             <p className="text-gray-500 text-sm">per fylke per måned</p>
-            <p className="text-gray-400 text-xs mt-2">
+            <p className="text-slate-500 text-xs mt-2">
               Innlandet, Telemark, Agder, Vestfold, Møre og Romsdal, Nordland, Troms, Finnmark, Buskerud, Østfold
             </p>
           </div>
-          <div className="bg-card-bg border border-accent/20 rounded-xl p-5">
-            <h3 className="text-white font-semibold mb-1">Store fylker</h3>
+          <div className="bg-white border border-accent/20 rounded-xl p-5">
+            <h3 className="text-slate-800 font-semibold mb-1">Store fylker</h3>
             <p className="text-3xl font-bold text-accent mb-1">{FYLKE_PRIS.stor} kr</p>
             <p className="text-gray-500 text-sm">per fylke per måned</p>
-            <p className="text-gray-400 text-xs mt-2">
+            <p className="text-slate-500 text-xs mt-2">
               Oslo, Rogaland, Vestland, Trøndelag, Akershus
             </p>
           </div>
