@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { RAPPORT_TYPER } from '@/lib/supabase/types'
 import type { DokumentType } from '@/lib/supabase/types'
 import { sendNyRapportVarsel } from '@/lib/integrasjoner/epost'
@@ -17,6 +17,7 @@ const MAKS_STORRELSE = 50 * 1024 * 1024 // 50 MB
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
+  const serviceClient = await createServiceClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Ikke innlogget' }, { status: 401 })
 
@@ -68,7 +69,7 @@ export async function POST(req: NextRequest) {
 
   const erRapport = RAPPORT_TYPER.includes(dokumentType)
 
-  const { data: dok, error: dbFeil } = await supabase
+  const { data: dok, error: dbFeil } = await serviceClient
     .from('dokumenter')
     .insert({
       oppdrag_id: oppdragId,
