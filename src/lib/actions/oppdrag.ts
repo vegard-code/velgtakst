@@ -130,6 +130,8 @@ export async function opprettOppdrag(formData: FormData) {
       postnr: (formData.get('postnr') as string) || null,
       by: (formData.get('by') as string) || null,
       oppdrag_type: formData.get('oppdrag_type') as OppdragType,
+      kunde_navn: (formData.get('kunde_navn') as string) || null,
+      kunde_epost: (formData.get('kunde_epost') as string) || null,
       frist: (formData.get('frist') as string) || null,
       befaringsdato: (formData.get('befaringsdato') as string) || null,
       pris: formData.get('pris') ? Number(formData.get('pris')) : null,
