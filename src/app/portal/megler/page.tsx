@@ -16,7 +16,7 @@ export default async function MeglerDashboard() {
   const bestillinger = await hentMinebestillinger("megler");
 
   const nyeBestillinger = bestillinger.filter((b) => b.status === "ny").length;
-  const aksepterteBestillinger = bestillinger.filter((b) => b.status === "akseptert").length;
+  const underArbeidBestillinger = bestillinger.filter((b) => b.status === "akseptert").length;
   const fullforteBestillinger = bestillinger.filter((b) => b.status === "fullfort").length;
 
   return (
@@ -34,8 +34,8 @@ export default async function MeglerDashboard() {
       {/* KPI */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: "Aktive bestillinger", verdi: nyeBestillinger + aksepterteBestillinger, farge: "text-[#285982]" },
-          { label: "Under arbeid", verdi: aksepterteBestillinger, farge: "text-amber-600" },
+          { label: "Nye forespørsler", verdi: nyeBestillinger, farge: "text-[#285982]" },
+          { label: "Under arbeid", verdi: underArbeidBestillinger, farge: "text-amber-600" },
           { label: "Fullført", verdi: fullforteBestillinger, farge: "text-green-600" },
         ].map((kpi) => (
           <div key={kpi.label} className="portal-card p-5">
