@@ -12,34 +12,37 @@ export default async function FinnTakstmannMeglerPage({ searchParams }: Props) {
 
   const supabase = await createClient();
 
-  let query = supabase
-    .from("fylke_synlighet")
-    .select(`
-      fylke_id,
-      takstmann:takstmann_profiler!inner(
-        id, navn, tittel, spesialitet, spesialitet_2, tjenester, bio, telefon, epost, bilde_url, sertifiseringer
-      )
-    `)
-    .eq("er_aktiv", true);
+  // Hent alle takstmenn direkte — ikke avhengig av fylke_synlighet-oppsett
+  let takstmannQuery = supabase
+    .from("takstmann_profiler")
+    .select("id, navn, tittel, spesialitet, spesialitet_2, tjenester, bio, telefon, epost, bilde_url, sertifiseringer");
 
-  if (fylke) query = query.eq("fylke_id", fylke);
+  // Hvis fylke-filter: finn takstmenn med aktiv synlighet i det fylket
+  if (fylke) {
+    const { data: aktiveFylker } = await supabase
+      .from("fylke_synlighet")
+      .select("takstmann_id")
+      .eq("fylke_id", fylke)
+      .eq("er_aktiv", true);
 
-  const { data: resultater } = await query;
+    const aktiveIds = (aktiveFylker ?? []).map((r) => r.takstmann_id as string);
+    if (aktiveIds.length === 0) {
+      // Ingen treff i dette fylket
+        return <EmptyResult fylke={fylke} />;
+    }
+    takstmannQuery = takstmannQuery.in("id", aktiveIds);
+  }
 
-  let takstmenn = (resultater ?? []).map((r) => r.takstmann as unknown as {
+  const { data: resultater } = await takstmannQuery;
+
+  type Takstmann = {
     id: string; navn: string; tittel: string | null; spesialitet: string | null;
     spesialitet_2: string | null; tjenester: string[];
     bio: string | null; telefon: string | null; epost: string | null;
     bilde_url: string | null; sertifiseringer: string[];
-  });
+  };
 
-  // Dedupliser
-  const sett = new Set<string>();
-  takstmenn = takstmenn.filter((t) => {
-    if (sett.has(t.id)) return false;
-    sett.add(t.id);
-    return true;
-  });
+  let takstmenn = (resultater ?? []) as unknown as Takstmann[];
 
   if (spesialitet) {
     const s = spesialitet.toLowerCase();
@@ -69,7 +72,7 @@ export default async function FinnTakstmannMeglerPage({ searchParams }: Props) {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#1e293b]">Finn takstmann</h1>
         <p className="text-[#64748b] text-sm mt-0.5">
-          Søk blant {takstmenn.length} aktive takstmenn
+          Søk blant {takstmenn.length} takstmenn
         </p>
       </div>
 
@@ -164,6 +167,20 @@ export default async function FinnTakstmannMeglerPage({ searchParams }: Props) {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+function EmptyResult({ fylke }: { fylke: string }) {
+  const fylkeNavn = FYLKER.find((f) => f.id === fylke)?.navn ?? fylke;
+  return (
+    <div className="max-w-6xl mx-auto">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-[#1e293b]">Finn takstmann</h1>
+      </div>
+      <div className="portal-card p-12 text-center">
+        <p className="text-[#94a3b8]">Ingen takstmenn er aktive i {fylkeNavn}</p>
+      </div>
     </div>
   );
 }
