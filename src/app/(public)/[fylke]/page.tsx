@@ -32,6 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: `Finn sertifiserte takstmenn i ${fylke.navn}. Tilstandsrapport, verditakst, skadetakst og mer.`,
       url: `https://www.takstmann.net/${fylkeId}`,
     },
+    alternates: {
+      canonical: `https://www.takstmann.net/${fylkeId}`,
+    },
   };
 }
 
