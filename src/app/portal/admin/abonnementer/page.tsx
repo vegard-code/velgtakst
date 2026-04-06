@@ -16,7 +16,7 @@ export default async function AdminAbonnementerPage() {
   // Hent abonnementer med company-info
   const { data: abonnementer } = await supabase
     .from("abonnementer")
-    .select("*, companies:company_id(id, navn)")
+    .select("*, companies(id, navn, orgnr)")
     .order("created_at", { ascending: false });
 
   // Hent fylkesynligheter
@@ -121,14 +121,17 @@ export default async function AdminAbonnementerPage() {
                   const dagerIgjen = a.status === "proveperiode" && a.proveperiode_slutt
                     ? Math.max(0, Math.ceil((new Date(a.proveperiode_slutt).getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
                     : null;
-                  const company = a.companies as { id: string; navn: string } | null;
+                  const company = a.companies as { id: string; navn: string; orgnr: string | null } | null;
                   const kanForlenges = a.status === "proveperiode" || a.status === "utlopt" || a.status === "kansellert";
                   const reaktiver = a.status === "utlopt" || a.status === "kansellert";
 
                   return (
                     <tr key={a.id} className="border-b border-[#f1f5f9] hover:bg-[#f8fafc] transition-colors">
-                      <td className="px-6 py-4 text-sm font-medium text-[#1e293b]">
-                        {company?.navn ?? "Ukjent bedrift"}
+                      <td className="px-6 py-4">
+                        <p className="text-sm font-medium text-[#1e293b]">{company?.navn ?? "Ukjent bedrift"}</p>
+                        {company?.orgnr && (
+                          <p className="text-xs text-[#94a3b8]">Org.nr. {company.orgnr}</p>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase ${abStatusFarger[a.status] ?? "bg-gray-100 text-gray-600"}`}>
@@ -153,7 +156,12 @@ export default async function AdminAbonnementerPage() {
                             a.vipps_agreement_status === "PENDING" ? "text-amber-600" :
                             "text-gray-500"
                           }`}>
-                            {a.vipps_agreement_status}
+                            {{
+                              ACTIVE: "Aktiv",
+                              PENDING: "Venter",
+                              STOPPED: "Stoppet",
+                              EXPIRED: "Utløpt",
+                            }[a.vipps_agreement_status as string] ?? a.vipps_agreement_status}
                           </span>
                         ) : (
                           <span className="text-xs text-[#94a3b8]">Ikke opprettet</span>
