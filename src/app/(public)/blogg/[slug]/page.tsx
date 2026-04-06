@@ -70,7 +70,7 @@ function parseInline(text: string, keyPrefix: string) {
   return parts.map((part, j) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return (
-        <strong key={`${keyPrefix}-${j}`} className="text-white font-semibold">
+        <strong key={`${keyPrefix}-${j}`} className="text-gray-900 font-semibold">
           {part.replace(/\*\*/g, "")}
         </strong>
       );
@@ -101,11 +101,11 @@ export default async function BloggPost({ params }: Props) {
         <nav aria-label="Brødsmulesti" className="mb-8">
           <ol className="flex items-center gap-2 text-sm text-gray-500">
             <li>
-              <Link href="/" className="hover:text-white transition-colors">takstmann.net</Link>
+              <Link href="/" className="hover:text-gray-900 transition-colors">takstmann.net</Link>
             </li>
             <li>/</li>
             <li>
-              <Link href="/blogg" className="hover:text-white transition-colors">Blogg</Link>
+              <Link href="/blogg" className="hover:text-gray-900 transition-colors">Blogg</Link>
             </li>
             <li>/</li>
             <li className="text-gray-300 truncate max-w-[200px]">{post.tittel}</li>
@@ -122,11 +122,11 @@ export default async function BloggPost({ params }: Props) {
           })}
         </time>
 
-        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-6 leading-tight">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 leading-tight">
           {post.tittel}
         </h1>
 
-        <p className="text-lg text-gray-300 mb-8 leading-relaxed border-l-2 border-accent/40 pl-4">
+        <p className="text-lg text-gray-600 mb-8 leading-relaxed border-l-2 border-accent/40 pl-4">
           {post.ingress}
         </p>
 
@@ -134,14 +134,14 @@ export default async function BloggPost({ params }: Props) {
           {post.innhold.split("\n\n").map((paragraph, i) => {
             if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
               return (
-                <h2 key={i} className="text-xl font-bold text-white mt-8 mb-3">
+                <h2 key={i} className="text-xl font-bold text-gray-900 mt-8 mb-3">
                   {paragraph.replace(/\*\*/g, "")}
                 </h2>
               );
             }
             if (paragraph.startsWith("- ")) {
               return (
-                <ul key={i} className="list-disc list-inside space-y-1 text-gray-400 mb-4">
+                <ul key={i} className="list-disc list-inside space-y-1 text-gray-600 mb-4">
                   {paragraph.split("\n").map((line, j) => (
                     <li key={j}>{parseInline(line.replace(/^- /, ""), `li-${i}-${j}`)}</li>
                   ))}
@@ -149,7 +149,7 @@ export default async function BloggPost({ params }: Props) {
               );
             }
             return (
-              <p key={i} className="text-gray-400 leading-relaxed mb-4">
+              <p key={i} className="text-gray-600 leading-relaxed mb-4">
                 {parseInline(paragraph, `p-${i}`)}
               </p>
             );
@@ -160,7 +160,7 @@ export default async function BloggPost({ params }: Props) {
 
         {/* CTA */}
         <div className="bg-card-bg border border-card-border rounded-xl p-6 text-center">
-          <p className="text-gray-400 mb-3">Trenger du en takstmann?</p>
+          <p className="text-gray-600 mb-3">Trenger du en takstmann?</p>
           <Link
             href="/#fylker"
             className="inline-block bg-accent hover:bg-accent/80 text-white font-semibold px-6 py-2 rounded-lg transition-all"
@@ -173,7 +173,7 @@ export default async function BloggPost({ params }: Props) {
       {/* Relaterte artikler */}
       {relaterte.length > 0 && (
         <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <h2 className="text-xl font-bold text-white mb-5">Relaterte artikler</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-5">Relaterte artikler</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {relaterte.map((r) => (
               <Link
@@ -183,10 +183,10 @@ export default async function BloggPost({ params }: Props) {
               >
                 <div className="h-1 bg-gradient-to-r from-accent to-blue-400" />
                 <div className="p-4">
-                  <h3 className="text-white font-semibold text-sm mb-2 leading-snug">
+                  <h3 className="text-gray-900 font-semibold text-sm mb-2 leading-snug">
                     {r.tittel}
                   </h3>
-                  <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
+                  <p className="text-gray-600 text-xs leading-relaxed line-clamp-2">
                     {r.ingress}
                   </p>
                   <span className="inline-block mt-2 text-accent text-xs font-medium">

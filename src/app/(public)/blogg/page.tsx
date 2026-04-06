@@ -57,10 +57,10 @@ export default function BloggPage() {
                     day: "numeric",
                   })}
                 </time>
-                <h2 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-accent transition-colors">
+                <h2 className="text-gray-900 font-semibold mb-2 line-clamp-2 group-hover:text-accent transition-colors">
                   {post.tittel}
                 </h2>
-                <p className="text-gray-400 text-sm line-clamp-3 mb-4">
+                <p className="text-gray-600 text-sm line-clamp-3 mb-4">
                   {post.ingress}
                 </p>
                 <span className="text-accent text-sm font-medium">
@@ -73,7 +73,7 @@ export default function BloggPage() {
 
         {/* CTA */}
         <div className="mt-16 text-center">
-          <p className="text-gray-400 mb-4">Trenger du hjelp med takst?</p>
+          <p className="text-gray-600 mb-4">Trenger du hjelp med takst?</p>
           <Link
             href="/#fylker"
             className="inline-block bg-accent hover:bg-accent/90 text-white px-8 py-3 rounded-lg font-medium transition-colors"
