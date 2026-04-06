@@ -11,6 +11,24 @@ export default function NyttOppdragForm({
 }) {
   return (
     <form action={opprettOppdrag as unknown as (formData: FormData) => void} className="space-y-4">
+      <fieldset className="border border-[#e2e8f0] rounded-lg p-4 space-y-4">
+        <legend className="text-sm font-semibold text-[#285982] px-1">Kundeinformasjon</legend>
+        <div>
+          <label className="block text-sm font-medium text-[#374151] mb-1">Kundens navn</label>
+          <input
+            name="kunde_navn"
+            className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-[#374151] mb-1">Kundens e-post</label>
+          <input
+            type="email"
+            name="kunde_epost"
+            className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
+          />
+        </div>
+      </fieldset>
       <div>
         <label className="block text-sm font-medium text-[#374151] mb-1">Tittel *</label>
         <input
@@ -55,13 +73,23 @@ export default function NyttOppdragForm({
           />
         </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium text-[#374151] mb-1">Befaringsdato</label>
-        <input
-          type="date"
-          name="befaringsdato"
-          className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
-        />
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-[#374151] mb-1">Befaringsdato</label>
+          <input
+            type="date"
+            name="befaringsdato"
+            className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-[#374151] mb-1">Frist</label>
+          <input
+            type="date"
+            name="frist"
+            className="w-full rounded-lg border border-[#e2e8f0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#285982]"
+          />
+        </div>
       </div>
       <div>
         <label className="block text-sm font-medium text-[#374151] mb-1">Pris (kr)</label>
