@@ -50,14 +50,15 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(url)
     }
 
-    // Hent brukerrolle
+    // Hent brukerrolle og bedrift i én spørring
     const { data: profil } = await supabase
       .from('user_profiles')
-      .select('rolle')
+      .select('rolle, company_id')
       .eq('id', user.id)
       .single()
 
-    const rolle = (profil as { rolle?: string } | null)?.rolle
+    const rolle = (profil as { rolle?: string; company_id?: string | null } | null)?.rolle
+    const companyId = (profil as { rolle?: string; company_id?: string | null } | null)?.company_id
 
     // Ruter til riktig portal basert på rolle
     if (pathname === '/portal') {
@@ -80,6 +81,24 @@ export async function updateSession(request: NextRequest) {
     }
     if (pathname.startsWith('/portal/takstmann') && rolle !== 'takstmann' && rolle !== 'takstmann_admin' && rolle !== 'admin') {
       return NextResponse.redirect(new URL('/portal', request.url))
+    }
+
+    // Onboarding-sjekk for takstmenn (kun hvis ikke allerede på onboarding-siden)
+    if (
+      (rolle === 'takstmann' || rolle === 'takstmann_admin') &&
+      pathname.startsWith('/portal/takstmann') &&
+      pathname !== '/portal/takstmann/onboarding' &&
+      companyId
+    ) {
+      const { data: company } = await supabase
+        .from('companies')
+        .select('onboarding_fullfort')
+        .eq('id', companyId)
+        .single()
+
+      if (company?.onboarding_fullfort === false) {
+        return NextResponse.redirect(new URL('/portal/takstmann/onboarding', request.url))
+      }
     }
     if (pathname.startsWith('/portal/megler') && rolle !== 'megler' && rolle !== 'admin') {
       return NextResponse.redirect(new URL('/portal', request.url))

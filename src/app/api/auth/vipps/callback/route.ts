@@ -325,7 +325,7 @@ async function opprettProfiler(
   if (rolle === 'takstmann_admin' || rolle === 'takstmann') {
     const { data: company } = await supabase
       .from('companies')
-      .insert({ navn: `${navn}s firma`, epost: email })
+      .insert({ navn: `${navn}s firma`, epost: email, onboarding_fullfort: false })
       .select('id')
       .single()
 
