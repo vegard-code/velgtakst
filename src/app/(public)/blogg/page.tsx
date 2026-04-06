@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Blogg om takst og bolig | Fagartikler og tips | takstmann.net",
   description:
     "Les fagartikler om tilstandsrapport, verditakst, skadetakst, nye regler for boligsalg og tips for boligkjøpere og -selgere. Oppdatert innhold fra takstbransjen.",
+  alternates: {
+    canonical: "https://www.takstmann.net/blogg",
+  },
   openGraph: {
     title: "Blogg om takst og bolig | takstmann.net",
     description:

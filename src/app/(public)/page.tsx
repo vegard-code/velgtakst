@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "takstmann.net | Finn takstmann. Enkelt og trygt.",
   description:
     "Finn sertifiserte takstmenn i hele Norge. Velg fylke, sammenlign takstmenn og få hjelp til tilstandsrapport, verditakst, skadetakst og andre taksttjenester.",
+  alternates: {
+    canonical: "https://www.takstmann.net",
+  },
   openGraph: {
     title: "takstmann.net | Finn takstmann. Enkelt og trygt.",
     description:

@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Registrer deg som takstmann | Bli synlig på takstmann.net",
   description:
     "Bli synlig for boligkjøpere, meglere og privatpersoner i ditt fylke. Registrer deg som takstmann på takstmann.net og motta henvendelser for tilstandsrapport, verditakst og skadetakst.",
+  alternates: {
+    canonical: "https://www.takstmann.net/registrer/takstmann",
+  },
   openGraph: {
     title: "Registrer deg som takstmann | takstmann.net",
     description:

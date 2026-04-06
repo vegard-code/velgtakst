@@ -3,6 +3,10 @@ import LoggInnForm from "./LoggInnForm";
 
 export const metadata: Metadata = {
   title: "Logg inn | takstmann.net",
+  alternates: {
+    canonical: "https://www.takstmann.net/logg-inn",
+  },
+  robots: { index: false, follow: false },
 };
 
 export default function LoggInnPage() {
