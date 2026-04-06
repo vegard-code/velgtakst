@@ -27,6 +27,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Takstmann i ${fylke.navn} | Finn sertifisert takstmann | takstmann.net`,
     description: `Finn sertifiserte takstmenn i ${fylke.navn}. Sammenlign erfarne takstmenn for tilstandsrapport, verditakst, skadetakst og andre taksttjenester i ${fylke.navn}.`,
+    alternates: {
+      canonical: `https://www.takstmann.net/${fylkeId}`,
+    },
     openGraph: {
       title: `Takstmann i ${fylke.navn} | takstmann.net`,
       description: `Finn sertifiserte takstmenn i ${fylke.navn}. Tilstandsrapport, verditakst, skadetakst og mer.`,

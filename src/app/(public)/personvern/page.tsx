@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Personvernerklæring – takstmann.net",
   description: "Les om hvordan takstmann.net samler inn, bruker og beskytter dine personopplysninger.",
+  alternates: {
+    canonical: "https://www.takstmann.net/personvern",
+  },
 };
 
 export default function PersonvernPage() {

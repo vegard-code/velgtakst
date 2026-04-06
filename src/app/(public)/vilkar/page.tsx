@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Salgsvilkår | takstmann.net",
   description:
     "Salgsvilkår og betingelser for bruk av takstmann.net – Norges portal for takstmenn.",
+  alternates: {
+    canonical: "https://www.takstmann.net/vilkar",
+  },
 };
 
 export default function VilkarPage() {

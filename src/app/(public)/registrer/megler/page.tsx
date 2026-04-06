@@ -4,6 +4,9 @@ import RegistrerMeglerForm from "./RegistrerMeglerForm";
 
 export const metadata: Metadata = {
   title: "Registrer deg som megler | takstmann.net",
+  alternates: {
+    canonical: "https://www.takstmann.net/registrer/megler",
+  },
 };
 
 export default function RegistrerMeglerPage() {

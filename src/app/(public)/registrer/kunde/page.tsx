@@ -4,6 +4,9 @@ import RegistrerKundeForm from "./RegistrerKundeForm";
 
 export const metadata: Metadata = {
   title: "Bestill takst | takstmann.net",
+  alternates: {
+    canonical: "https://www.takstmann.net/registrer/kunde",
+  },
 };
 
 interface Props {
