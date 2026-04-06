@@ -14,6 +14,7 @@ interface Props {
     adresse: string | null;
     postnr: string | null;
     by: string | null;
+    kunde_epost: string | null;
     befaringsdato: string | null;
     frist: string | null;
     pris: number | null;
@@ -94,6 +95,18 @@ export default function RedigerOppdragSkjema({ oppdragId, defaultVerdier }: Prop
             className="portal-input"
           />
         </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-[#374151] mb-1.5">Kundens e-postadresse</label>
+        <input
+          type="email"
+          name="kunde_epost"
+          defaultValue={defaultVerdier.kunde_epost ?? ""}
+          placeholder="kunde@eksempel.no"
+          className="portal-input"
+        />
+        <p className="text-xs text-[#94a3b8] mt-1">Brukes for fakturering hvis kunden ikke har en brukerprofil</p>
       </div>
 
       <div>
