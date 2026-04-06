@@ -99,6 +99,11 @@ export async function sendFakturaFraSkjema(oppdragId: string, skjema: FakturaSkj
 
   if (!oppdrag) return { error: 'Oppdrag ikke funnet' }
 
+  // Idempotenssjekk — hindrer duplikatfakturaer ved gjentatte kall
+  if (oppdrag.faktura_id) {
+    return { error: `Faktura er allerede sendt for dette oppdraget (ID: ${oppdrag.faktura_id})` }
+  }
+
   const kunde = oppdrag.megler || oppdrag.privatkunde
   if (!kunde?.epost) return { error: 'Ingen kundeadresse funnet på oppdraget' }
 
