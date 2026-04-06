@@ -35,6 +35,7 @@ export async function registrerTakstmann(formData: FormData) {
       orgnr: orgnr || null,
       telefon: telefonFirma || null,
       epost: epostFirma,
+      onboarding_fullfort: true,
     })
     .select('id')
     .single()
