@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/portal/", "/api/"],
+      disallow: ["/portal/", "/admin/", "/api/"],
     },
     sitemap: "https://www.takstmann.net/sitemap.xml",
   };

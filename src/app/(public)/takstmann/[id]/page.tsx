@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${d.navn} – Takstmann | takstmann.net`,
     description: `Se profil, sertifiseringer og kontaktinfo for ${d.navn}. ${d.spesialitet ?? ""}`,
+    alternates: {
+      canonical: `https://www.takstmann.net/takstmann/${id}`,
+    },
   };
 }
 

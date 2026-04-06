@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
+import { createClient } from "@supabase/supabase-js";
 import { FYLKER } from "@/lib/supabase/types";
 import { KOMMUNER } from "@/data/kommuner";
 import data from "@/data/takstmenn.json";
 
 const BASE_URL = "https://www.takstmann.net";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   // Statiske sider
@@ -83,5 +84,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...statiskeSider, ...fylkeSider, ...kommuneSider, ...bloggSider];
+  // Takstmann-profiler fra Supabase
+  let takstmannSider: MetadataRoute.Sitemap = [];
+  try {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+    const { data: profiler } = await supabase
+      .from("takstmann_profiler")
+      .select("id, updated_at")
+      .eq("aktiv", true);
+    if (profiler) {
+      takstmannSider = profiler.map((p: { id: string; updated_at: string | null }) => ({
+        url: `${BASE_URL}/takstmann/${p.id}`,
+        lastModified: p.updated_at ? new Date(p.updated_at) : now,
+        changeFrequency: "weekly" as const,
+        priority: 0.75,
+      }));
+    }
+  } catch {
+    // Ikke kritisk – sitemap fungerer uten profiler
+  }
+
+  return [...statiskeSider, ...fylkeSider, ...kommuneSider, ...bloggSider, ...takstmannSider];
 }
