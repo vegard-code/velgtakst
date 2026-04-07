@@ -14,6 +14,10 @@ import {
   opprettKalenderHendelse,
   hentTokenForTakstmann,
 } from '@/lib/integrasjoner/google-calendar'
+import {
+  opprettKalenderHendelse as opprettOutlookHendelse,
+  hentTokenForTakstmann as hentOutlookTokenForTakstmann,
+} from '@/lib/integrasjoner/outlook-calendar'
 
 // ============================================================
 // Rate limiting – sliding window per IP (in-memory, warm instances)
@@ -591,20 +595,22 @@ export async function bekreftBestilling(bestillingId: string) {
 
   if (oppdragError || !nyttOppdrag) return { error: oppdragError?.message ?? 'Kunne ikke opprette oppdrag' }
 
+  const hendelsesData = {
+    oppdragId: nyttOppdrag.id,
+    tittel,
+    beskrivelse,
+    adresse: bestilling.adresse,
+    by: null,
+    befaringsdato: bestilling.befaringsdato,
+    oppdragType: bestilling.oppdrag_type ?? 'annet',
+  }
+
   // Google Calendar sync
   if (takstmannProfil?.id && bestilling.befaringsdato) {
     try {
       const harToken = await hentTokenForTakstmann(takstmannProfil.id)
       if (harToken) {
-        const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
-          oppdragId: nyttOppdrag.id,
-          tittel,
-          beskrivelse,
-          adresse: bestilling.adresse,
-          by: null,
-          befaringsdato: bestilling.befaringsdato,
-          oppdragType: bestilling.oppdrag_type ?? 'annet',
-        })
+        const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, hendelsesData)
         if (googleEventId) {
           await serviceClient
             .from('oppdrag')
@@ -614,6 +620,24 @@ export async function bekreftBestilling(bestillingId: string) {
       }
     } catch (err) {
       console.error('[bekreftBestilling] Google Calendar feilet:', err)
+    }
+  }
+
+  // Outlook Calendar sync
+  if (takstmannProfil?.id && bestilling.befaringsdato) {
+    try {
+      const harOutlookToken = await hentOutlookTokenForTakstmann(takstmannProfil.id)
+      if (harOutlookToken) {
+        const outlookEventId = await opprettOutlookHendelse(takstmannProfil.id, hendelsesData)
+        if (outlookEventId) {
+          await serviceClient
+            .from('oppdrag')
+            .update({ outlook_event_id: outlookEventId })
+            .eq('id', nyttOppdrag.id)
+        }
+      }
+    } catch (err) {
+      console.error('[bekreftBestilling] Outlook Calendar feilet:', err)
     }
   }
 

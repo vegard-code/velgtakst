@@ -11,6 +11,12 @@ import {
   hentTokenForTakstmann,
 } from '@/lib/integrasjoner/google-calendar'
 import {
+  opprettKalenderHendelse as opprettOutlookHendelse,
+  oppdaterKalenderHendelse as oppdaterOutlookHendelse,
+  slettKalenderHendelse as slettOutlookHendelse,
+  hentTokenForTakstmann as hentOutlookTokenForTakstmann,
+} from '@/lib/integrasjoner/outlook-calendar'
+import {
   sendStatusOppdateringVarsel,
   sendNyRapportVarsel,
 } from '@/lib/integrasjoner/epost'
@@ -150,22 +156,23 @@ export async function opprettOppdrag(formData: FormData) {
     notat: 'Oppdrag opprettet',
   })
 
-  // Google Calendar sync
-  if (takstmannProfil?.id) {
-    const harToken = await hentTokenForTakstmann(takstmannProfil.id)
-    if (harToken) {
-      const befaringsdato = (formData.get('befaringsdato') as string) || null
-      if (befaringsdato) {
-        const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
-          oppdragId: data.id,
-          tittel: formData.get('tittel') as string,
-          beskrivelse: (formData.get('beskrivelse') as string) || null,
-          adresse: (formData.get('adresse') as string) || null,
-          by: (formData.get('by') as string) || null,
-          befaringsdato,
-          oppdragType: formData.get('oppdrag_type') as string,
-        })
+  const befaringsdato = (formData.get('befaringsdato') as string) || null
+  const hendelsesData = {
+    oppdragId: data.id,
+    tittel: formData.get('tittel') as string,
+    beskrivelse: (formData.get('beskrivelse') as string) || null,
+    adresse: (formData.get('adresse') as string) || null,
+    by: (formData.get('by') as string) || null,
+    befaringsdato,
+    oppdragType: formData.get('oppdrag_type') as string,
+  }
 
+  // Google Calendar sync
+  if (takstmannProfil?.id && befaringsdato) {
+    try {
+      const harToken = await hentTokenForTakstmann(takstmannProfil.id)
+      if (harToken) {
+        const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, hendelsesData)
         if (googleEventId) {
           await serviceClient
             .from('oppdrag')
@@ -173,6 +180,26 @@ export async function opprettOppdrag(formData: FormData) {
             .eq('id', data.id)
         }
       }
+    } catch (err) {
+      console.error('[opprettOppdrag] Google Calendar feilet:', err)
+    }
+  }
+
+  // Outlook Calendar sync
+  if (takstmannProfil?.id && befaringsdato) {
+    try {
+      const harOutlookToken = await hentOutlookTokenForTakstmann(takstmannProfil.id)
+      if (harOutlookToken) {
+        const outlookEventId = await opprettOutlookHendelse(takstmannProfil.id, hendelsesData)
+        if (outlookEventId) {
+          await serviceClient
+            .from('oppdrag')
+            .update({ outlook_event_id: outlookEventId })
+            .eq('id', data.id)
+        }
+      }
+    } catch (err) {
+      console.error('[opprettOppdrag] Outlook Calendar feilet:', err)
     }
   }
 
@@ -273,10 +300,10 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  // Hent eksisterende oppdrag for å få google_event_id
+  // Hent eksisterende oppdrag for å få event IDs og takstmann_id
   const { data: eksisterende } = await serviceClient
     .from('oppdrag')
-    .select('google_event_id, takstmann_id')
+    .select('google_event_id, outlook_event_id, takstmann_id')
     .eq('id', id)
     .single()
 
@@ -298,7 +325,6 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
 
   if (error) return { error: error.message }
 
-  // Google Calendar sync
   if (eksisterende?.takstmann_id) {
     const { data: takstmannProfil } = await serviceClient
       .from('takstmann_profiler')
@@ -308,33 +334,67 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
 
     if (takstmannProfil) {
       const nyBefaringsdato = (formData.get('befaringsdato') as string) || null
+      const oppdatertHendelse = {
+        tittel: formData.get('tittel') as string,
+        adresse: (formData.get('adresse') as string) || null,
+        by: (formData.get('by') as string) || null,
+        befaringsdato: nyBefaringsdato ?? undefined,
+      }
 
-      if (eksisterende.google_event_id) {
-        await oppdaterKalenderHendelse(takstmannProfil.id, eksisterende.google_event_id, {
-          tittel: formData.get('tittel') as string,
-          adresse: (formData.get('adresse') as string) || null,
-          by: (formData.get('by') as string) || null,
-          befaringsdato: nyBefaringsdato ?? undefined,
-        })
-      } else if (nyBefaringsdato) {
-        const harToken = await hentTokenForTakstmann(takstmannProfil.id)
-        if (harToken) {
-          const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
-            oppdragId: id,
-            tittel: formData.get('tittel') as string,
-            beskrivelse: (formData.get('beskrivelse') as string) || null,
-            adresse: (formData.get('adresse') as string) || null,
-            by: (formData.get('by') as string) || null,
-            befaringsdato: nyBefaringsdato,
-            oppdragType: formData.get('oppdrag_type') as string,
-          })
-          if (googleEventId) {
-            await serviceClient
-              .from('oppdrag')
-              .update({ google_event_id: googleEventId })
-              .eq('id', id)
+      // Google Calendar sync
+      try {
+        if (eksisterende.google_event_id) {
+          await oppdaterKalenderHendelse(takstmannProfil.id, eksisterende.google_event_id, oppdatertHendelse)
+        } else if (nyBefaringsdato) {
+          const harToken = await hentTokenForTakstmann(takstmannProfil.id)
+          if (harToken) {
+            const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
+              oppdragId: id,
+              tittel: formData.get('tittel') as string,
+              beskrivelse: (formData.get('beskrivelse') as string) || null,
+              adresse: (formData.get('adresse') as string) || null,
+              by: (formData.get('by') as string) || null,
+              befaringsdato: nyBefaringsdato,
+              oppdragType: formData.get('oppdrag_type') as string,
+            })
+            if (googleEventId) {
+              await serviceClient
+                .from('oppdrag')
+                .update({ google_event_id: googleEventId })
+                .eq('id', id)
+            }
           }
         }
+      } catch (err) {
+        console.error('[oppdaterOppdrag] Google Calendar feilet:', err)
+      }
+
+      // Outlook Calendar sync
+      try {
+        if (eksisterende.outlook_event_id) {
+          await oppdaterOutlookHendelse(takstmannProfil.id, eksisterende.outlook_event_id, oppdatertHendelse)
+        } else if (nyBefaringsdato) {
+          const harOutlookToken = await hentOutlookTokenForTakstmann(takstmannProfil.id)
+          if (harOutlookToken) {
+            const outlookEventId = await opprettOutlookHendelse(takstmannProfil.id, {
+              oppdragId: id,
+              tittel: formData.get('tittel') as string,
+              beskrivelse: (formData.get('beskrivelse') as string) || null,
+              adresse: (formData.get('adresse') as string) || null,
+              by: (formData.get('by') as string) || null,
+              befaringsdato: nyBefaringsdato,
+              oppdragType: formData.get('oppdrag_type') as string,
+            })
+            if (outlookEventId) {
+              await serviceClient
+                .from('oppdrag')
+                .update({ outlook_event_id: outlookEventId })
+                .eq('id', id)
+            }
+          }
+        }
+      } catch (err) {
+        console.error('[oppdaterOppdrag] Outlook Calendar feilet:', err)
       }
     }
   }
@@ -353,10 +413,10 @@ export async function slettOppdrag(id: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  // Hent google_event_id og takstmann_id før vi kansellerer
+  // Hent event IDs og takstmann_id før vi kansellerer
   const { data: oppdrag } = await serviceClient
     .from('oppdrag')
-    .select('google_event_id, takstmann_id')
+    .select('google_event_id, outlook_event_id, takstmann_id')
     .eq('id', id)
     .single()
 
@@ -369,7 +429,20 @@ export async function slettOppdrag(id: string) {
 
   // Slett fra Google Calendar hvis den finnes
   if (oppdrag?.google_event_id && oppdrag.takstmann_id) {
-    await slettKalenderHendelse(oppdrag.takstmann_id, oppdrag.google_event_id)
+    try {
+      await slettKalenderHendelse(oppdrag.takstmann_id, oppdrag.google_event_id)
+    } catch (err) {
+      console.error('[slettOppdrag] Google Calendar feilet:', err)
+    }
+  }
+
+  // Slett fra Outlook Calendar hvis den finnes
+  if (oppdrag?.outlook_event_id && oppdrag.takstmann_id) {
+    try {
+      await slettOutlookHendelse(oppdrag.takstmann_id, oppdrag.outlook_event_id)
+    } catch (err) {
+      console.error('[slettOppdrag] Outlook Calendar feilet:', err)
+    }
   }
 
   revalidatePath('/portal/takstmann/oppdrag')

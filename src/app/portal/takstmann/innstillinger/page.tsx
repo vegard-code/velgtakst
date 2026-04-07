@@ -40,6 +40,18 @@ export default async function InnstillingerPage() {
       })()
     : false;
 
+  // Sjekk om Outlook Calendar er koblet til
+  const outlookKoblet = takstmannProfil
+    ? await (async () => {
+        const { data } = await supabase
+          .from("outlook_calendar_tokens")
+          .select("id")
+          .eq("takstmann_id", takstmannProfil.id)
+          .maybeSingle();
+        return !!data;
+      })()
+    : false;
+
   return (
     <div className="max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold text-[#1e293b] mb-6">Innstillinger</h1>
@@ -49,6 +61,7 @@ export default async function InnstillingerPage() {
           settings={settings}
           takstmannProfil={takstmannProfil}
           googleKoblet={googleKoblet}
+          outlookKoblet={outlookKoblet}
         />
       </Suspense>
       <div className="mt-8">
