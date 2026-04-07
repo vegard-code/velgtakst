@@ -1,5 +1,5 @@
 -- ============================================================
--- 023: Outlook Calendar integrasjon
+-- 028: Outlook Calendar integrasjon
 -- ============================================================
 -- Kjør denne i Supabase SQL-editor eller via supabase db push
 
