@@ -147,12 +147,6 @@ export async function GET(request: NextRequest) {
       page++
     }
 
-    // Valider at rollen er en kjent/tillatt verdi
-    const tillatteRoller = ['takstmann', 'megler', 'kunde']
-    if (savedState.rolle && !tillatteRoller.includes(savedState.rolle)) {
-      return NextResponse.redirect(new URL('/registrer?error=ugyldig_rolle', request.url))
-    }
-
     // Rollen brukeren valgte på innloggingssiden (eller default privatkunde)
     const valgtRolle = savedState.rolle || 'privatkunde'
 
