@@ -19,16 +19,20 @@ export default async function FakturaPage({ params }: Props) {
   if (!user) redirect("/logg-inn");
 
   // Hent brukerens company_id
-  const { data: profil } = await serviceClient
+  const { data: profil, error: profilError } = await serviceClient
     .from("user_profiles")
     .select("company_id")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i FakturaPage:', profilError.message);
+    return null;
+  }
 
   if (!profil?.company_id) notFound();
 
   // Hent oppdrag
-  const { data: oppdrag } = await serviceClient
+  const { data: oppdrag, error: oppdragError } = await serviceClient
     .from("oppdrag")
     .select(`
       id, tittel, oppdrag_type, adresse, by, pris, faktura_id, status,
@@ -36,7 +40,11 @@ export default async function FakturaPage({ params }: Props) {
       privatkunde:privatkunde_profiler(navn, epost)
     `)
     .eq("id", id)
-    .single();
+    .maybeSingle();
+  if (oppdragError) {
+    console.error('[oppdrag] Feil ved henting av oppdrag i FakturaPage:', oppdragError.message);
+    return null;
+  }
 
   if (!oppdrag) notFound();
 
@@ -45,7 +53,7 @@ export default async function FakturaPage({ params }: Props) {
     .from("company_settings")
     .select("regnskap_system, fiken_api_token, fiken_company_id, tripletex_employee_token, tripletex_company_id, poweroffice_client_key, poweroffice_client_secret")
     .eq("company_id", profil.company_id)
-    .single();
+    .maybeSingle();
 
   const regnskapSystem = settings?.regnskap_system ?? "ingen";
   const harRegnskapKonfigurert =

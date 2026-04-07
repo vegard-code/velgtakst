@@ -51,11 +51,15 @@ export async function updateSession(request: NextRequest) {
     }
 
     // Hent brukerrolle
-    const { data: profil } = await supabase
+    const { data: profil, error: profilError } = await supabase
       .from('user_profiles')
       .select('rolle')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+    if (profilError) {
+      console.error('[user_profiles] Feil ved henting av rolle i middleware:', profilError.message)
+      return NextResponse.redirect(new URL('/logg-inn', request.url))
+    }
 
     const rolle = (profil as { rolle?: string } | null)?.rolle
 

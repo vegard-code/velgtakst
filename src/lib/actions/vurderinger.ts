@@ -26,30 +26,42 @@ export async function sendVurdering({
   if (!user) return { error: 'Ikke innlogget' }
 
   // Finn brukerens rolle og profil
-  const { data: profil } = await supabase
+  const { data: profil, error: profilError } = await supabase
     .from('user_profiles')
     .select('rolle')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i sendVurdering:', profilError.message)
+    return { error: 'Feil ved henting av profil' }
+  }
   if (!profil) return { error: 'Fant ikke profil' }
 
   let meglerId: string | null = null
   let kundeId: string | null = null
 
   if (profil.rolle === 'megler') {
-    const { data: meglerProfil } = await supabase
+    const { data: meglerProfil, error: meglerProfilError } = await supabase
       .from('megler_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
+    if (meglerProfilError) {
+      console.error('[megler_profiler] Feil ved henting av meglerprofil i sendVurdering:', meglerProfilError.message)
+      return { error: 'Feil ved henting av meglerprofil' }
+    }
     meglerId = meglerProfil?.id ?? null
   } else if (profil.rolle === 'privatkunde') {
-    const { data: kundeProfil } = await supabase
+    const { data: kundeProfil, error: kundeProfilError } = await supabase
       .from('privatkunde_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
+    if (kundeProfilError) {
+      console.error('[privatkunde_profiler] Feil ved henting av kundeprofil i sendVurdering:', kundeProfilError.message)
+      return { error: 'Feil ved henting av kundeprofil' }
+    }
     kundeId = kundeProfil?.id ?? null
   } else {
     return { error: 'Kun kunder og meglere kan gi vurderinger' }

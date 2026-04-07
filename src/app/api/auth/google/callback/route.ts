@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
       .from('takstmann_profiler')
       .select('id')
       .eq('user_id', savedState.userId)
-      .single()
+      .maybeSingle()
 
     console.log('Google OAuth: Takstmann profil lookup:', { userId: savedState.userId, found: !!takstmannProfil, error: profilError?.message })
 

@@ -10,15 +10,19 @@ export async function sendFakturaForOppdrag(oppdragId: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: profil } = await serviceClient
+  const { data: profil, error: profilError } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i sendFakturaForOppdrag:', profilError.message)
+    return { error: 'Feil ved henting av brukerprofil' }
+  }
 
   if (!profil?.company_id) return { error: 'Ingen bedrift funnet' }
 
-  const { data: oppdrag } = await serviceClient
+  const { data: oppdrag, error: oppdragError } = await serviceClient
     .from('oppdrag')
     .select(`
       *,
@@ -26,7 +30,11 @@ export async function sendFakturaForOppdrag(oppdragId: string) {
       privatkunde:privatkunde_profiler(navn, epost)
     `)
     .eq('id', oppdragId)
-    .single()
+    .maybeSingle()
+  if (oppdragError) {
+    console.error('[oppdrag] Feil ved henting av oppdrag i sendFakturaForOppdrag:', oppdragError.message)
+    return { error: 'Feil ved henting av oppdrag' }
+  }
 
   if (!oppdrag) return { error: 'Oppdrag ikke funnet' }
   if (!oppdrag.pris) return { error: 'Oppdraget mangler pris' }
@@ -79,15 +87,19 @@ export async function sendFakturaFraSkjema(oppdragId: string, skjema: FakturaSkj
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: profil } = await serviceClient
+  const { data: profil, error: profilError } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i sendFakturaFraSkjema:', profilError.message)
+    return { error: 'Feil ved henting av brukerprofil' }
+  }
 
   if (!profil?.company_id) return { error: 'Ingen bedrift funnet' }
 
-  const { data: oppdrag } = await serviceClient
+  const { data: oppdrag, error: oppdragError } = await serviceClient
     .from('oppdrag')
     .select(`
       *,
@@ -95,7 +107,11 @@ export async function sendFakturaFraSkjema(oppdragId: string, skjema: FakturaSkj
       privatkunde:privatkunde_profiler(navn, epost)
     `)
     .eq('id', oppdragId)
-    .single()
+    .maybeSingle()
+  if (oppdragError) {
+    console.error('[oppdrag] Feil ved henting av oppdrag i sendFakturaFraSkjema:', oppdragError.message)
+    return { error: 'Feil ved henting av oppdrag' }
+  }
 
   if (!oppdrag) return { error: 'Oppdrag ikke funnet' }
 
@@ -143,7 +159,7 @@ export async function synkroniserFakturaStatus(oppdragId: string) {
     .from('oppdrag')
     .select('faktura_id, company_id, status')
     .eq('id', oppdragId)
-    .single()
+    .maybeSingle()
 
   if (!oppdrag?.faktura_id || !oppdrag.company_id) return { oppdatert: false }
 
@@ -151,7 +167,7 @@ export async function synkroniserFakturaStatus(oppdragId: string) {
     .from('company_settings')
     .select('regnskap_system, fiken_api_token, fiken_company_id, tripletex_employee_token, tripletex_company_id, poweroffice_client_key, poweroffice_client_secret')
     .eq('company_id', oppdrag.company_id)
-    .single()
+    .maybeSingle()
 
   if (!settings) return { oppdatert: false }
 

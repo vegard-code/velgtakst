@@ -23,11 +23,15 @@ export default async function BestillingerPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: takstmannProfil } = await supabase
+  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
     .from("takstmann_profiler")
     .select("id")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
+  if (takstmannProfilError) {
+    console.error('[takstmann_profiler] Feil ved henting av profil i BestillingerPage:', takstmannProfilError.message);
+    return null;
+  }
 
   const { data: bestillinger } = takstmannProfil
     ? await supabase

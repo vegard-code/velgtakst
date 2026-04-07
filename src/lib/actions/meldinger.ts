@@ -19,11 +19,15 @@ export async function hentEllerOpprettSamtale({
   if (!user) return { error: 'Ikke innlogget' }
 
   // Finn rolle
-  const { data: profil } = await supabase
+  const { data: profil, error: profilError } = await supabase
     .from('user_profiles')
     .select('rolle')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i hentEllerOpprettSamtale:', profilError.message)
+    return { error: 'Feil ved henting av profil' }
+  }
   if (!profil) return { error: 'Fant ikke profil' }
 
   let kundeId: string | null = null
@@ -34,14 +38,14 @@ export async function hentEllerOpprettSamtale({
       .from('privatkunde_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
     kundeId = data?.id ?? null
   } else if (profil.rolle === 'megler') {
     const { data } = await supabase
       .from('megler_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
     meglerId = data?.id ?? null
   } else if (profil.rolle === 'takstmann' || profil.rolle === 'takstmann_admin') {
     // Takstmann starter samtale — sjekk at vi har bestilling
@@ -173,11 +177,15 @@ export async function hentSamtaler() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return []
 
-  const { data: profil } = await supabase
+  const { data: profil, error: profilError } = await supabase
     .from('user_profiles')
     .select('rolle')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i hentSamtaler:', profilError.message)
+    return []
+  }
   if (!profil) return []
 
   const { data: samtaler, error } = await supabase

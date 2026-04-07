@@ -8,25 +8,33 @@ export default async function InnstillingerPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: profil } = await supabase
+  const { data: profil, error: profilError } = await supabase
     .from("user_profiles")
     .select("*, company:companies(*)")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i InnstillingerPage:', profilError.message);
+    return null;
+  }
 
   const { data: settings } = profil?.company_id
     ? await supabase
         .from("company_settings")
         .select("*")
         .eq("company_id", profil.company_id)
-        .single()
+        .maybeSingle()
     : { data: null };
 
-  const { data: takstmannProfil } = await supabase
+  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
     .from("takstmann_profiler")
     .select("*")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
+  if (takstmannProfilError) {
+    console.error('[takstmann_profiler] Feil ved henting av profil i InnstillingerPage:', takstmannProfilError.message);
+    return null;
+  }
 
   // Sjekk om Google Calendar er koblet til
   const googleKoblet = takstmannProfil

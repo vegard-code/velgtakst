@@ -21,7 +21,7 @@ export default async function TakstmannPortalLayout({
     .from("user_profiles")
     .select("rolle, navn, company_id")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
   const profil = profilRaw as { rolle: string; navn: string; company_id: string | null } | null;
 
   if (!profil || (profil.rolle !== "takstmann" && profil.rolle !== "takstmann_admin" && profil.rolle !== "admin")) {
@@ -30,7 +30,7 @@ export default async function TakstmannPortalLayout({
 
   const [companyResult, ulesteMeldinger, nyeBestillinger] = await Promise.all([
     profil.company_id
-      ? supabase.from("companies").select("navn").eq("id", profil.company_id).single()
+      ? supabase.from("companies").select("navn").eq("id", profil.company_id).maybeSingle()
       : Promise.resolve({ data: null }),
     hentAntallUleste(),
     hentAntallNyeBestillinger(),

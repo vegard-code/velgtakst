@@ -45,7 +45,7 @@ export async function hentTokenForTakstmann(takstmannId: string) {
     .from('google_calendar_tokens')
     .select('*')
     .eq('takstmann_id', takstmannId)
-    .single()
+    .maybeSingle()
 
   if (error || !data) return null
   return data

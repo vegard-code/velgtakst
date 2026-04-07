@@ -62,11 +62,15 @@ export default async function KalenderPage({
   if (!user) return null;
 
   // Hent Google Calendar tilkoblingsstatus
-  const { data: takstmannProfil } = await supabase
+  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
     .from("takstmann_profiler")
     .select("id")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
+  if (takstmannProfilError) {
+    console.error('[takstmann_profiler] Feil ved henting av profil i KalenderPage:', takstmannProfilError.message);
+    return null;
+  }
 
   const googleKoblet = takstmannProfil
     ? await (async () => {

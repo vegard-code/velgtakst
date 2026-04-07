@@ -18,7 +18,7 @@ export default async function AdminLoggInnPage() {
       .from("user_profiles")
       .select("rolle")
       .eq("id", user.id)
-      .single();
+      .maybeSingle();
     const rolle = (profil as { rolle?: string } | null)?.rolle;
     if (rolle === "admin") redirect("/portal/admin");
     else redirect("/portal");

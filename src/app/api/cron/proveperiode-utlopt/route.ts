@@ -108,7 +108,7 @@ export async function GET(request: Request) {
           .from('takstmann_profiler')
           .select('navn, epost')
           .eq('id', profil?.id ?? '')
-          .single()
+          .maybeSingle()
         if (!fullProfil || !(fullProfil as { epost?: string }).epost) continue
         const fp = fullProfil as { navn: string; epost: string }
         try {

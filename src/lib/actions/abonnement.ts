@@ -39,7 +39,7 @@ export async function startVippsAbonnement(companyId: string) {
     .from('takstmann_profiler')
     .select('id, telefon, company_id')
     .eq('user_id', user.id)
-    .single()
+    .maybeSingle()
 
   if (!takstmann || takstmann.company_id !== companyId) {
     return { error: 'Ugyldig bedrift' }
@@ -104,7 +104,7 @@ export async function siOppAbonnement(companyId: string) {
     .from('abonnementer')
     .select('vipps_agreement_id, status')
     .eq('company_id', companyId)
-    .single()
+    .maybeSingle()
 
   if (!abonnement?.vipps_agreement_id) {
     // Ingen Vipps-avtale — bare sett status til kansellert
@@ -123,7 +123,7 @@ export async function siOppAbonnement(companyId: string) {
         .from('takstmann_profiler')
         .select('id')
         .eq('user_id', user.id)
-        .single()
+        .maybeSingle()
 
       if (takstmann) {
         await supabase

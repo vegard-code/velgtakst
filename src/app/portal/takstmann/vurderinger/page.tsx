@@ -7,11 +7,15 @@ export default async function TakstmannVurderingerPage() {
 
   if (!user) return <p className="text-[#94a3b8]">Ikke innlogget</p>;
 
-  const { data: tProfil } = await supabase
+  const { data: tProfil, error: tProfilError } = await supabase
     .from("takstmann_profiler")
     .select("id, navn")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
+  if (tProfilError) {
+    console.error('[takstmann_profiler] Feil ved henting av profil i TakstmannVurderingerPage:', tProfilError.message);
+    return null;
+  }
 
   if (!tProfil) return <p className="text-[#94a3b8]">Ingen takstmannprofil funnet</p>;
 

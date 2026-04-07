@@ -61,7 +61,7 @@ export default async function FinnTakstmannMeglerPage({ searchParams }: Props) {
   // Hent megler-profilId for bestilling
   const { data: { user } } = await supabase.auth.getUser();
   const { data: meglerProfil } = user
-    ? await supabase.from("megler_profiler").select("id").eq("user_id", user.id).single()
+    ? await supabase.from("megler_profiler").select("id").eq("user_id", user.id).maybeSingle()
     : { data: null };
 
   return (

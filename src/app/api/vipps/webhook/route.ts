@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       .from('oppdrag')
       .select('id, totalbelop, status')
       .eq('id', oppdragId)
-      .single()
+      .maybeSingle()
 
     if (!oppdrag) {
       console.warn('Vipps webhook: Oppdrag not found for reference:', reference)

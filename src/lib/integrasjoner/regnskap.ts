@@ -27,11 +27,15 @@ export interface FakturaResultat {
 export async function hentRegnskapsklient(companyId: string) {
   const supabase = await createClient()
 
-  const { data: settings } = await supabase
+  const { data: settings, error: settingsError } = await supabase
     .from('company_settings')
     .select('*')
     .eq('company_id', companyId)
-    .single()
+    .maybeSingle()
+  if (settingsError) {
+    console.error('[company_settings] Feil ved henting av regnskapsinnstillinger:', settingsError.message)
+    return { klient: null, system: 'ingen' as const }
+  }
 
   if (!settings?.regnskap_system || settings.regnskap_system === 'ingen') {
     return { klient: null, system: 'ingen' as const }

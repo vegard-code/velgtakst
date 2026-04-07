@@ -11,7 +11,7 @@ export default async function MeglerProfilPage() {
     .from("megler_profiler")
     .select("*")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">

@@ -30,11 +30,15 @@ export async function hentOppdragListe(filter?: {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return []
 
-  const { data: profil } = await serviceClient
+  const { data: profil, error: profilError } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i hentOppdragListe:', profilError.message)
+    return []
+  }
 
   let query = serviceClient
     .from('oppdrag')
@@ -88,7 +92,7 @@ export async function hentOppdragDetaljer(id: string) {
       purre_logg(*)
     `)
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
   if (error || !data) return null
   return data
@@ -105,11 +109,15 @@ export async function opprettOppdrag(formData: FormData) {
   if (!user) return { error: 'Ikke autentisert' }
 
   // Bruk service client for å unngå RLS-rekursjon
-  const { data: profil } = await serviceClient
+  const { data: profil, error: profilError } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i opprettOppdrag:', profilError.message)
+    return { error: 'Feil ved henting av brukerprofil' }
+  }
 
   if (!profil?.company_id) return { error: 'Ingen bedrift funnet' }
 
@@ -117,7 +125,7 @@ export async function opprettOppdrag(formData: FormData) {
     .from('takstmann_profiler')
     .select('id')
     .eq('user_id', user.id)
-    .single()
+    .maybeSingle()
 
   const { data, error } = await serviceClient
     .from('oppdrag')
@@ -199,7 +207,7 @@ export async function oppdaterOppdragStatus(
       privatkunde:privatkunde_profiler(navn, epost)
     `)
     .eq('id', oppdragId)
-    .single()
+    .maybeSingle()
 
   const { error } = await serviceClient
     .from('oppdrag')
@@ -233,7 +241,7 @@ export async function oppdaterOppdragStatus(
           .eq('er_rapport', true)
           .order('created_at', { ascending: false })
           .limit(1)
-          .single()
+          .maybeSingle()
 
         await sendNyRapportVarsel({
           til: bestiller.epost,
@@ -276,7 +284,7 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
     .from('oppdrag')
     .select('google_event_id, takstmann_id')
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
   const { error } = await serviceClient
     .from('oppdrag')
@@ -301,7 +309,7 @@ export async function oppdaterOppdrag(id: string, formData: FormData) {
       .from('takstmann_profiler')
       .select('id')
       .eq('id', eksisterende.takstmann_id)
-      .single()
+      .maybeSingle()
 
     if (takstmannProfil) {
       const nyBefaringsdato = (formData.get('befaringsdato') as string) || null
@@ -355,7 +363,7 @@ export async function slettOppdrag(id: string) {
     .from('oppdrag')
     .select('google_event_id, takstmann_id')
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
   const { error } = await serviceClient
     .from('oppdrag')
@@ -383,11 +391,15 @@ export async function hentDashboardStats() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: profil } = await serviceClient
+  const { data: profil, error: profilError } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i hentDashboardStats:', profilError.message)
+    return null
+  }
 
   if (!profil?.company_id) return null
 

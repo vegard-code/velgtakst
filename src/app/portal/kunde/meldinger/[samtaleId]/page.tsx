@@ -21,7 +21,7 @@ export default async function KundeSamtalePage({ params }: Props) {
       takstmann:takstmann_profiler(navn)
     `)
     .eq('id', samtaleId)
-    .single()
+    .maybeSingle()
 
   if (!samtale) notFound()
 

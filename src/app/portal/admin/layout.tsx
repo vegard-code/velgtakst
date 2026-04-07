@@ -19,7 +19,7 @@ export default async function AdminPortalLayout({
     .from("user_profiles")
     .select("rolle, navn")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
   const profil = profilRaw as { rolle: string; navn: string } | null;
 
   if (!profil || profil.rolle !== "admin") {

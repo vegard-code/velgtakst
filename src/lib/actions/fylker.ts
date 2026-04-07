@@ -25,7 +25,7 @@ export async function hentEllerOpprettAbonnement(companyId: string) {
     .from('abonnementer')
     .select('*')
     .eq('company_id', companyId)
-    .single()
+    .maybeSingle()
 
   if (existing) return existing
 
@@ -79,7 +79,7 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
     .from('takstmann_profiler')
     .select('company_id')
     .eq('id', takstmannId)
-    .single()
+    .maybeSingle()
 
   let betaltTil: Date
 
@@ -89,7 +89,7 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
       .from('abonnementer')
       .select('status, proveperiode_slutt, vipps_agreement_id')
       .eq('company_id', takstmann.company_id)
-      .single()
+      .maybeSingle()
 
     if (abonnement?.status === 'proveperiode') {
       // Sjekk antall aktive fylker — første 3 er gratis
