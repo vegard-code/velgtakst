@@ -76,6 +76,11 @@ export default function MeglerProfilForm({ profil }: { profil: MeglerProfil | nu
           <input name="telefon" defaultValue={profil?.telefon ?? ""} className="portal-input" />
         </div>
         <div>
+          <label className="block text-sm font-medium text-[#374151] mb-1.5">Kontakt-epost</label>
+          <input name="epost" type="email" defaultValue={profil?.epost ?? ""} className="portal-input" placeholder="din@epost.no" />
+          <p className="mt-1.5 text-xs text-[#64748b]">E-postadressen brukt til innlogging via Vipps kan ikke endres. Du kan endre kontakt-e-posten din her.</p>
+        </div>
+        <div>
           <label className="block text-sm font-medium text-[#374151] mb-1.5">Meglerforetak</label>
           <input name="meglerforetak" defaultValue={profil?.meglerforetak ?? ""} className="portal-input" />
         </div>
