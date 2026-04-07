@@ -133,6 +133,7 @@ export async function opprettAgreement(params: OpprettAgreementParams): Promise<
     merchantRedirectUrl: params.returnUrl,
     merchantAgreementUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/takstmann/abonnement`,
     productName: params.productName,
+    notificationUrl: params.notificationUrl,
   }
 
   // phoneNumber must be MSISDN format (e.g. "4712345678")
