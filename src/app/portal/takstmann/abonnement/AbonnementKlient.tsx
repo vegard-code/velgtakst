@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { startVippsAbonnement, siOppAbonnement } from "@/lib/actions/abonnement";
 import type { Abonnement } from "@/lib/supabase/types";
@@ -15,6 +16,20 @@ interface Props {
 export default function AbonnementKlient({ abonnement, companyId, aktiveFylker, maanedligKostnad }: Props) {
   const [laster, setLaster] = useState(false);
   const [melding, setMelding] = useState<{ type: "ok" | "feil"; tekst: string } | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const venterPaaVipps = searchParams.get("status") === "ok";
+  const [harRefreshet, setHarRefreshet] = useState(false);
+
+  useEffect(() => {
+    if (venterPaaVipps && !harRefreshet) {
+      const timer = setTimeout(() => {
+        setHarRefreshet(true);
+        router.refresh();
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [venterPaaVipps, harRefreshet, router]);
 
   const erProveperiode = abonnement?.status === "proveperiode";
   const erAktiv = abonnement?.status === "aktiv";
@@ -63,6 +78,13 @@ export default function AbonnementKlient({ abonnement, companyId, aktiveFylker, 
   return (
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold text-[#1e293b] mb-6">Abonnement</h1>
+
+      {/* Venter på Vipps-bekreftelse */}
+      {venterPaaVipps && (
+        <div className="mb-4 px-4 py-3 rounded-lg text-sm bg-blue-50 border border-blue-200 text-blue-700">
+          Venter på bekreftelse fra Vipps... Siden oppdateres automatisk.
+        </div>
+      )}
 
       {/* Status-kort */}
       <div className="portal-card p-6 mb-6">

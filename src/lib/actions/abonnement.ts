@@ -96,7 +96,23 @@ export async function siOppAbonnement(companyId: string) {
     .eq('company_id', companyId)
     .maybeSingle()
 
-  if (!abonnement?.vipps_agreement_id) {
+  // Kanseller Vipps-avtale hvis den finnes
+  if (abonnement?.vipps_agreement_id) {
+    try {
+      await stoppAgreement(abonnement.vipps_agreement_id)
+      await serviceClient
+        .from('abonnementer')
+        .update({
+          status: 'kansellert',
+          vipps_agreement_status: 'STOPPED',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('company_id', companyId)
+    } catch (err) {
+      console.error('Si opp abonnement error:', err)
+      return { error: 'Kunne ikke si opp abonnement. Kontakt oss.' }
+    }
+  } else {
     // Ingen Vipps-avtale — bare sett status til kansellert
     await serviceClient
       .from('abonnementer')
@@ -105,46 +121,26 @@ export async function siOppAbonnement(companyId: string) {
         updated_at: new Date().toISOString(),
       })
       .eq('company_id', companyId)
+  }
 
-    // Deaktiver alle fylker
-    const { data: { user } } = await supabase.auth.getUser()
-    if (user) {
-      const { data: takstmann } = await supabase
-        .from('takstmann_profiler')
-        .select('id')
-        .eq('user_id', user.id)
-        .maybeSingle()
+  // Deaktiver alle fylker – alltid ved kansellering
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) {
+    const { data: takstmann } = await supabase
+      .from('takstmann_profiler')
+      .select('id')
+      .eq('user_id', user.id)
+      .maybeSingle()
 
-      if (takstmann) {
-        await supabase
-          .from('fylke_synlighet')
-          .update({ er_aktiv: false })
-          .eq('takstmann_id', takstmann.id)
-      }
+    if (takstmann) {
+      await supabase
+        .from('fylke_synlighet')
+        .update({ er_aktiv: false })
+        .eq('takstmann_id', takstmann.id)
     }
-
-    revalidatePath('/portal/takstmann/abonnement')
-    revalidatePath('/portal/takstmann/fylker')
-    return { success: true }
   }
 
-  try {
-    await stoppAgreement(abonnement.vipps_agreement_id)
-
-    await serviceClient
-      .from('abonnementer')
-      .update({
-        status: 'kansellert',
-        vipps_agreement_status: 'STOPPED',
-        updated_at: new Date().toISOString(),
-      })
-      .eq('company_id', companyId)
-
-    revalidatePath('/portal/takstmann/abonnement')
-    revalidatePath('/portal/takstmann/fylker')
-    return { success: true }
-  } catch (err) {
-    console.error('Si opp abonnement error:', err)
-    return { error: 'Kunne ikke si opp abonnement. Kontakt oss.' }
-  }
+  revalidatePath('/portal/takstmann/abonnement')
+  revalidatePath('/portal/takstmann/fylker')
+  return { success: true }
 }

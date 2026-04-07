@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/cron/abonnement-trekk",
+      "schedule": "0 6 * * *"
+    },
+    {
       "path": "/api/cron/purring",
       "schedule": "0 8 * * *"
     },
