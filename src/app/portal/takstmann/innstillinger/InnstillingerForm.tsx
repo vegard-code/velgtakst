@@ -19,9 +19,10 @@ interface Props {
   settings: CompanySettings | null;
   takstmannProfil: TakstmannProfil | null;
   googleKoblet: boolean;
+  outlookKoblet: boolean;
 }
 
-export default function InnstillingerForm({ profil, settings, takstmannProfil, googleKoblet }: Props) {
+export default function InnstillingerForm({ profil, settings, takstmannProfil, googleKoblet, outlookKoblet }: Props) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -31,13 +32,17 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
     const error = searchParams.get("error");
     if (success === "google_tilkoblet") return { type: "ok", tekst: "Google Kalender er koblet til!" };
     if (success === "google_frakoblet") return { type: "ok", tekst: "Google Kalender er frakoblet." };
+    if (success === "outlook_tilkoblet") return { type: "ok", tekst: "Outlook Kalender er koblet til!" };
+    if (success === "outlook_frakoblet") return { type: "ok", tekst: "Outlook Kalender er frakoblet." };
     if (error === "google_avbrutt") return { type: "feil", tekst: "Google-tilkobling ble avbrutt." };
-    if (error === "token_feil") return { type: "feil", tekst: "Kunne ikke hente tokens fra Google. Prøv igjen." };
+    if (error === "outlook_avbrutt") return { type: "feil", tekst: "Outlook-tilkobling ble avbrutt." };
+    if (error === "token_feil") return { type: "feil", tekst: "Kunne ikke hente tokens. Prøv igjen." };
     return null;
   });
   const [laster, setLaster] = useState(false);
   const [aktifFane, setAktifFane] = useState<"profil" | "regnskap" | "purring" | "integrasjoner">(initialFane);
   const [frakobler, setFrakobler] = useState(false);
+  const [frakoblerOutlook, setFrakoblerOutlook] = useState(false);
 
   // Spesialiteter (maks 2)
   const [spes1, setSpes1] = useState(takstmannProfil?.spesialitet ?? "");
@@ -101,6 +106,25 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
       setMelding({ type: "feil", tekst: "Kunne ikke koble fra Google Kalender." });
     } finally {
       setFrakobler(false);
+    }
+  }
+
+  async function handleFrakobleOutlook() {
+    setFrakoblerOutlook(true);
+    try {
+      const res = await fetch("/api/auth/outlook/disconnect?redirect=/portal/takstmann/innstillinger%3Ffane%3Dintegrasjoner%26success%3Doutlook_frakoblet", {
+        method: "POST",
+        redirect: "follow",
+      });
+      if (res.redirected) {
+        router.push(new URL(res.url).pathname + new URL(res.url).search);
+      } else {
+        router.refresh();
+      }
+    } catch {
+      setMelding({ type: "feil", tekst: "Kunne ikke koble fra Outlook Kalender." });
+    } finally {
+      setFrakoblerOutlook(false);
     }
   }
 
@@ -448,6 +472,81 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                       </svg>
                       Koble Google Kalender
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Outlook Calendar */}
+            <div className="border border-[#e2e8f0] rounded-xl p-5">
+              <div className="flex items-start gap-4">
+                {/* Outlook ikon */}
+                <div className="w-10 h-10 rounded-lg border border-[#e2e8f0] flex items-center justify-center bg-white shrink-0">
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                    <rect x="1" y="1" width="10" height="10" rx="1" fill="#F35325"/>
+                    <rect x="13" y="1" width="10" height="10" rx="1" fill="#81BC06"/>
+                    <rect x="1" y="13" width="10" height="10" rx="1" fill="#05A6F0"/>
+                    <rect x="13" y="13" width="10" height="10" rx="1" fill="#FFBA08"/>
+                  </svg>
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-[#1e293b] font-medium">Outlook Kalender</h3>
+                    {outlookKoblet ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Tilkoblet
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#f1f5f9] text-[#64748b] text-xs font-medium">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                        Ikke tilkoblet
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[#64748b] text-sm mb-4">
+                    Synkroniser oppdrag automatisk til din Outlook Kalender. Nye oppdrag med befaringsdato legges inn som hendelser, og oppdateres automatisk ved endringer.
+                  </p>
+
+                  {outlookKoblet ? (
+                    <button
+                      type="button"
+                      onClick={handleFrakobleOutlook}
+                      disabled={frakoblerOutlook}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-sm font-medium transition-colors disabled:opacity-50"
+                    >
+                      {frakoblerOutlook ? (
+                        <>
+                          <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          </svg>
+                          Kobler fra...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                          </svg>
+                          Koble fra Outlook Kalender
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <a
+                      href="/api/auth/outlook"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#285982] text-white hover:bg-[#1e4266] text-sm font-medium transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      </svg>
+                      Koble Outlook Kalender
                     </a>
                   )}
                 </div>
