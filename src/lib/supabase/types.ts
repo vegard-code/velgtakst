@@ -467,6 +467,11 @@ export const ALLE_TJENESTER = [
   'Energirådgivning',
   'Landbrukstakst',
   'Våtromsinspeksjon',
+  'Budsjettkontroll og byggelånsoppfølging',
+  'Tegning til byggesak',
+  'Rådgivning',
+  'Oppfølging av prosjekt',
+  'Rettighetserklæringer i fast eiendom',
 ] as const
 
 export type TjenesteNavn = (typeof ALLE_TJENESTER)[number]
