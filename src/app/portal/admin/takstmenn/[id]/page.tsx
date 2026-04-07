@@ -36,7 +36,7 @@ export default async function AdminTakstmannProfilPage({
     .from('takstmann_profiler')
     .select('id, navn, epost, telefon, tittel, spesialitet, sertifiseringer, created_at, company_id')
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
   if (!takstmann) notFound()
 
@@ -46,7 +46,7 @@ export default async function AdminTakstmannProfilPage({
         .from('abonnementer')
         .select('status, proveperiode_start, proveperiode_slutt, maanedlig_belop, vipps_agreement_id, vipps_agreement_status')
         .eq('company_id', takstmann.company_id)
-        .single()
+        .maybeSingle()
     : { data: null }
 
   // Hent fylkesynlighet

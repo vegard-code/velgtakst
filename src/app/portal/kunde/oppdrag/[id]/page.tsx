@@ -30,7 +30,7 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
       oppdrag(*, dokumenter(*))
     `)
     .eq("id", id)
-    .single();
+    .maybeSingle();
   const bestilling = raw as unknown as {
     id: string;
     status: string;

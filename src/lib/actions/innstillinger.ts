@@ -9,11 +9,15 @@ export async function oppdaterInnstillinger(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: profil } = await serviceClient
+  const { data: profil, error: profilError } = await serviceClient
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i oppdaterInnstillinger:', profilError.message)
+    return { error: 'Feil ved henting av brukerprofil' }
+  }
 
   const fane = formData.get('fane') as string
 

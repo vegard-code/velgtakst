@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .from("takstmann_profiler")
     .select("navn, spesialitet")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   if (!data) return {};
   const d = data as unknown as Pick<TakstmannProfil, "navn" | "spesialitet">;
@@ -42,7 +42,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
     .from("takstmann_profiler")
     .select("*")
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   if (!profilRaw) notFound();
   const profil = profilRaw as unknown as TakstmannProfil;
@@ -78,7 +78,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
   const fylker = (fylkerRaw ?? []) as unknown as Pick<FylkeSynlighet, "fylke_id">[];
 
   const { data: companyRaw } = profil.company_id
-    ? await supabase.from("companies").select("navn").eq("id", profil.company_id).single()
+    ? await supabase.from("companies").select("navn").eq("id", profil.company_id).maybeSingle()
     : { data: null };
   const companyNavn = (companyRaw as { navn: string } | null)?.navn;
 
@@ -91,7 +91,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
       .from("privatkunde_profiler")
       .select("id")
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
     if (kundeP) {
       kundeProfilId = (kundeP as { id: string }).id;
     } else {
@@ -99,7 +99,7 @@ export default async function TakstmannProfilPage({ params }: Props) {
         .from("megler_profiler")
         .select("id")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
       if (meglerP) meglerProfilId = (meglerP as { id: string }).id;
     }
   }

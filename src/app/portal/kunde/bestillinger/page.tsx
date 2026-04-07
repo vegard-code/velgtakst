@@ -22,7 +22,7 @@ export default async function KundeBestillingerPage() {
     .from("privatkunde_profiler")
     .select("id")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
 
   if (!kundeProfil) return null;
 

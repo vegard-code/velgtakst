@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       .from('abonnementer')
       .select('id, company_id, status')
       .eq('vipps_agreement_id', agreementId)
-      .single()
+      .maybeSingle()
 
     if (!abonnement) {
       console.warn('Webhook: No abonnement found for agreement', agreementId)

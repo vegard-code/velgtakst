@@ -13,7 +13,7 @@ export default async function KundeInnboksPage() {
     .from("privatkunde_profiler")
     .select("id")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
 
   const [bestillinger, samtaler] = await Promise.all([
     kundeProfil

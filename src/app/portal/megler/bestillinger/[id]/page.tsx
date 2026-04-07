@@ -23,7 +23,7 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
       oppdrag(*, dokumenter(*))
     `)
     .eq("id", id)
-    .single();
+    .maybeSingle();
   const bestilling = raw as unknown as {
     id: string;
     status: string;
@@ -39,7 +39,7 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
   // Hent megler-profil for vurdering
   const { data: { user } } = await supabase.auth.getUser();
   const { data: meglerProfil } = user
-    ? await supabase.from("megler_profiler").select("id").eq("user_id", user.id).single()
+    ? await supabase.from("megler_profiler").select("id").eq("user_id", user.id).maybeSingle()
     : { data: null };
 
   // Sjekk om vurdering allerede er gitt
@@ -50,7 +50,7 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
         .eq("takstmann_id", bestilling.takstmann.id)
         .eq("megler_id", meglerProfil?.id ?? "")
         .eq("oppdrag_id", bestilling.oppdrag_id ?? "")
-        .single()
+        .maybeSingle()
     : { data: null };
 
   return (

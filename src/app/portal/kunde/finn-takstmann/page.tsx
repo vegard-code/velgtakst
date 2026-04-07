@@ -53,7 +53,7 @@ export default async function KundeFinnTakstmannPage({ searchParams }: Props) {
 
   const { data: { user } } = await supabase.auth.getUser();
   const { data: kundeProfil } = user
-    ? await supabase.from("privatkunde_profiler").select("id").eq("user_id", user.id).single()
+    ? await supabase.from("privatkunde_profiler").select("id").eq("user_id", user.id).maybeSingle()
     : { data: null };
 
   return (

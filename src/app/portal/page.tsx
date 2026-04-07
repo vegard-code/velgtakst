@@ -13,7 +13,7 @@ export default async function PortalRootPage() {
     .from("user_profiles")
     .select("rolle")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
   const rolle = profil?.rolle;
 

@@ -17,7 +17,7 @@ export default async function MeglerPortalLayout({
     .from("user_profiles")
     .select("rolle, navn, company_id")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
   const profil = profilRaw as { rolle: string; navn: string; company_id: string | null } | null;
 
   if (!profil || (profil.rolle !== "megler" && profil.rolle !== "admin")) redirect("/portal");

@@ -181,7 +181,7 @@ export async function GET(request: NextRequest) {
         .from('user_profiles')
         .select('rolle')
         .eq('id', userId)
-        .single()
+        .maybeSingle()
 
       if (!eksisterendeProfil) {
         console.log('Existing auth user missing user_profile, creating with rolle:', valgtRolle)
@@ -228,7 +228,7 @@ export async function GET(request: NextRequest) {
       .from('user_profiles')
       .select('rolle')
       .eq('id', userId)
-      .single()
+      .maybeSingle()
 
     const faktiskRolle = (profilData as { rolle?: string } | null)?.rolle ?? 'privatkunde'
 

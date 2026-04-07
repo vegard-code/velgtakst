@@ -51,11 +51,15 @@ export async function updateSession(request: NextRequest) {
     }
 
     // Hent brukerrolle og bedrift i én spørring
-    const { data: profil } = await supabase
+    const { data: profil, error: profilError } = await supabase
       .from('user_profiles')
       .select('rolle, company_id')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
+    if (profilError) {
+      console.error('[user_profiles] Feil ved henting av rolle i middleware:', profilError.message)
+      return NextResponse.redirect(new URL('/logg-inn', request.url))
+    }
 
     const rolle = (profil as { rolle?: string; company_id?: string | null } | null)?.rolle
     const companyId = (profil as { rolle?: string; company_id?: string | null } | null)?.company_id

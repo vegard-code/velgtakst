@@ -41,7 +41,7 @@ export default async function TakstmannDashboard() {
       .from("takstmann_profiler")
       .select("id")
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
 
     if (tProfil) {
       const { data: vurderinger } = await supabase

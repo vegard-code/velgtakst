@@ -15,11 +15,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Ikke autentisert' }, { status: 401 })
   }
 
-  const { data: takstmannProfil } = await supabase
+  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
     .from('takstmann_profiler')
     .select('id')
     .eq('user_id', user.id)
-    .single()
+    .maybeSingle()
+
+  if (takstmannProfilError) {
+    console.error('[takstmann_profiler] Feil ved henting av profil i google/disconnect:', takstmannProfilError.message)
+    return NextResponse.json({ error: 'Feil ved henting av profil' }, { status: 500 })
+  }
 
   if (!takstmannProfil) {
     return NextResponse.json({ error: 'Takstmann-profil ikke funnet' }, { status: 404 })

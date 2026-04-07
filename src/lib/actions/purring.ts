@@ -10,7 +10,7 @@ export async function sendPurring(oppdragId: string, purreType: 'purring_1' | 'p
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Ikke autentisert' }
 
-  const { data: oppdrag } = await serviceClient
+  const { data: oppdrag, error: oppdragError } = await serviceClient
     .from('oppdrag')
     .select(`
       *,
@@ -18,7 +18,11 @@ export async function sendPurring(oppdragId: string, purreType: 'purring_1' | 'p
       privatkunde:privatkunde_profiler(navn, epost)
     `)
     .eq('id', oppdragId)
-    .single()
+    .maybeSingle()
+  if (oppdragError) {
+    console.error('[oppdrag] Feil ved henting av oppdrag i sendPurring:', oppdragError.message)
+    return { error: 'Feil ved henting av oppdrag' }
+  }
 
   if (!oppdrag) return { error: 'Oppdrag ikke funnet' }
 
@@ -92,7 +96,7 @@ export async function kjorAutomatiskPurring() {
       .from('company_settings')
       .select('purring_dager_1, purring_dager_2, inkasso_dager')
       .eq('company_id', oppdrag.company_id)
-      .single()
+      .maybeSingle()
 
     const dagerSidenstatus = Math.floor(
       (naa.getTime() - new Date(oppdrag.updated_at).getTime()) / (1000 * 60 * 60 * 24)

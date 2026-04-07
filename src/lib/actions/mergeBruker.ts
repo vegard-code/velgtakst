@@ -12,11 +12,15 @@ export async function mergeBrukere(
   if (!user) return { success: false, error: 'Ikke autentisert' }
 
   const svc = await createServiceClient()
-  const { data: adminProfil } = await svc
+  const { data: adminProfil, error: adminProfilError } = await svc
     .from('user_profiles')
     .select('rolle')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+  if (adminProfilError) {
+    console.error('[user_profiles] Feil ved henting av profil i mergeBrukere:', adminProfilError.message)
+    return { success: false, error: 'Feil ved henting av profil' }
+  }
   if (adminProfil?.rolle !== 'admin') return { success: false, error: 'Krever admin-tilgang' }
   if (bevarId === slettId) return { success: false, error: 'Kan ikke merge en bruker med seg selv' }
 

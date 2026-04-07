@@ -9,11 +9,15 @@ export default async function FylkerSynlighetPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: takstmannProfil } = await supabase
+  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
     .from("takstmann_profiler")
     .select("id, company_id")
     .eq("user_id", user.id)
-    .single();
+    .maybeSingle();
+  if (takstmannProfilError) {
+    console.error('[takstmann_profiler] Feil ved henting av profil i FylkerSynlighetPage:', takstmannProfilError.message);
+    return null;
+  }
 
   const { data: synligheter } = takstmannProfil
     ? await supabase

@@ -10,12 +10,16 @@ export async function DELETE(req: NextRequest) {
   if (!id) return NextResponse.json({ error: 'Mangler id' }, { status: 400 })
 
   // Hent dokumentet og verifiser eierskap
-  const { data: dok } = await supabase
+  const { data: dok, error: dokError } = await supabase
     .from('dokumenter')
     .select('id, storage_path, lastet_opp_av')
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
+  if (dokError) {
+    console.error('[dokumenter] Feil ved henting av dokument i slett:', dokError.message)
+    return NextResponse.json({ error: 'Feil ved henting av dokument' }, { status: 500 })
+  }
   if (!dok) return NextResponse.json({ error: 'Dokument ikke funnet' }, { status: 404 })
 
   if (dok.lastet_opp_av !== user.id) {

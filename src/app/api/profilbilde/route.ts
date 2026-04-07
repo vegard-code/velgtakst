@@ -26,12 +26,16 @@ export async function POST(req: NextRequest) {
   }
 
   // Hent takstmann-profil
-  const { data: takstmann } = await supabase
+  const { data: takstmann, error: takstmannError } = await supabase
     .from('takstmann_profiler')
     .select('id, bilde_url')
     .eq('user_id', user.id)
-    .single()
+    .maybeSingle()
 
+  if (takstmannError) {
+    console.error('[takstmann_profiler] Feil ved henting av profil i profilbilde:', takstmannError.message)
+    return NextResponse.json({ error: 'Feil ved henting av profil' }, { status: 500 })
+  }
   if (!takstmann) {
     return NextResponse.json({ error: 'Fant ikke takstmann-profil' }, { status: 404 })
   }

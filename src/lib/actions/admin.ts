@@ -12,7 +12,7 @@ async function sjekkAdmin() {
     .from('user_profiles')
     .select('rolle')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if ((profil as { rolle: string } | null)?.rolle !== 'admin') return null
   return user
@@ -42,7 +42,7 @@ export async function forlengProveperiode(
     .from('takstmann_profiler')
     .select('id, company_id')
     .eq('id', takstmannId)
-    .single()
+    .maybeSingle()
 
   if (takstmannError || !takstmann?.company_id) {
     return { error: 'Fant ikke takstmann' }
@@ -53,7 +53,7 @@ export async function forlengProveperiode(
     .from('abonnementer')
     .select('id, status, proveperiode_slutt')
     .eq('company_id', takstmann.company_id)
-    .single()
+    .maybeSingle()
 
   if (abError || !ab) {
     return { error: 'Fant ikke abonnement' }

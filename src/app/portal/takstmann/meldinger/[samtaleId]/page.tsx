@@ -14,7 +14,7 @@ export default async function TakstmannSamtalePage({ params }: Props) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: samtale } = await supabase
+  const { data: samtale, error: samtaleError } = await supabase
     .from('samtaler')
     .select(`
       id, takstmann_id, kunde_id, megler_id,
@@ -22,8 +22,12 @@ export default async function TakstmannSamtalePage({ params }: Props) {
       megler:megler_profiler(navn)
     `)
     .eq('id', samtaleId)
-    .single()
+    .maybeSingle()
 
+  if (samtaleError) {
+    console.error('[samtaler] Feil ved henting av samtale i TakstmannSamtalePage:', samtaleError.message)
+    return null
+  }
   if (!samtale) notFound()
 
   const kunde = samtale.kunde as unknown as { navn: string } | null

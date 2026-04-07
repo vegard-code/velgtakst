@@ -18,7 +18,7 @@ export default async function KundePortalLayout({
     .from("user_profiles")
     .select("rolle, navn")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
   const profil = profilRaw as { rolle: string; navn: string } | null;
 
   if (!profil || (profil.rolle !== "privatkunde" && profil.rolle !== "admin")) redirect("/portal");

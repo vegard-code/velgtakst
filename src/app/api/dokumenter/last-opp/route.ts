@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Verifiser at brukeren har tilgang til oppdraget
-  const { data: oppdrag } = await supabase
+  const { data: oppdrag, error: oppdragError } = await supabase
     .from('oppdrag')
     .select(`
       id, tittel,
@@ -47,8 +47,12 @@ export async function POST(req: NextRequest) {
       takstmann:takstmann_profiler(navn)
     `)
     .eq('id', oppdragId)
-    .single()
+    .maybeSingle()
 
+  if (oppdragError) {
+    console.error('[oppdrag] Feil ved henting av oppdrag i last-opp:', oppdragError.message)
+    return NextResponse.json({ error: 'Feil ved henting av oppdrag' }, { status: 500 })
+  }
   if (!oppdrag) {
     return NextResponse.json({ error: 'Oppdrag ikke funnet eller ingen tilgang' }, { status: 404 })
   }

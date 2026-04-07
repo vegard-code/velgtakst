@@ -97,20 +97,20 @@ export async function opprettBestilling(
         .from('takstmann_profiler')
         .select('navn, epost')
         .eq('id', takstmannId)
-        .single(),
+        .maybeSingle(),
       meglerEllerKundeId.meglerProfilId
         ? supabase
             .from('megler_profiler')
             .select('navn, telefon, epost')
             .eq('id', meglerEllerKundeId.meglerProfilId)
-            .single()
+            .maybeSingle()
         : Promise.resolve({ data: null }),
       meglerEllerKundeId.kundeProfilId
         ? supabase
             .from('privatkunde_profiler')
             .select('navn, telefon, epost')
             .eq('id', meglerEllerKundeId.kundeProfilId)
-            .single()
+            .maybeSingle()
         : Promise.resolve({ data: null }),
     ])
 
@@ -222,7 +222,7 @@ export async function opprettBestillingFraPublikk(input: {
       .from('takstmann_profiler')
       .select('navn, epost')
       .eq('id', takstmannId)
-      .single()
+      .maybeSingle()
 
     if (takstmann?.epost) {
       if (meglerProfilId) {
@@ -230,7 +230,7 @@ export async function opprettBestillingFraPublikk(input: {
           .from('megler_profiler')
           .select('navn, telefon, epost')
           .eq('id', meglerProfilId)
-          .single()
+          .maybeSingle()
         bestillerNavn = (megler as { navn: string } | null)?.navn ?? 'Megler'
         bestillerTelefon = (megler as { telefon: string | null } | null)?.telefon ?? null
         bestillerEpost = (megler as { epost: string | null } | null)?.epost ?? null
@@ -240,7 +240,7 @@ export async function opprettBestillingFraPublikk(input: {
           .from('privatkunde_profiler')
           .select('navn, telefon, epost')
           .eq('id', kundeProfilId)
-          .single()
+          .maybeSingle()
         bestillerNavn = (kunde as { navn: string } | null)?.navn ?? bestillerNavn
         bestillerTelefon = (kunde as { telefon: string | null } | null)?.telefon ?? null
         bestillerEpost = (kunde as { epost: string | null } | null)?.epost ?? null
@@ -286,7 +286,7 @@ export async function oppdaterBestillingStatus(
       kunde:privatkunde_profiler(navn, epost)
     `)
     .eq('id', bestillingId)
-    .single()
+    .maybeSingle()
 
   const { error } = await serviceClient
     .from('bestillinger')
@@ -338,7 +338,7 @@ export async function hentMinebestillinger(rolle: 'megler' | 'kunde'): Promise<B
       .from('megler_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (!profil) return []
 
@@ -358,7 +358,7 @@ export async function hentMinebestillinger(rolle: 'megler' | 'kunde'): Promise<B
       .from('privatkunde_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
 
     if (!profil) return []
 
@@ -398,7 +398,7 @@ export async function sendTilbud(
       takstmann:takstmann_profiler(navn, telefon, epost)
     `)
     .eq('id', bestillingId)
-    .single()
+    .maybeSingle()
 
   const { error } = await serviceClient
     .from('bestillinger')
@@ -465,7 +465,7 @@ export async function aksepterTilbud(
       kunde:privatkunde_profiler(navn, epost)
     `)
     .eq('id', bestillingId)
-    .single()
+    .maybeSingle()
 
   const { error } = await serviceClient
     .from('bestillinger')
@@ -542,13 +542,13 @@ export async function bekreftBestilling(bestillingId: string) {
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   const { data: takstmannProfil } = await serviceClient
     .from('takstmann_profiler')
     .select('id')
     .eq('user_id', user.id)
-    .single()
+    .maybeSingle()
 
   const { data: bestilling } = await serviceClient
     .from('bestillinger')
@@ -557,7 +557,7 @@ export async function bekreftBestilling(bestillingId: string) {
       kunde:privatkunde_profiler(id, navn)
     `)
     .eq('id', bestillingId)
-    .single()
+    .maybeSingle()
 
   if (!bestilling) return { error: 'Bestilling ikke funnet' }
 
@@ -688,7 +688,7 @@ export async function hentAntallNyeBestillinger(): Promise<number> {
     .from('user_profiles')
     .select('rolle')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   const rolle = (profilData as { rolle: string } | null)?.rolle
 
@@ -697,7 +697,7 @@ export async function hentAntallNyeBestillinger(): Promise<number> {
       .from('takstmann_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
     if (!takstmannProfil) return 0
 
     const { count } = await serviceClient
@@ -715,7 +715,7 @@ export async function hentAntallNyeBestillinger(): Promise<number> {
       .from('privatkunde_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .single()
+      .maybeSingle()
     if (!kundeProfil) return 0
 
     const { count } = await serviceClient

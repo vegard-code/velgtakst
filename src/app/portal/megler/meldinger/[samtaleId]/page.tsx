@@ -30,7 +30,7 @@ export default async function MeglerSamtalePage({ params }: Props) {
       takstmann:takstmann_profiler(navn)
     `)
     .eq('id', samtaleId)
-    .single()
+    .maybeSingle()
 
   // Samtale finnes ikke, eller innlogget megler er ikke deltaker
   if (!samtale || samtale.megler_id !== (meglerProfil as { id: string }).id) notFound()

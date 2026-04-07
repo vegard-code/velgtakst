@@ -19,11 +19,16 @@ export async function GET(request: NextRequest) {
   }
 
   // Verifiser at brukeren er takstmann
-  const { data: profil } = await supabase
+  const { data: profil, error: profilError } = await supabase
     .from('user_profiles')
     .select('rolle')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
+
+  if (profilError) {
+    console.error('[user_profiles] Feil ved henting av profil i google/route:', profilError.message)
+    return NextResponse.json({ error: 'Feil ved henting av profil' }, { status: 500 })
+  }
 
   if (!profil || (profil.rolle !== 'takstmann' && profil.rolle !== 'takstmann_admin' && profil.rolle !== 'admin')) {
     return NextResponse.json({ error: 'Ikke autorisert' }, { status: 403 })

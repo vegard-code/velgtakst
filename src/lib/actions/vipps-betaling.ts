@@ -21,7 +21,7 @@ export async function sendVippsBetalingForOppdrag(oppdragId: string) {
       company:companies(navn)
     `)
     .eq('id', oppdragId)
-    .single()
+    .maybeSingle()
 
   if (error || !oppdrag) {
     return { error: 'Fant ikke oppdraget.' }
@@ -81,7 +81,7 @@ export async function captureVippsForOppdrag(oppdragId: string) {
     .from('oppdrag')
     .select('vipps_referanse, totalbelop')
     .eq('id', oppdragId)
-    .single()
+    .maybeSingle()
 
   if (!oppdrag?.vipps_referanse || !oppdrag.totalbelop) {
     return { error: 'Ingen Vipps-betaling funnet for dette oppdraget.' }
