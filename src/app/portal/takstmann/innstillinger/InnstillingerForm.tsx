@@ -153,6 +153,11 @@ export default function InnstillingerForm({ profil, settings, takstmannProfil, g
                 <label className="block text-sm font-medium text-[#374151] mb-1.5">Telefon</label>
                 <input name="telefon" defaultValue={takstmannProfil?.telefon ?? ""} className="portal-input" />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-[#374151] mb-1.5">Kontakt-epost</label>
+                <input name="epost" type="email" defaultValue={takstmannProfil?.epost ?? ""} className="portal-input" placeholder="din@epost.no" />
+                <p className="mt-1.5 text-xs text-[#64748b]">E-postadressen brukt til innlogging via Vipps kan ikke endres. Du kan endre kontakt-e-posten din her.</p>
+              </div>
             </div>
 
             {/* Spesialiteter (maks 2) */}

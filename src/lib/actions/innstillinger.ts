@@ -30,6 +30,7 @@ export async function oppdaterInnstillinger(formData: FormData) {
       .update({
         navn: formData.get('navn') as string,
         telefon: (formData.get('telefon') as string) || null,
+        epost: (formData.get('epost') as string) || null,
         spesialitet: (formData.get('spesialitet') as string) || null,
         spesialitet_2: (formData.get('spesialitet_2') as string) || null,
         tjenester,
