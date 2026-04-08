@@ -37,11 +37,6 @@ async function getAccessToken(): Promise<string> {
     return tokenCache.token
   }
 
-  console.log('Vipps getAccessToken: requesting from', `${BASE_URL}/accesstoken/get`)
-  console.log('Vipps getAccessToken: isTest =', isTest, ', VIPPS_TEST_MODE =', process.env.VIPPS_TEST_MODE)
-  console.log('Vipps getAccessToken: client_id length =', process.env.VIPPS_CLIENT_ID?.length ?? 'MISSING')
-  console.log('Vipps getAccessToken: MSN =', process.env.VIPPS_MSN ?? 'MISSING')
-
   const res = await fetch(`${BASE_URL}/accesstoken/get`, {
     method: 'POST',
     headers: {
@@ -49,13 +44,13 @@ async function getAccessToken(): Promise<string> {
       'client_id': process.env.VIPPS_CLIENT_ID!,
       'client_secret': process.env.VIPPS_CLIENT_SECRET!,
       'Ocp-Apim-Subscription-Key': process.env.VIPPS_SUBSCRIPTION_KEY!,
-      'Merchant-Serial-Number': process.env.VIPPS_MSN!,
+      'Merchant-Serial-Number': process.env.VIPPS_RECURRING_MSN ?? process.env.VIPPS_MSN!,
     },
   })
 
   if (!res.ok) {
     const err = await res.text()
-    console.error('Vipps token error status:', res.status, 'body:', err)
+    console.error('Vipps recurring token error:', res.status, err)
     throw new Error(`Vipps token error ${res.status}: ${err}`)
   }
 
@@ -73,7 +68,7 @@ function vippsHeaders(accessToken: string, idempotencyKey?: string) {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
     'Ocp-Apim-Subscription-Key': process.env.VIPPS_SUBSCRIPTION_KEY!,
-    'Merchant-Serial-Number': process.env.VIPPS_MSN!,
+    'Merchant-Serial-Number': process.env.VIPPS_RECURRING_MSN ?? process.env.VIPPS_MSN!,
     'Vipps-System-Name': 'VelgTakst',
     'Vipps-System-Version': '1.0.0',
   }
@@ -143,9 +138,6 @@ export async function opprettAgreement(params: OpprettAgreementParams): Promise<
     }
   }
 
-  console.log('Vipps opprettAgreement request URL:', `${BASE_URL}/recurring/v3/agreements`)
-  console.log('Vipps opprettAgreement request body:', JSON.stringify(body, null, 2))
-
   const res = await fetch(`${BASE_URL}/recurring/v3/agreements`, {
     method: 'POST',
     headers: vippsHeaders(accessToken, crypto.randomUUID()),
@@ -153,8 +145,6 @@ export async function opprettAgreement(params: OpprettAgreementParams): Promise<
   })
 
   const responseText = await res.text()
-  console.log('Vipps opprettAgreement response status:', res.status)
-  console.log('Vipps opprettAgreement response body:', responseText)
 
   if (!res.ok) {
     throw new Error(`Vipps API ${res.status}: ${responseText}`)

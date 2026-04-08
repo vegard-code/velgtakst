@@ -54,14 +54,6 @@ export async function startVippsAbonnement(companyId: string) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
   try {
-    console.log('startVippsAbonnement: calling opprettAgreement with', {
-      maanedligKroner,
-      maanedligOre,
-      companyId,
-      siteUrl,
-      telefon: takstmann.telefon ? '***' : 'null',
-    })
-
     const result = await opprettAgreement({
       customerPhone: takstmann.telefon || undefined,
       monthlyAmountOre: maanedligOre,
@@ -70,8 +62,6 @@ export async function startVippsAbonnement(companyId: string) {
       returnUrl: `${siteUrl}/portal/takstmann/abonnement?status=ok`,
       notificationUrl: `${siteUrl}/api/vipps/recurring-webhook`,
     })
-
-    console.log('startVippsAbonnement: agreement created, id =', result.agreementId)
 
     // Lagre agreement ID (service client for abonnementer-tabellen)
     await serviceClient

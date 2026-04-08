@@ -31,8 +31,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing reference' }, { status: 400 })
     }
 
-    console.log(`Vipps webhook: ${state} for ${reference}`)
-
     // Hent oppdrag-ID fra referanse (format: "oppdrag-{uuid}")
     const oppdragId = reference.replace('oppdrag-', '')
 
@@ -56,7 +54,6 @@ export async function POST(request: NextRequest) {
         if (oppdrag.totalbelop && oppdrag.totalbelop > 0) {
           try {
             await captureVippsBetaling(reference, Math.round(oppdrag.totalbelop * 100))
-            console.log(`Vipps: Auto-captured ${oppdrag.totalbelop} kr for oppdrag ${oppdragId}`)
           } catch (captureErr) {
             console.error('Vipps auto-capture failed:', captureErr)
           }

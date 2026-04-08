@@ -30,7 +30,7 @@ export async function hentEllerOpprettAbonnement(companyId: string) {
   if (existing) return existing
 
   if (selectError) {
-    console.log('hentEllerOpprettAbonnement select:', selectError.code, selectError.message)
+    console.error('hentEllerOpprettAbonnement select:', selectError.code, selectError.message)
   }
 
   // Opprett prøveperiode-abonnement (30 dager gratis)

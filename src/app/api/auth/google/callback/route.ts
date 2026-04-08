@@ -64,7 +64,6 @@ export async function GET(request: NextRequest) {
   try {
     // Bytt code mot tokens
     const oauth2Client = lagOAuth2Client()
-    console.log('Google OAuth: Exchanging code for tokens. Redirect URI:', process.env.GOOGLE_REDIRECT_URI ?? 'NOT SET')
 
     let tokens
     try {
@@ -90,8 +89,6 @@ export async function GET(request: NextRequest) {
       .eq('user_id', savedState.userId)
       .single()
 
-    console.log('Google OAuth: Takstmann profil lookup:', { userId: savedState.userId, found: !!takstmannProfil, error: profilError?.message })
-
     if (!takstmannProfil) {
       return NextResponse.redirect(
         new URL(`${redirectBase}?fane=integrasjoner&error=takstmann_ikke_funnet`, request.url)
@@ -106,8 +103,6 @@ export async function GET(request: NextRequest) {
       scope: tokens.scope ?? null,
       token_type: tokens.token_type ?? 'Bearer',
     })
-
-    console.log('Google Calendar koblet til for takstmann:', takstmannProfil.id)
 
     return NextResponse.redirect(
       new URL(`${redirectBase}?fane=integrasjoner&success=google_tilkoblet`, request.url)

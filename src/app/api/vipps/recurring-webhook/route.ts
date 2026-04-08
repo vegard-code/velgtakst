@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    console.log('Vipps recurring webhook:', JSON.stringify(body, null, 2))
 
     const agreementId = body.agreementId as string | undefined
     const status = body.status as string | undefined
@@ -57,8 +56,6 @@ export async function POST(request: NextRequest) {
         updated_at: new Date().toISOString(),
       })
       .eq('id', abonnement.id)
-
-    console.log(`Abonnement ${abonnement.id} oppdatert: ${abonnement.status} → ${nyStatus}`)
 
     return NextResponse.json({ ok: true })
   } catch (err) {
