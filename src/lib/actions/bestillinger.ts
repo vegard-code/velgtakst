@@ -65,12 +65,38 @@ export async function opprettBestilling(
   oppdragType?: OppdragType,
   adresse?: string
 ) {
+  // Bruk vanlig klient for auth-sjekk, service client for insert (RLS blokkerer ellers)
   const supabase = await createClient()
+  const serviceSupabase = await createServiceClient()
+
+  // Verifiser at bruker er innlogget
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Du må være innlogget for å sende en bestilling' }
+
+  // Verifiser at bestilleren faktisk eier profilen de oppgir
+  if (meglerEllerKundeId.kundeProfilId) {
+    const { data: kundeProfil } = await serviceSupabase
+      .from('privatkunde_profiler')
+      .select('id')
+      .eq('id', meglerEllerKundeId.kundeProfilId)
+      .eq('user_id', user.id)
+      .single()
+    if (!kundeProfil) return { error: 'Ugyldig kundeprofil' }
+  }
+  if (meglerEllerKundeId.meglerProfilId) {
+    const { data: meglerProfil } = await serviceSupabase
+      .from('megler_profiler')
+      .select('id')
+      .eq('id', meglerEllerKundeId.meglerProfilId)
+      .eq('user_id', user.id)
+      .single()
+    if (!meglerProfil) return { error: 'Ugyldig meglerprofil' }
+  }
 
   // Privatkunder bruker ny tilbudsflyt, meglere bruker gammel flyt
   const bestillingStatus = meglerEllerKundeId.kundeProfilId ? 'forespørsel' : 'ny'
 
-  const { data, error } = await supabase
+  const { data, error } = await serviceSupabase
     .from('bestillinger')
     .insert({
       takstmann_id: takstmannId,
@@ -89,20 +115,20 @@ export async function opprettBestilling(
   // Send e-postvarsel til takstmann
   try {
     const [{ data: takstmann }, meglerData, kundeData] = await Promise.all([
-      supabase
+      serviceSupabase
         .from('takstmann_profiler')
         .select('navn, epost')
         .eq('id', takstmannId)
         .single(),
       meglerEllerKundeId.meglerProfilId
-        ? supabase
+        ? serviceSupabase
             .from('megler_profiler')
             .select('navn, telefon, epost')
             .eq('id', meglerEllerKundeId.meglerProfilId)
             .single()
         : Promise.resolve({ data: null }),
       meglerEllerKundeId.kundeProfilId
-        ? supabase
+        ? serviceSupabase
             .from('privatkunde_profiler')
             .select('navn, telefon, epost')
             .eq('id', meglerEllerKundeId.kundeProfilId)
