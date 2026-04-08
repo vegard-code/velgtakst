@@ -35,17 +35,45 @@ export default async function BestillingerPage() {
     console.error('[takstmann_profiler] Feil ved henting av profil i BestillingerPage:', takstmannProfilError.message);
     return null;
   }
-  const { data: bestillinger } = takstmannProfil
+  // Hent bestillinger UTEN PostgREST-joins (fungerer ikke med vårt oppsett)
+  const { data: bestillingerRå, error: bestillingerError } = takstmannProfil
     ? await serviceSupabase
         .from("bestillinger")
-        .select(`
-          *,
-          megler:megler_profiler(id, navn, meglerforetak, telefon, epost),
-          kunde:privatkunde_profiler(id, navn, telefon, epost)
-        `)
+        .select("*")
         .eq("takstmann_id", takstmannProfil.id)
         .order("created_at", { ascending: false })
+    : { data: [], error: null };
+
+  if (bestillingerError) {
+    console.error('[bestillinger] Feil:', bestillingerError.message);
+  }
+
+  // Hent relaterte megler- og kundeprofiler i separate spørringer
+  const meglerIder = [...new Set((bestillingerRå ?? []).map(b => b.bestilt_av_megler_id).filter(Boolean))];
+  const kundeIder = [...new Set((bestillingerRå ?? []).map(b => b.bestilt_av_kunde_id).filter(Boolean))];
+
+  const { data: meglerProfiler } = meglerIder.length > 0
+    ? await serviceSupabase
+        .from("megler_profiler")
+        .select("id, navn, meglerforetak, telefon, epost")
+        .in("id", meglerIder)
     : { data: [] };
+
+  const { data: kundeProfiler } = kundeIder.length > 0
+    ? await serviceSupabase
+        .from("privatkunde_profiler")
+        .select("id, navn, telefon, epost")
+        .in("id", kundeIder)
+    : { data: [] };
+
+  const meglerMap = Object.fromEntries((meglerProfiler ?? []).map(m => [m.id, m]));
+  const kundeMap = Object.fromEntries((kundeProfiler ?? []).map(k => [k.id, k]));
+
+  const bestillinger = (bestillingerRå ?? []).map(b => ({
+    ...b,
+    megler: b.bestilt_av_megler_id ? meglerMap[b.bestilt_av_megler_id] ?? null : null,
+    kunde: b.bestilt_av_kunde_id ? kundeMap[b.bestilt_av_kunde_id] ?? null : null,
+  }));
 
   const foresporsler = (bestillinger ?? []).filter((b) => b.status === "forespørsel");
   const tilSvar = (bestillinger ?? []).filter((b) => b.status === "tilbud_sendt");

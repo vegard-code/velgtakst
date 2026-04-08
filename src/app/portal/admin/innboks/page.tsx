@@ -14,18 +14,36 @@ const STATUS_FARGER: Record<string, string> = {
 export default async function AdminInnboksPage() {
   const supabase = await createServiceClient();
 
-  const { data: bestillinger } = await supabase
+  // Hent bestillinger UTEN PostgREST-joins
+  const { data: bestillingerRå } = await supabase
     .from("bestillinger")
-    .select(`
-      id, status, oppdrag_type, adresse, tilbudspris, created_at, updated_at,
-      bestilt_av_kunde_id,
-      takstmann:takstmann_profiler(navn),
-      megler:megler_profiler(navn),
-      kunde:privatkunde_profiler(navn)
-    `)
+    .select("id, status, oppdrag_type, adresse, tilbudspris, created_at, updated_at, bestilt_av_kunde_id, bestilt_av_megler_id, takstmann_id")
     .in("status", ["forespørsel", "ny", "tilbud_sendt", "akseptert"])
     .order("updated_at", { ascending: false })
     .limit(50);
+
+  // Hent relaterte profiler i separate spørringer
+  const bRå = bestillingerRå ?? [];
+  const tIds = [...new Set(bRå.map(b => b.takstmann_id).filter(Boolean))];
+  const mIds = [...new Set(bRå.map(b => b.bestilt_av_megler_id).filter(Boolean))];
+  const kIds = [...new Set(bRå.map(b => b.bestilt_av_kunde_id).filter(Boolean))];
+
+  const [tRes, mRes, kRes] = await Promise.all([
+    tIds.length > 0 ? supabase.from("takstmann_profiler").select("id, navn").in("id", tIds) : Promise.resolve({ data: [] as any[] }),
+    mIds.length > 0 ? supabase.from("megler_profiler").select("id, navn").in("id", mIds) : Promise.resolve({ data: [] as any[] }),
+    kIds.length > 0 ? supabase.from("privatkunde_profiler").select("id, navn").in("id", kIds) : Promise.resolve({ data: [] as any[] }),
+  ]);
+
+  const tMap = Object.fromEntries((tRes.data ?? []).map(t => [t.id, t]));
+  const mMap = Object.fromEntries((mRes.data ?? []).map(m => [m.id, m]));
+  const kMap = Object.fromEntries((kRes.data ?? []).map(k => [k.id, k]));
+
+  const bestillinger = bRå.map(b => ({
+    ...b,
+    takstmann: b.takstmann_id ? tMap[b.takstmann_id] ?? null : null,
+    megler: b.bestilt_av_megler_id ? mMap[b.bestilt_av_megler_id] ?? null : null,
+    kunde: b.bestilt_av_kunde_id ? kMap[b.bestilt_av_kunde_id] ?? null : null,
+  }));
 
   const { data: stats } = await supabase
     .from("bestillinger")

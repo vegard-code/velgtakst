@@ -17,18 +17,34 @@ export default async function KundeInnboksPage() {
     .eq("user_id", user.id)
     .single();
 
-  const [bestillinger, samtaler] = await Promise.all([
+  // Hent bestillinger UTEN PostgREST-joins
+  const [bestillingerRes, samtaler] = await Promise.all([
     kundeProfil
       ? serviceSupabase
           .from("bestillinger")
-          .select(`*, takstmann:takstmann_profiler(navn)`)
+          .select("*")
           .eq("bestilt_av_kunde_id", (kundeProfil as { id: string }).id)
           .in("status", ["forespørsel", "tilbud_sendt", "akseptert", "bekreftet"])
           .order("updated_at", { ascending: false })
           .limit(20)
-      : Promise.resolve({ data: [] }),
+      : Promise.resolve({ data: [] as any[], error: null }),
     hentSamtaler(),
   ]);
+
+  // Hent takstmann-navn i separat spørring
+  const bData = bestillingerRes.data ?? [];
+  const tIds = [...new Set(bData.map(b => b.takstmann_id).filter(Boolean))];
+  const { data: tProfiler } = tIds.length > 0
+    ? await serviceSupabase.from("takstmann_profiler").select("id, navn").in("id", tIds)
+    : { data: [] as any[] };
+  const tMap = Object.fromEntries((tProfiler ?? []).map(t => [t.id, t]));
+
+  const bestillinger = {
+    data: bData.map(b => ({
+      ...b,
+      takstmann: b.takstmann_id ? tMap[b.takstmann_id] ?? null : null,
+    })),
+  };
 
   const ulesteSamtaler = (samtaler ?? []).filter((s) => s.uleste > 0);
   const tilbudSendt = (bestillinger.data ?? []).filter((b) => b.status === "tilbud_sendt");
@@ -165,4 +181,3 @@ export default async function KundeInnboksPage() {
     </div>
   );
 }
-                                                                                             

@@ -23,16 +23,10 @@ export default async function AdminBestillingerPage({
   const params = await searchParams;
   const supabase = await createServiceClient();
 
+  // Hent bestillinger UTEN PostgREST-joins
   let query = supabase
     .from("bestillinger")
-    .select(`
-      id, oppdrag_id, takstmann_id, bestilt_av_megler_id, bestilt_av_kunde_id,
-      status, melding, oppdrag_type, adresse, tilbudspris, tilbud_sendt_at,
-      created_at, updated_at,
-      takstmann:takstmann_profiler(navn),
-      megler:megler_profiler(navn),
-      kunde:privatkunde_profiler(navn)
-    `)
+    .select("id, oppdrag_id, takstmann_id, bestilt_av_megler_id, bestilt_av_kunde_id, status, melding, oppdrag_type, adresse, tilbudspris, tilbud_sendt_at, created_at, updated_at")
     .order("created_at", { ascending: false })
     .limit(100);
 
@@ -40,7 +34,30 @@ export default async function AdminBestillingerPage({
     query = query.eq("status", params.status);
   }
 
-  const { data: bestillinger } = await query;
+  const { data: bestillingerRå } = await query;
+
+  // Hent relaterte profiler i separate spørringer
+  const bRå = bestillingerRå ?? [];
+  const tIds = [...new Set(bRå.map(b => b.takstmann_id).filter(Boolean))];
+  const mIds = [...new Set(bRå.map(b => b.bestilt_av_megler_id).filter(Boolean))];
+  const kIds = [...new Set(bRå.map(b => b.bestilt_av_kunde_id).filter(Boolean))];
+
+  const [tRes, mRes, kRes] = await Promise.all([
+    tIds.length > 0 ? supabase.from("takstmann_profiler").select("id, navn").in("id", tIds) : Promise.resolve({ data: [] as any[] }),
+    mIds.length > 0 ? supabase.from("megler_profiler").select("id, navn").in("id", mIds) : Promise.resolve({ data: [] as any[] }),
+    kIds.length > 0 ? supabase.from("privatkunde_profiler").select("id, navn").in("id", kIds) : Promise.resolve({ data: [] as any[] }),
+  ]);
+
+  const tMap = Object.fromEntries((tRes.data ?? []).map(t => [t.id, t]));
+  const mMap = Object.fromEntries((mRes.data ?? []).map(m => [m.id, m]));
+  const kMap = Object.fromEntries((kRes.data ?? []).map(k => [k.id, k]));
+
+  const bestillinger = bRå.map(b => ({
+    ...b,
+    takstmann: b.takstmann_id ? tMap[b.takstmann_id] ?? null : null,
+    megler: b.bestilt_av_megler_id ? mMap[b.bestilt_av_megler_id] ?? null : null,
+    kunde: b.bestilt_av_kunde_id ? kMap[b.bestilt_av_kunde_id] ?? null : null,
+  }));
 
   // Statistikk
   const { data: alle } = await supabase

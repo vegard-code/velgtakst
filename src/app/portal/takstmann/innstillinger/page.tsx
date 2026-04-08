@@ -51,6 +51,7 @@ export default async function InnstillingerPage() {
           settings={settings}
           takstmannProfil={takstmannProfil}
           googleKoblet={googleKoblet}
+          outlookKoblet={false}
         />
       </Suspense>
       <div className="mt-8">

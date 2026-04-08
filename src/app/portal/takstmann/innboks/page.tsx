@@ -20,18 +20,48 @@ export default async function TakstmannInnboksPage() {
     console.error('[takstmann_profiler] Feil ved henting av profil i TakstmannInnboksPage:', takstmannProfilError.message);
     return null;
   }
-  const [bestillinger, samtaler] = await Promise.all([
+  // Hent bestillinger UTEN PostgREST-joins
+  const [bestillingerRes, samtaler] = await Promise.all([
     takstmannProfil
       ? serviceSupabase
           .from("bestillinger")
-          .select(`*, kunde:privatkunde_profiler(navn), megler:megler_profiler(navn)`)
+          .select("*")
           .eq("takstmann_id", (takstmannProfil as { id: string }).id)
           .in("status", ["forespørsel", "ny", "tilbud_sendt", "akseptert"])
           .order("updated_at", { ascending: false })
           .limit(20)
-      : Promise.resolve({ data: [] }),
+      : Promise.resolve({ data: [] as any[], error: null }),
     hentSamtaler(),
   ]);
+
+  if (bestillingerRes.error) {
+    console.error('[innboks bestillinger] Feil:', bestillingerRes.error.message);
+  }
+
+  // Hent relaterte profiler i separate spørringer
+  const bData = bestillingerRes.data ?? [];
+  const meglerIds = [...new Set(bData.map(b => b.bestilt_av_megler_id).filter(Boolean))];
+  const kundeIds = [...new Set(bData.map(b => b.bestilt_av_kunde_id).filter(Boolean))];
+
+  const [meglerRes, kundeRes] = await Promise.all([
+    meglerIds.length > 0
+      ? serviceSupabase.from("megler_profiler").select("id, navn").in("id", meglerIds)
+      : Promise.resolve({ data: [] as any[] }),
+    kundeIds.length > 0
+      ? serviceSupabase.from("privatkunde_profiler").select("id, navn").in("id", kundeIds)
+      : Promise.resolve({ data: [] as any[] }),
+  ]);
+
+  const meglerMap = Object.fromEntries((meglerRes.data ?? []).map(m => [m.id, m]));
+  const kundeMap = Object.fromEntries((kundeRes.data ?? []).map(k => [k.id, k]));
+
+  const bestillinger = {
+    data: bData.map(b => ({
+      ...b,
+      megler: b.bestilt_av_megler_id ? meglerMap[b.bestilt_av_megler_id] ?? null : null,
+      kunde: b.bestilt_av_kunde_id ? kundeMap[b.bestilt_av_kunde_id] ?? null : null,
+    })),
+  };
 
   const ulesteSamtaler = (samtaler ?? []).filter((s) => s.uleste > 0);
 

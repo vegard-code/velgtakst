@@ -16,16 +16,42 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
   const supabase = await createClient();
   const serviceSupabase = await createServiceClient();
 
-  const { data: raw } = await serviceSupabase
+  // Hent bestilling UTEN PostgREST-joins
+  const { data: bestillingRå } = await serviceSupabase
     .from("bestillinger")
-    .select(`
-      *,
-      takstmann:takstmann_profiler(id, navn, spesialitet, telefon, epost, bilde_url, sertifiseringer),
-      oppdrag(*, dokumenter(*))
-    `)
+    .select("*")
     .eq("id", id)
     .single();
-  const bestilling = raw as unknown as {
+
+  // Hent takstmann, oppdrag og dokumenter i separate spørringer
+  const takstmannData = bestillingRå?.takstmann_id
+    ? (await serviceSupabase
+        .from("takstmann_profiler")
+        .select("id, navn, spesialitet, telefon, epost, bilde_url, sertifiseringer")
+        .eq("id", bestillingRå.takstmann_id)
+        .single()).data
+    : null;
+
+  const oppdragData = bestillingRå?.oppdrag_id
+    ? (await serviceSupabase
+        .from("oppdrag")
+        .select("*")
+        .eq("id", bestillingRå.oppdrag_id)
+        .single()).data
+    : null;
+
+  const dokumenterData = oppdragData
+    ? (await serviceSupabase
+        .from("dokumenter")
+        .select("*")
+        .eq("oppdrag_id", oppdragData.id)).data ?? []
+    : [];
+
+  const bestilling = bestillingRå ? {
+    ...bestillingRå,
+    takstmann: takstmannData,
+    oppdrag: oppdragData ? { ...oppdragData, dokumenter: dokumenterData } : null,
+  } as unknown as {
     id: string;
     status: string;
     melding: string | null;
@@ -33,7 +59,7 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
     created_at: string;
     takstmann: { id: string; navn: string; spesialitet: string | null; telefon: string | null; epost: string | null; bilde_url: string | null; sertifiseringer: string[] | null } | null;
     oppdrag: { id: string; tittel: string; status: string; adresse: string | null; by: string | null; dokumenter: { id: string; navn: string; er_rapport: boolean; dokument_type: DokumentType; storrelse: number | null; storage_path: string; created_at: string }[] } | null;
-  } | null;
+  } : null;
 
   if (!bestilling) notFound();
 
@@ -173,4 +199,3 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
     </div>
   );
 }
-                                                                                                  

@@ -28,14 +28,32 @@ export default async function KundeBestillingerPage() {
 
   if (!kundeProfil) return null;
 
-  const { data: bestillinger } = await serviceSupabase
+  // Hent bestillinger UTEN PostgREST-joins
+  const { data: bestillingerRå, error: bestillingerError } = await serviceSupabase
     .from("bestillinger")
-    .select(`
-      *,
-      takstmann:takstmann_profiler(id, navn, spesialitet, telefon, epost, bilde_url)
-    `)
+    .select("*")
     .eq("bestilt_av_kunde_id", (kundeProfil as { id: string }).id)
     .order("created_at", { ascending: false });
+
+  if (bestillingerError) {
+    console.error('[kunde bestillinger] Feil:', bestillingerError.message);
+  }
+
+  // Hent takstmann-profiler i separat spørring
+  const takstmannIder = [...new Set((bestillingerRå ?? []).map(b => b.takstmann_id).filter(Boolean))];
+  const { data: takstmannProfiler } = takstmannIder.length > 0
+    ? await serviceSupabase
+        .from("takstmann_profiler")
+        .select("id, navn, spesialitet, telefon, epost, bilde_url")
+        .in("id", takstmannIder)
+    : { data: [] };
+
+  const takstmannMap = Object.fromEntries((takstmannProfiler ?? []).map(t => [t.id, t]));
+
+  const bestillinger = (bestillingerRå ?? []).map(b => ({
+    ...b,
+    takstmann: b.takstmann_id ? takstmannMap[b.takstmann_id] ?? null : null,
+  }));
 
   const aktive = (bestillinger ?? []).filter((b) =>
     ["forespørsel", "tilbud_sendt", "akseptert", "bekreftet"].includes(b.status)
@@ -209,4 +227,3 @@ function BestillingKort({ b }: { b: BestillingData }) {
     </div>
   );
 }
-                                                                                             
