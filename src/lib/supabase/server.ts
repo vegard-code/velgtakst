@@ -28,9 +28,6 @@ export async function createClient() {
 }
 
 export async function createServiceClient() {
-  // Bruk supabase-js direkte UTEN cookies for å bypasse RLS fullstendig.
-  // createServerClient fra @supabase/ssr overskriver service role med bruker-sesjonen fra cookies,
-  // noe som gjør at RLS fortsatt er aktivt.
   return createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
