@@ -44,13 +44,13 @@ async function getAccessToken(): Promise<string> {
       'client_id': process.env.VIPPS_CLIENT_ID!,
       'client_secret': process.env.VIPPS_CLIENT_SECRET!,
       'Ocp-Apim-Subscription-Key': process.env.VIPPS_SUBSCRIPTION_KEY!,
-      'Merchant-Serial-Number': process.env.VIPPS_MSN!,
+      'Merchant-Serial-Number': process.env.VIPPS_RECURRING_MSN ?? process.env.VIPPS_MSN!,
     },
   })
 
   if (!res.ok) {
     const err = await res.text()
-    console.error('Vipps token error status:', res.status, 'body:', err)
+    console.error('Vipps recurring token error:', res.status, err)
     throw new Error(`Vipps token error ${res.status}: ${err}`)
   }
 
@@ -68,7 +68,7 @@ function vippsHeaders(accessToken: string, idempotencyKey?: string) {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
     'Ocp-Apim-Subscription-Key': process.env.VIPPS_SUBSCRIPTION_KEY!,
-    'Merchant-Serial-Number': process.env.VIPPS_MSN!,
+    'Merchant-Serial-Number': process.env.VIPPS_RECURRING_MSN ?? process.env.VIPPS_MSN!,
     'Vipps-System-Name': 'VelgTakst',
     'Vipps-System-Version': '1.0.0',
   }
@@ -128,7 +128,6 @@ export async function opprettAgreement(params: OpprettAgreementParams): Promise<
     merchantRedirectUrl: params.returnUrl,
     merchantAgreementUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/portal/takstmann/abonnement`,
     productName: params.productName,
-    notificationUrl: params.notificationUrl,
   }
 
   // phoneNumber must be MSISDN format (e.g. "4712345678")

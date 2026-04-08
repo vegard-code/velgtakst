@@ -25,12 +25,12 @@ export async function hentEllerOpprettAbonnement(companyId: string) {
     .from('abonnementer')
     .select('*')
     .eq('company_id', companyId)
-    .maybeSingle()
+    .single()
 
   if (existing) return existing
 
   if (selectError) {
-    console.log('hentEllerOpprettAbonnement select:', selectError.code, selectError.message)
+    console.error('hentEllerOpprettAbonnement select:', selectError.code, selectError.message)
   }
 
   // Opprett prøveperiode-abonnement (30 dager gratis)
@@ -79,7 +79,7 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
     .from('takstmann_profiler')
     .select('company_id')
     .eq('id', takstmannId)
-    .maybeSingle()
+    .single()
 
   let betaltTil: Date
 
@@ -89,7 +89,7 @@ export async function aktiverFylke(takstmannId: string, fylkeId: string) {
       .from('abonnementer')
       .select('status, proveperiode_slutt, vipps_agreement_id')
       .eq('company_id', takstmann.company_id)
-      .maybeSingle()
+      .single()
 
     if (abonnement?.status === 'proveperiode') {
       // Sjekk antall aktive fylker — første 3 er gratis

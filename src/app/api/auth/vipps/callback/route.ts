@@ -31,7 +31,6 @@ export async function GET(request: NextRequest) {
   }
 
   if (!code || !state || !authCookie) {
-    console.error('Missing code, state, or auth cookie', { code: !!code, state: !!state, authCookie: !!authCookie })
     return NextResponse.redirect(new URL('/logg-inn?error=ugyldig_forespørsel', request.url))
   }
 
@@ -50,7 +49,6 @@ export async function GET(request: NextRequest) {
 
   // CSRF-sjekk
   if (state !== savedState.state) {
-    console.error('State mismatch', { received: state, expected: savedState.state })
     return NextResponse.redirect(new URL('/logg-inn?error=ugyldig_state', request.url))
   }
 
@@ -99,8 +97,6 @@ export async function GET(request: NextRequest) {
     const navn = vippsUser.name as string || `${vippsUser.given_name ?? ''} ${vippsUser.family_name ?? ''}`.trim()
     const telefon = vippsUser.phone_number as string | undefined
     const vippsSub = vippsUser.sub as string
-
-    console.log('Vipps user info:', { email, navn, vippsSub })
 
     if (!email) {
       return NextResponse.redirect(new URL('/logg-inn?error=mangler_epost', request.url))
@@ -165,7 +161,6 @@ export async function GET(request: NextRequest) {
       // Hvis brukerens epost i Vipps er annerledes (f.eks. endret epost i Vipps),
       // oppdater eposten i Supabase også, men kun for brukere funnet via vipps_sub
       if (existingUser.email !== email && existingUser.user_metadata?.vipps_sub === vippsSub) {
-        console.log('Vipps email changed, updating from', existingUser.email, 'to', email)
         updateData.email = email
       }
       await supabaseAdmin.auth.admin.updateUserById(userId, updateData)
@@ -175,13 +170,11 @@ export async function GET(request: NextRequest) {
         .from('user_profiles')
         .select('rolle')
         .eq('id', userId)
-        .maybeSingle()
+        .single()
 
       if (!eksisterendeProfil) {
-        console.log('Existing auth user missing user_profile, creating with rolle:', valgtRolle)
         await opprettProfiler(supabaseAdmin, userId, valgtRolle, navn, email, telefon)
       } else {
-        console.log('Existing user with rolle:', eksisterendeProfil.rolle)
         // Merk takstmann-profilen som Vipps-verifisert
         if (eksisterendeProfil.rolle === 'takstmann_admin' || eksisterendeProfil.rolle === 'takstmann') {
           await supabaseAdmin
@@ -212,7 +205,6 @@ export async function GET(request: NextRequest) {
       }
 
       userId = newAuth.user.id
-      console.log('New user created:', userId, 'rolle:', valgtRolle)
 
       await opprettProfiler(supabaseAdmin, userId, valgtRolle, navn, email, telefon)
     }
@@ -222,14 +214,13 @@ export async function GET(request: NextRequest) {
       .from('user_profiles')
       .select('rolle')
       .eq('id', userId)
-      .maybeSingle()
+      .single()
 
     const faktiskRolle = (profilData as { rolle?: string } | null)?.rolle ?? 'privatkunde'
 
     // For admin-brukere: bruk valgt rolle fra innloggingssiden for redirect
     // (admin har tilgang til alle portaler via middleware)
     const rolleForRedirect = faktiskRolle === 'admin' ? valgtRolle : faktiskRolle
-    console.log('Redirect logic:', { faktiskRolle, valgtRolle, rolleForRedirect, savedStateRolle: savedState.rolle })
     let redirectUrl: string
 
     if (rolleForRedirect === 'takstmann_admin' || rolleForRedirect === 'takstmann') {
@@ -303,7 +294,6 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    console.log('Vipps login complete. User:', userId, 'Rolle:', faktiskRolle, 'Redirect:', redirectUrl)
     return response
   } catch (err) {
     console.error('Vipps callback error:', err)
@@ -325,7 +315,7 @@ async function opprettProfiler(
   if (rolle === 'takstmann_admin' || rolle === 'takstmann') {
     const { data: company } = await supabase
       .from('companies')
-      .insert({ navn: `${navn}s firma`, epost: email, onboarding_fullfort: false })
+      .insert({ navn: `${navn}s firma`, epost: email })
       .select('id')
       .single()
 

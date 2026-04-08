@@ -14,10 +14,6 @@ import {
   opprettKalenderHendelse,
   hentTokenForTakstmann,
 } from '@/lib/integrasjoner/google-calendar'
-import {
-  opprettKalenderHendelse as opprettOutlookHendelse,
-  hentTokenForTakstmann as hentOutlookTokenForTakstmann,
-} from '@/lib/integrasjoner/outlook-calendar'
 
 // ============================================================
 // Rate limiting – sliding window per IP (in-memory, warm instances)
@@ -69,12 +65,38 @@ export async function opprettBestilling(
   oppdragType?: OppdragType,
   adresse?: string
 ) {
+  // Bruk vanlig klient for auth-sjekk, service client for insert (RLS blokkerer ellers)
   const supabase = await createClient()
+  const serviceSupabase = await createServiceClient()
+
+  // Verifiser at bruker er innlogget
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Du må være innlogget for å sende en bestilling' }
+
+  // Verifiser at bestilleren faktisk eier profilen de oppgir
+  if (meglerEllerKundeId.kundeProfilId) {
+    const { data: kundeProfil } = await serviceSupabase
+      .from('privatkunde_profiler')
+      .select('id')
+      .eq('id', meglerEllerKundeId.kundeProfilId)
+      .eq('user_id', user.id)
+      .single()
+    if (!kundeProfil) return { error: 'Ugyldig kundeprofil' }
+  }
+  if (meglerEllerKundeId.meglerProfilId) {
+    const { data: meglerProfil } = await serviceSupabase
+      .from('megler_profiler')
+      .select('id')
+      .eq('id', meglerEllerKundeId.meglerProfilId)
+      .eq('user_id', user.id)
+      .single()
+    if (!meglerProfil) return { error: 'Ugyldig meglerprofil' }
+  }
 
   // Privatkunder bruker ny tilbudsflyt, meglere bruker gammel flyt
   const bestillingStatus = meglerEllerKundeId.kundeProfilId ? 'forespørsel' : 'ny'
 
-  const { data, error } = await supabase
+  const { data, error } = await serviceSupabase
     .from('bestillinger')
     .insert({
       takstmann_id: takstmannId,
@@ -93,24 +115,24 @@ export async function opprettBestilling(
   // Send e-postvarsel til takstmann
   try {
     const [{ data: takstmann }, meglerData, kundeData] = await Promise.all([
-      supabase
+      serviceSupabase
         .from('takstmann_profiler')
         .select('navn, epost')
         .eq('id', takstmannId)
-        .maybeSingle(),
+        .single(),
       meglerEllerKundeId.meglerProfilId
-        ? supabase
+        ? serviceSupabase
             .from('megler_profiler')
             .select('navn, telefon, epost')
             .eq('id', meglerEllerKundeId.meglerProfilId)
-            .maybeSingle()
+            .single()
         : Promise.resolve({ data: null }),
       meglerEllerKundeId.kundeProfilId
-        ? supabase
+        ? serviceSupabase
             .from('privatkunde_profiler')
             .select('navn, telefon, epost')
             .eq('id', meglerEllerKundeId.kundeProfilId)
-            .maybeSingle()
+            .single()
         : Promise.resolve({ data: null }),
     ])
 
@@ -222,7 +244,7 @@ export async function opprettBestillingFraPublikk(input: {
       .from('takstmann_profiler')
       .select('navn, epost')
       .eq('id', takstmannId)
-      .maybeSingle()
+      .single()
 
     if (takstmann?.epost) {
       if (meglerProfilId) {
@@ -230,7 +252,7 @@ export async function opprettBestillingFraPublikk(input: {
           .from('megler_profiler')
           .select('navn, telefon, epost')
           .eq('id', meglerProfilId)
-          .maybeSingle()
+          .single()
         bestillerNavn = (megler as { navn: string } | null)?.navn ?? 'Megler'
         bestillerTelefon = (megler as { telefon: string | null } | null)?.telefon ?? null
         bestillerEpost = (megler as { epost: string | null } | null)?.epost ?? null
@@ -240,7 +262,7 @@ export async function opprettBestillingFraPublikk(input: {
           .from('privatkunde_profiler')
           .select('navn, telefon, epost')
           .eq('id', kundeProfilId)
-          .maybeSingle()
+          .single()
         bestillerNavn = (kunde as { navn: string } | null)?.navn ?? bestillerNavn
         bestillerTelefon = (kunde as { telefon: string | null } | null)?.telefon ?? null
         bestillerEpost = (kunde as { epost: string | null } | null)?.epost ?? null
@@ -286,7 +308,7 @@ export async function oppdaterBestillingStatus(
       kunde:privatkunde_profiler(navn, epost)
     `)
     .eq('id', bestillingId)
-    .maybeSingle()
+    .single()
 
   const { error } = await serviceClient
     .from('bestillinger')
@@ -338,7 +360,7 @@ export async function hentMinebestillinger(rolle: 'megler' | 'kunde'): Promise<B
       .from('megler_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .maybeSingle()
+      .single()
 
     if (!profil) return []
 
@@ -358,7 +380,7 @@ export async function hentMinebestillinger(rolle: 'megler' | 'kunde'): Promise<B
       .from('privatkunde_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .maybeSingle()
+      .single()
 
     if (!profil) return []
 
@@ -398,7 +420,7 @@ export async function sendTilbud(
       takstmann:takstmann_profiler(navn, telefon, epost)
     `)
     .eq('id', bestillingId)
-    .maybeSingle()
+    .single()
 
   const { error } = await serviceClient
     .from('bestillinger')
@@ -465,7 +487,7 @@ export async function aksepterTilbud(
       kunde:privatkunde_profiler(navn, epost)
     `)
     .eq('id', bestillingId)
-    .maybeSingle()
+    .single()
 
   const { error } = await serviceClient
     .from('bestillinger')
@@ -542,13 +564,13 @@ export async function bekreftBestilling(bestillingId: string) {
     .from('user_profiles')
     .select('company_id')
     .eq('id', user.id)
-    .maybeSingle()
+    .single()
 
   const { data: takstmannProfil } = await serviceClient
     .from('takstmann_profiler')
     .select('id')
     .eq('user_id', user.id)
-    .maybeSingle()
+    .single()
 
   const { data: bestilling } = await serviceClient
     .from('bestillinger')
@@ -557,7 +579,7 @@ export async function bekreftBestilling(bestillingId: string) {
       kunde:privatkunde_profiler(id, navn)
     `)
     .eq('id', bestillingId)
-    .maybeSingle()
+    .single()
 
   if (!bestilling) return { error: 'Bestilling ikke funnet' }
 
@@ -595,22 +617,20 @@ export async function bekreftBestilling(bestillingId: string) {
 
   if (oppdragError || !nyttOppdrag) return { error: oppdragError?.message ?? 'Kunne ikke opprette oppdrag' }
 
-  const hendelsesData = {
-    oppdragId: nyttOppdrag.id,
-    tittel,
-    beskrivelse,
-    adresse: bestilling.adresse,
-    by: null,
-    befaringsdato: bestilling.befaringsdato,
-    oppdragType: bestilling.oppdrag_type ?? 'annet',
-  }
-
   // Google Calendar sync
   if (takstmannProfil?.id && bestilling.befaringsdato) {
     try {
       const harToken = await hentTokenForTakstmann(takstmannProfil.id)
       if (harToken) {
-        const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, hendelsesData)
+        const googleEventId = await opprettKalenderHendelse(takstmannProfil.id, {
+          oppdragId: nyttOppdrag.id,
+          tittel,
+          beskrivelse,
+          adresse: bestilling.adresse,
+          by: null,
+          befaringsdato: bestilling.befaringsdato,
+          oppdragType: bestilling.oppdrag_type ?? 'annet',
+        })
         if (googleEventId) {
           await serviceClient
             .from('oppdrag')
@@ -620,24 +640,6 @@ export async function bekreftBestilling(bestillingId: string) {
       }
     } catch (err) {
       console.error('[bekreftBestilling] Google Calendar feilet:', err)
-    }
-  }
-
-  // Outlook Calendar sync
-  if (takstmannProfil?.id && bestilling.befaringsdato) {
-    try {
-      const harOutlookToken = await hentOutlookTokenForTakstmann(takstmannProfil.id)
-      if (harOutlookToken) {
-        const outlookEventId = await opprettOutlookHendelse(takstmannProfil.id, hendelsesData)
-        if (outlookEventId) {
-          await serviceClient
-            .from('oppdrag')
-            .update({ outlook_event_id: outlookEventId })
-            .eq('id', nyttOppdrag.id)
-        }
-      }
-    } catch (err) {
-      console.error('[bekreftBestilling] Outlook Calendar feilet:', err)
     }
   }
 
@@ -688,7 +690,7 @@ export async function hentAntallNyeBestillinger(): Promise<number> {
     .from('user_profiles')
     .select('rolle')
     .eq('id', user.id)
-    .maybeSingle()
+    .single()
 
   const rolle = (profilData as { rolle: string } | null)?.rolle
 
@@ -697,7 +699,7 @@ export async function hentAntallNyeBestillinger(): Promise<number> {
       .from('takstmann_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .maybeSingle()
+      .single()
     if (!takstmannProfil) return 0
 
     const { count } = await serviceClient
@@ -715,7 +717,7 @@ export async function hentAntallNyeBestillinger(): Promise<number> {
       .from('privatkunde_profiler')
       .select('id')
       .eq('user_id', user.id)
-      .maybeSingle()
+      .single()
     if (!kundeProfil) return 0
 
     const { count } = await serviceClient

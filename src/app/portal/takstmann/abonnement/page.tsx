@@ -12,7 +12,7 @@ export default async function AbonnementPage() {
     .from("takstmann_profiler")
     .select("id, company_id")
     .eq("user_id", user.id)
-    .maybeSingle();
+    .single();
 
   if (!takstmann?.company_id) {
     return (
