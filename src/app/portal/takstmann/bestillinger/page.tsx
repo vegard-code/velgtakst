@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { BESTILLING_STATUS_LABELS, OPPDRAG_TYPE_LABELS } from "@/lib/supabase/types";
 import type { BestillingStatus, OppdragType } from "@/lib/supabase/types";
 import AksepterAvvisKnapp from "./AksepterAvvisKnapp";
@@ -33,8 +33,10 @@ export default async function BestillingerPage() {
     return null;
   }
 
+  // Bruk service client for å unngå RLS-blokkering (auth_company_id() fungerer ikke alltid i server-kontekst)
+  const serviceSupabase = await createServiceClient();
   const { data: bestillinger } = takstmannProfil
-    ? await supabase
+    ? await serviceSupabase
         .from("bestillinger")
         .select(`
           *,
