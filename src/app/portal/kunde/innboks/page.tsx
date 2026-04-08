@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { OPPDRAG_TYPE_LABELS, BESTILLING_STATUS_LABELS } from "@/lib/supabase/types";
 import type { OppdragType, BestillingStatus } from "@/lib/supabase/types";
 import { hentSamtaler } from "@/lib/actions/meldinger";
@@ -9,15 +9,17 @@ export default async function KundeInnboksPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: kundeProfil } = await supabase
+  const serviceSupabase = await createServiceClient();
+
+  const { data: kundeProfil } = await serviceSupabase
     .from("privatkunde_profiler")
     .select("id")
     .eq("user_id", user.id)
-    .maybeSingle();
+    .single();
 
   const [bestillinger, samtaler] = await Promise.all([
     kundeProfil
-      ? supabase
+      ? serviceSupabase
           .from("bestillinger")
           .select(`*, takstmann:takstmann_profiler(navn)`)
           .eq("bestilt_av_kunde_id", (kundeProfil as { id: string }).id)
@@ -163,3 +165,4 @@ export default async function KundeInnboksPage() {
     </div>
   );
 }
+                                                                                             

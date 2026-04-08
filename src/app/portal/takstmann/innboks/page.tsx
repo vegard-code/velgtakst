@@ -9,7 +9,9 @@ export default async function TakstmannInnboksPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
+  const serviceSupabase = await createServiceClient();
+
+  const { data: takstmannProfil, error: takstmannProfilError } = await serviceSupabase
     .from("takstmann_profiler")
     .select("id")
     .eq("user_id", user.id)
@@ -18,8 +20,6 @@ export default async function TakstmannInnboksPage() {
     console.error('[takstmann_profiler] Feil ved henting av profil i TakstmannInnboksPage:', takstmannProfilError.message);
     return null;
   }
-
-  const serviceSupabase = await createServiceClient();
   const [bestillinger, samtaler] = await Promise.all([
     takstmannProfil
       ? serviceSupabase

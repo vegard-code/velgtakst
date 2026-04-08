@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { hentOppdragListe } from "@/lib/actions/oppdrag";
 
@@ -61,33 +61,25 @@ export default async function KalenderPage({
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  // Hent kalender-tilkoblingsstatus
-  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
+  const serviceSupabase = await createServiceClient();
+
+  // Hent Google Calendar tilkoblingsstatus
+  const { data: takstmannProfil } = await serviceSupabase
     .from("takstmann_profiler")
     .select("id")
     .eq("user_id", user.id)
-    .maybeSingle();
-  if (takstmannProfilError) {
-    console.error('[takstmann_profiler] Feil ved henting av profil i KalenderPage:', takstmannProfilError.message);
-    return null;
-  }
+    .single();
 
-  const [googleKoblet, outlookKoblet] = takstmannProfil
-    ? await Promise.all([
-        supabase
+  const googleKoblet = takstmannProfil
+    ? await (async () => {
+        const { data } = await serviceSupabase
           .from("google_calendar_tokens")
           .select("id")
           .eq("takstmann_id", takstmannProfil.id)
-          .maybeSingle()
-          .then(({ data }) => !!data),
-        supabase
-          .from("outlook_calendar_tokens")
-          .select("id")
-          .eq("takstmann_id", takstmannProfil.id)
-          .maybeSingle()
-          .then(({ data }) => !!data),
-      ])
-    : [false, false];
+          .maybeSingle();
+        return !!data;
+      })()
+    : false;
 
   // Hent oppdrag for aktuell måned (+/- buffer)
   const alleOppdrag = await hentOppdragListe();
@@ -133,48 +125,27 @@ export default async function KalenderPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-2">
+      <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#1e293b]">Kalender</h1>
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* Google Calendar-status */}
-          {googleKoblet ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm font-medium">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              Google tilkoblet
-            </span>
-          ) : (
-            <Link
-              href="/portal/takstmann/innstillinger?fane=integrasjoner"
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#e2e8f0] text-sm text-[#64748b] hover:text-[#285982] hover:border-[#285982] transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-              </svg>
-              Koble Google
-            </Link>
-          )}
-          {/* Outlook Calendar-status */}
-          {outlookKoblet ? (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm font-medium">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              Outlook tilkoblet
-            </span>
-          ) : (
-            <Link
-              href="/portal/takstmann/innstillinger?fane=integrasjoner"
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#e2e8f0] text-sm text-[#64748b] hover:text-[#285982] hover:border-[#285982] transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-              </svg>
-              Koble Outlook
-            </Link>
-          )}
-        </div>
+        {!googleKoblet && (
+          <Link
+            href="/portal/takstmann/innstillinger?fane=integrasjoner"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#e2e8f0] text-sm text-[#64748b] hover:text-[#285982] hover:border-[#285982] transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Koble Google Kalender
+          </Link>
+        )}
+        {googleKoblet && (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm font-medium">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            Google Kalender tilkoblet
+          </span>
+        )}
       </div>
 
       {/* Måneds-navigasjon */}
@@ -312,3 +283,4 @@ export default async function KalenderPage({
     </div>
   );
 }
+                                                                                                    

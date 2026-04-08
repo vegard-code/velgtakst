@@ -1,27 +1,24 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 
 export default async function TakstmannVurderingerPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const serviceSupabase = await createServiceClient();
 
   if (!user) return <p className="text-[#94a3b8]">Ikke innlogget</p>;
 
-  const { data: tProfil, error: tProfilError } = await supabase
+  const { data: tProfil } = await serviceSupabase
     .from("takstmann_profiler")
     .select("id, navn")
     .eq("user_id", user.id)
-    .maybeSingle();
-  if (tProfilError) {
-    console.error('[takstmann_profiler] Feil ved henting av profil i TakstmannVurderingerPage:', tProfilError.message);
-    return null;
-  }
+    .single();
 
   if (!tProfil) return <p className="text-[#94a3b8]">Ingen takstmannprofil funnet</p>;
 
   const profil = tProfil as unknown as { id: string; navn: string };
 
-  const { data: vurderingerRaw } = await supabase
+  const { data: vurderingerRaw } = await serviceSupabase
     .from("megler_vurderinger")
     .select(`
       id, karakter, kommentar, created_at,

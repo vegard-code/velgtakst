@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { FYLKER, getFylkePris } from "@/lib/supabase/types";
 import { hentEllerOpprettAbonnement } from "@/lib/actions/fylker";
 import AbonnementKlient from "./AbonnementKlient";
@@ -8,7 +8,9 @@ export default async function AbonnementPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: takstmann } = await supabase
+  const serviceSupabase = await createServiceClient();
+
+  const { data: takstmann } = await serviceSupabase
     .from("takstmann_profiler")
     .select("id, company_id")
     .eq("user_id", user.id)
@@ -28,7 +30,7 @@ export default async function AbonnementPage() {
   const abonnement = await hentEllerOpprettAbonnement(takstmann.company_id);
 
   // Hent aktive fylker
-  const { data: aktiveSynligheter } = await supabase
+  const { data: aktiveSynligheter } = await serviceSupabase
     .from("fylke_synlighet")
     .select("fylke_id")
     .eq("takstmann_id", takstmann.id)

@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { BESTILLING_STATUS_LABELS, OPPDRAG_TYPE_LABELS } from "@/lib/supabase/types";
 import type { BestillingStatus, OppdragType } from "@/lib/supabase/types";
 import TilbudKnapper from "./TilbudKnapper";
@@ -18,15 +18,17 @@ export default async function KundeBestillingerPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: kundeProfil } = await supabase
+  const serviceSupabase = await createServiceClient();
+
+  const { data: kundeProfil } = await serviceSupabase
     .from("privatkunde_profiler")
     .select("id")
     .eq("user_id", user.id)
-    .maybeSingle();
+    .single();
 
   if (!kundeProfil) return null;
 
-  const { data: bestillinger } = await supabase
+  const { data: bestillinger } = await serviceSupabase
     .from("bestillinger")
     .select(`
       *,
@@ -207,3 +209,4 @@ function BestillingKort({ b }: { b: BestillingData }) {
     </div>
   );
 }
+                                                                                             

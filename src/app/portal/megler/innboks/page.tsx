@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { hentSamtaler } from "@/lib/actions/meldinger";
 import { hentMinebestillinger } from "@/lib/actions/bestillinger";
-import { BESTILLING_STATUS_LABELS } from "@/lib/supabase/types";
-import type { BestillingStatus } from "@/lib/supabase/types";
 
 export default async function MeglerInnboksPage() {
   const supabase = await createClient();
@@ -43,7 +41,7 @@ export default async function MeglerInnboksPage() {
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-[#1e293b] truncate">{b.takstmann?.navn ?? "Takstmann"}</p>
-                  <p className="text-xs text-[#64748b]">{BESTILLING_STATUS_LABELS[b.status as BestillingStatus] ?? b.status} · {b.adresse ?? b.oppdrag_type ?? "–"}</p>
+                  <p className="text-xs text-[#64748b]">{b.status} · {b.adresse ?? b.oppdrag_type ?? "–"}</p>
                 </div>
                 <svg className="w-4 h-4 text-[#94a3b8] group-hover:text-[#285982] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

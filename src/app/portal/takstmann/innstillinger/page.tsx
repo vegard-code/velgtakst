@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import InnstillingerForm from "./InnstillingerForm";
 import SlettKontoSeksjon from "@/components/portal/SlettKontoSeksjon";
 import { Suspense } from "react";
@@ -8,51 +8,33 @@ export default async function InnstillingerPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: profil, error: profilError } = await supabase
+  const serviceSupabase = await createServiceClient();
+
+  const { data: profil } = await serviceSupabase
     .from("user_profiles")
     .select("*, company:companies(*)")
     .eq("id", user.id)
-    .maybeSingle();
-  if (profilError) {
-    console.error('[user_profiles] Feil ved henting av profil i InnstillingerPage:', profilError.message);
-    return null;
-  }
+    .single();
 
   const { data: settings } = profil?.company_id
-    ? await supabase
+    ? await serviceSupabase
         .from("company_settings")
         .select("*")
         .eq("company_id", profil.company_id)
-        .maybeSingle()
+        .single()
     : { data: null };
 
-  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
+  const { data: takstmannProfil } = await serviceSupabase
     .from("takstmann_profiler")
     .select("*")
     .eq("user_id", user.id)
-    .maybeSingle();
-  if (takstmannProfilError) {
-    console.error('[takstmann_profiler] Feil ved henting av profil i InnstillingerPage:', takstmannProfilError.message);
-    return null;
-  }
+    .single();
 
   // Sjekk om Google Calendar er koblet til
   const googleKoblet = takstmannProfil
     ? await (async () => {
-        const { data } = await supabase
+        const { data } = await serviceSupabase
           .from("google_calendar_tokens")
-          .select("id")
-          .eq("takstmann_id", takstmannProfil.id)
-          .maybeSingle();
-        return !!data;
-      })()
-    : false;
-
-  // Sjekk om Outlook Calendar er koblet til
-  const outlookKoblet = takstmannProfil
-    ? await (async () => {
-        const { data } = await supabase
-          .from("outlook_calendar_tokens")
           .select("id")
           .eq("takstmann_id", takstmannProfil.id)
           .maybeSingle();
@@ -69,7 +51,6 @@ export default async function InnstillingerPage() {
           settings={settings}
           takstmannProfil={takstmannProfil}
           googleKoblet={googleKoblet}
-          outlookKoblet={outlookKoblet}
         />
       </Suspense>
       <div className="mt-8">

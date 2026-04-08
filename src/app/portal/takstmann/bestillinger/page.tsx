@@ -23,7 +23,10 @@ export default async function BestillingerPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: takstmannProfil, error: takstmannProfilError } = await supabase
+  // Bruk service client for å unngå RLS-blokkering (auth_company_id() fungerer ikke alltid i server-kontekst)
+  const serviceSupabase = await createServiceClient();
+
+  const { data: takstmannProfil, error: takstmannProfilError } = await serviceSupabase
     .from("takstmann_profiler")
     .select("id")
     .eq("user_id", user.id)
@@ -32,9 +35,6 @@ export default async function BestillingerPage() {
     console.error('[takstmann_profiler] Feil ved henting av profil i BestillingerPage:', takstmannProfilError.message);
     return null;
   }
-
-  // Bruk service client for å unngå RLS-blokkering (auth_company_id() fungerer ikke alltid i server-kontekst)
-  const serviceSupabase = await createServiceClient();
   const { data: bestillinger } = takstmannProfil
     ? await serviceSupabase
         .from("bestillinger")

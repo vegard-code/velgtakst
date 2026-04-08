@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import OnboardingForm from "./OnboardingForm";
 
 export default async function OnboardingPage() {
@@ -10,7 +10,9 @@ export default async function OnboardingPage() {
 
   if (!user) redirect("/logg-inn");
 
-  const { data: profil } = await supabase
+  const serviceSupabase = await createServiceClient();
+
+  const { data: profil } = await serviceSupabase
     .from("user_profiles")
     .select("navn, company_id")
     .eq("id", user.id)
@@ -18,7 +20,7 @@ export default async function OnboardingPage() {
 
   if (!profil?.company_id) redirect("/portal/takstmann");
 
-  const { data: company } = await supabase
+  const { data: company } = await serviceSupabase
     .from("companies")
     .select("onboarding_fullfort")
     .eq("id", profil.company_id)

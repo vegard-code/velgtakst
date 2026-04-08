@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { BESTILLING_STATUS_LABELS, OPPDRAG_STATUS_LABELS } from "@/lib/supabase/types";
 import type { BestillingStatus, DokumentType, OppdragStatus } from "@/lib/supabase/types";
 import VurderingSkjema from "./VurderingSkjema";
@@ -14,8 +14,9 @@ interface Props {
 export default async function MeglerBestillingDetaljPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
+  const serviceSupabase = await createServiceClient();
 
-  const { data: raw } = await supabase
+  const { data: raw } = await serviceSupabase
     .from("bestillinger")
     .select(`
       *,
@@ -23,7 +24,7 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
       oppdrag(*, dokumenter(*))
     `)
     .eq("id", id)
-    .maybeSingle();
+    .single();
   const bestilling = raw as unknown as {
     id: string;
     status: string;
@@ -39,18 +40,18 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
   // Hent megler-profil for vurdering
   const { data: { user } } = await supabase.auth.getUser();
   const { data: meglerProfil } = user
-    ? await supabase.from("megler_profiler").select("id").eq("user_id", user.id).maybeSingle()
+    ? await serviceSupabase.from("megler_profiler").select("id").eq("user_id", user.id).single()
     : { data: null };
 
   // Sjekk om vurdering allerede er gitt
   const { data: eksisterendeVurdering } = bestilling.takstmann
-    ? await supabase
+    ? await serviceSupabase
         .from("megler_vurderinger")
         .select("karakter, kommentar")
         .eq("takstmann_id", bestilling.takstmann.id)
         .eq("megler_id", meglerProfil?.id ?? "")
         .eq("oppdrag_id", bestilling.oppdrag_id ?? "")
-        .maybeSingle()
+        .single()
     : { data: null };
 
   return (
@@ -172,3 +173,4 @@ export default async function MeglerBestillingDetaljPage({ params }: Props) {
     </div>
   );
 }
+                                                                                                  

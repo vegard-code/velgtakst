@@ -3,7 +3,7 @@ import { hentDashboardStats } from "@/lib/actions/oppdrag";
 import { hentSamtaler } from "@/lib/actions/meldinger";
 import { OPPDRAG_STATUS_LABELS, OPPDRAG_TYPE_LABELS } from "@/lib/supabase/types";
 import type { OppdragStatus } from "@/lib/supabase/types";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 
 const STATUS_BADGE_CLASSES: Record<OppdragStatus, string> = {
   ny: "portal-badge portal-badge-blue",
@@ -37,14 +37,16 @@ export default async function TakstmannDashboard() {
   let antallVurderinger = 0;
 
   if (user) {
-    const { data: tProfil } = await supabase
+    const serviceSupabase = await createServiceClient();
+
+    const { data: tProfil } = await serviceSupabase
       .from("takstmann_profiler")
       .select("id")
       .eq("user_id", user.id)
-      .maybeSingle();
+      .single();
 
     if (tProfil) {
-      const { data: vurderinger } = await supabase
+      const { data: vurderinger } = await serviceSupabase
         .from("megler_vurderinger")
         .select("karakter")
         .eq("takstmann_id", tProfil.id)
@@ -350,3 +352,4 @@ export default async function TakstmannDashboard() {
     </div>
   );
 }
+                                                                                           

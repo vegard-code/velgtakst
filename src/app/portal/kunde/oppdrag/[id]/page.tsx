@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { BESTILLING_STATUS_LABELS, OPPDRAG_STATUS_LABELS } from "@/lib/supabase/types";
 import type { BestillingStatus, DokumentType, OppdragStatus } from "@/lib/supabase/types";
 import VurderingSkjema from "@/components/portal/VurderingSkjema";
@@ -21,8 +21,9 @@ const STEG = [
 export default async function KundeOppdragDetaljPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
+  const serviceSupabase = await createServiceClient();
 
-  const { data: raw } = await supabase
+  const { data: raw } = await serviceSupabase
     .from("bestillinger")
     .select(`
       *,
@@ -30,7 +31,7 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
       oppdrag(*, dokumenter(*))
     `)
     .eq("id", id)
-    .maybeSingle();
+    .single();
   const bestilling = raw as unknown as {
     id: string;
     status: string;
@@ -48,7 +49,7 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
   // Sjekk om kunden allerede har gitt vurdering
   let harVurdert = false;
   if (status === "fullfort" && bestilling.takstmann) {
-    const { data: eksisterende } = await supabase
+    const { data: eksisterende } = await serviceSupabase
       .from("megler_vurderinger")
       .select("id")
       .eq("takstmann_id", bestilling.takstmann.id)
@@ -208,3 +209,4 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
     </div>
   );
 }
+                                                                                           
