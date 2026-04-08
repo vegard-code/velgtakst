@@ -20,7 +20,8 @@ const STATUS_BADGE: Record<string, string> = {
 
 export default async function BestillingerPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  console.log('[bestillinger-debug] auth:', user ? `user=${user.id} email=${user.email}` : `null (error: ${authError?.message})`);
   if (!user) return null;
 
   // Bruk service client for å unngå RLS-blokkering (auth_company_id() fungerer ikke alltid i server-kontekst)
@@ -31,6 +32,7 @@ export default async function BestillingerPage() {
     .select("id")
     .eq("user_id", user.id)
     .maybeSingle();
+  console.log('[bestillinger-debug] takstmannProfil:', takstmannProfil ? `id=${takstmannProfil.id}` : `null (error: ${takstmannProfilError?.message})`);
   if (takstmannProfilError) {
     console.error('[takstmann_profiler] Feil ved henting av profil i BestillingerPage:', takstmannProfilError.message);
     return null;
@@ -44,9 +46,7 @@ export default async function BestillingerPage() {
         .order("created_at", { ascending: false })
     : { data: [], error: null };
 
-  if (bestillingerError) {
-    console.error('[bestillinger] Feil:', bestillingerError.message);
-  }
+  console.log('[bestillinger-debug] bestillinger:', bestillingerRå?.length ?? 0, 'stk', bestillingerError ? `error: ${bestillingerError.message}` : 'ok');
 
   // Hent relaterte megler- og kundeprofiler i separate spørringer
   const meglerIder = [...new Set((bestillingerRå ?? []).map(b => b.bestilt_av_megler_id).filter(Boolean))];
