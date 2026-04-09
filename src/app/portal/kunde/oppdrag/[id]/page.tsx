@@ -72,9 +72,11 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
 
   const status = bestilling.status as BestillingStatus;
 
-  // Sjekk om kunden allerede har gitt vurdering
+  // Sjekk om kunden allerede har gitt vurdering (sjekk også oppdragsstatus for rapport_levert/betalt)
+  const oppdragStatusForVurdering = bestilling.oppdrag?.status;
+  const kanVurdere = status === "fullfort" || (oppdragStatusForVurdering && ["rapport_levert", "fakturert", "betalt"].includes(oppdragStatusForVurdering));
   let harVurdert = false;
-  if (status === "fullfort" && bestilling.takstmann) {
+  if (kanVurdere && bestilling.takstmann) {
     const { data: eksisterende } = await serviceSupabase
       .from("megler_vurderinger")
       .select("id")
@@ -84,16 +86,17 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
     harVurdert = !!eksisterende;
   }
 
-  const aktivtSteg = (() => {
-    if (status === "fullfort") return 3;
-    if (status === "akseptert") return 1;
+  // Beregn aktivt steg basert på bestilling- og oppdragsstatus
+  const oppdragStatus = bestilling.oppdrag?.status as OppdragStatus | undefined;
+  const erFerdig = status === "fullfort" || (oppdragStatus && ["rapport_levert", "fakturert", "betalt"].includes(oppdragStatus));
+  const underArbeid = oppdragStatus && ["under_befaring", "rapport_under_arbeid"].includes(oppdragStatus);
+
+  const aktivtStegJustert = (() => {
+    if (erFerdig) return 3;
+    if (underArbeid) return 2;
+    if (status === "bekreftet" || status === "akseptert") return 1;
     return 0;
   })();
-
-  // Finn oppdragssteg basert på oppdrag.status
-  const oppdragStatus = bestilling.oppdrag?.status as OppdragStatus | undefined;
-  const underArbeid = oppdragStatus && ["under_befaring", "rapport_under_arbeid"].includes(oppdragStatus);
-  const aktivtStegJustert = underArbeid ? 2 : aktivtSteg;
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -159,7 +162,7 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
               {bestilling.takstmann.spesialitet && (
                 <p className="text-[#64748b] text-sm">{bestilling.takstmann.spesialitet}</p>
               )}
-              {status === "akseptert" || status === "fullfort" ? (
+              {status === "akseptert" || status === "bekreftet" || status === "fullfort" || kanVurdere ? (
                 <>
                   {bestilling.takstmann.telefon && (
                     <a href={`tel:${bestilling.takstmann.telefon}`} className="text-[#285982] text-sm block hover:underline">
@@ -182,20 +185,33 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
         )}
       </div>
 
-      {/* Oppdrag og dokumenter */}
+      {/* Rapport – fremhevet når levert */}
+      {bestilling.oppdrag && erFerdig && bestilling.oppdrag.dokumenter && bestilling.oppdrag.dokumenter.filter(d => d.er_rapport).length > 0 && (
+        <div className="portal-card p-6 mb-6 border-l-4 border-l-green-500 bg-green-50/30">
+          <div className="flex items-center gap-2 mb-4">
+            <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h2 className="text-green-800 font-semibold">Din rapport er klar!</h2>
+          </div>
+          <DokumentListe dokumenter={bestilling.oppdrag.dokumenter.filter(d => d.er_rapport)} />
+        </div>
+      )}
+
+      {/* Oppdrag og øvrige dokumenter */}
       {bestilling.oppdrag && (
         <div className="portal-card p-6 mb-6">
           <h2 className="text-[#1e293b] font-semibold mb-4">Oppdragsstatus</h2>
           <div className="space-y-2 text-sm mb-4">
             <p className="font-medium text-[#1e293b]">{bestilling.oppdrag.tittel}</p>
-            <span className="portal-badge portal-badge-blue">
+            <span className={`portal-badge ${erFerdig ? "portal-badge-green" : "portal-badge-blue"}`}>
               {OPPDRAG_STATUS_LABELS[bestilling.oppdrag.status as OppdragStatus] ?? bestilling.oppdrag.status}
             </span>
           </div>
 
           {bestilling.oppdrag.dokumenter && bestilling.oppdrag.dokumenter.length > 0 && (
             <div className="mt-4 pt-4 border-t border-[#f1f5f9]">
-              <p className="text-sm font-semibold text-[#1e293b] mb-3">Dokumenter</p>
+              <p className="text-sm font-semibold text-[#1e293b] mb-3">Alle dokumenter</p>
               <DokumentListe dokumenter={bestilling.oppdrag.dokumenter} />
             </div>
           )}
@@ -203,7 +219,7 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
       )}
 
       {/* Vurdering */}
-      {status === "fullfort" && bestilling.takstmann && !harVurdert && (
+      {kanVurdere && bestilling.takstmann && !harVurdert && (
         <div className="mb-6">
           <VurderingSkjema
             takstmannId={bestilling.takstmann.id}
@@ -213,7 +229,7 @@ export default async function KundeOppdragDetaljPage({ params }: Props) {
         </div>
       )}
 
-      {status === "fullfort" && harVurdert && (
+      {kanVurdere && harVurdert && (
         <div className="portal-card p-5 mb-6 bg-green-50 border-green-200">
           <p className="text-green-700 text-sm flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

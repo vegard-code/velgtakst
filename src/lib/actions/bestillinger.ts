@@ -352,50 +352,62 @@ export async function oppdaterBestillingStatus(
 
 export async function hentMinebestillinger(rolle: 'megler' | 'kunde'): Promise<BestillingMedInfo[]> {
   const supabase = await createClient()
+  const serviceSupabase = await createServiceClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return []
 
+  // Finn profil-ID for filtrering
+  let profilId: string | null = null
   if (rolle === 'megler') {
-    const { data: profil } = await supabase
+    const { data: profil } = await serviceSupabase
       .from('megler_profiler')
       .select('id')
       .eq('user_id', user.id)
       .single()
-
-    if (!profil) return []
-
-    const { data } = await supabase
-      .from('bestillinger')
-      .select(`
-        *,
-        takstmann:takstmann_profiler(id, navn, spesialitet, telefon, epost, bilde_url),
-        oppdrag(*)
-      `)
-      .eq('bestilt_av_megler_id', (profil as { id: string }).id)
-      .order('created_at', { ascending: false })
-
-    return (data ?? []) as unknown as BestillingMedInfo[]
+    profilId = profil?.id ?? null
   } else {
-    const { data: profil } = await supabase
+    const { data: profil } = await serviceSupabase
       .from('privatkunde_profiler')
       .select('id')
       .eq('user_id', user.id)
       .single()
-
-    if (!profil) return []
-
-    const { data } = await supabase
-      .from('bestillinger')
-      .select(`
-        *,
-        takstmann:takstmann_profiler(id, navn, spesialitet, telefon, epost, bilde_url),
-        oppdrag(*)
-      `)
-      .eq('bestilt_av_kunde_id', (profil as { id: string }).id)
-      .order('created_at', { ascending: false })
-
-    return (data ?? []) as unknown as BestillingMedInfo[]
+    profilId = profil?.id ?? null
   }
+
+  if (!profilId) return []
+
+  // Hent bestillinger UTEN PostgREST-joins
+  const filterKolonne = rolle === 'megler' ? 'bestilt_av_megler_id' : 'bestilt_av_kunde_id'
+  const { data: bestillingerRå } = await serviceSupabase
+    .from('bestillinger')
+    .select('*')
+    .eq(filterKolonne, profilId)
+    .order('created_at', { ascending: false })
+
+  const bRå = bestillingerRå ?? []
+  if (bRå.length === 0) return []
+
+  // Hent relaterte data i separate spørringer
+  const takstmannIder = [...new Set(bRå.map(b => b.takstmann_id).filter(Boolean))]
+  const oppdragIder = [...new Set(bRå.map(b => b.oppdrag_id).filter(Boolean))]
+
+  const [tRes, oRes] = await Promise.all([
+    takstmannIder.length > 0
+      ? serviceSupabase.from('takstmann_profiler').select('id, navn, spesialitet, telefon, epost, bilde_url').in('id', takstmannIder)
+      : Promise.resolve({ data: [] as any[] }),
+    oppdragIder.length > 0
+      ? serviceSupabase.from('oppdrag').select('*').in('id', oppdragIder)
+      : Promise.resolve({ data: [] as any[] }),
+  ])
+
+  const tMap = Object.fromEntries((tRes.data ?? []).map(t => [t.id, t]))
+  const oMap = Object.fromEntries((oRes.data ?? []).map(o => [o.id, o]))
+
+  return bRå.map(b => ({
+    ...b,
+    takstmann: b.takstmann_id ? tMap[b.takstmann_id] ?? null : null,
+    oppdrag: b.oppdrag_id ? oMap[b.oppdrag_id] ?? null : null,
+  })) as unknown as BestillingMedInfo[]
 }
 
 // ============================================================
