@@ -29,11 +29,34 @@ async function getAccessToken(): Promise<string> {
     },
   })
   if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`Vipps token error ${res.status}: ${err}`)
+    const body = await res.text()
+    const { requestId, trace } = collectVippsErrorHeaders(res)
+    throw new VippsApiError(
+      `accesstoken/get ${res.status}`,
+      res.status,
+      body,
+      requestId,
+      trace
+    )
   }
   const data = (await res.json()) as { access_token: string }
   return data.access_token
+}
+
+/**
+ * Returnerer hvilken MSN som faktisk brukes – nyttig for diagnose.
+ */
+export function debugVippsConfig() {
+  return {
+    baseUrl: BASE_URL,
+    testMode: isTest,
+    msnInUse: process.env.VIPPS_RECURRING_MSN ?? process.env.VIPPS_MSN ?? '(missing)',
+    hasRecurringMsn: !!process.env.VIPPS_RECURRING_MSN,
+    hasFallbackMsn: !!process.env.VIPPS_MSN,
+    hasSubscriptionKey: !!process.env.VIPPS_SUBSCRIPTION_KEY,
+    hasClientId: !!process.env.VIPPS_CLIENT_ID,
+    hasClientSecret: !!process.env.VIPPS_CLIENT_SECRET,
+  }
 }
 
 function vippsHeaders(accessToken: string): Record<string, string> {
@@ -45,6 +68,32 @@ function vippsHeaders(accessToken: string): Record<string, string> {
       process.env.VIPPS_RECURRING_MSN ?? process.env.VIPPS_MSN!,
     'Vipps-System-Name': 'Takstmann.net',
     'Vipps-System-Version': '1.0.0',
+  }
+}
+
+export class VippsApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public body: string,
+    public vippsRequestId: string | null,
+    public vippsTrace: string | null
+  ) {
+    super(message)
+    this.name = 'VippsApiError'
+  }
+}
+
+function collectVippsErrorHeaders(res: Response): { requestId: string | null; trace: string | null } {
+  return {
+    requestId:
+      res.headers.get('x-request-id') ??
+      res.headers.get('request-id') ??
+      res.headers.get('Vipps-Request-Id'),
+    trace:
+      res.headers.get('x-correlation-id') ??
+      res.headers.get('ocp-apim-trace-location') ??
+      null,
   }
 }
 
@@ -69,8 +118,15 @@ export async function listVippsWebhooks(): Promise<VippsRegistrertWebhook[]> {
     headers: vippsHeaders(token),
   })
   if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`Vipps listWebhooks ${res.status}: ${err}`)
+    const body = await res.text()
+    const { requestId, trace } = collectVippsErrorHeaders(res)
+    throw new VippsApiError(
+      `listWebhooks ${res.status}`,
+      res.status,
+      body,
+      requestId,
+      trace
+    )
   }
   const data = (await res.json()) as { webhooks?: VippsRegistrertWebhook[] }
   return data.webhooks ?? []
@@ -94,8 +150,15 @@ export async function opprettVippsWebhook(params: {
     }),
   })
   if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`Vipps createWebhook ${res.status}: ${err}`)
+    const body = await res.text()
+    const { requestId, trace } = collectVippsErrorHeaders(res)
+    throw new VippsApiError(
+      `createWebhook ${res.status}`,
+      res.status,
+      body,
+      requestId,
+      trace
+    )
   }
   return (await res.json()) as VippsRegistrertWebhookMedSecret
 }
@@ -110,8 +173,15 @@ export async function slettVippsWebhook(id: string): Promise<void> {
     headers: vippsHeaders(token),
   })
   if (!res.ok && res.status !== 204) {
-    const err = await res.text()
-    throw new Error(`Vipps deleteWebhook ${res.status}: ${err}`)
+    const body = await res.text()
+    const { requestId, trace } = collectVippsErrorHeaders(res)
+    throw new VippsApiError(
+      `deleteWebhook ${res.status}`,
+      res.status,
+      body,
+      requestId,
+      trace
+    )
   }
 }
 

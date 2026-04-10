@@ -17,8 +17,28 @@ import {
   listVippsWebhooks,
   opprettVippsWebhook,
   slettVippsWebhook,
+  debugVippsConfig,
+  VippsApiError,
   RECURRING_WEBHOOK_EVENTS,
 } from '@/lib/vipps/webhooks-api'
+
+function vippsErrorToResponse(err: unknown) {
+  if (err instanceof VippsApiError) {
+    return NextResponse.json(
+      {
+        error: err.message,
+        vippsStatus: err.status,
+        vippsBody: err.body,
+        vippsRequestId: err.vippsRequestId,
+        vippsTrace: err.vippsTrace,
+        config: debugVippsConfig(),
+      },
+      { status: 502 }
+    )
+  }
+  const msg = err instanceof Error ? err.message : 'Ukjent feil'
+  return NextResponse.json({ error: msg, config: debugVippsConfig() }, { status: 500 })
+}
 
 async function krevAdmin() {
   const supabase = await createClient()
@@ -49,8 +69,7 @@ export async function GET() {
     const webhooks = await listVippsWebhooks()
     return NextResponse.json({ webhooks })
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Ukjent feil'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return vippsErrorToResponse(err)
   }
 }
 
@@ -99,8 +118,7 @@ export async function POST() {
       secret: resultat.secret,
     })
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Ukjent feil'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return vippsErrorToResponse(err)
   }
 }
 
@@ -119,7 +137,6 @@ export async function DELETE(request: NextRequest) {
     await slettVippsWebhook(id)
     return NextResponse.json({ ok: true })
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Ukjent feil'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return vippsErrorToResponse(err)
   }
 }
