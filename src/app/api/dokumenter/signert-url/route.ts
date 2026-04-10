@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
 
   const { data, error } = await supabase.storage
     .from('dokumenter')
-    .createSignedUrl(dok.storage_path, 3600) // 1 time
+    .createSignedUrl(dok.storage_path, 3600)
 
   if (error || !data) {
     return NextResponse.json(

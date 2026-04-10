@@ -1,26 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { captureVippsBetaling } from '@/lib/vipps/payment'
+import { verifyVippsWebhook } from '@/lib/vipps/webhook-auth'
 
 /**
  * POST /api/vipps/webhook
  *
- * Vipps sender webhooks når betalingsstatus endres.
+ * Vipps ePayment webhook (engangsbetalinger).
+ *
+ * MERK: Denne ruten er foreløpig inaktiv – ingen kode i prosjektet starter
+ * ePayment-betalinger i dag (vi bruker Vipps Recurring). Ruten beholdes
+ * HMAC-sikret slik at den er klar til bruk hvis vi aktiverer engangsbetalinger
+ * (f.eks. "kjøp bedre plassering") i fremtiden.
+ *
  * Viktige events:
  *   - AUTHORIZED → kunden har godkjent, vi kan capture
- *   - CAPTURED → betalingen er gjennomført
- *   - CANCELLED → kunden eller vi kansellerte
- *   - FAILED → noe gikk galt
+ *   - CAPTURED   → betalingen er gjennomført
+ *   - CANCELLED  → kunden eller vi kansellerte
+ *   - FAILED     → noe gikk galt
  */
 export async function POST(request: NextRequest) {
-  // Fail-closed: reject if secret is not configured or doesn't match
-  const webhookSecret = process.env.VIPPS_WEBHOOK_SECRET
-  if (!webhookSecret || request.headers.get('Authorization') !== `Bearer ${webhookSecret}`) {
+  const secret = process.env.VIPPS_EPAYMENT_WEBHOOK_SECRET
+  if (!secret) {
+    console.error('[vipps-webhook] VIPPS_EPAYMENT_WEBHOOK_SECRET ikke satt')
+    return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
+  }
+
+  const rawBody = await request.text()
+  const host =
+    request.headers.get('host') ??
+    request.headers.get('x-forwarded-host') ??
+    ''
+  const url = new URL(request.url)
+  const pathAndQuery = url.pathname + (url.search || '')
+
+  const verification = verifyVippsWebhook({
+    method: 'POST',
+    pathAndQuery,
+    host,
+    rawBody,
+    headers: request.headers,
+    secret,
+  })
+
+  if (!verification.ok) {
+    console.warn('[vipps-webhook] Avvist ugyldig signatur:', verification.reason)
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
-    const body = await request.json()
+    const body = JSON.parse(rawBody)
 
     // Vipps webhook payload
     const reference = body.reference as string
