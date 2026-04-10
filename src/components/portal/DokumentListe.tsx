@@ -62,7 +62,7 @@ function NedlastKnapp({ dok }: { dok: DokumentRad }) {
   async function lastNed() {
     setLaster(true);
     try {
-      const res = await fetch(`/api/dokumenter/signert-url?path=${encodeURIComponent(dok.storage_path)}`);
+      const res = await fetch(`/api/dokumenter/signert-url?id=${encodeURIComponent(dok.id)}`);
       const data = await res.json();
       if (data.url) {
         const a = document.createElement("a");
