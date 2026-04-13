@@ -27,7 +27,8 @@ export default async function AdminArkatFeedbackPage() {
 
   // Hent brukernavn
   const brukerIds = [...new Set(feedback?.map((f) => f.user_id) ?? [])];
-  const { data: profiler } = brukerIds.length > 0
+  // Hent navn — prøv takstmann_profiler først, fyll inn fra user_profiles for resten
+  const { data: takstProfiler } = brukerIds.length > 0
     ? await supabase
         .from("takstmann_profiler")
         .select("id, navn")
@@ -35,7 +36,17 @@ export default async function AdminArkatFeedbackPage() {
     : { data: [] };
 
   const navnMap = new Map<string, string>();
-  profiler?.forEach((p) => navnMap.set(p.id, p.navn));
+  takstProfiler?.forEach((p) => navnMap.set(p.id, p.navn));
+
+  // Fyll inn manglende fra user_profiles (admin-brukere etc.)
+  const manglerNavn = brukerIds.filter((id) => !navnMap.has(id));
+  if (manglerNavn.length > 0) {
+    const { data: userProfiler } = await supabase
+      .from("user_profiles")
+      .select("id, navn")
+      .in("id", manglerNavn);
+    userProfiler?.forEach((p) => navnMap.set(p.id, p.navn ?? "Ukjent"));
+  }
 
   // Oppsummering
   const antallBra = feedback?.filter((f) => f.vurdering === "bra").length ?? 0;
