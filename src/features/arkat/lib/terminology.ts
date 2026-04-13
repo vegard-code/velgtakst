@@ -31,6 +31,8 @@ export interface MerknadTerminologi {
 export interface UnderenhetTerminologi {
   fagtermer: string[];
   observasjonsmarkorer: ObservasjonsMarkor;
+  /** Årsaksmekanismer per observasjonskategori — forklarer HVORFOR symptomene oppstår */
+  aarsaksmekanismer?: Record<string, string>;
   TG2?: TgTerminologi;
   TG3?: TgTerminologi;
   /** Merknad-modus (f.eks. elektrisk anlegg) — ingen TG */

@@ -1403,6 +1403,14 @@
           "Arbeidet bør utføres av kvalifisert takentreprenør. Det bør velges tekking med dokumentert levetid tilpasset klimabelastningen på stedet.",
           "Takplater med rustskader og deformasjoner bør skiftes ut. Øvrig tekking vurderes med hensyn til gjenværende levetid og behov for omtekking."
         ]
+      },
+      "aarsaksmekanismer": {
+        "alder": "Naturlig aldring og slitasje over lang brukstid.",
+        "rust": "Nedbrytning av overflatebelegg eksponerer underliggende metall for fukt og korrosjon.",
+        "skade": "Mekanisk påvirkning fra snølast, vind eller termisk bevegelse.",
+        "papp": "UV-stråling og fuktpåvirkning bryter ned organisk tekkingsmateriale over tid.",
+        "mose": "Vedvarende fuktighet og skyggefulle forhold gir biologisk vekst som holder på fukt.",
+        "beslag": "Aldring eller mekanisk påvirkning har svekket beslag og overganger."
       }
     },
     "renner_og_nedlop": {
@@ -2261,6 +2269,15 @@
           "Flassende og løs maling skrapes bort, og kledningen grunnes og males på nytt. Råteskadet kledning skiftes ut. Manglende musebånd og museklosser bør ettermonteres.",
           "Takkasser og overgang kledning/tak kontrolleres for fukt og råte. Skadet trevirke utbedres og overflatebehandles."
         ]
+      },
+      "aarsaksmekanismer": {
+        "alder": "Langvarig eksponering for vær og vind over tid.",
+        "maling": "UV-stråling og fuktpåvirkning har brutt ned overflatebehandlingen.",
+        "raate": "Vedvarende fuktopptak med manglende uttørking gir råteutvikling i trevirke.",
+        "fukt": "Fuktinntrengning gjennom skadet eller manglende beskyttelseslag.",
+        "konstruksjon": "Opprinnelig utførelse eller aldersrelatert svekkelse av konstruktive detaljer.",
+        "skadedyr": "Manglende eller skadet musebeskyttelse i nedre del av kledning.",
+        "sopp": "Vedvarende fuktighet og begrenset uttørking i utsatte partier gir soppvekst."
       }
     },
     "vindskier_og_vannbord": {

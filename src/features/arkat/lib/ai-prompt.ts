@@ -32,11 +32,17 @@ UFRAVIKELIGE REGLER:
    Du kan bruke fagterminologi og standardformuleringer, men de må passe til det som er beskrevet.
    SPESIELT: Ikke pek på spesifikke årsaker eller kilder (f.eks. "drenering", "membransvikt", "rør") i risiko eller tiltak med mindre observasjonen selv nevner eller tydelig peker på dette. Hvis observasjonen sier "noe fukt" uten å identifisere kilden, skal risiko og tiltak handle om å avklare kilden — ikke anta hva den er.
 
-2. ÅRSAK — hva som er registrert
-   Reformuler observasjonen faglig. Ikke kopier den ordrett, men bevar meningsinnholdet.
-   Bruk "Det er registrert..." kun for fragmenter uten verb. Fullstendige setninger brukes som de er.
-   Ikke legg til detaljer utover det observasjonen sier.
-   INNHOLD: Kun fakta — hva som er sett/målt. Ingen vurderinger, ingen risiko, ingen tiltak.
+2. ÅRSAK — HVORFOR tilstanden har oppstått (årsaksmekanisme)
+   Forklar mekanismene bak det som er observert. Årsak skal IKKE gjenta observasjonen —
+   takstmannen har allerede skrevet observasjonen, og den står i rapporten som eget felt.
+   Årsak forklarer: "Hva har ført til denne tilstanden?"
+   INNHOLD: Fysiske/kjemiske/biologiske prosesser som forklarer symptomene.
+   FEIL: "Det er registrert deformasjoner og rustdannelser på takplater." (dette er observasjonen, ikke årsak)
+   RIKTIG: "Alder og naturlig nedbrytning av overflatebelegg på stålplater. Deformasjoner kan skyldes snølast eller termisk bevegelse."
+   FEIL: "Kledningen fremstår med slitasje og avflassing." (dette er observasjonen)
+   RIKTIG: "UV-stråling og fuktpåvirkning har brutt ned overflatebehandlingen. Vedvarende fuktopptak gir råteutvikling i ubeskyttet trevirke."
+   Ikke legg til mekanismer som ikke kan utledes av observasjonen.
+   Ingen vurderinger av risiko, kostnader eller tiltak i dette feltet.
 
 3. RISIKO — hva som kan skje (mekanisme/prosess)
    Beskriv MEKANISMEN bak hva som kan skje dersom forholdet ikke utbedres.
@@ -152,18 +158,19 @@ UFRAVIKELIGE REGLER:
 11. FELTDISIPLIN — VIKTIGSTE KVALITETSREGEL
    Hvert felt har én rolle. Innholdet skal ALDRI gli mellom feltene:
 
-   ÅRSAK  = Observasjon (fakta). Ingen vurdering.
-   RISIKO = Skademekanisme (prosess). Hva KAN skje. Ikke kostnader, ikke tiltak.
+   ÅRSAK  = Årsaksmekanisme (HVORFOR). Ikke gjenta observasjonen.
+   RISIKO = Skadeprognose (hva KAN skje). Ikke kostnader, ikke tiltak.
    KONSEKVENS = Kostnader for kjøper. Hva det betyr økonomisk. Ikke skadeprosesser.
    TILTAK = Konkrete handlinger. Hva som bør GJØRES. Ikke risiko, ikke kostnader.
 
    TYPISK FEIL (feltforskyvning):
+   Årsak gjentar observasjonen → "Det er registrert rust og deformasjoner" (FEIL — dette er observasjonen)
    Risiko inneholder konsekvens-språk → "kan medføre behov for utskifting" (FEIL — dette er konsekvens)
    Konsekvens inneholder tiltak-språk → "det anbefales kontroll" (FEIL — dette er tiltak)
    Tiltak inneholder generisk tekst → "videre vurdering og oppfølging" (FEIL — vær konkret)
 
    KORREKT EKSEMPEL (taktekking med rust og deformasjoner):
-   Årsak: "Taktekking fra 1985 har passert forventet brukstid. Det er registrert deformasjoner og begynnende rustdannelser på takplater."
+   Årsak: "Alder og naturlig nedbrytning av overflatebelegg på stålplater. Deformasjoner kan skyldes snølast eller termisk bevegelse."
    Risiko: "Korrosjon og deformasjoner svekker tekkingsmaterialets tetthet. Over tid øker risikoen for vanninntrengning gjennom svekkede skjøter og festepunkter."
    Konsekvens: "Kjøper må påregne kostnader til utskifting av skadde takplater og vurdering av behov for omtekking."
    Tiltak: "Takplater med rustskader og deformasjoner bør skiftes ut. Øvrig tekking vurderes med hensyn til gjenværende levetid og behov for omtekking."

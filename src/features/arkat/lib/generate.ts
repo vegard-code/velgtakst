@@ -149,7 +149,7 @@ export async function generateArkat(
   }
 
   // ── Trinn 3: Lokal motor (fallback) ──
-  const result = byggArkat(input, analyse, tgData);
+  const result = byggArkat(input, analyse, tgData, terminologi);
 
   return {
     success: true,
@@ -393,7 +393,8 @@ function analyserObservasjon(
 function byggArkat(
   input: ArkatGenerateInput,
   analyse: ObservasjonsAnalyse,
-  tgData: TgTerminologi
+  tgData: TgTerminologi,
+  terminologi: UnderenhetTerminologi | null
 ): ArkatGeneratedResult {
   const erKort = input.onsket_lengde === "kort";
   const bd = BYGNINGSDELER.find((b) => b.key === input.bygningsdel);
@@ -404,7 +405,7 @@ function byggArkat(
   const risikoRef = finnRelevantReferanse(tgData.risikoer, analyse);
 
   // Bygg hvert felt
-  const arsak = byggArsak(analyse, ueLabel, erKort);
+  const arsak = byggArsak(analyse, ueLabel, erKort, terminologi);
   const risiko = byggRisiko(analyse, risikoRef, erKort, analyse.alderSomGrunnlag);
   const konsekvens = byggKonsekvens(analyse, tgData, ueLabel, erKort);
   const tiltak = byggTiltak(analyse, tgData, ueLabel, input, erKort);
@@ -449,45 +450,68 @@ function finnRelevantReferanse(
 // ─── Felt-byggere ───────────────────────────────────────────
 
 /**
- * ÅRSAK — bygges DIREKTE fra observasjonen.
+ * ÅRSAK — forklarer HVORFOR tilstanden har oppstått.
  *
- * Ingen referansetekst brukes. Observasjonen reformuleres minimalt:
- * - Har allerede faglig prefix → bruk som den er
- * - Mangler prefix → legg til nøytralt "Det er registrert"
- * - Svak dekning → legg til kontekst om underenhet som separat setning
+ * Årsak skal IKKE gjenta observasjonen — den skal forklare mekanismene
+ * bak det som er observert. "Hva har ført til denne tilstanden?"
+ *
+ * Logikk:
+ * 1. Slå opp årsaksmekanismer fra terminologien basert på matchede kategorier
+ * 2. Dedupliser og komponer til sammenhengende tekst (maks 2-3 setninger)
+ * 3. Fallback: reformuler observasjonen dersom ingen mekanismer finnes
  */
 function byggArsak(
   analyse: ObservasjonsAnalyse,
   ueLabel: string,
-  kort: boolean
+  kort: boolean,
+  terminologi: UnderenhetTerminologi | null
 ): string {
   const obs = analyse.kjerne.trim();
 
+  // Forsøk mekanisme-basert årsak fra terminologien
+  const mekanismer = terminologi?.aarsaksmekanismer;
+  if (mekanismer && analyse.matchKategorier.length > 0) {
+    const tekster: string[] = [];
+    const sett = new Set<string>(); // dedupliser identiske tekster
+
+    // Prioriter "alder" først (grunnårsak), deretter spesifikke mekanismer
+    const sortert = [...analyse.matchKategorier].sort((a, b) =>
+      a === "alder" ? -1 : b === "alder" ? 1 : 0
+    );
+
+    for (const kat of sortert) {
+      const tekst = mekanismer[kat];
+      if (tekst && !sett.has(tekst)) {
+        sett.add(tekst);
+        tekster.push(tekst);
+      }
+    }
+
+    if (tekster.length > 0) {
+      // Maks 3 mekanismer for lesbarhet
+      const bruk = tekster.slice(0, 3);
+      if (kort) return bruk[0];
+      return bruk.join(" ");
+    }
+  }
+
+  // Fallback: reformuler observasjonen (for underenheter uten årsaksmekanismer)
   if (kort) {
     return avsluttSetning(lagKortKjerne(obs));
   }
 
-  // Sjekk om observasjonen allerede har en faglig prefix
   const harFagligPrefix =
     /^(det er |det ble |vi har )?(observert|registrert|påvist|konstatert)/i.test(obs);
-
-  // Sjekk om observasjonen er en fullstendig setning (har hovedverb)
-  // Slike skal IKKE få "Det er registrert" foran — det gir ødelagt grammatikk
   const erFullSetning =
     /\b(har|er|viser|mangler|innebærer|medfører|tyder|indikerer|fremstår|fungerer|ligger)\b/i.test(obs);
 
   let arsak: string;
-
   if (harFagligPrefix || erFullSetning) {
-    // Observasjonen er allerede en komplett setning — bruk direkte
     arsak = avsluttSetning(obs);
   } else {
-    // Fragment uten verb — legg til nøytral prefix
-    const kjerne = lavKjerne(obs);
-    arsak = avsluttSetning(`Det er registrert ${kjerne}`);
+    arsak = avsluttSetning(`Det er registrert ${lavKjerne(obs)}`);
   }
 
-  // Svak dekning: legg til kontekst om underenhet hvis den ikke allerede er nevnt
   if (analyse.dekning === "svak") {
     const obsLower = obs.toLowerCase();
     const ueOrd = ueLabel.toLowerCase().split(/[\s/]+/);
