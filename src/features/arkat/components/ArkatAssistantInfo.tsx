@@ -8,10 +8,10 @@ export default function ArkatAssistantInfo() {
         Om ARKAT Skrivehjelp
       </h2>
       <p className="text-sm text-[#64748b] leading-relaxed">
-        ARKAT hjelper deg å formulere Årsak, Risiko, Konsekvens og Anbefalt tiltak
-        basert på din observasjon. Velg bygningsdel, underenhet og tilstandsgrad,
-        skriv inn observasjonen din, og få et strukturert forslag du kan bruke
-        som utgangspunkt.
+        ARKAT hjelper deg å formulere Risiko, Konsekvens og Anbefalt tiltak.
+        Velg bygningsdel, underenhet og tilstandsgrad, skriv inn din faglige
+        vurdering av årsaken, og få et strukturert forslag du kan bruke som
+        utgangspunkt.
       </p>
       <p className="text-xs text-[#94a3b8] mt-2">
         Dette er en skrivehjelp. Du er selv ansvarlig for faglig vurdering,

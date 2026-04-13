@@ -266,7 +266,7 @@ export default function ArkatAssistantForm() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#1e293b]">ARKAT Skrivehjelp</h1>
         <p className="text-[#64748b] text-sm mt-0.5">
-          Generer Årsak, Risiko, Konsekvens og Anbefalt tiltak fra din observasjon
+          Skriv årsak — få Risiko, Konsekvens og Anbefalt tiltak
         </p>
       </div>
 
@@ -442,16 +442,19 @@ export default function ArkatAssistantForm() {
             </div>
           )}
 
-          {/* Observasjon — flyttes OPP, før grunnlag */}
+          {/* Årsak (standard) / Observasjon (merknad-modus) */}
           <div>
             <label className="block text-sm font-medium text-[#1e293b] mb-1">
-              Observasjon
+              {merknadModus ? "Observasjon" : "Årsak"}
             </label>
             <textarea
               value={observasjon}
               onChange={(e) => setObservasjon(e.target.value)}
               rows={4}
-              placeholder="Beskriv hva som er observert, f.eks. «Fuktmåling viser 28% i hjørnet bak badekaret. Ingen synlige skader på overflaten.»"
+              placeholder={merknadModus
+                ? "Beskriv hva som er observert..."
+                : "Skriv din faglige vurdering av årsaken til valgt TG, f.eks. «Alder og naturlig nedbrytning av overflatebelegg på stålplater. Deformasjoner skyldes snølast eller termisk bevegelse.»"
+              }
               className="portal-input resize-y min-h-[100px]"
             />
             <p className="text-xs text-[#94a3b8] mt-1">

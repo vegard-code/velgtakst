@@ -394,7 +394,7 @@ function byggArkat(
   input: ArkatGenerateInput,
   analyse: ObservasjonsAnalyse,
   tgData: TgTerminologi,
-  terminologi: UnderenhetTerminologi | null
+  _terminologi: UnderenhetTerminologi | null
 ): ArkatGeneratedResult {
   const erKort = input.onsket_lengde === "kort";
   const bd = BYGNINGSDELER.find((b) => b.key === input.bygningsdel);
@@ -404,8 +404,8 @@ function byggArkat(
   // Referanser — brukes KUN som strukturmal, aldri som direkte kilde
   const risikoRef = finnRelevantReferanse(tgData.risikoer, analyse);
 
-  // Bygg hvert felt
-  const arsak = byggArsak(analyse, ueLabel, erKort, terminologi);
+  // Årsak = brukerens input direkte (ikke generert)
+  const arsak = avsluttSetning(input.observasjon.trim());
   const risiko = byggRisiko(analyse, risikoRef, erKort, analyse.alderSomGrunnlag);
   const konsekvens = byggKonsekvens(analyse, tgData, ueLabel, erKort);
   const tiltak = byggTiltak(analyse, tgData, ueLabel, input, erKort);

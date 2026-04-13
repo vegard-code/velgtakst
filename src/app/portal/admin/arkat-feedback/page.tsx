@@ -109,9 +109,9 @@ export default async function AdminArkatFeedbackPage() {
                   </div>
                 </div>
 
-                {/* Observasjon */}
+                {/* Årsak (brukerens input) */}
                 <div className="mb-3">
-                  <div className="text-xs font-medium text-[#64748b] mb-1">Observasjon</div>
+                  <div className="text-xs font-medium text-[#64748b] mb-1">Årsak (brukerens input)</div>
                   <p className="text-sm text-[#1e293b] bg-[#f8fafc] rounded p-2.5 leading-relaxed">
                     {f.observasjon}
                   </p>
