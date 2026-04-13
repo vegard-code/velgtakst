@@ -1312,8 +1312,10 @@
         "plater": [
           "plate",
           "stålplate",
+          "ståltakplate",
           "profilerte",
-          "bølgeblekk"
+          "bølgeblekk",
+          "takplate"
         ],
         "papp": [
           "papp",
@@ -1326,7 +1328,18 @@
           "sprukket",
           "løs",
           "forskjøvet",
-          "mangl"
+          "mangl",
+          "deformasjon",
+          "deformering",
+          "bulking",
+          "bøyd"
+        ],
+        "rust": [
+          "rust",
+          "rustdannelse",
+          "korrosjon",
+          "korrodert",
+          "rustflekk"
         ],
         "alder": [
           "alder",
@@ -1334,6 +1347,7 @@
           "opprinnelig",
           "byggeår",
           "levetid",
+          "brukstid",
           "eldre"
         ],
         "mose": [
@@ -1375,7 +1389,8 @@
         "risikoer": [
           "Aktiv lekkasje gjennom tak gir direkte risiko for råteskader i bærende takkonstruksjon, bjelkelag og isolasjon.",
           "Vedvarende fukt i takkonstruksjonen kan føre til soppvekst og strukturell svekkelse som i verste fall påvirker takets bæreevne.",
-          "Lekkasje fra tak kan også gi vannskader i underliggende etasjer og på innvendig overflatebehandling."
+          "Lekkasje fra tak kan også gi vannskader i underliggende etasjer og på innvendig overflatebehandling.",
+          "Korrosjon og deformasjoner svekker tekkingsmaterialets tetthet og innfesting. Over tid øker risikoen for vanninntrengning gjennom svekkede skjøter og festepunkter."
         ],
         "konsekvenser": [
           "Kjøper må påregne fullstendig omtekking av taket, med sannsynlig behov for samtidig utskifting av undertak, lekter og eventuelt skadet bærekonstruksjon.",
@@ -1385,7 +1400,8 @@
         "tiltak": [
           "Taket bør tekkes om i sin helhet. Ved omtekking må undertak, lekter og sløyfer kontrolleres og skiftes ut der det er registrert skade.",
           "Bærende takkonstruksjon bør inspiseres for råte og soppskader. Skadet trevirke må utskiftes eller forsterkes.",
-          "Arbeidet bør utføres av kvalifisert takentreprenør. Det bør velges tekking med dokumentert levetid tilpasset klimabelastningen på stedet."
+          "Arbeidet bør utføres av kvalifisert takentreprenør. Det bør velges tekking med dokumentert levetid tilpasset klimabelastningen på stedet.",
+          "Takplater med rustskader og deformasjoner bør skiftes ut. Øvrig tekking vurderes med hensyn til gjenværende levetid og behov for omtekking."
         ]
       }
     },
@@ -2173,6 +2189,30 @@
           "vindsperre",
           "isolasjon",
           "bunnsvill"
+        ],
+        "skadedyr": [
+          "mus",
+          "musebånd",
+          "museklosser",
+          "musebeskyttelse",
+          "gnagerspor",
+          "skadedyr"
+        ],
+        "sopp": [
+          "svertesopp",
+          "sopp",
+          "soppangrep",
+          "soppvekst",
+          "grønt",
+          "begroing"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "slitasje",
+          "eldre"
         ]
       },
       "TG2": {
@@ -2211,12 +2251,15 @@
         "konsekvenser": [
           "Kjøper må påregne utskifting av kledning på berørte fasader, med sannsynlig behov for samtidig utbedring av vindtetting.",
           "Dersom bærekonstruksjon bak er skadet, øker kostnaden vesentlig. Skjulte skader avdekkes først ved riving av kledningen.",
-          "Fasadeutskifting er en vesentlig vedlikeholdspost og bør hensyntas i kjøpsvurderingen."
+          "Fasadeutskifting er en vesentlig vedlikeholdspost og bør hensyntas i kjøpsvurderingen.",
+          "Kjøper bør påregne kostnader til skraping og ny overflatebehandling av kledning, utskifting av råteskadet trevirke, samt ettermontering av manglende musebeskyttelse."
         ],
         "tiltak": [
           "Fasadekledning med utbredt råteskade bør skiftes ut i sin helhet på berørte partier. Samtidig kontrolleres vindtetting og underlag.",
           "Bærekonstruksjon bak kledningen inspekteres for fukt- og soppskader. Skadet trevirke og isolasjon skiftes ut.",
-          "Ny kledning monteres med korrekt luftespalte, bunntilslutning og beslag. Overflatebehandles før montering eller snarest etter."
+          "Ny kledning monteres med korrekt luftespalte, bunntilslutning og beslag. Overflatebehandles før montering eller snarest etter.",
+          "Flassende og løs maling skrapes bort, og kledningen grunnes og males på nytt. Råteskadet kledning skiftes ut. Manglende musebånd og museklosser bør ettermonteres.",
+          "Takkasser og overgang kledning/tak kontrolleres for fukt og råte. Skadet trevirke utbedres og overflatebehandles."
         ]
       }
     },

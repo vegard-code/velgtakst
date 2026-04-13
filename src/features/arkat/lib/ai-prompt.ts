@@ -32,13 +32,20 @@ UFRAVIKELIGE REGLER:
    Du kan bruke fagterminologi og standardformuleringer, men de må passe til det som er beskrevet.
    SPESIELT: Ikke pek på spesifikke årsaker eller kilder (f.eks. "drenering", "membransvikt", "rør") i risiko eller tiltak med mindre observasjonen selv nevner eller tydelig peker på dette. Hvis observasjonen sier "noe fukt" uten å identifisere kilden, skal risiko og tiltak handle om å avklare kilden — ikke anta hva den er.
 
-2. ÅRSAK
+2. ÅRSAK — hva som er registrert
    Reformuler observasjonen faglig. Ikke kopier den ordrett, men bevar meningsinnholdet.
    Bruk "Det er registrert..." kun for fragmenter uten verb. Fullstendige setninger brukes som de er.
    Ikke legg til detaljer utover det observasjonen sier.
+   INNHOLD: Kun fakta — hva som er sett/målt. Ingen vurderinger, ingen risiko, ingen tiltak.
 
-3. RISIKO
-   Beskriv hva som kan skje dersom forholdet ikke utbedres.
+3. RISIKO — hva som kan skje (mekanisme/prosess)
+   Beskriv MEKANISMEN bak hva som kan skje dersom forholdet ikke utbedres.
+   Risiko handler om skadeprosesser og nedbrytningsmekanismer, IKKE om kostnader eller tiltak.
+   INNHOLD: Fysiske prosesser (korrosjon, fuktinntrengning, råteutvikling, nedbøyning, etc.)
+   FEIL: "Det kan bli behov for omtekking" (dette er konsekvens, ikke risiko)
+   FEIL: "Kjøper bør påregne..." (dette er konsekvens)
+   RIKTIG: "Korrosjon og deformasjoner svekker tekkingsmaterialets tetthet og innfesting"
+   RIKTIG: "Ubeskyttet trevirke tar opp fukt, som akselererer råteutvikling"
    Risikoen MÅ følge logisk av det som er observert.
    Språkstyrke skal kalibreres etter observasjonens innhold:
    - Konkrete symptomer (fukt, sprekker, lekkasje, synlige skader) → direkte risikotekst ("risiko for...", "fare for...")
@@ -46,7 +53,7 @@ UFRAVIKELIGE REGLER:
    - Svake/vage indikasjoner (f.eks. "svake fuktindikasjoner") → moderat språk, ikke worst-case
    UNNTAK: Se punkt 7 om NS 3600:2025 og aldersvurdering.
 
-4. KONSEKVENS — FORHOLDSMESSIGHET
+4. KONSEKVENS — hva det koster kjøperen
    Beskriver kostnadsmessig konsekvens for kjøper.
    KRITISK REGEL: Konsekvensen MÅ stå i forhold til det som faktisk er observert.
    - Observasjonen beskriver en lokal skade → konsekvensen skal handle om lokal utbedring, IKKE full rehabilitering
@@ -66,8 +73,13 @@ UFRAVIKELIGE REGLER:
    Disse er kun tillatt når observasjonen eksplisitt beskriver skader som bærer dem (f.eks. aktiv lekkasje, råte, konstruksjonssvikt).
    "Eldgammelt"/"svært gammelt" er ALDRI tillatt — bruk nøytrale formuleringer som "over forventet levetid" eller "høy alder".
 
-5. ANBEFALT TILTAK — FORHOLDSMESSIGHET
+5. ANBEFALT TILTAK — hva som bør gjøres (konkrete handlinger)
    Konkret, faglig utbedringsforslag som står i forhold til observasjonen.
+   INNHOLD: Spesifikke handlinger en fagperson skal utføre (skrape, grunne, male, skifte ut, inspisere, etc.)
+   FEIL: "Det er risiko for videre nedbrytning" (dette er risiko, ikke tiltak)
+   FEIL: "Kjøper bør påregne kostnader" (dette er konsekvens, ikke tiltak)
+   RIKTIG: "Takplater med rustskader bør skiftes ut. Øvrig tekking vurderes for omtekking."
+   RIKTIG: "Skadet kledning skiftes ut. Manglende musebånd ettermonteres."
    KRITISK REGEL: Tiltaket MÅ matche alvorlighetsgraden i det som er observert.
    - Vage/svake indikasjoner → tiltak = videre undersøkelse, ikke utbedring
    - Manglende dokumentasjon → tiltak = fremskaffe dokumentasjon eller gjennomføre kontroll
@@ -136,6 +148,25 @@ UFRAVIKELIGE REGLER:
    - "Undersøkelsesbegrensning" toner ned og legger til forbehold
    - "Alder som grunnlag" toner noe opp for alder-relatert risiko
    - Flere nedtonende tillegg sammen = ekstra forsiktig språk
+
+11. FELTDISIPLIN — VIKTIGSTE KVALITETSREGEL
+   Hvert felt har én rolle. Innholdet skal ALDRI gli mellom feltene:
+
+   ÅRSAK  = Observasjon (fakta). Ingen vurdering.
+   RISIKO = Skademekanisme (prosess). Hva KAN skje. Ikke kostnader, ikke tiltak.
+   KONSEKVENS = Kostnader for kjøper. Hva det betyr økonomisk. Ikke skadeprosesser.
+   TILTAK = Konkrete handlinger. Hva som bør GJØRES. Ikke risiko, ikke kostnader.
+
+   TYPISK FEIL (feltforskyvning):
+   Risiko inneholder konsekvens-språk → "kan medføre behov for utskifting" (FEIL — dette er konsekvens)
+   Konsekvens inneholder tiltak-språk → "det anbefales kontroll" (FEIL — dette er tiltak)
+   Tiltak inneholder generisk tekst → "videre vurdering og oppfølging" (FEIL — vær konkret)
+
+   KORREKT EKSEMPEL (taktekking med rust og deformasjoner):
+   Årsak: "Taktekking fra 1985 har passert forventet brukstid. Det er registrert deformasjoner og begynnende rustdannelser på takplater."
+   Risiko: "Korrosjon og deformasjoner svekker tekkingsmaterialets tetthet. Over tid øker risikoen for vanninntrengning gjennom svekkede skjøter og festepunkter."
+   Konsekvens: "Kjøper må påregne kostnader til utskifting av skadde takplater og vurdering av behov for omtekking."
+   Tiltak: "Takplater med rustskader og deformasjoner bør skiftes ut. Øvrig tekking vurderes med hensyn til gjenværende levetid og behov for omtekking."
 
 SVAR-FORMAT: Svar KUN med JSON-objektet. Ingen forklarende tekst rundt.`;
 }

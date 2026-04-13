@@ -531,6 +531,7 @@ function byggRisiko(
     "pumpe", "drenering", "fall", "fyll", "beplantning",
     "overflateskade", "rekkverk", "nedboyning", "lyd",
     "ror", "korrosjon", "tank", "anlegg", "avtrekk",
+    "rust", "skadedyr", "sopp", "raate", "maling", "kledning",
   ]);
   const harKonkretSymptom =
     alderSomGrunnlag || [...kat].some((k) => SYMPTOM_KATEGORIER.has(k));
@@ -645,7 +646,54 @@ function byggRisiko(
     risikoElementer.push("mulig konstruktiv bevegelse som bør vurderes");
   }
 
-  // Ingen kategorier matchet
+  // ── Gruppe: Rust/korrosjon på taktekking ──
+  if (kat.has("rust")) {
+    // Kun hvis ikke allerede dekket av stein/skade/plater (taktekking-gruppen)
+    if (!kat.has("stein") && !kat.has("skade") && !kat.has("plater")) {
+      risikoElementer.push("videre korrosjon som svekker tekkingsmaterialets tetthet og innfesting");
+    }
+  }
+
+  // ── Gruppe: Skadedyr/mus ──
+  if (kat.has("skadedyr")) {
+    risikoElementer.push("inntrenging av skadedyr bak kledning");
+  }
+
+  // ── Gruppe: Svertesopp/begroing på fasade ──
+  if (kat.has("sopp")) {
+    // Kun hvis fukt ikke allerede dekker det
+    if (!kat.has("fukt")) {
+      risikoElementer.push("fuktpåvirkning med soppvekst og akselerert nedbrytning");
+    }
+  }
+
+  // ── Gruppe: Råteskade i kledning ──
+  if (kat.has("raate")) {
+    // Kun hvis fukt ikke allerede dekker det
+    if (!kat.has("fukt") && !kat.has("lekkasje")) {
+      risikoElementer.push("videre råteutvikling i trevirke og underliggende konstruksjon");
+    }
+  }
+
+  // ── Gruppe: Maling/overflatebehandling ──
+  if (kat.has("maling")) {
+    // Kun hvis råte/fukt ikke allerede dekker det
+    if (!kat.has("raate") && !kat.has("fukt")) {
+      risikoElementer.push("ubeskyttet trevirke med økt fuktopptak og nedbrytning");
+    }
+  }
+
+  // ── Gruppe: Kledning generelt ──
+  if (kat.has("kledning")) {
+    // Kun som fallback hvis ingen andre fasade-grupper matchet
+    if (!kat.has("raate") && !kat.has("maling") && !kat.has("fukt") && !kat.has("skadedyr")) {
+      risikoElementer.push("svekkelse i kledningens beskyttende funksjon");
+    }
+  }
+
+  // ── Velg beste risikotekst ──
+  // Kategoribygget risikotekst er ALLTID mer observasjonsnær enn referansetekst.
+  // Referansetekst brukes KUN som absolutt fallback (ingen kategorier matchet).
   if (risikoElementer.length === 0) {
     if (referanse) {
       return kort ? lagKortKjerne(referanse) : referanse;
@@ -661,10 +709,13 @@ function byggRisiko(
     return `Uten utbedring er det risiko for ${risikoElementer[0]}. Dersom forholdet vedvarer, kan skadeomfanget øke.`;
   }
 
-  // Flerleddet risiko: "x, y og z"
-  const siste = risikoElementer[risikoElementer.length - 1];
-  const forrige = risikoElementer.slice(0, -1);
-  return `Uten utbedring er det risiko for ${forrige.join(", ")} og ${siste}.`;
+  // Flerleddet risiko — maks 3 elementer, strukturert lesbart
+  const bruk = risikoElementer.slice(0, 3);
+  if (bruk.length === 2) {
+    return `Uten utbedring er det risiko for ${bruk[0]}, samt ${bruk[1]}.`;
+  }
+  // 3 elementer: første setning med 2, andre med siste
+  return `Uten utbedring er det risiko for ${bruk[0]} og ${bruk[1]}. I tillegg er det fare for ${bruk[2]}.`;
 }
 
 /**
@@ -684,17 +735,16 @@ function byggKonsekvens(
     return `Kjøper bør påregne kostnad til utbedring av ${ueLabel.toLowerCase()}.`;
   }
 
-  // God dekning: vi vet observasjonen matcher underenhetens domene,
-  // så TG-spesifikk konsekvens er relevant og trygg å bruke
-  if (analyse.dekning === "god" && tgData.konsekvenser.length > 0) {
-    // Forsøk å finne en referanse som matcher observasjonens tema
+  // Forsøk alltid å finne referansetekst fra terminologien.
+  // Konsekvens-tekster er kjøperorienterte og trygge å bruke
+  // selv ved svak dekning — de handler om kostnader, ikke diagnose.
+  if (tgData.konsekvenser.length > 0) {
     const ref = finnRelevantReferanse(tgData.konsekvenser, analyse);
     if (ref) return ref;
-    // Fallback til første (mest generelle) konsekvens for denne TG
     return tgData.konsekvenser[0];
   }
 
-  // Svak dekning: trygg generisk tekst som ikke påstår noe utover observasjonen
+  // Absolutt fallback når terminologien mangler konsekvenser
   return `Kjøper bør påregne kostnad til utbedring av ${ueLabel.toLowerCase()}. ` +
     `Omfanget bør kartlegges nærmere for å avklare hva utbedringen innebærer.`;
 }
@@ -713,18 +763,21 @@ function byggTiltak(
 ): string {
   let tiltak: string;
 
-  if (analyse.dekning === "god" && tgData.tiltak.length > 0) {
+  // Forsøk alltid å finne en relevant referansetekst fra terminologien —
+  // også ved svak dekning. Referansetekstene er faglig konkrete og mye
+  // bedre enn den generiske fallbacken.
+  if (tgData.tiltak.length > 0) {
     const ref = finnRelevantReferanse(tgData.tiltak, analyse);
     if (ref) {
       tiltak = kort ? lagKortKjerne(ref) : ref;
     } else {
-      // Første tiltak er typisk det mest generelle
+      // Bruk første tiltak (mest generell) — fortsatt bedre enn ren fallback
       tiltak = kort ? lagKortKjerne(tgData.tiltak[0]) : tgData.tiltak[0];
     }
   } else {
     tiltak = kort
-      ? `Utbedring av ${ueLabel.toLowerCase()} anbefales. Innhent vurdering fra kvalifisert fagperson.`
-      : `Det anbefales utbedring av ${ueLabel.toLowerCase()}. Innhent vurdering og tilbud fra kvalifisert fagperson for å avklare omfang og utbedringsmetode.`;
+      ? `Utbedring av ${ueLabel.toLowerCase()} anbefales.`
+      : `Det anbefales nærmere vurdering og utbedring av ${ueLabel.toLowerCase()} av kvalifisert fagperson.`;
   }
 
   // Hastegrad — som separat setning, aldri midt i eksisterende tekst
