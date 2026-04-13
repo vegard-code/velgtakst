@@ -7,9 +7,15 @@ interface Props {
   response: ArkatGenerateResponse;
 }
 
-const RESULT_FIELDS = [
+const STANDARD_FIELDS = [
   { key: "arsak" as const, label: "Årsak" },
   { key: "risiko" as const, label: "Risiko" },
+  { key: "konsekvens" as const, label: "Konsekvens" },
+  { key: "anbefalt_tiltak" as const, label: "Anbefalt tiltak" },
+];
+
+const MERKNAD_FIELDS = [
+  { key: "arsak" as const, label: "Merknad" },
   { key: "konsekvens" as const, label: "Konsekvens" },
   { key: "anbefalt_tiltak" as const, label: "Anbefalt tiltak" },
 ];
@@ -90,10 +96,13 @@ export default function ArkatAssistantResult({ response }: Props) {
 
   // Suksess
   const { result, screening } = response;
+  const erMerknad = result.modus === "merknad";
+  const fields = erMerknad ? MERKNAD_FIELDS : STANDARD_FIELDS;
 
-  const allText = RESULT_FIELDS.map(
-    (f) => `${f.label}:\n${result[f.key]}`
-  ).join("\n\n");
+  const allText = fields
+    .filter((f) => result[f.key])
+    .map((f) => `${f.label}:\n${result[f.key]}`)
+    .join("\n\n");
 
   return (
     <div className="space-y-4">
@@ -112,25 +121,29 @@ export default function ArkatAssistantResult({ response }: Props) {
       )}
 
       {/* Resultatfelt */}
-      {RESULT_FIELDS.map((f) => (
-        <div key={f.key} className="portal-card p-5">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-semibold text-[#285982]">
-              {f.label}
-            </h3>
-            <button
-              type="button"
-              onClick={() => copyToClipboard(result[f.key], f.key)}
-              className="text-xs text-[#64748b] hover:text-[#285982] transition-colors cursor-pointer"
-            >
-              {copiedField === f.key ? "Kopiert!" : "Kopier"}
-            </button>
+      {fields.map((f) => {
+        const tekst = result[f.key];
+        if (!tekst) return null;
+        return (
+          <div key={f.key} className="portal-card p-5">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-semibold text-[#285982]">
+                {f.label}
+              </h3>
+              <button
+                type="button"
+                onClick={() => copyToClipboard(tekst, f.key)}
+                className="text-xs text-[#64748b] hover:text-[#285982] transition-colors cursor-pointer"
+              >
+                {copiedField === f.key ? "Kopiert!" : "Kopier"}
+              </button>
+            </div>
+            <p className="text-sm text-[#1e293b] leading-relaxed whitespace-pre-wrap">
+              {tekst}
+            </p>
           </div>
-          <p className="text-sm text-[#1e293b] leading-relaxed whitespace-pre-wrap">
-            {result[f.key]}
-          </p>
-        </div>
-      ))}
+        );
+      })}
 
       {/* Kopier alle */}
       <button

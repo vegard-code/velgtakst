@@ -22,11 +22,20 @@ export interface TgTerminologi {
   tiltak: string[];
 }
 
+export interface MerknadTerminologi {
+  merknader: string[];
+  konsekvenser: string[];
+  tiltak: string[];
+}
+
 export interface UnderenhetTerminologi {
   fagtermer: string[];
   observasjonsmarkorer: ObservasjonsMarkor;
-  TG2: TgTerminologi;
-  TG3: TgTerminologi;
+  TG2?: TgTerminologi;
+  TG3?: TgTerminologi;
+  /** Merknad-modus (f.eks. elektrisk anlegg) — ingen TG */
+  modus?: "merknad";
+  merknad?: MerknadTerminologi;
 }
 
 export interface ForbiddenPhrase {
@@ -142,6 +151,18 @@ function erNegert(tekst: string, ordStart: number, ordSlutt?: number): boolean {
   }
 
   return false;
+}
+
+/**
+ * Hent merknad-terminologi (for underenheter uten TG, f.eks. el-anlegg).
+ */
+export function hentMerknadTerminologi(
+  bygningsdelKey: string,
+  underenhetKey: string
+): MerknadTerminologi | null {
+  const ue = hentTerminologi(bygningsdelKey, underenhetKey);
+  if (!ue || ue.modus !== "merknad" || !ue.merknad) return null;
+  return ue.merknad;
 }
 
 /**

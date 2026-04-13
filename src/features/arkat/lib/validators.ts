@@ -3,7 +3,7 @@
  * Bruker Zod v4 syntax (error → message, ikke errorMap).
  */
 import { z } from "zod";
-import { gyldigeBygningsdeler, gyldigeUnderenheter } from "../config/bygningsdeler";
+import { gyldigeBygningsdeler, gyldigeUnderenheter, erMerknadModus } from "../config/bygningsdeler";
 import { erAldersvurderingRelevant } from "../config/ns-versjon";
 
 export const ArkatInputSchema = z
@@ -12,7 +12,7 @@ export const ArkatInputSchema = z
     underenhet: z.string().min(1, "Underenhet er påkrevd"),
     tilstandsgrad: z.enum(["TG2", "TG3"], {
       error: "Velg TG2 eller TG3",
-    }),
+    }).optional(),
     hovedgrunnlag: z.enum(
       [
         "visuell_observasjon",
@@ -66,6 +66,16 @@ export const ArkatInputSchema = z
         code: "custom",
         path: ["underenhet"],
         message: "Ugyldig underenhet for valgt bygningsdel",
+      });
+    }
+
+    // Tilstandsgrad er påkrevd for alle UNNTATT merknad-modus
+    const merknad = erMerknadModus(data.bygningsdel, data.underenhet);
+    if (!merknad && !data.tilstandsgrad) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["tilstandsgrad"],
+        message: "Velg TG2 eller TG3",
       });
     }
 

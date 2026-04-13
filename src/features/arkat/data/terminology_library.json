@@ -2434,104 +2434,73 @@
       "fagtermer": [
         "sikringsskap",
         "automatsikring",
-        "skrusikring",
         "jordfeilbryter",
-        "jordfeilvern",
-        "hovedsikring",
-        "kursoversikt",
-        "el-tilsyn",
-        "boliginstallasjon",
-        "NEK 400",
-        "samsvarserklæring",
-        "elektriker",
+        "el-anlegg",
         "installasjon",
-        "kabelalder",
-        "aluminiumskabel",
-        "varmegang",
-        "brannfare",
-        "IP-klasse",
-        "stikkontakt"
+        "kursfortegnelse",
+        "dokumentasjon",
+        "samsvarserklæring",
+        "kontroll",
+        "jordfeil",
+        "overbelastning",
+        "alder",
+        "hovedsikring",
+        "kurser",
+        "el-tavle"
       ],
       "observasjonsmarkorer": {
         "sikring": [
           "sikring",
-          "sikringsskap",
           "automatsikring",
-          "skrusikring",
+          "sikringsskap",
+          "tavle",
           "kurs"
         ],
-        "jordfeil": [
-          "jordfeilbryter",
-          "jordfeilvern",
-          "jordfeil",
-          "JFBR"
-        ],
         "dokumentasjon": [
-          "samsvarserklæring",
-          "samsvar",
           "dokumentasjon",
-          "el-tilsyn",
-          "kontroll"
+          "samsvar",
+          "samsvarserklæring",
+          "kontroll",
+          "rapport"
         ],
         "installasjon": [
           "installasjon",
-          "kabling",
-          "kabel",
+          "opplegg",
           "ledning",
-          "stikkontakt",
-          "kobling"
+          "kabel",
+          "uttak"
         ],
         "alder": [
           "alder",
           "gammel",
           "opprinnelig",
-          "byggeår",
           "eldre",
-          "ikke oppgradert"
+          "byggeår"
+        ],
+        "funksjon": [
+          "jordfeil",
+          "varmgang",
+          "overbelastning",
+          "sikring løser ut",
+          "feil"
         ]
       },
-      "TG2": {
-        "arsaker": [
-          "Sikringsskapet har eldre skrusikringer uten kombiautomater, noe som gir begrenset kortslutningsvern og ingen jordfeilbeskyttelse per kurs.",
-          "Det foreligger ikke samsvarserklæring for utførte elektriske arbeider, og det er usikkerhet knyttet til deler av installasjonen.",
-          "Det er observert eldre type installasjonsmateriell eller kabling som ikke tilfredsstiller gjeldende forskrifter, uten at det er påvist konkret fare."
-        ],
-        "risikoer": [
-          "Eldre sikringsskap uten jordfeilbryter på våtromskurser gir økt risiko for strømgjennomgang til personer ved jordfeil.",
-          "Manglende samsvarserklæring betyr at det ikke er dokumentert at installasjonen er forskriftsmessig utført.",
-          "Eldre kabling kan ha redusert isolasjonsevne over tid, med gradvis økt risiko for varmgang og i ytterste fall brann."
+      "modus": "merknad",
+      "merknad": {
+        "merknader": [
+          "Det er registrert forhold ved det elektriske anlegget som tilsier at tilstanden bør vurderes nærmere av autorisert elektriker.",
+          "Det elektriske anlegget har ukjent alder eller mangler dokumentasjon, noe som gjør det vanskelig å vurdere tilstanden uten nærmere kontroll.",
+          "Det er observert forhold ved det elektriske anlegget som bør følges opp med kontroll av autorisert installatør."
         ],
         "konsekvenser": [
-          "Kjøper bør påregne kostnad til oppgradering av sikringsskap og eventuelt installasjon av jordfeilbryter på påkrevde kurser.",
-          "Kostnad for oppgradering av sikringsskap varierer, men er normalt en moderat investering.",
-          "Det anbefales å få utført en el-kontroll av autorisert installatør for å avklare tilstand og eventuelle pålegg."
+          "Kjøper bør påregne kostnader til kontroll av det elektriske anlegget av autorisert elektriker. Omfanget av eventuelle utbedringsbehov avklares ved slik kontroll.",
+          "Dersom anlegget har mangler som krever utbedring, vil kostnadene avhenge av type og omfang. Kontroll bør gjennomføres før overtakelse for å avklare dette.",
+          "Uten kontroll av autorisert elektriker er det vanskelig å anslå eventuelle kostnader knyttet til det elektriske anlegget."
         ],
         "tiltak": [
-          "Sikringsskapet bør oppgraderes med automatsikringer og jordfeilbryter, minimum på våtrom-, utendørs- og kjøkkenkurser.",
-          "Det bør innhentes samsvarserklæring for eventuelle eldre arbeider som ikke er dokumentert.",
-          "En generell el-kontroll av autorisert elektroinstallatør anbefales for å kartlegge anleggets totale tilstand."
-        ]
-      },
-      "TG3": {
-        "arsaker": [
-          "Det er påvist alvorlige mangler ved det elektriske anlegget, som åpne koblingsbokser, synlige varmemerker eller usikrede koblinger.",
-          "Sikringsskapet har vesentlige mangler med kombinasjon av skrusikringer, manglende jordfeilbeskyttelse og manglende kursoversikt.",
-          "Det er registrert bruk av aluminiumskabel i eldre installasjoner med kjent risiko for varmegang i overganger og koblinger."
-        ],
-        "risikoer": [
-          "Åpne koblingsbokser og usikrede koblinger gir direkte risiko for strømgjennomgang og brann.",
-          "Aluminiumskabel i kombinasjon med kobberkoblinger er en kjent brannårsak på grunn av varmegang i overgangsmotstand.",
-          "Vesentlige mangler i sikringsskap gir utilstrekkelig vern av installasjonen og øker risikoen for både brann og personskade."
-        ],
-        "konsekvenser": [
-          "Kjøper må påregne vesentlige kostnader til oppgradering av det elektriske anlegget, som kan inkludere nytt sikringsskap, ny kabling og nye kurser.",
-          "Omfanget av nødvendig utbedring bør kartlegges av autorisert installatør. Totalkostnaden avhenger av boligens størrelse og installasjonens tilstand.",
-          "Inntil utbedring er gjennomført, bør bruken av berørte kurser begrenses og overvåkes."
-        ],
-        "tiltak": [
-          "Det elektriske anlegget må gjennomgås og oppgraderes av autorisert elektroinstallatør. Nytt sikringsskap med automatsikringer og jordfeilbrytere bør installeres.",
-          "Aluminiumskabel bør vurderes erstattet med kobberkabel, særlig i kurser med høy belastning og i koblingsoverganger.",
-          "Etter utbedring skal det utstedes samsvarserklæring som dokumenterer at anlegget er forskriftsmessig."
+          "Det anbefales kontroll av det elektriske anlegget av autorisert elektriker for å avklare tilstand og eventuelt utbedringsbehov.",
+          "Det anbefales at autorisert installatør gjennomgår det elektriske anlegget og utsteder tilstandsrapport.",
+          "Kontroll av autorisert elektriker anbefales. Eventuelle mangler bør utbedres av autorisert installatør."
         ]
       }
     },

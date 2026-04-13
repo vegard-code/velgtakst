@@ -89,7 +89,8 @@ export const ALDERSVURDERING_LABELS: Record<Aldersvurdering, string> = {
 export interface ArkatGenerateInput {
   bygningsdel: string;
   underenhet: string;
-  tilstandsgrad: Tilstandsgrad;
+  /** Valgfri for merknad-modus (f.eks. elektrisk anlegg) */
+  tilstandsgrad?: Tilstandsgrad;
   hovedgrunnlag: Hovedgrunnlag;
   tillegg: ObservasjonsTillegg[];
   akuttgrad: Akuttgrad;
@@ -111,6 +112,8 @@ export interface ArkatGeneratedResult {
   risiko: string;
   konsekvens: string;
   anbefalt_tiltak: string;
+  /** Satt til "merknad" for underenheter uten TG (f.eks. el-anlegg) */
+  modus?: "standard" | "merknad";
 }
 
 export interface ArkatGenerateResponse {

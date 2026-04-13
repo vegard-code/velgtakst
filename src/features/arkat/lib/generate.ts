@@ -30,10 +30,12 @@ import { BYGNINGSDELER } from "../config/bygningsdeler";
 import {
   hentTerminologi,
   hentTgTerminologi,
+  hentMerknadTerminologi,
   finnObservasjonsMatch,
   harTerminologidekning,
 } from "./terminology";
-import type { TgTerminologi, UnderenhetTerminologi } from "./terminology";
+import type { TgTerminologi, MerknadTerminologi, UnderenhetTerminologi } from "./terminology";
+import { erMerknadModus } from "../config/bygningsdeler";
 import { genererMedAi } from "./generate-ai";
 import { aiModus } from "./openai-client";
 
@@ -52,7 +54,15 @@ export async function generateArkat(
   input: ArkatGenerateInput
 ): Promise<ArkatGenerateResponse> {
   const terminologi = hentTerminologi(input.bygningsdel, input.underenhet);
-  const tgData = hentTgTerminologi(input.bygningsdel, input.underenhet, input.tilstandsgrad);
+
+  // ── Merknad-modus (f.eks. elektrisk anlegg) ──
+  if (erMerknadModus(input.bygningsdel, input.underenhet)) {
+    return genererMerknad(input, terminologi);
+  }
+
+  const tgData = input.tilstandsgrad
+    ? hentTgTerminologi(input.bygningsdel, input.underenhet, input.tilstandsgrad)
+    : null;
 
   // ── Trinn 1: Lokal screening (kjøres ALLTID) ──
   // Har vi terminologidekning?
@@ -150,6 +160,161 @@ export async function generateArkat(
     },
     result,
   };
+}
+
+// ─── Merknad-modus (el-anlegg etc.) ────────────────────────
+
+/**
+ * Generer merknad/konsekvens/tiltak for underenheter uten TG.
+ *
+ * Prinsipp: Ekstra konservativ. Ingen el-faglige konklusjoner.
+ * Tiltak peker alltid mot kontroll av autorisert fagperson.
+ * Akuttgrad justerer bare hastigheten i anbefalingen, ikke konklusjonen.
+ */
+async function genererMerknad(
+  input: ArkatGenerateInput,
+  terminologi: UnderenhetTerminologi | null
+): Promise<ArkatGenerateResponse> {
+  const merknadData = terminologi
+    ? hentMerknadTerminologi(input.bygningsdel, input.underenhet)
+    : null;
+
+  if (!terminologi || !merknadData) {
+    return {
+      success: false,
+      screening: {
+        approved_for_generation: false,
+        reason:
+          `Denne underenheten støttes ikke ennå. ` +
+          `Vi utvider støtten løpende — i mellomtiden kan du velge en annen underenhet eller skrive vurderingen manuelt.`,
+        warnings: [],
+      },
+      result: null,
+    };
+  }
+
+  // Analyser observasjonen mot markører
+  const obs = input.observasjon.trim();
+  const matches = finnObservasjonsMatch(terminologi, obs);
+
+  if (matches.length === 0) {
+    // Sjekk fagtermer som fallback
+    const obsLower = obs.toLowerCase();
+    const harFagterm = terminologi.fagtermer.some((t) =>
+      obsLower.includes(t.toLowerCase())
+    );
+    if (!harFagterm || obs.length < 50) {
+      return {
+        success: false,
+        screening: {
+          approved_for_generation: false,
+          reason:
+            "Observasjonen inneholder ikke nok gjenkjennelige detaljer. " +
+            "Beskriv konkret hva som er observert ved det elektriske anlegget.",
+          warnings: [],
+        },
+        result: null,
+      };
+    }
+  }
+
+  // Bygg merknad — basert direkte på observasjonen
+  const merknad = byggMerknadTekst(obs, merknadData, matches);
+  const konsekvens = finnRelevantMerknadRef(merknadData.konsekvenser, obs) ?? merknadData.konsekvenser[0];
+  let tiltak = finnRelevantMerknadRef(merknadData.tiltak, obs) ?? merknadData.tiltak[0];
+
+  // Akuttgrad — kun mild hastighetsmodifisering
+  if (input.akuttgrad === "haster") {
+    tiltak += " Kontroll bør prioriteres.";
+  } else if (input.akuttgrad === "bor_folges_opp") {
+    tiltak += " Kontroll anbefales innen rimelig tid.";
+  }
+
+  return {
+    success: true,
+    screening: {
+      approved_for_generation: true,
+      reason: null,
+      warnings: matches.length < 2
+        ? ["Observasjonen gir begrenset grunnlag for detaljert merknad. Mer spesifikke detaljer ville gitt bedre resultat."]
+        : [],
+    },
+    result: {
+      arsak: merknad,        // Vises som "Merknad" i UI
+      risiko: "",             // Ikke brukt i merknad-modus
+      konsekvens,
+      anbefalt_tiltak: tiltak,
+      modus: "merknad",
+    },
+  };
+}
+
+/**
+ * Bygg merknadstekst fra observasjonen.
+ * Reformulerer observasjonen minimalt, uten å trekke el-faglige konklusjoner.
+ */
+function byggMerknadTekst(
+  obs: string,
+  merknadData: MerknadTerminologi,
+  matches: { kategori: string; treff: string[] }[]
+): string {
+  // Sjekk om observasjonen allerede er en fullstendig setning
+  const erFullSetning =
+    /\b(har|er|viser|mangler|fremstår|fungerer|tyder)\b/i.test(obs);
+
+  let tekst: string;
+  if (erFullSetning) {
+    tekst = avsluttSetning(obs);
+  } else {
+    tekst = avsluttSetning(`Det er registrert ${obs[0].toLowerCase() + obs.slice(1)}`);
+  }
+
+  // Legg til konservativ avslutning basert på match-bredde
+  if (matches.length >= 2) {
+    // Finn best matchende merknad-referanse
+    const ref = finnRelevantMerknadRef(merknadData.merknader, obs);
+    if (ref && ref !== tekst) {
+      // Ikke duplikat — legg til som utfyllende kontekst
+      tekst += ` ${ref.charAt(0).toUpperCase() + ref.slice(1)}`;
+      // Fjern eventuell dobbel punktum
+      tekst = tekst.replace(/\.\s*\./g, ".").trim();
+    }
+  }
+
+  return tekst;
+}
+
+/**
+ * Finn merknad-referanse som matcher observasjonen best.
+ * Enklere versjon av finnRelevantReferanse — bruker ordoverlapp.
+ */
+function finnRelevantMerknadRef(
+  kandidater: string[],
+  obs: string
+): string | null {
+  if (kandidater.length === 0) return null;
+
+  const obsOrd = obs.toLowerCase()
+    .replace(/[.,;:!?()[\]{}«»"']/g, " ")
+    .split(/\s+/)
+    .filter((ord) => ord.length > 3);
+
+  let bestScore = 0;
+  let best: string | null = null;
+
+  for (const k of kandidater) {
+    const kLower = k.toLowerCase();
+    let score = 0;
+    for (const ord of obsOrd) {
+      if (kLower.includes(ord)) score += 1;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = k;
+    }
+  }
+
+  return bestScore >= 2 ? best : null;
 }
 
 // ─── Observasjonsanalyse ────────────────────────────────────

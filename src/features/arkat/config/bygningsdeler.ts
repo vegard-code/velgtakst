@@ -108,6 +108,19 @@ export const BYGNINGSDELER: BygningsdelConfig[] = [
   },
 ];
 
+/**
+ * Underenheter som bruker merknad-modus i stedet for TG.
+ * Disse har en annen rapportstruktur: merknad / konsekvens / tiltak (ikke TG2/TG3).
+ */
+const MERKNAD_MODUS_UNDERENHETER = new Set([
+  "tekniske_installasjoner/elektrisk_anlegg",
+]);
+
+/** Sjekk om en underenhet bruker merknad-modus (uten TG) */
+export function erMerknadModus(bygningsdel: string, underenhet: string): boolean {
+  return MERKNAD_MODUS_UNDERENHETER.has(`${bygningsdel}/${underenhet}`);
+}
+
 /** Hent alle gyldige bygningsdel-keys */
 export function gyldigeBygningsdeler(): string[] {
   return BYGNINGSDELER.map((b) => b.key);

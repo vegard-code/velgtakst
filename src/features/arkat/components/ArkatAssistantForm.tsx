@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback } from "react";
-import { BYGNINGSDELER } from "../config/bygningsdeler";
+import { BYGNINGSDELER, erMerknadModus } from "../config/bygningsdeler";
 import type {
   ArkatGenerateInput,
   ArkatGenerateResponse,
@@ -54,6 +54,12 @@ export default function ArkatAssistantForm() {
     const bd = BYGNINGSDELER.find((b) => b.key === bygningsdel);
     return bd?.underenheter ?? [];
   }, [bygningsdel]);
+
+  // Er dette merknad-modus (f.eks. elektrisk anlegg)?
+  const merknadModus = useMemo(() => {
+    if (!bygningsdel || !underenhet) return false;
+    return erMerknadModus(bygningsdel, underenhet);
+  }, [bygningsdel, underenhet]);
 
   // Vis aldersvurdering-seksjon?
   const visAldersvurdering = useMemo(() => {
@@ -162,7 +168,7 @@ export default function ArkatAssistantForm() {
   const kanSende =
     bygningsdel &&
     underenhet &&
-    tilstandsgrad &&
+    (merknadModus || tilstandsgrad) &&
     hovedgrunnlag &&
     akuttgrad &&
     observasjon.trim().length >= 15 &&
@@ -183,7 +189,7 @@ export default function ArkatAssistantForm() {
     const payload: ArkatGenerateInput = {
       bygningsdel,
       underenhet,
-      tilstandsgrad: tilstandsgrad as Tilstandsgrad,
+      ...(merknadModus ? {} : { tilstandsgrad: tilstandsgrad as Tilstandsgrad }),
       hovedgrunnlag: hovedgrunnlag as Hovedgrunnlag,
       tillegg: rensetTillegg,
       akuttgrad: akuttgrad as Akuttgrad,
@@ -361,30 +367,40 @@ export default function ArkatAssistantForm() {
             </div>
           )}
 
-          {/* Tilstandsgrad */}
-          <div>
-            <label className="block text-sm font-medium text-[#1e293b] mb-1">
-              Tilstandsgrad
-            </label>
-            <div className="flex gap-3">
-              {(Object.entries(TILSTANDSGRAD_LABELS) as [Tilstandsgrad, string][]).map(
-                ([key, label]) => (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => setTilstandsgrad(key)}
-                    className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium border transition-all cursor-pointer ${
-                      tilstandsgrad === key
-                        ? "bg-[#285982] text-white border-[#285982]"
-                        : "bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#285982] hover:text-[#285982]"
-                    }`}
-                  >
-                    {label}
-                  </button>
-                )
-              )}
+          {/* Tilstandsgrad — skjules i merknad-modus */}
+          {merknadModus ? (
+            <div className="rounded-lg border border-[#285982]/20 bg-[#f0f4f8] p-4">
+              <p className="text-sm font-medium text-[#285982]">Merknad-modus</p>
+              <p className="text-xs text-[#64748b] mt-1">
+                Elektrisk anlegg vurderes uten tilstandsgrad i tråd med rapportstrukturen.
+                ARKAT genererer merknad, konsekvens og anbefalt tiltak.
+              </p>
             </div>
-          </div>
+          ) : (
+            <div>
+              <label className="block text-sm font-medium text-[#1e293b] mb-1">
+                Tilstandsgrad
+              </label>
+              <div className="flex gap-3">
+                {(Object.entries(TILSTANDSGRAD_LABELS) as [Tilstandsgrad, string][]).map(
+                  ([key, label]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setTilstandsgrad(key)}
+                      className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium border transition-all cursor-pointer ${
+                        tilstandsgrad === key
+                          ? "bg-[#285982] text-white border-[#285982]"
+                          : "bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#285982] hover:text-[#285982]"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Observasjon — flyttes OPP, før grunnlag */}
           <div>
