@@ -3,8 +3,17 @@
 import { useState } from "react";
 import type { ArkatGenerateResponse } from "../types/arkat";
 
+/** Kontekst om hva brukeren sendte inn — brukes til feedback */
+export interface ArkatInputKontekst {
+  bygningsdel: string;
+  underenhet: string;
+  tilstandsgrad?: string;
+  observasjon: string;
+}
+
 interface Props {
   response: ArkatGenerateResponse;
+  inputKontekst?: ArkatInputKontekst;
 }
 
 const STANDARD_FIELDS = [
@@ -20,9 +29,15 @@ const MERKNAD_FIELDS = [
   { key: "anbefalt_tiltak" as const, label: "Anbefalt tiltak" },
 ];
 
-export default function ArkatAssistantResult({ response }: Props) {
+type Vurdering = "bra" | "justeringer" | "darlig";
+
+export default function ArkatAssistantResult({ response, inputKontekst }: Props) {
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [copiedAll, setCopiedAll] = useState(false);
+  const [feedbackVurdering, setFeedbackVurdering] = useState<Vurdering | null>(null);
+  const [feedbackKommentar, setFeedbackKommentar] = useState("");
+  const [feedbackSendt, setFeedbackSendt] = useState(false);
+  const [feedbackSending, setFeedbackSending] = useState(false);
 
   const copyToClipboard = async (text: string, field?: string) => {
     try {
@@ -153,6 +168,89 @@ export default function ArkatAssistantResult({ response }: Props) {
       >
         {copiedAll ? "Alle felt kopiert!" : "Kopier alle felt"}
       </button>
+
+      {/* Feedback */}
+      {inputKontekst && (
+        <div className="portal-card p-5 mt-2">
+          {feedbackSendt ? (
+            <div className="text-center py-2">
+              <p className="text-sm text-[#285982] font-medium">Takk for tilbakemeldingen!</p>
+            </div>
+          ) : (
+            <>
+              <p className="text-sm font-medium text-[#1e293b] mb-3">
+                Ville du brukt denne teksten?
+              </p>
+              <div className="flex gap-2 mb-3">
+                {([
+                  { key: "bra" as Vurdering, label: "Ja, direkte", color: "bg-emerald-50 border-emerald-300 text-emerald-700" },
+                  { key: "justeringer" as Vurdering, label: "Med justeringer", color: "bg-amber-50 border-amber-300 text-amber-700" },
+                  { key: "darlig" as Vurdering, label: "Nei", color: "bg-red-50 border-red-300 text-red-700" },
+                ]).map(({ key, label, color }) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setFeedbackVurdering(key)}
+                    className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium border transition-all cursor-pointer ${
+                      feedbackVurdering === key
+                        ? color
+                        : "bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#285982]/40"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              {feedbackVurdering && (
+                <>
+                  <textarea
+                    value={feedbackKommentar}
+                    onChange={(e) => setFeedbackKommentar(e.target.value)}
+                    placeholder="Hva ville du endret? (valgfritt)"
+                    rows={2}
+                    className="w-full px-3 py-2 rounded-lg border border-[#e2e8f0] text-sm text-[#1e293b] placeholder:text-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#285982]/30 focus:border-[#285982] resize-none mb-3"
+                  />
+                  <button
+                    type="button"
+                    disabled={feedbackSending}
+                    onClick={async () => {
+                      setFeedbackSending(true);
+                      try {
+                        await fetch("/api/arkat/feedback", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            bygningsdel: inputKontekst.bygningsdel,
+                            underenhet: inputKontekst.underenhet,
+                            tilstandsgrad: inputKontekst.tilstandsgrad ?? null,
+                            observasjon: inputKontekst.observasjon,
+                            resultat_arsak: result.arsak ?? null,
+                            resultat_risiko: result.risiko ?? null,
+                            resultat_konsekvens: result.konsekvens ?? null,
+                            resultat_tiltak: result.anbefalt_tiltak ?? null,
+                            resultat_modus: result.modus ?? "standard",
+                            vurdering: feedbackVurdering,
+                            kommentar: feedbackKommentar || null,
+                          }),
+                        });
+                        setFeedbackSendt(true);
+                      } catch {
+                        // Stille feil — feedback er ikke kritisk
+                      } finally {
+                        setFeedbackSending(false);
+                      }
+                    }}
+                    className="w-full px-3 py-2 rounded-lg text-sm font-medium bg-[#285982] text-white hover:bg-[#1e4a6e] transition-colors cursor-pointer disabled:opacity-50"
+                  >
+                    {feedbackSending ? "Sender..." : "Send tilbakemelding"}
+                  </button>
+                </>
+              )}
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

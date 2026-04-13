@@ -653,7 +653,15 @@ export default function ArkatAssistantForm() {
         {/* HØYRE: Resultat */}
         <div>
           {response ? (
-            <ArkatAssistantResult response={response} />
+            <ArkatAssistantResult
+              response={response}
+              inputKontekst={{
+                bygningsdel,
+                underenhet,
+                tilstandsgrad: merknadModus ? undefined : tilstandsgrad,
+                observasjon,
+              }}
+            />
           ) : (
             <div className="portal-card p-8 text-center">
               <div className="w-12 h-12 rounded-full bg-[#f0f4f8] flex items-center justify-center mx-auto mb-3">
