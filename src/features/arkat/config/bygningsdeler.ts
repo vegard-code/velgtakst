@@ -109,16 +109,71 @@ export const BYGNINGSDELER: BygningsdelConfig[] = [
 ];
 
 /**
- * Underenheter som bruker merknad-modus i stedet for TG.
+ * Underenheter som ALLTID bruker merknad-modus (hele underenheten, ingen TG).
  * Disse har en annen rapportstruktur: merknad / konsekvens / tiltak (ikke TG2/TG3).
  */
 const MERKNAD_MODUS_UNDERENHETER = new Set([
   "tekniske_installasjoner/elektrisk_anlegg",
 ]);
 
-/** Sjekk om en underenhet bruker merknad-modus (uten TG) */
-export function erMerknadModus(bygningsdel: string, underenhet: string): boolean {
-  return MERKNAD_MODUS_UNDERENHETER.has(`${bygningsdel}/${underenhet}`);
+// ─── Submodus ──────────────────────────────────────────────
+// Noen underenheter har delvise merknad-områder: konstruksjonen
+// kan ha TG, men spesifikke observasjonstyper (f.eks. rekkverkshøyde)
+// skal iht. forskriften vurderes uten tilstandsgrad.
+
+export interface SubmodusConfig {
+  key: string;
+  label: string;
+  /** true = merknad-modus (ingen TG), false = vanlig TG-flyt */
+  merknad: boolean;
+}
+
+const SUBMODI_CONFIG: Record<string, SubmodusConfig[]> = {
+  "yttervegger_og_fasader/balkonger_og_terrasser": [
+    { key: "konstruksjon", label: "Konstruksjon (TG)", merknad: false },
+    { key: "rekkverk_apninger", label: "Rekkverk og åpninger (merknad)", merknad: true },
+  ],
+};
+
+/**
+ * Hent tilgjengelige submodi for en underenhet.
+ * Returnerer null hvis underenheten ikke har submodi.
+ */
+export function hentSubmodi(
+  bygningsdel: string,
+  underenhet: string
+): SubmodusConfig[] | null {
+  return SUBMODI_CONFIG[`${bygningsdel}/${underenhet}`] ?? null;
+}
+
+/**
+ * Sjekk om en underenhet (evt. med submodus) bruker merknad-modus (uten TG).
+ *
+ * Prioritet:
+ * 1. Hele underenheten er merknad-modus (f.eks. el-anlegg)
+ * 2. Submodus angir merknad-modus (f.eks. rekkverk/åpninger på balkong)
+ * 3. Ellers: vanlig TG-flyt
+ */
+export function erMerknadModus(
+  bygningsdel: string,
+  underenhet: string,
+  submodus?: string
+): boolean {
+  const path = `${bygningsdel}/${underenhet}`;
+
+  // Hele underenheten er merknad-modus
+  if (MERKNAD_MODUS_UNDERENHETER.has(path)) return true;
+
+  // Submodus-basert
+  if (submodus) {
+    const config = SUBMODI_CONFIG[path];
+    if (config) {
+      const sub = config.find((s) => s.key === submodus);
+      return sub?.merknad ?? false;
+    }
+  }
+
+  return false;
 }
 
 /** Hent alle gyldige bygningsdel-keys */

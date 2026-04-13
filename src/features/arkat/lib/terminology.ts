@@ -154,14 +154,33 @@ function erNegert(tekst: string, ordStart: number, ordSlutt?: number): boolean {
 }
 
 /**
- * Hent merknad-terminologi (for underenheter uten TG, f.eks. el-anlegg).
+ * Hent merknad-terminologi for underenheter uten TG.
+ *
+ * To varianter:
+ * 1. Hele underenheten er merknad-modus (f.eks. el-anlegg): ue.merknad
+ * 2. Submodus-basert merknad (f.eks. rekkverk på balkong): ue.merknad_<submodus>
  */
 export function hentMerknadTerminologi(
   bygningsdelKey: string,
-  underenhetKey: string
+  underenhetKey: string,
+  submodus?: string
 ): MerknadTerminologi | null {
   const ue = hentTerminologi(bygningsdelKey, underenhetKey);
-  if (!ue || ue.modus !== "merknad" || !ue.merknad) return null;
+  if (!ue) return null;
+
+  // Submodus-basert: sjekk merknad_<submodus> nøkkel
+  if (submodus) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const subKey = `merknad_${submodus}` as keyof typeof ue;
+    const subData = (ue as any)[subKey];
+    if (subData && subData.merknader && subData.konsekvenser && subData.tiltak) {
+      return subData as MerknadTerminologi;
+    }
+    return null;
+  }
+
+  // Hele underenheten er merknad-modus
+  if (ue.modus !== "merknad" || !ue.merknad) return null;
   return ue.merknad;
 }
 

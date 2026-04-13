@@ -91,6 +91,8 @@ export interface ArkatGenerateInput {
   underenhet: string;
   /** Valgfri for merknad-modus (f.eks. elektrisk anlegg) */
   tilstandsgrad?: Tilstandsgrad;
+  /** Submodus — brukes når underenheten har delvise merknad-områder (f.eks. balkong: konstruksjon vs. rekkverk) */
+  submodus?: string;
   hovedgrunnlag: Hovedgrunnlag;
   tillegg: ObservasjonsTillegg[];
   akuttgrad: Akuttgrad;

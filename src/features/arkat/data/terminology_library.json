@@ -2426,6 +2426,23 @@
           "Membran og tetting bør utbedres etter at underliggende konstruksjon er vurdert og eventuelle skader er kartlagt.",
           "Rekkverk og innfesting bør kontrolleres av fagkyndig med hensyn til sikkerhet."
         ]
+      },
+      "merknad_rekkverk_apninger": {
+        "merknader": [
+          "Det er registrert forhold ved rekkverk som bør vurderes nærmere med hensyn til sikkerhet og gjeldende krav.",
+          "Rekkverkshøyde og/eller åpninger i rekkverk fremstår som avvikende fra gjeldende krav.",
+          "Det er observert åpninger i rekkverk eller mellom spiler som kan representere en sikkerhetsrisiko."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til kontroll og eventuell utbedring av rekkverk for å oppfylle gjeldende sikkerhetskrav. Omfanget bør avklares av fagkyndig.",
+          "Dersom rekkverk ikke tilfredsstiller gjeldende krav til høyde eller åpninger, kan utbedring kreve tilpasning eller utskifting.",
+          "Forhold ved rekkverk som avviker fra gjeldende krav bør utbedres for å ivareta sikkerhet."
+        ],
+        "tiltak": [
+          "Det anbefales at rekkverk kontrolleres av fagkyndig med hensyn til høyde, åpninger og stabilitet, og at avvik utbedres i henhold til gjeldende krav.",
+          "Rekkverk bør vurderes av fagkyndig for å avklare om det tilfredsstiller gjeldende sikkerhetskrav. Eventuelle avvik bør utbedres.",
+          "Det anbefales kontroll av rekkverkshøyde og åpninger opp mot gjeldende krav, med utbedring ved avvik."
+        ]
       }
     }
   },

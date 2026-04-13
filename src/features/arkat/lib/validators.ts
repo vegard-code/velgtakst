@@ -13,6 +13,7 @@ export const ArkatInputSchema = z
     tilstandsgrad: z.enum(["TG2", "TG3"], {
       error: "Velg TG2 eller TG3",
     }).optional(),
+    submodus: z.string().optional(),
     hovedgrunnlag: z.enum(
       [
         "visuell_observasjon",
@@ -70,7 +71,7 @@ export const ArkatInputSchema = z
     }
 
     // Tilstandsgrad er påkrevd for alle UNNTATT merknad-modus
-    const merknad = erMerknadModus(data.bygningsdel, data.underenhet);
+    const merknad = erMerknadModus(data.bygningsdel, data.underenhet, data.submodus);
     if (!merknad && !data.tilstandsgrad) {
       ctx.addIssue({
         code: "custom",

@@ -55,8 +55,8 @@ export async function generateArkat(
 ): Promise<ArkatGenerateResponse> {
   const terminologi = hentTerminologi(input.bygningsdel, input.underenhet);
 
-  // ── Merknad-modus (f.eks. elektrisk anlegg) ──
-  if (erMerknadModus(input.bygningsdel, input.underenhet)) {
+  // ── Merknad-modus (f.eks. elektrisk anlegg, rekkverk/åpninger) ──
+  if (erMerknadModus(input.bygningsdel, input.underenhet, input.submodus)) {
     return genererMerknad(input, terminologi);
   }
 
@@ -176,7 +176,7 @@ async function genererMerknad(
   terminologi: UnderenhetTerminologi | null
 ): Promise<ArkatGenerateResponse> {
   const merknadData = terminologi
-    ? hentMerknadTerminologi(input.bygningsdel, input.underenhet)
+    ? hentMerknadTerminologi(input.bygningsdel, input.underenhet, input.submodus)
     : null;
 
   if (!terminologi || !merknadData) {
@@ -210,7 +210,7 @@ async function genererMerknad(
           approved_for_generation: false,
           reason:
             "Observasjonen inneholder ikke nok gjenkjennelige detaljer. " +
-            "Beskriv konkret hva som er observert ved det elektriske anlegget.",
+            "Beskriv konkret hva som er observert.",
           warnings: [],
         },
         result: null,

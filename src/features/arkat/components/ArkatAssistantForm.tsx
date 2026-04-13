@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback } from "react";
-import { BYGNINGSDELER, erMerknadModus } from "../config/bygningsdeler";
+import { BYGNINGSDELER, erMerknadModus, hentSubmodi } from "../config/bygningsdeler";
+import type { SubmodusConfig } from "../config/bygningsdeler";
 import type {
   ArkatGenerateInput,
   ArkatGenerateResponse,
@@ -31,6 +32,7 @@ export default function ArkatAssistantForm() {
   // Form state
   const [bygningsdel, setBygningsdel] = useState("");
   const [underenhet, setUnderenhet] = useState("");
+  const [submodus, setSubmodus] = useState("");
   const [tilstandsgrad, setTilstandsgrad] = useState<Tilstandsgrad | "">("");
   const [hovedgrunnlag, setHovedgrunnlag] = useState<Hovedgrunnlag | "">("");
   const [tillegg, setTillegg] = useState<ObservasjonsTillegg[]>([]);
@@ -55,11 +57,17 @@ export default function ArkatAssistantForm() {
     return bd?.underenheter ?? [];
   }, [bygningsdel]);
 
-  // Er dette merknad-modus (f.eks. elektrisk anlegg)?
+  // Har denne underenheten submodi (f.eks. balkong: konstruksjon vs. rekkverk)?
+  const submodi: SubmodusConfig[] | null = useMemo(() => {
+    if (!bygningsdel || !underenhet) return null;
+    return hentSubmodi(bygningsdel, underenhet);
+  }, [bygningsdel, underenhet]);
+
+  // Er dette merknad-modus? Avhenger av underenhet + evt. valgt submodus.
   const merknadModus = useMemo(() => {
     if (!bygningsdel || !underenhet) return false;
-    return erMerknadModus(bygningsdel, underenhet);
-  }, [bygningsdel, underenhet]);
+    return erMerknadModus(bygningsdel, underenhet, submodus || undefined);
+  }, [bygningsdel, underenhet, submodus]);
 
   // Vis aldersvurdering-seksjon?
   const visAldersvurdering = useMemo(() => {
@@ -108,10 +116,12 @@ export default function ArkatAssistantForm() {
     }
   }, [tillegg, visAldersvurdering]);
 
-  // Nullstill underenhet når bygningsdel endres
+  // Nullstill underenhet og submodus når bygningsdel endres
   const handleBygningsdelChange = (key: string) => {
     setBygningsdel(key);
     setUnderenhet("");
+    setSubmodus("");
+    setTilstandsgrad("");
     setAldersvurdering("");
   };
 
@@ -168,6 +178,7 @@ export default function ArkatAssistantForm() {
   const kanSende =
     bygningsdel &&
     underenhet &&
+    (!submodi || submodus) && // Submodus påkrevd når tilgjengelig
     (merknadModus || tilstandsgrad) &&
     hovedgrunnlag &&
     akuttgrad &&
@@ -189,6 +200,7 @@ export default function ArkatAssistantForm() {
     const payload: ArkatGenerateInput = {
       bygningsdel,
       underenhet,
+      ...(submodus ? { submodus } : {}),
       ...(merknadModus ? {} : { tilstandsgrad: tilstandsgrad as Tilstandsgrad }),
       hovedgrunnlag: hovedgrunnlag as Hovedgrunnlag,
       tillegg: rensetTillegg,
@@ -220,6 +232,7 @@ export default function ArkatAssistantForm() {
   const handleNullstill = () => {
     setBygningsdel("");
     setUnderenhet("");
+    setSubmodus("");
     setTilstandsgrad("");
     setHovedgrunnlag("");
     setTillegg([]);
@@ -289,7 +302,7 @@ export default function ArkatAssistantForm() {
             </label>
             <select
               value={underenhet}
-              onChange={(e) => { setUnderenhet(e.target.value); setAldersvurdering(""); }}
+              onChange={(e) => { setUnderenhet(e.target.value); setSubmodus(""); setTilstandsgrad(""); setAldersvurdering(""); }}
               className="portal-input"
               disabled={!bygningsdel}
             >
@@ -303,6 +316,33 @@ export default function ArkatAssistantForm() {
               ))}
             </select>
           </div>
+
+          {/* Submodus — vises kun for underenheter med delvise merknad-områder */}
+          {submodi && (
+            <div>
+              <label className="block text-sm font-medium text-[#1e293b] mb-1">
+                Vurderingstype
+              </label>
+              <div className="flex gap-3">
+                {submodi.map((sm) => (
+                  <button
+                    key={sm.key}
+                    type="button"
+                    onClick={() => { setSubmodus(sm.key); setTilstandsgrad(""); }}
+                    className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium border transition-all cursor-pointer ${
+                      submodus === sm.key
+                        ? sm.merknad
+                          ? "bg-[#285982] text-white border-[#285982]"
+                          : "bg-[#285982] text-white border-[#285982]"
+                        : "bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#285982] hover:text-[#285982]"
+                    }`}
+                  >
+                    {sm.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* NS-versjon */}
           <div>
@@ -372,7 +412,7 @@ export default function ArkatAssistantForm() {
             <div className="rounded-lg border border-[#285982]/20 bg-[#f0f4f8] p-4">
               <p className="text-sm font-medium text-[#285982]">Merknad-modus</p>
               <p className="text-xs text-[#64748b] mt-1">
-                Elektrisk anlegg vurderes uten tilstandsgrad i tråd med rapportstrukturen.
+                Dette forholdet vurderes uten tilstandsgrad i tråd med forskriften.
                 ARKAT genererer merknad, konsekvens og anbefalt tiltak.
               </p>
             </div>
