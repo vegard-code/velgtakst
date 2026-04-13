@@ -50,3 +50,12 @@ preview/
 .claude/worktrees/
 
 .vercel
+
+# utviklings-/testfiler (ikke produksjonskode)
+scripts/
+*.fuse_hidden*
+arkat-preview.html
+fill_neighbors*.py
+test_results*.txt
+test_arkat_e2e.ts
+retest.ts

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { BYGNINGSDELER } from "../config/bygningsdeler";
 import type {
   ArkatGenerateInput,
@@ -23,6 +23,7 @@ import {
   ALDERSVURDERING_LABELS,
 } from "../types/arkat";
 import { erAldersvurderingRelevant, hentAlderslogikk } from "../config/ns-versjon";
+import { inferGrunnlag } from "../lib/infer-grunnlag";
 import ArkatAssistantResult from "./ArkatAssistantResult";
 import ArkatAssistantInfo from "./ArkatAssistantInfo";
 
@@ -38,6 +39,10 @@ export default function ArkatAssistantForm() {
   const [onsketLengde, setOnsketLengde] = useState<OnsketLengde>("normal");
   const [nsVersjon, setNsVersjon] = useState<NsVersjon>("NS3600_2018");
   const [aldersvurdering, setAldersvurdering] = useState<Aldersvurdering | "">("");
+
+  // Auto-grunnlag state
+  const [grunnlagOverstyrt, setGrunnlagOverstyrt] = useState(false);
+  const [visGrunnlagDetaljer, setVisGrunnlagDetaljer] = useState(false);
 
   // UI state
   const [loading, setLoading] = useState(false);
@@ -56,11 +61,46 @@ export default function ArkatAssistantForm() {
     return erAldersvurderingRelevant(nsVersjon, bygningsdel, underenhet);
   }, [nsVersjon, bygningsdel, underenhet]);
 
-  // Hent begrunnelse for alderslogikk (for info-tekst i UI)
+  // Hent begrunnelse for alderslogikk
   const alderslogikkInfo = useMemo(() => {
     if (!bygningsdel || !underenhet) return null;
     return hentAlderslogikk(bygningsdel, underenhet);
   }, [bygningsdel, underenhet]);
+
+  // ─── Auto-grunnlag ─────────────────────────────────────────
+  // Kjør inferens når observasjonen endres (med debounce-effekt)
+  const inferert = useMemo(() => {
+    return inferGrunnlag(observasjon);
+  }, [observasjon]);
+
+  // Oppdater grunnlag automatisk — kun når brukeren IKKE har overstyrt
+  const applyInferredGrunnlag = useCallback(() => {
+    if (grunnlagOverstyrt) return;
+
+    if (inferert.hovedgrunnlag) {
+      setHovedgrunnlag(inferert.hovedgrunnlag);
+    }
+    setTillegg(inferert.tillegg);
+  }, [inferert, grunnlagOverstyrt]);
+
+  useEffect(() => {
+    applyInferredGrunnlag();
+  }, [applyInferredGrunnlag]);
+
+  // Nullstill overstyring når observasjonen tømmes
+  useEffect(() => {
+    if (observasjon.trim().length < 15) {
+      setGrunnlagOverstyrt(false);
+      setVisGrunnlagDetaljer(false);
+    }
+  }, [observasjon]);
+
+  // Synkroniser alder-tillegg med aldersvurdering-panelet
+  useEffect(() => {
+    if (visAldersvurdering && tillegg.includes("alder_som_grunnlag")) {
+      setAldersvurdering("brukes_som_grunnlag");
+    }
+  }, [tillegg, visAldersvurdering]);
 
   // Nullstill underenhet når bygningsdel endres
   const handleBygningsdelChange = (key: string) => {
@@ -75,21 +115,19 @@ export default function ArkatAssistantForm() {
     setAldersvurdering("");
   };
 
-  // Sjekk at alle påkrevde felt er utfylt
-  // Tilgjengelige tillegg — "dokumentasjon_mangler" skjules når det er valgt som hovedgrunnlag
-  const tilgjengeligeTillegg = useMemo(() => {
-    return (
-      Object.entries(OBSERVASJONS_TILLEGG_LABELS) as [ObservasjonsTillegg, string][]
-    ).filter(([key]) => {
-      if (key === "dokumentasjon_mangler" && hovedgrunnlag === "dokumentasjon_mangler") {
-        return false;
-      }
-      return true;
-    });
-  }, [hovedgrunnlag]);
+  // Manuell overstyring av hovedgrunnlag
+  const handleHovedgrunnlagChange = (key: Hovedgrunnlag) => {
+    setGrunnlagOverstyrt(true);
+    setHovedgrunnlag(key);
+    // Fjern dokumentasjon_mangler fra tillegg hvis den nå er hovedgrunnlag
+    if (key === "dokumentasjon_mangler") {
+      setTillegg((prev) => prev.filter((t) => t !== "dokumentasjon_mangler"));
+    }
+  };
 
-  // Håndter tillegg-toggle
-  const toggleTillegg = (key: ObservasjonsTillegg) => {
+  // Manuell overstyring av tillegg
+  const handleTilleggToggle = (key: ObservasjonsTillegg) => {
+    setGrunnlagOverstyrt(true);
     setTillegg((prev) => {
       const neste = prev.includes(key)
         ? prev.filter((t) => t !== key)
@@ -108,6 +146,19 @@ export default function ArkatAssistantForm() {
     });
   };
 
+  // Tilgjengelige tillegg — "dokumentasjon_mangler" skjules når det er valgt som hovedgrunnlag
+  const tilgjengeligeTillegg = useMemo(() => {
+    return (
+      Object.entries(OBSERVASJONS_TILLEGG_LABELS) as [ObservasjonsTillegg, string][]
+    ).filter(([key]) => {
+      if (key === "dokumentasjon_mangler" && hovedgrunnlag === "dokumentasjon_mangler") {
+        return false;
+      }
+      return true;
+    });
+  }, [hovedgrunnlag]);
+
+  // Sjekk at alle påkrevde felt er utfylt
   const kanSende =
     bygningsdel &&
     underenhet &&
@@ -115,7 +166,6 @@ export default function ArkatAssistantForm() {
     hovedgrunnlag &&
     akuttgrad &&
     observasjon.trim().length >= 15 &&
-    // Aldersvurdering er påkrevd når feltet vises
     (!visAldersvurdering || aldersvurdering !== "");
 
   const handleSubmit = async () => {
@@ -172,9 +222,24 @@ export default function ArkatAssistantForm() {
     setOnsketLengde("normal");
     setNsVersjon("NS3600_2018");
     setAldersvurdering("");
+    setGrunnlagOverstyrt(false);
+    setVisGrunnlagDetaljer(false);
     setResponse(null);
     setFeilmelding(null);
   };
+
+  // ─── Grunnlag-sammendrag for kompaktvisning ────────────────
+  const grunnlagSammendrag = useMemo(() => {
+    if (!hovedgrunnlag) return null;
+    const hovLabel = HOVEDGRUNNLAG_LABELS[hovedgrunnlag as Hovedgrunnlag];
+    const tilleggLabels = tillegg
+      .map((t) => OBSERVASJONS_TILLEGG_LABELS[t])
+      .filter(Boolean);
+    return { hovLabel, tilleggLabels };
+  }, [hovedgrunnlag, tillegg]);
+
+  // Har auto-grunnlag noe å vise?
+  const harAutoGrunnlag = observasjon.trim().length >= 15 && inferert.hovedgrunnlag;
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -321,64 +386,189 @@ export default function ArkatAssistantForm() {
             </div>
           </div>
 
-          {/* Hovedgrunnlag for vurderingen */}
+          {/* Observasjon — flyttes OPP, før grunnlag */}
           <div>
             <label className="block text-sm font-medium text-[#1e293b] mb-1">
-              Hovedgrunnlag for vurderingen
+              Observasjon
             </label>
-            <div className="grid grid-cols-2 gap-2">
-              {(
-                Object.entries(HOVEDGRUNNLAG_LABELS) as [Hovedgrunnlag, string][]
-              ).map(([key, label]) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => {
-                    setHovedgrunnlag(key);
-                    // Fjern dokumentasjon_mangler fra tillegg hvis den nå er hovedgrunnlag
-                    if (key === "dokumentasjon_mangler") {
-                      setTillegg((prev) => prev.filter((t) => t !== "dokumentasjon_mangler"));
-                    }
-                  }}
-                  className={`px-3 py-2.5 rounded-lg text-sm font-medium border transition-all cursor-pointer text-left ${
-                    hovedgrunnlag === key
-                      ? "bg-[#285982] text-white border-[#285982]"
-                      : "bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#285982] hover:text-[#285982]"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+            <textarea
+              value={observasjon}
+              onChange={(e) => setObservasjon(e.target.value)}
+              rows={4}
+              placeholder="Beskriv hva som er observert, f.eks. «Fuktmåling viser 28% i hjørnet bak badekaret. Ingen synlige skader på overflaten.»"
+              className="portal-input resize-y min-h-[100px]"
+            />
+            <p className="text-xs text-[#94a3b8] mt-1">
+              {observasjon.trim().length} tegn
+              {observasjon.trim().length > 0 && observasjon.trim().length < 15 && (
+                <span className="text-red-400"> — minimum 15 tegn</span>
+              )}
+            </p>
           </div>
 
-          {/* Tillegg — nyanserer grunnlaget */}
-          {hovedgrunnlag && (
-            <div>
-              <label className="block text-sm font-medium text-[#1e293b] mb-1">
-                Tillegg{" "}
-                <span className="font-normal text-[#94a3b8]">(valgfritt — nyanserer grunnlaget)</span>
-              </label>
-              <div className="space-y-2">
-                {tilgjengeligeTillegg.map(([key, label]) => (
-                  <label
-                    key={key}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border cursor-pointer transition-all ${
-                      tillegg.includes(key)
-                        ? "bg-[#f0f4f8] border-[#285982]/40 text-[#1e293b]"
-                        : "bg-white border-[#e2e8f0] text-[#64748b] hover:border-[#285982]/30"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={tillegg.includes(key)}
-                      onChange={() => toggleTillegg(key)}
-                      className="w-4 h-4 rounded border-[#cbd5e1] text-[#285982] focus:ring-[#285982]"
-                    />
-                    <span className="text-sm">{label}</span>
-                  </label>
-                ))}
+          {/* ─── Grunnlag: auto-forslag eller manuell ─────────── */}
+          {harAutoGrunnlag && !visGrunnlagDetaljer ? (
+            /* Kompaktvisning: auto-forslag med Endre-knapp */
+            <div className="rounded-lg border border-[#e2e8f0] bg-[#f8fafc] p-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-[#64748b] mb-1">
+                    Grunnlag {grunnlagOverstyrt ? "(manuelt valgt)" : "(automatisk)"}
+                  </p>
+                  {grunnlagSammendrag && (
+                    <p className="text-sm text-[#1e293b]">
+                      {grunnlagSammendrag.hovLabel}
+                      {grunnlagSammendrag.tilleggLabels.length > 0 && (
+                        <span className="text-[#64748b]">
+                          {" · "}
+                          {grunnlagSammendrag.tilleggLabels.join(", ")}
+                        </span>
+                      )}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setVisGrunnlagDetaljer(true)}
+                  className="text-xs text-[#285982] hover:text-[#1e4a6e] font-medium whitespace-nowrap cursor-pointer"
+                >
+                  Endre
+                </button>
               </div>
+            </div>
+          ) : (
+            /* Ekspandert visning: manuelt valg */
+            <div className="space-y-4">
+              {/* Lukkeknapp hvis auto-grunnlag er tilgjengelig */}
+              {harAutoGrunnlag && (
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-medium text-[#64748b]">
+                    Grunnlag for vurderingen
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setVisGrunnlagDetaljer(false)}
+                    className="text-xs text-[#285982] hover:text-[#1e4a6e] font-medium cursor-pointer"
+                  >
+                    Skjul detaljer
+                  </button>
+                </div>
+              )}
+
+              {/* Hovedgrunnlag */}
+              <div>
+                <label className="block text-sm font-medium text-[#1e293b] mb-1">
+                  Hovedgrunnlag for vurderingen
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {(
+                    Object.entries(HOVEDGRUNNLAG_LABELS) as [Hovedgrunnlag, string][]
+                  ).map(([key, label]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => handleHovedgrunnlagChange(key)}
+                      className={`px-3 py-2.5 rounded-lg text-sm font-medium border transition-all cursor-pointer text-left ${
+                        hovedgrunnlag === key
+                          ? "bg-[#285982] text-white border-[#285982]"
+                          : "bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#285982] hover:text-[#285982]"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tillegg */}
+              {hovedgrunnlag && (
+                <div>
+                  <label className="block text-sm font-medium text-[#1e293b] mb-1">
+                    Tillegg{" "}
+                    <span className="font-normal text-[#94a3b8]">(valgfritt — nyanserer grunnlaget)</span>
+                  </label>
+                  <div className="space-y-2">
+                    {tilgjengeligeTillegg.map(([key, label]) => (
+                      <label
+                        key={key}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border cursor-pointer transition-all ${
+                          tillegg.includes(key)
+                            ? "bg-[#f0f4f8] border-[#285982]/40 text-[#1e293b]"
+                            : "bg-white border-[#e2e8f0] text-[#64748b] hover:border-[#285982]/30"
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={tillegg.includes(key)}
+                          onChange={() => handleTilleggToggle(key)}
+                          className="w-4 h-4 rounded border-[#cbd5e1] text-[#285982] focus:ring-[#285982]"
+                        />
+                        <span className="text-sm">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Vis manuelt grunnlag-valg hvis observasjonen er for kort for auto */}
+          {!harAutoGrunnlag && (
+            <div className="space-y-4">
+              {/* Hovedgrunnlag */}
+              <div>
+                <label className="block text-sm font-medium text-[#1e293b] mb-1">
+                  Hovedgrunnlag for vurderingen
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {(
+                    Object.entries(HOVEDGRUNNLAG_LABELS) as [Hovedgrunnlag, string][]
+                  ).map(([key, label]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => handleHovedgrunnlagChange(key)}
+                      className={`px-3 py-2.5 rounded-lg text-sm font-medium border transition-all cursor-pointer text-left ${
+                        hovedgrunnlag === key
+                          ? "bg-[#285982] text-white border-[#285982]"
+                          : "bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#285982] hover:text-[#285982]"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tillegg */}
+              {hovedgrunnlag && (
+                <div>
+                  <label className="block text-sm font-medium text-[#1e293b] mb-1">
+                    Tillegg{" "}
+                    <span className="font-normal text-[#94a3b8]">(valgfritt — nyanserer grunnlaget)</span>
+                  </label>
+                  <div className="space-y-2">
+                    {tilgjengeligeTillegg.map(([key, label]) => (
+                      <label
+                        key={key}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border cursor-pointer transition-all ${
+                          tillegg.includes(key)
+                            ? "bg-[#f0f4f8] border-[#285982]/40 text-[#1e293b]"
+                            : "bg-white border-[#e2e8f0] text-[#64748b] hover:border-[#285982]/30"
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={tillegg.includes(key)}
+                          onChange={() => handleTilleggToggle(key)}
+                          className="w-4 h-4 rounded border-[#cbd5e1] text-[#285982] focus:ring-[#285982]"
+                        />
+                        <span className="text-sm">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -409,26 +599,6 @@ export default function ArkatAssistantForm() {
                 )
               )}
             </div>
-          </div>
-
-          {/* Observasjon */}
-          <div>
-            <label className="block text-sm font-medium text-[#1e293b] mb-1">
-              Observasjon
-            </label>
-            <textarea
-              value={observasjon}
-              onChange={(e) => setObservasjon(e.target.value)}
-              rows={4}
-              placeholder="Beskriv hva som er observert, f.eks. «Fall fra grunnmur vurderes ikke som tilstrekkelig...»"
-              className="portal-input resize-y min-h-[100px]"
-            />
-            <p className="text-xs text-[#94a3b8] mt-1">
-              {observasjon.trim().length} tegn
-              {observasjon.trim().length > 0 && observasjon.trim().length < 15 && (
-                <span className="text-red-400"> — minimum 15 tegn</span>
-              )}
-            </p>
           </div>
 
           {/* Ønsket lengde */}

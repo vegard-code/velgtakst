@@ -62,9 +62,8 @@ export async function generateArkat(
       screening: {
         approved_for_generation: false,
         reason:
-          `ARKAT Skrivehjelp har foreløpig ikke terminologidekning for denne underenheten. ` +
-          `Systemet kan ikke generere faglig trygge forslag uten tilstrekkelig faggrunnlag. ` +
-          `Dekning utvides løpende.`,
+          `Denne underenheten støttes ikke ennå. ` +
+          `Vi utvider støtten løpende — i mellomtiden kan du velge en annen underenhet eller skrive vurderingen manuelt.`,
         warnings: [],
       },
       result: null,
@@ -363,6 +362,8 @@ function byggRisiko(
     "sluk", "gjennomforing", "glass", "karm",
     "stein", "skade", "papp", "plater", "mose", "beslag",
     "pumpe", "drenering", "fall", "fyll", "beplantning",
+    "overflateskade", "rekkverk", "nedboyning", "lyd",
+    "ror", "korrosjon", "tank", "anlegg", "avtrekk",
   ]);
   const harKonkretSymptom =
     alderSomGrunnlag || [...kat].some((k) => SYMPTOM_KATEGORIER.has(k));
@@ -439,6 +440,42 @@ function byggRisiko(
   // ── Gruppe: Pumpe ──
   if (kat.has("pumpe")) {
     risikoElementer.push("tilbakeslag av vann ved svikt i pumpesystem");
+  }
+
+  // ── Gruppe: Overflateskade (innvendige) ──
+  if (kat.has("overflateskade")) {
+    risikoElementer.push("skjulte fukt- eller konstruksjonsskader bak synlig overflatesvekkelse");
+  }
+
+  // ── Gruppe: Rekkverk/sikkerhet ──
+  if (kat.has("rekkverk")) {
+    risikoElementer.push("redusert sikring som bør vurderes nærmere");
+  }
+
+  // ── Gruppe: Konstruktiv nedbøyning/svikt ──
+  if (kat.has("nedboyning")) {
+    risikoElementer.push("konstruktiv svekkelse som bør avklares av fagkyndig");
+  }
+
+  // ── Gruppe: Rørsystem ──
+  if (kat.has("ror") || kat.has("korrosjon") || kat.has("tank")) {
+    // Kun hvis fukt/lekkasje ikke allerede dekker det
+    if (!kat.has("fukt") && !kat.has("lekkasje")) {
+      risikoElementer.push("svekkelse i rørsystem eller installasjoner som kan føre til lekkasje");
+    }
+  }
+
+  // ── Gruppe: Ventilasjon/inneklima ──
+  if (kat.has("anlegg") || kat.has("avtrekk")) {
+    // Kun hvis fukt ikke allerede dekker det
+    if (!kat.has("fukt")) {
+      risikoElementer.push("utilstrekkelig ventilasjon som kan påvirke inneklima og fuktbelastning");
+    }
+  }
+
+  // ── Gruppe: Lyd/vibrasjon (etasjeskiller, trapp) ──
+  if (kat.has("lyd")) {
+    risikoElementer.push("mulig konstruktiv bevegelse som bør vurderes");
   }
 
   // Ingen kategorier matchet

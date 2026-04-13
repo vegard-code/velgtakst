@@ -35,14 +35,43 @@ export default function ArkatAssistantResult({ response }: Props) {
 
   // Feil / screening stoppet generering
   if (!response.success || !response.result) {
+    const reason = response.screening.reason ?? "";
+
+    // Skille mellom "ikke støttet ennå" (info) og reelle avslag (feil)
+    const erIkkeStottet = reason.includes("støttes ikke ennå");
+
+    if (erIkkeStottet) {
+      // Info-stil: rolig, blå/grå — ikke alarmerende
+      return (
+        <div className="portal-card p-5 border-l-4 border-l-[#285982]/40">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-full bg-[#f0f4f8] flex items-center justify-center shrink-0 mt-0.5">
+              <svg className="w-4 h-4 text-[#285982]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-[#1e293b] mb-1">
+                Ikke tilgjengelig ennå
+              </h3>
+              <p className="text-sm text-[#64748b] leading-relaxed">
+                {reason}
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Reelt avslag: screening stoppet pga. observasjonskvalitet
     return (
-      <div className="portal-card p-5 border-l-4 border-l-red-400">
-        <h3 className="text-sm font-semibold text-red-700 mb-2">
-          Generering stoppet
+      <div className="portal-card p-5 border-l-4 border-l-amber-400">
+        <h3 className="text-sm font-semibold text-[#92400e] mb-2">
+          Trenger mer informasjon
         </h3>
-        {response.screening.reason && (
-          <p className="text-sm text-[#1e293b] mb-2">
-            {response.screening.reason}
+        {reason && (
+          <p className="text-sm text-[#1e293b] mb-2 leading-relaxed">
+            {reason}
           </p>
         )}
         {response.screening.warnings.length > 0 && (

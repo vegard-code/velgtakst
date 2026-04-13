@@ -3,29 +3,98 @@
     "versjon": "1.0",
     "beskrivelse": "Fagterminologi for ARKAT-generering. Hver underenhet har termer, typiske årsaker, risikoer, konsekvenser og tiltak per TG.",
     "dekning": [
-      "grunn_og_fundamenter/terrengforhold",
       "grunn_og_fundamenter/fuktsikring_og_drenering",
-      "vatrom/overflater",
+      "grunn_og_fundamenter/fundamenter",
+      "grunn_og_fundamenter/grunnmur",
+      "grunn_og_fundamenter/terrengforhold",
+      "innvendige_forhold/etasjeskiller",
+      "innvendige_forhold/innvendige_dorer",
+      "innvendige_forhold/overflater",
+      "innvendige_forhold/trapplosninger",
+      "kjokken/avlop",
+      "kjokken/overflater_vannutsatte_soner",
+      "kjokken/vanninstallasjoner",
+      "rom_under_terreng/dreneringsrelaterte_forhold",
+      "rom_under_terreng/fuktproblematikk",
+      "rom_under_terreng/gulv",
+      "rom_under_terreng/vegger",
+      "tak/beslag",
+      "tak/renner_og_nedlop",
+      "tak/takkonstruksjon",
+      "tak/taktekking",
+      "tekniske_installasjoner/elektrisk_anlegg",
+      "tekniske_installasjoner/innvendige_avlopsror",
+      "tekniske_installasjoner/innvendige_vannror",
+      "tekniske_installasjoner/varmtvannstank",
+      "tekniske_installasjoner/ventilasjon",
       "vatrom/membran_tettesjikt",
+      "vatrom/overflater",
+      "vatrom/sluk_og_fallforhold",
+      "vatrom/vann_og_avlopsror",
+      "vatrom/ventilasjon",
+      "vinduer_og_utvendige_dorer/beslag_og_vannbord",
       "vinduer_og_utvendige_dorer/vinduer",
-      "tak/taktekking"
+      "vinduer_og_utvendige_dorer/ytterdorer",
+      "yttervegger_og_fasader/balkonger_og_terrasser",
+      "yttervegger_og_fasader/fasader_inkl_kledning",
+      "yttervegger_og_fasader/vindskier_og_vannbord"
     ]
   },
-
   "grunn_og_fundamenter": {
     "terrengforhold": {
       "fagtermer": [
-        "terrengfall", "grunnmur", "overflatevann", "bortledning av vann",
-        "terrengnivå", "avstand fra grunnmur", "fylling", "pukk",
-        "plastring", "tilbakefylling", "selvdrenerende masser",
-        "3-meters sone", "fallretning", "grunnforhold", "infiltrasjon"
+        "terrengfall",
+        "grunnmur",
+        "overflatevann",
+        "bortledning av vann",
+        "terrengnivå",
+        "avstand fra grunnmur",
+        "fylling",
+        "pukk",
+        "plastring",
+        "tilbakefylling",
+        "selvdrenerende masser",
+        "3-meters sone",
+        "fallretning",
+        "grunnforhold",
+        "infiltrasjon"
       ],
       "observasjonsmarkorer": {
-        "fall": ["fall", "terrengfall", "helling", "skråning", "stigning"],
-        "vann": ["overflatevann", "vannansamling", "oppdemming", "nedbør", "avrenning"],
-        "avstand": ["avstand", "meter", "grunnmur", "3,00", "3 meter"],
-        "fyll": ["fylling", "tilbakefylling", "masser", "grunn", "pukk"],
-        "beplantning": ["beplantning", "vegetasjon", "vekst", "røtter", "busker"]
+        "fall": [
+          "fall",
+          "terrengfall",
+          "helling",
+          "skråning",
+          "stigning"
+        ],
+        "vann": [
+          "overflatevann",
+          "vannansamling",
+          "oppdemming",
+          "nedbør",
+          "avrenning"
+        ],
+        "avstand": [
+          "avstand",
+          "meter",
+          "grunnmur",
+          "3,00",
+          "3 meter"
+        ],
+        "fyll": [
+          "fylling",
+          "tilbakefylling",
+          "masser",
+          "grunn",
+          "pukk"
+        ],
+        "beplantning": [
+          "beplantning",
+          "vegetasjon",
+          "vekst",
+          "røtter",
+          "busker"
+        ]
       },
       "TG2": {
         "arsaker": [
@@ -73,21 +142,65 @@
         ]
       }
     },
-
     "fuktsikring_og_drenering": {
       "fagtermer": [
-        "drenering", "drensrør", "drensgrøft", "kum", "tilbakeslagsventil",
-        "grunnmurplate", "fuktsikring", "radonsperre", "membran",
-        "grunnmursplast", "avskjæringsgrøft", "infiltrasjon",
-        "vanntrykk", "kapillærbrytende lag", "singel", "filterduk",
-        "grunnvannstand", "pumpekum", "levetid drenering"
+        "drenering",
+        "drensrør",
+        "drensgrøft",
+        "kum",
+        "tilbakeslagsventil",
+        "grunnmurplate",
+        "fuktsikring",
+        "radonsperre",
+        "membran",
+        "grunnmursplast",
+        "avskjæringsgrøft",
+        "infiltrasjon",
+        "vanntrykk",
+        "kapillærbrytende lag",
+        "singel",
+        "filterduk",
+        "grunnvannstand",
+        "pumpekum",
+        "levetid drenering"
       ],
       "observasjonsmarkorer": {
-        "drenering": ["drener", "drensrør", "grøft", "kum", "drensystem"],
-        "fukt": ["fukt", "vått", "fuktig", "vanninntrenging", "fuktmerke"],
-        "alder": ["alder", "gammel", "opprinnelig", "byggeår", "levetid", "år"],
-        "membran": ["membran", "grunnmursplast", "plast", "fuktsikring", "tetting"],
-        "pumpe": ["pumpe", "pumpekum", "tilbakeslag", "ventil"]
+        "drenering": [
+          "drener",
+          "drensrør",
+          "grøft",
+          "kum",
+          "drensystem"
+        ],
+        "fukt": [
+          "fukt",
+          "vått",
+          "fuktig",
+          "vanninntrenging",
+          "fuktmerke"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "levetid",
+          "år",
+          "eldre"
+        ],
+        "membran": [
+          "membran",
+          "grunnmursplast",
+          "plast",
+          "fuktsikring",
+          "tetting"
+        ],
+        "pumpe": [
+          "pumpe",
+          "pumpekum",
+          "tilbakeslag",
+          "ventil"
+        ]
       },
       "TG2": {
         "arsaker": [
@@ -133,24 +246,270 @@
           "Det anbefales å etablere pumpekum med tilbakeslagsventil dersom eiendommen ligger lavt i terrenget eller har historikk med vanninntrengning."
         ]
       }
+    },
+    "grunnmur": {
+      "fagtermer": [
+        "grunnmur",
+        "betong",
+        "Leca",
+        "lettklinkerblokk",
+        "støpeskjøt",
+        "armering",
+        "betongkvalitet",
+        "karbonatisering",
+        "frostsprengning",
+        "sprekk",
+        "riss",
+        "setning",
+        "utvendig puss",
+        "grunnmursplast",
+        "fuktgjennomslag",
+        "sålefundament",
+        "ringmur",
+        "bæreevne"
+      ],
+      "observasjonsmarkorer": {
+        "sprekk": [
+          "sprekk",
+          "riss",
+          "setning",
+          "forskyvning",
+          "brudd",
+          "sprekkdannelse"
+        ],
+        "fukt": [
+          "fukt",
+          "fuktig",
+          "vått",
+          "fuktmerke",
+          "misfarging",
+          "saltutslag"
+        ],
+        "puss": [
+          "puss",
+          "avflassing",
+          "avskalling",
+          "betongskade",
+          "frostsprengning"
+        ],
+        "konstruksjon": [
+          "betong",
+          "leca",
+          "mur",
+          "armering",
+          "karbonatisering"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "levetid",
+          "eldre"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Det er observert spredte riss eller sprekker i grunnmur, uten tegn til pågående setninger eller aktiv fuktinntrengning.",
+          "Utvendig puss på grunnmur har begynnende avflassing eller frostskader, noe som svekker overflaten men ikke den konstruktive integriteten.",
+          "Grunnmuren er av eldre betong- eller Leca-type med synlig aldersslitasje, men uten tegn til strukturell svikt."
+        ],
+        "risikoer": [
+          "Riss i grunnmur kan utvikle seg over tid og gi inngangspunkt for fukt fra terrengsiden.",
+          "Skadet utvendig puss gir redusert beskyttelse av underliggende materiale og kan fremskynde frostskader.",
+          "Grunnmur med aldersslitasje har usikker gjenværende levetid for overflatebehandling og fuktsikring."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til reparasjon av riss og fornying av utvendig puss på berørte partier.",
+          "Dersom rissene er knyttet til setninger, bør årsaken kartlegges for å avklare om grunnforholdene er stabile.",
+          "Vedlikehold av grunnmur er normalt løpende, men skadens karakter tilsier at det bør følges opp."
+        ],
+        "tiltak": [
+          "Riss bør tettes med egnet injeksjonsmasse eller mørtel. Utvendig puss bør fornyes på partier med avflassing.",
+          "Ved setningsriss anbefales overvåking over tid for å avklare om setningene er pågående eller stabiliserte.",
+          "Grunnmurens fuktsikring bør vurderes i sammenheng med dreneringsforhold og terrengfall."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist alvorlige sprekker i grunnmur som indikerer pågående setninger eller strukturell svikt.",
+          "Grunnmuren har omfattende frostsprengningsskader med synlig eksponert armering og nedbrytning av betongen.",
+          "Det er registrert aktiv fuktinntrengning gjennom grunnmur med synlige vannskader og soppvekst innvendig."
+        ],
+        "risikoer": [
+          "Pågående setninger i grunnmur kan gi skader i bærende konstruksjoner over og medføre skjevheter i bygget.",
+          "Eksponert armering i betong gir akselererende korrosjon og ytterligere svekkelse av konstruksjonen.",
+          "Aktiv fuktinntrengning gjennom grunnmur skader innvendig kledning, isolasjon og bjelkelag."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til utbedring av grunnmur, som kan inkludere utvendig graving, tetting og eventuelt forsterkning.",
+          "Ved pågående setninger kan det kreves geoteknisk vurdering og tiltak for å stabilisere grunnen.",
+          "Totalkostnaden er vanskelig å anslå uten nærmere undersøkelse, da den avhenger av årsak og omfang."
+        ],
+        "tiltak": [
+          "Grunnmuren bør vurderes av konstruksjonsingeniør for å avklare årsak til skadene og nødvendige tiltak.",
+          "Utvendig graving med reparasjon av betong, ny fuktsikring og eventuell dreneringsfornyelse bør gjennomføres.",
+          "Ved pågående setninger kan det være behov for grunnforsterkning, f.eks. peling eller fundamentforsterkning."
+        ]
+      }
+    },
+    "fundamenter": {
+      "fagtermer": [
+        "fundament",
+        "såle",
+        "stripefundament",
+        "punktfundament",
+        "ringmur",
+        "frostfritt",
+        "frostsikring",
+        "bæreevne",
+        "setning",
+        "telehiv",
+        "grunnforhold",
+        "kapasitet",
+        "armering",
+        "betongkvalitet",
+        "lastoverføring"
+      ],
+      "observasjonsmarkorer": {
+        "sprekk": [
+          "sprekk",
+          "riss",
+          "opprissing",
+          "brudd",
+          "deformasjon"
+        ],
+        "setning": [
+          "setning",
+          "synking",
+          "forskyvning",
+          "skjevhet",
+          "helling"
+        ],
+        "fukt": [
+          "fukt",
+          "vanninntrengning",
+          "vått",
+          "fuktmerke",
+          "kapillær"
+        ],
+        "konstruksjon": [
+          "fundament",
+          "såle",
+          "betong",
+          "armering",
+          "mur"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "eldre"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Det er observert mindre sprekker eller riss i synlige deler av fundamentet som kan indikere begynnende setninger eller aldersrelatert slitasje.",
+          "Fundamentet viser tegn til punktvis fuktgjennomslag eller kapillær fukttransport, noe som tyder på manglende eller svekket fuktsikring.",
+          "Det er registrert mindre setningsforskjeller mellom ulike deler av bygget som kan relateres til fundamenteringsforholdene."
+        ],
+        "risikoer": [
+          "Mindre sprekker i fundament kan utvikle seg over tid dersom årsaken ikke avklares, og kan indikere pågående setninger i grunnen.",
+          "Fuktgjennomslag gjennom fundament kan over tid føre til armeringskorrosjon og redusert bæreevne i betongkonstruksjoner.",
+          "Setningsforskjeller som ikke stabiliserer seg kan føre til skjevheter i bærende konstruksjoner og skader på overliggende bygningsdeler."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til nærmere undersøkelse av fundamentet for å avklare årsak til observerte sprekker eller setninger.",
+          "Dersom setninger pågår, kan utbedring innebære grunnforsterkning, som er en kostnadskrevende prosess.",
+          "Uten avklaring av fundamentets tilstand er det usikkert om observerte forhold vil stabilisere seg eller forverres."
+        ],
+        "tiltak": [
+          "Det anbefales å engasjere fagkyndig for nærmere vurdering av fundamentet, inkludert vurdering av om setningene har stabilisert seg.",
+          "Sprekkene bør overvåkes over tid, for eksempel med gipsmerker, for å avklare om de er aktive. Ved aktive setninger bør geoteknisk rådgiver kontaktes.",
+          "Eventuell fuktgjennomgang gjennom fundamentet bør utbedres med egnet fuktsikring for å hindre videre nedbrytning."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist vesentlige sprekker eller deformasjoner i fundamentet som indikerer pågående eller betydelige setninger.",
+          "Fundamentet viser tydelige tegn til svekket bæreevne, med synlige gjennomgående sprekker og forskyvninger.",
+          "Det er registrert markante nivåforskjeller i bygget som tilskrives fundamentsvikt eller utilstrekkelig dimensjonering."
+        ],
+        "risikoer": [
+          "Vesentlige sprekker i fundament representerer en risiko for redusert bæreevne og kan påvirke stabiliteten til hele konstruksjonen.",
+          "Pågående setninger kan føre til skader på bærende vegger, etasjeskiller og tekniske installasjoner.",
+          "Uten utbedring kan forholdene forverres og medføre behov for omfattende konstruktive tiltak."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til geoteknisk utredning og eventuell grunnforsterkning.",
+          "Utbedring av fundamentsvikt er erfaringsmessig kostnadskrevende og kan inkludere peling, injisering eller annen grunnforsterkning.",
+          "Forholdene kan påvirke boligens bruksverdi og bør avklares grundig før overtakelse."
+        ],
+        "tiltak": [
+          "Det anbefales å engasjere geoteknisk rådgiver for grundig vurdering av grunnforhold og fundamentets tilstand før overtakelse.",
+          "Konstruktive tiltak som peling, injisering eller undergraving med ny fundamentering bør vurderes basert på fagkyndig anbefaling.",
+          "Alle konstruksjoner som hviler på det svekkede fundamentet bør inspiseres for følgeskader."
+        ]
+      }
     }
   },
-
   "vatrom": {
     "overflater": {
       "fagtermer": [
-        "flis", "fugemasse", "silikonfuge", "flislegging",
-        "våtromsnorm", "våtromsplater", "belegg", "epoxy",
-        "sparkel", "sementbasert", "keramisk flis",
-        "veggflis", "gulvflis", "overgang gulv/vegg",
-        "membran bak flis", "hulrom bak flis", "misfarging"
+        "flis",
+        "fugemasse",
+        "silikonfuge",
+        "flislegging",
+        "våtromsnorm",
+        "våtromsplater",
+        "belegg",
+        "epoxy",
+        "sparkel",
+        "sementbasert",
+        "keramisk flis",
+        "veggflis",
+        "gulvflis",
+        "overgang gulv/vegg",
+        "membran bak flis",
+        "hulrom bak flis",
+        "misfarging"
       ],
       "observasjonsmarkorer": {
-        "flis": ["flis", "fliser", "keramisk", "gulvflis", "veggflis"],
-        "fuge": ["fuge", "fugemasse", "silikon", "silikonfuge", "fugeskade"],
-        "sprekk": ["sprekk", "riss", "brudd", "knekt", "løs"],
-        "fukt": ["fukt", "misfarging", "mørke flekker", "kalkutslag", "vått"],
-        "belegg": ["belegg", "vinyl", "maling", "overflatebehandling"]
+        "flis": [
+          "flis",
+          "fliser",
+          "keramisk",
+          "gulvflis",
+          "veggflis"
+        ],
+        "fuge": [
+          "fuge",
+          "fugemasse",
+          "silikon",
+          "silikonfuge",
+          "fugeskade"
+        ],
+        "sprekk": [
+          "sprekk",
+          "riss",
+          "brudd",
+          "knekt",
+          "løs"
+        ],
+        "fukt": [
+          "fukt",
+          "misfarging",
+          "mørke flekker",
+          "kalkutslag",
+          "vått"
+        ],
+        "belegg": [
+          "belegg",
+          "vinyl",
+          "maling",
+          "overflatebehandling"
+        ]
       },
       "TG2": {
         "arsaker": [
@@ -197,20 +556,60 @@
         ]
       }
     },
-
     "membran_tettesjikt": {
       "fagtermer": [
-        "membran", "tettesjikt", "smøremembran", "foliert membran",
-        "våtromsnorm", "NS 3420", "oppbrett", "slukmansjett",
-        "gjennomføring", "rørmansjett", "overlapp", "primer",
-        "tørketid", "tykkelse", "membrantype", "Schlüter", "Mapei"
+        "membran",
+        "tettesjikt",
+        "smøremembran",
+        "foliert membran",
+        "våtromsnorm",
+        "NS 3420",
+        "oppbrett",
+        "slukmansjett",
+        "gjennomføring",
+        "rørmansjett",
+        "overlapp",
+        "primer",
+        "tørketid",
+        "tykkelse",
+        "membrantype",
+        "Schlüter",
+        "Mapei"
       ],
       "observasjonsmarkorer": {
-        "membran": ["membran", "tettesjikt", "smøremembran", "folie"],
-        "sluk": ["sluk", "mansjett", "slukmansjett", "slukring"],
-        "gjennomforing": ["gjennomføring", "rørmansjett", "rørgjennomføring", "penetrasjon"],
-        "alder": ["alder", "gammel", "opprinnelig", "byggeår", "renovert", "rehabilitert"],
-        "lekkasje": ["lekkasje", "vannskade", "fuktskade", "vanngjennomslag"]
+        "membran": [
+          "membran",
+          "tettesjikt",
+          "smøremembran",
+          "folie"
+        ],
+        "sluk": [
+          "sluk",
+          "mansjett",
+          "slukmansjett",
+          "slukring"
+        ],
+        "gjennomforing": [
+          "gjennomføring",
+          "rørmansjett",
+          "rørgjennomføring",
+          "penetrasjon"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "renovert",
+          "rehabilitert",
+          "eldre"
+        ],
+        "lekkasje": [
+          "lekkasje",
+          "vannskade",
+          "fuktskade",
+          "vanngjennomslag"
+        ]
       },
       "TG2": {
         "arsaker": [
@@ -256,24 +655,381 @@
           "Arbeidet må utføres av våtromssertifisert håndverker. Det bør kreves skriftlig dokumentasjon på utførelse, membrantype og samsvar med norm."
         ]
       }
+    },
+    "sluk_og_fallforhold": {
+      "fagtermer": [
+        "sluk",
+        "slukrist",
+        "slukmansjett",
+        "slukring",
+        "fallforhold",
+        "fall mot sluk",
+        "klinkerfall",
+        "avrenning",
+        "vannansamling",
+        "gulvfall",
+        "innstøpt sluk",
+        "sluktype",
+        "oppstikkende rør",
+        "avløpskobling",
+        "membrantilslutning",
+        "våtsone"
+      ],
+      "observasjonsmarkorer": {
+        "sluk": [
+          "sluk",
+          "slukrist",
+          "slukring",
+          "slukmansjett",
+          "avløp"
+        ],
+        "fall": [
+          "fall",
+          "fallforhold",
+          "klinkerfall",
+          "gulvfall",
+          "helning",
+          "helling"
+        ],
+        "vann": [
+          "vannansamling",
+          "stående vann",
+          "avrenning",
+          "drenering",
+          "oppsamling"
+        ],
+        "tetting": [
+          "tetting",
+          "mansjett",
+          "tilslutning",
+          "membran",
+          "overgang"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "levetid",
+          "eldre"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Fallforholdene på gulvet i våtrommet er stedvis utilstrekkelige, slik at vann ikke ledes effektivt mot sluk.",
+          "Det er observert at vann blir stående på deler av gulvet etter dusjing, noe som tyder på manglende eller ujevnt fall mot sluk.",
+          "Slukrist eller slukring har synlig slitasje eller mangler, noe som kan påvirke overgangen mellom overflate og sluk."
+        ],
+        "risikoer": [
+          "Utilstrekkelig fall mot sluk fører til at vann blir stående på gulvet, noe som over tid øker fuktbelastningen på fuger og overgang mellom gulv og membran.",
+          "Stående vann øker risikoen for fuktinntrengning gjennom mikroskader i fuger eller ved sluktilslutning, særlig dersom membranen er av eldre dato.",
+          "Mangelfull sluktilslutning kan gi gradvis fuktbelastning på underliggende konstruksjon uten at det er synlig fra overflaten."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til justering av fallforhold, eventuelt ved avrettingsmasse og ny flislegging i våtsonen.",
+          "Dersom kun sluktilslutning er berørt, kan utbedringen begrenses til området rundt sluk. Ved generelt dårlig fall kan det kreve rehabilitering av hele gulvet.",
+          "Kostnad avhenger av om underliggende membran også må fornyes i forbindelse med arbeidet."
+        ],
+        "tiltak": [
+          "Fallforholdene bør kartlegges med vater eller vann for å avklare omfanget. Ved utilstrekkelig fall bør gulvet rettes opp med egnet avrettingsmasse og nye fliser.",
+          "Slukrist og slukring bør kontrolleres og eventuelt fornyes. Det bør sikres at overgang mellom sluk og membran er tett.",
+          "Ved planlagt oppgradering av våtrommet bør fallforhold korrigeres som del av rehabiliteringen."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist vesentlig feil i fallforhold, med fall bort fra sluk eller stående vann over store deler av gulvet etter bruk.",
+          "Slukets tilslutning til membran er skadet eller mangler, og det er registrert fuktindikasjoner i underliggende konstruksjon.",
+          "Sluk er plassert slik at vann ikke kan nå det uten hjelp, eller sluket er blokkert/skadet og ikke fungerer som tiltenkt."
+        ],
+        "risikoer": [
+          "Feil fall eller skadet sluktilslutning gir direkte risiko for vanngjennomgang til underliggende konstruksjon ved normal bruk av våtrommet.",
+          "Vedvarende stående vann i kombinasjon med svak sluktilslutning kan gi skjulte fuktskader i bjelkelag, isolasjon og tilstøtende rom.",
+          "Uten utbedring vil skadeomfanget øke for hver gangs bruk av våtrommet."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne rehabilitering av våtromsgulvet med korrigering av fall, ny sluktilslutning og ny membran.",
+          "Det bør tas høyde for at underliggende konstruksjoner kan være skadet og kreve utbedring i tillegg til selve gulvarbeidet.",
+          "Totalkostnaden kan bli betydelig, avhengig av omfanget av eventuelle konstruksjonsskader."
+        ],
+        "tiltak": [
+          "Våtromsgulvet må rehabiliteres med korrekt fall mot sluk. Ny slukmansjett og membrantilslutning etableres i henhold til gjeldende våtromsnorm.",
+          "Underliggende konstruksjon må kontrolleres for fukt- og soppskader før nytt gulv legges. Skadet materiale skiftes ut.",
+          "Arbeidet bør utføres av våtromssertifisert håndverker med dokumentasjon på utførelse."
+        ]
+      }
+    },
+    "vann_og_avlopsror": {
+      "fagtermer": [
+        "kobberrør",
+        "plastrør",
+        "PVC",
+        "PEX",
+        "avløpsrør",
+        "vannrør",
+        "stoppekran",
+        "stengeventil",
+        "rørkoblinger",
+        "lodding",
+        "korrosjon",
+        "grønne avleiringer",
+        "rørdimensjon",
+        "vannlekkasje",
+        "avløpslukt",
+        "vannlås",
+        "rørgjennomføring",
+        "synlige rør",
+        "innstøpte rør",
+        "rørføring",
+        "stigerør"
+      ],
+      "observasjonsmarkorer": {
+        "ror": [
+          "rør",
+          "kobberrør",
+          "plastrør",
+          "avløpsrør",
+          "vannrør",
+          "stigerør"
+        ],
+        "lekkasje": [
+          "lekkasje",
+          "drypp",
+          "fuktig",
+          "vått",
+          "vannmerke",
+          "korrosjon"
+        ],
+        "kobling": [
+          "kobling",
+          "lodding",
+          "skjøt",
+          "overgang",
+          "ventil",
+          "kran"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "levetid",
+          "ikke skiftet",
+          "eldre"
+        ],
+        "lukt": [
+          "lukt",
+          "avløpslukt",
+          "kloakklukt",
+          "stank",
+          "vannlås"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Synlige vannrør er av eldre kobbertype med begynnende korrosjon eller grønne avleiringer ved koblinger og loddeforbindelser.",
+          "Avløpsrør i våtrommet er av eldre type med synlig slitasje, og det foreligger ikke dokumentasjon på alder eller tilstand.",
+          "Det er observert sporadisk avløpslukt i våtrommet, noe som kan tyde på svak vannlås eller utette skjøter i avløpssystemet."
+        ],
+        "risikoer": [
+          "Eldre kobberrør med begynnende korrosjon har økt risiko for punktlekkasjer, særlig ved koblinger og loddeforbindelser.",
+          "Avløpsrør med ukjent alder og tilstand representerer en usikkerhet knyttet til gjenværende levetid og tetthet.",
+          "Svak vannlås eller utette skjøter kan gi innvendig avløpslukt og indikerer mulig lekkasje i avløpssystemet."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til utskifting av eldre rør, særlig dersom røranlegget nærmer seg forventet levetid.",
+          "Kostnad avhenger av omfang og tilgjengelighet. Rør i vegger og gulv krever mer omfattende arbeid enn synlige rør.",
+          "Det anbefales å ta høyde for rørfornyelse i vedlikeholdsplanleggingen for eiendommen."
+        ],
+        "tiltak": [
+          "Eldre vannrør med synlig korrosjon bør vurderes skiftet til PEX eller annen godkjent rørtype. Koblinger og ventiler bør fornyes.",
+          "Avløpsrør bør inspiseres, og ved eldre rør bør utskifting planlegges. Vannlås og skjøter bør kontrolleres for tetthet.",
+          "Ved planlagt våtromsrehabilitering bør rørfornyelse inkluderes i arbeidet."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv lekkasje fra vannrør eller avløpsrør i våtrommet, med synlige vannskader på tilstøtende konstruksjoner.",
+          "Røranlegget har omfattende korrosjon, og det er registrert gjentatte lekkasjer eller nødvendige reparasjoner over tid.",
+          "Avløpsrør er sprukket eller har kollapsete skjøter, med konstatert vannlekkasje til underliggende konstruksjon."
+        ],
+        "risikoer": [
+          "Aktiv lekkasje fra rør gir direkte risiko for vannskade på bjelkelag, isolasjon og tilstøtende rom.",
+          "Omfattende korrosjon i røranlegg betyr at nye lekkasjer kan oppstå når som helst, med potensielt stor skade.",
+          "Vedvarende lekkasje fra avløp medfører risiko for soppvekst, råte og inneklimautfordringer."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne fullstendig utskifting av berørte rørinstallasjoner, samt utbedring av eventuelle følgeskader.",
+          "Totalkostnaden avhenger av skadens omfang og tilgjengeligheten til rørene. Innstøpte rør krever mer omfattende arbeid.",
+          "Inntil utbedring er gjennomført, bør berørte installasjoner stenges eller overvåkes for å begrense skadeomfanget."
+        ],
+        "tiltak": [
+          "Berørte rør må skiftes ut umiddelbart. Nye rør monteres i henhold til gjeldende krav og forskrifter.",
+          "Tilstøtende konstruksjoner må kontrolleres for fukt- og soppskader. Skadet materiale skiftes ut.",
+          "Arbeidet bør utføres av autorisert rørlegger med dokumentasjon på utførelse."
+        ]
+      }
+    },
+    "ventilasjon": {
+      "fagtermer": [
+        "avtrekk",
+        "avtrekksvifte",
+        "ventil",
+        "luftmengde",
+        "fukttransport",
+        "kondens",
+        "mekanisk ventilasjon",
+        "naturlig ventilasjon",
+        "overtrykk",
+        "undertrykk",
+        "spilluft",
+        "tilluft",
+        "kanalforbindelse",
+        "kapasitet"
+      ],
+      "observasjonsmarkorer": {
+        "avtrekk": [
+          "avtrekk",
+          "vifte",
+          "ventil",
+          "kanal",
+          "lufting"
+        ],
+        "fukt": [
+          "fukt",
+          "kondens",
+          "dugg",
+          "mugg",
+          "fuktig"
+        ],
+        "funksjon": [
+          "fungerer",
+          "trekker",
+          "kapasitet",
+          "svak",
+          "støy"
+        ],
+        "lukt": [
+          "lukt",
+          "fuktig",
+          "mugg",
+          "innestengt"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "type"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Avtrekket i våtrommet viser tegn til redusert kapasitet, med noe kondens på overflater etter dusjing.",
+          "Det er naturlig ventilasjon uten mekanisk avtrekk, noe som gir begrenset evne til å fjerne fukt fra rommet.",
+          "Avtrekksventil eller kanal viser tegn til tilstopping eller nedsatt trekkraft."
+        ],
+        "risikoer": [
+          "Utilstrekkelig ventilasjon i våtrom fører til at fuktbelastningen på overflater og konstruksjoner øker, med økt risiko for mugg og fuktskader.",
+          "Vedvarende høy fuktighet i våtrom kan over tid skade fuger, tettesjikt og overflatematerialer.",
+          "Kondens på kalde overflater kan føre til muggvekst som påvirker inneklima."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til utbedring eller oppgradering av ventilasjon for å sikre tilstrekkelig fukttransport.",
+          "Installasjon av mekanisk avtrekk eller oppgradering av eksisterende vifte er normalt en moderat kostnad.",
+          "Uten tilstrekkelig ventilasjon vil fuktbelastningen i rommet vedvare og kan føre til økt vedlikeholdsbehov."
+        ],
+        "tiltak": [
+          "Avtrekkets kapasitet bør kontrolleres. Vifte bør renses og eventuelt skiftes dersom kapasiteten er utilstrekkelig.",
+          "Ved naturlig ventilasjon bør det vurderes å installere mekanisk avtrekk for å sikre tilstrekkelig luftskifte.",
+          "Ventilkanaler bør kontrolleres for tilstopping og rengjøres ved behov."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Våtrommet mangler fungerende avtrekk, og det er påvist kondens, mugg eller fuktskader som følge av utilstrekkelig ventilasjon.",
+          "Eksisterende avtrekk er ute av funksjon eller kanalsystemet er blokkert, slik at fukt ikke transporteres ut av rommet.",
+          "Det er registrert omfattende mugg- eller soppvekst på vegger eller tak i våtrommet som tilskrives manglende ventilasjon."
+        ],
+        "risikoer": [
+          "Manglende ventilasjon i våtrom gir vedvarende høy fuktbelastning som bryter ned tettesjikt, overflater og kan skade underliggende konstruksjon.",
+          "Mugg- og soppvekst som følge av dårlig ventilasjon påvirker inneklimaet og kan utgjøre en helserisiko.",
+          "Uten fungerende ventilasjon vil fuktskadene fortsette å utvikle seg uavhengig av overflatevedlikehold."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til etablering av fungerende mekanisk avtrekk samt utbedring av påviste fuktskader.",
+          "Dersom mugg- eller soppskader har spredd seg til konstruksjonen bak, kan utbedringskostnaden bli vesentlig.",
+          "Rommet bør ikke brukes som våtrom uten at ventilasjon er utbedret."
+        ],
+        "tiltak": [
+          "Fungerende mekanisk avtrekk må etableres. Vifte og kanal bør dimensjoneres for våtrommets størrelse og bruk.",
+          "Alle overflater med mugg- eller soppvekst bør behandles eller skiftes. Ved mistanke om skader bak overflater bør det åpnes for inspeksjon.",
+          "Etter utbedring bør det kontrolleres at avtrekket gir tilstrekkelig luftskifte til å holde fuktbelastningen på et akseptabelt nivå."
+        ]
+      }
     }
   },
-
   "vinduer_og_utvendige_dorer": {
     "vinduer": {
       "fagtermer": [
-        "vindusramme", "karm", "varevindusløsning", "isolerglass",
-        "trelags glass", "energiglass", "kondensering", "duggdannelse",
-        "punktert glass", "tettelister", "beslag", "vannbord",
-        "vindusfuge", "utforingskarm", "innfesting",
-        "vindusåpner", "ventil", "U-verdi", "luftlekkasje"
+        "vindusramme",
+        "karm",
+        "varevindusløsning",
+        "isolerglass",
+        "trelags glass",
+        "energiglass",
+        "kondensering",
+        "duggdannelse",
+        "punktert glass",
+        "tettelister",
+        "beslag",
+        "vannbord",
+        "vindusfuge",
+        "utforingskarm",
+        "innfesting",
+        "vindusåpner",
+        "ventil",
+        "U-verdi",
+        "luftlekkasje"
       ],
       "observasjonsmarkorer": {
-        "glass": ["glass", "isolerglass", "rute", "punktert", "dugg", "kondens"],
-        "karm": ["karm", "ramme", "vindusramme", "utforing", "tre"],
-        "tetting": ["tetteliste", "fuge", "fuging", "tetting", "luft", "trekk"],
-        "beslag": ["beslag", "vannbord", "avrenning", "overgang"],
-        "alder": ["alder", "gammel", "opprinnelig", "byggeår", "utskiftet"]
+        "glass": [
+          "glass",
+          "isolerglass",
+          "rute",
+          "punktert",
+          "dugg",
+          "kondens"
+        ],
+        "karm": [
+          "karm",
+          "ramme",
+          "vindusramme",
+          "utforing",
+          "tre"
+        ],
+        "tetting": [
+          "tetteliste",
+          "fuge",
+          "fuging",
+          "tetting",
+          "luft",
+          "trekk"
+        ],
+        "beslag": [
+          "beslag",
+          "vannbord",
+          "avrenning",
+          "overgang"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "utskiftet",
+          "eldre"
+        ]
       },
       "TG2": {
         "arsaker": [
@@ -319,25 +1075,274 @@
           "Dersom flere vinduer er berørt, bør det innhentes tilbud på samlet utskifting. Vurder energiglass med lav U-verdi."
         ]
       }
+    },
+    "ytterdorer": {
+      "fagtermer": [
+        "ytterdør",
+        "karm",
+        "terskel",
+        "hengsler",
+        "låskasse",
+        "sluttstykke",
+        "tetting",
+        "tetningslist",
+        "beslag",
+        "glassfelt",
+        "isolasjon",
+        "trekkfri",
+        "sikkerhet",
+        "innbruddssikring",
+        "overflatebehandling"
+      ],
+      "observasjonsmarkorer": {
+        "tetting": [
+          "trekk",
+          "tetting",
+          "list",
+          "spalte",
+          "luft"
+        ],
+        "fukt": [
+          "fukt",
+          "råte",
+          "svelling",
+          "misfarging",
+          "vann"
+        ],
+        "funksjon": [
+          "lås",
+          "hengsel",
+          "stram",
+          "klem",
+          "lukking"
+        ],
+        "overflate": [
+          "maling",
+          "flassing",
+          "slitasje",
+          "riper",
+          "vedlikehold"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "slitt"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Ytterdøren viser tegn til aldersrelatert slitasje med noe redusert tetthet og stedvis behov for overflatebehandling.",
+          "Det er registrert trekk rundt dørkarmen grunnet slitte eller skadede tetningslister, noe som reduserer isolasjonsevnen.",
+          "Ytterdørens beslag og låskasse fungerer, men viser slitasje som kan gi redusert funksjon over tid."
+        ],
+        "risikoer": [
+          "Redusert tetting rundt ytterdør gir økt varmetap og kan over tid føre til fuktbelastning av karmkonstruksjonen.",
+          "Slitte tetningslister gir dårligere luft- og vanntetthet, som ved slagregn kan føre til fuktinntrengning ved terskel eller karm.",
+          "Aldersrelatert slitasje på beslag og låskasse kan føre til at døren ikke lukker eller låser tilfredsstillende."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til utskifting av tetningslister og overflatebehandling av ytterdør.",
+          "Dersom tetting og overflatebehandling ikke utføres, kan skadeomfanget øke og utskifting av hele døren bli nødvendig.",
+          "Vedlikehold av ytterdør er normalt en begrenset kostnad sammenlignet med full utskifting."
+        ],
+        "tiltak": [
+          "Tetningslister bør skiftes og dørens overflate bør vedlikeholdes med egnet maling eller beis for å opprettholde beskyttelse mot vær.",
+          "Beslag og låskasse bør justeres eller skiftes ved behov. Døren bør kontrolleres for korrekt lukking og tetting.",
+          "Ved terskelfukt bør overgangen mellom terskel og gulv/trinn undersøkes for å sikre at vann ledes bort fra konstruksjonen."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Ytterdøren har tydelige råteskader i karm eller terskel, med synlig nedbrytning av trevirket.",
+          "Dørkonstruksjonen er vesentlig svekket med dårlig luft- og vanntetthet, og det er påvist fuktskader i tilstøtende veggelementer.",
+          "Ytterdøren tilfredsstiller ikke rimelig forventet funksjon med hensyn til tetting, isolasjon og sikkerhet."
+        ],
+        "risikoer": [
+          "Råteskader i karm eller terskel kan ha spredd seg til tilstøtende veggkonstruksjon, med risiko for skjulte fuktskader.",
+          "En vesentlig svekket ytterdør gir betydelig økt varmetap og risiko for vanninntrenging ved slagregn.",
+          "Dårlig fungerende lås og lukking reduserer sikkerheten mot innbrudd."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utskifting av ytterdør inkludert karm. Tilstøtende veggkonstruksjon bør undersøkes for følgeskader.",
+          "Ved utskifting bør det velges dør som tilfredsstiller gjeldende krav til isolasjon og sikkerhet.",
+          "Omfanget av eventuelle følgeskader i veggkonstruksjonen avklares først ved demontering av eksisterende dør."
+        ],
+        "tiltak": [
+          "Ytterdør med karm bør skiftes. Ved demontering bør tilstøtende konstruksjon inspiseres for fukt- og råteskader.",
+          "Ny dør bør monteres med korrekt fuge- og tetteløsning mot vegg for å sikre varig tetthet.",
+          "Terskelløsningen bør utformes med tanke på vannavledning og forhindring av fuktoppsamling."
+        ]
+      }
+    },
+    "beslag_og_vannbord": {
+      "fagtermer": [
+        "beslag",
+        "vannbord",
+        "sålbenk",
+        "dryppnese",
+        "vindusbeslag",
+        "overgangsbeslag",
+        "sink",
+        "aluminium",
+        "falstetting",
+        "overlapp",
+        "fugetetting",
+        "avdrypp",
+        "vannbortledning",
+        "korrosjon",
+        "tilslutning"
+      ],
+      "observasjonsmarkorer": {
+        "beslag": [
+          "beslag",
+          "sålbenk",
+          "overgang",
+          "tilslutning",
+          "plate"
+        ],
+        "fukt": [
+          "fukt",
+          "vann",
+          "lekkasje",
+          "misfarging",
+          "ising"
+        ],
+        "korrosjon": [
+          "rust",
+          "korrosjon",
+          "oksidasjon",
+          "misfarging",
+          "grønt"
+        ],
+        "montering": [
+          "montering",
+          "løst",
+          "spalte",
+          "åpning",
+          "mangler"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "slitt"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Beslag rundt vinduer eller dører viser tegn til aldersslitasje med stedvis redusert tetting ved overganger.",
+          "Sålbenk under vinduer har utilstrekkelig avdrypp eller manglende tetting mot karm, slik at vann kan samle seg ved overgangen.",
+          "Det er observert mindre korrosjon eller misfarging på beslag som tyder på begynnende nedbrytning av overflatebehandlingen."
+        ],
+        "risikoer": [
+          "Svekket beslag gir redusert beskyttelse mot vanninntrenging ved kritiske overganger mellom vinduer/dører og vegg.",
+          "Manglende avdrypp på sålbenk fører til at vann renner tilbake mot karm og kledning, med økt fuktbelastning.",
+          "Korrosjon på beslag som ikke utbedres vil utvikle seg og kan gi gjennomgående hull med lekkasje som følge."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til tetting og eventuell utskifting av beslag ved vinduer og dører.",
+          "Dersom beslagarbeidet utsettes, øker risikoen for fuktskader i underliggende kledning og konstruksjon.",
+          "Utbedring av beslag er normalt en begrenset kostnad dersom det gjøres før følgeskader oppstår."
+        ],
+        "tiltak": [
+          "Beslag med manglende tetting bør tettes eller skiftes. Sålbenker bør kontrolleres for korrekt avdrypp og fall bort fra karm.",
+          "Korroderte beslag bør skiftes med nye i varig materiale. Overganger mellom beslag og tilstøtende flater bør tettes forskriftsmessig.",
+          "Det anbefales å gjennomføre beslagarbeid som del av samlet utvendig vedlikehold for å sikre helhetlig vannavledning."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Beslag mangler eller er vesentlig skadet ved kritiske overganger, slik at vann ledes direkte inn i konstruksjonen.",
+          "Sålbenker er gjennomkorrodert eller feilmontert med fall mot vegg, noe som gir aktiv vanntilførsel til karm og veggkonstruksjon.",
+          "Det er påvist lekkasjer ved beslagsoverganger som har ført til fuktskader i underliggende konstruksjon."
+        ],
+        "risikoer": [
+          "Manglende eller ødelagte beslag utsetter veggkonstruksjonen for direkte vannbelastning med risiko for omfattende skjulte fuktskader.",
+          "Vedvarende lekkasje ved beslagsoverganger kan føre til råteskader i karm, bindingsverk og isolasjon.",
+          "Fuktskader fra sviktende beslag kan ha pågått over tid og ha et større omfang enn det som er synlig utvendig."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utskifting av beslag samt undersøkelse og eventuell utbedring av underliggende konstruksjon.",
+          "Omfanget av eventuelle følgeskader i vegg- og karmkonstruksjon avklares først etter demontering og åpning av konstruksjonen.",
+          "Uten utbedring vil fuktskadene fortsette å utvikle seg med tilhørende økte utbedringskostnader."
+        ],
+        "tiltak": [
+          "Alle manglende eller skadede beslag må skiftes. Ved utskifting bør underliggende kledning og konstruksjon inspiseres for fuktskader.",
+          "Nye beslag bør monteres med korrekt fall, avdrypp og overlapp iht. god håndverksmessig utførelse.",
+          "Det anbefales å la fagkyndig vurdere om det er behov for utbedring av karm, bindingsverk eller isolasjon bak skadede beslag."
+        ]
+      }
     }
   },
-
   "tak": {
     "taktekking": {
       "fagtermer": [
-        "takstein", "betongtakstein", "tegltakstein", "takpapp",
-        "shingel", "stålplater", "profilerte plater", "undertak",
-        "undertaksbane", "lekter", "sløyfer", "mønekam", "møne",
-        "overlapp", "vindavheving", "snøfanger", "takrenner",
-        "innfesting", "ventilering", "lufting under tak"
+        "takstein",
+        "betongtakstein",
+        "tegltakstein",
+        "takpapp",
+        "shingel",
+        "stålplater",
+        "profilerte plater",
+        "undertak",
+        "undertaksbane",
+        "lekter",
+        "sløyfer",
+        "mønekam",
+        "møne",
+        "overlapp",
+        "vindavheving",
+        "snøfanger",
+        "takrenner",
+        "innfesting",
+        "ventilering",
+        "lufting under tak"
       ],
       "observasjonsmarkorer": {
-        "stein": ["takstein", "stein", "betong", "tegl", "panne"],
-        "plater": ["plate", "stålplate", "profilerte", "bølgeblekk"],
-        "papp": ["papp", "takpapp", "shingel", "belegg"],
-        "skade": ["knekt", "sprukket", "løs", "forskjøvet", "mangl"],
-        "alder": ["alder", "gammel", "opprinnelig", "byggeår", "levetid"],
-        "mose": ["mose", "alge", "begroing", "lav", "grønt"]
+        "stein": [
+          "takstein",
+          "stein",
+          "betong",
+          "tegl",
+          "panne"
+        ],
+        "plater": [
+          "plate",
+          "stålplate",
+          "profilerte",
+          "bølgeblekk"
+        ],
+        "papp": [
+          "papp",
+          "takpapp",
+          "shingel",
+          "belegg"
+        ],
+        "skade": [
+          "knekt",
+          "sprukket",
+          "løs",
+          "forskjøvet",
+          "mangl"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "levetid",
+          "eldre"
+        ],
+        "mose": [
+          "mose",
+          "alge",
+          "begroing",
+          "lav",
+          "grønt"
+        ]
       },
       "TG2": {
         "arsaker": [
@@ -381,6 +1386,2278 @@
           "Taket bør tekkes om i sin helhet. Ved omtekking må undertak, lekter og sløyfer kontrolleres og skiftes ut der det er registrert skade.",
           "Bærende takkonstruksjon bør inspiseres for råte og soppskader. Skadet trevirke må utskiftes eller forsterkes.",
           "Arbeidet bør utføres av kvalifisert takentreprenør. Det bør velges tekking med dokumentert levetid tilpasset klimabelastningen på stedet."
+        ]
+      }
+    },
+    "renner_og_nedlop": {
+      "fagtermer": [
+        "takrenne",
+        "nedløp",
+        "nedløpsrør",
+        "rennekrok",
+        "renneskjøt",
+        "beslag",
+        "innfesting",
+        "plastrenner",
+        "kobberrenner",
+        "stålrenner",
+        "isnedfall",
+        "ising",
+        "løvfanger",
+        "avrenning",
+        "overløp",
+        "vannbrett"
+      ],
+      "observasjonsmarkorer": {
+        "renne": [
+          "renne",
+          "takrenne",
+          "rennekrok",
+          "renneskjøt",
+          "renner"
+        ],
+        "nedlop": [
+          "nedløp",
+          "nedløpsrør",
+          "avløp",
+          "rør"
+        ],
+        "skade": [
+          "skadet",
+          "løs",
+          "knekt",
+          "bulket",
+          "heng",
+          "lekk",
+          "hull"
+        ],
+        "ising": [
+          "is",
+          "ising",
+          "isnedfall",
+          "isklump",
+          "istapp"
+        ],
+        "tetting": [
+          "tett",
+          "tilstoppet",
+          "løv",
+          "mose",
+          "avrenning",
+          "overløp"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Takrenner har synlig slitasje, begynnende korrosjon eller løse rennekroker som gir ujevnt fall og redusert avrenning.",
+          "Nedløpsrør er delvis tilstoppet eller har løs innfesting, slik at regnvann ikke ledes effektivt ned til bakkenivå.",
+          "Det er observert overløp fra takrenner ved kraftig nedbør, noe som tyder på utilstrekkelig dimensjon eller tilstopping."
+        ],
+        "risikoer": [
+          "Utilstrekkelig avrenning fra takrenner fører til at vann renner langs fasade og kan gi fuktskade på fasadekledning og vinduer.",
+          "Overløp fra renner kan gi økt fuktbelastning mot grunnmur og fundamenter, særlig i kombinasjon med manglende terrengfall.",
+          "Løse rennekroker eller nedløp gir risiko for at renner faller ned ved snølast eller ising."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til utskifting av skadede rennekroker, tetting av skjøter og eventuelt rens av nedløp.",
+          "Ved begynnende korrosjon bør det planlegges for utskifting av hele rennesystemet innen relativt kort tid.",
+          "Vedlikehold av renner og nedløp er normalt løpende, men forsømt vedlikehold kan gi dyrere følgeskader."
+        ],
+        "tiltak": [
+          "Løse rennekroker strammes eller skiftes ut. Skjøter kontrolleres og tettes. Renner og nedløp renses for løv og mose.",
+          "Ved begynnende korrosjon bør utskifting av renner og nedløp planlegges. Vurder overgang til materialer med lengre levetid.",
+          "Nedløp bør kontrolleres for tilstopping og sikres at vannet ledes bort fra grunnmur ved bakkenivå."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Takrenner er gjennomrustet, knekt eller mangler på deler av bygget, slik at regnvann renner fritt langs fasade og mot grunnmur.",
+          "Nedløp er frakoblet, mangler eller er så skadet at det ikke lenger leder vann bort fra konstruksjonen.",
+          "Det er påvist fuktskader på fasade og grunnmur som følge av langvarig svikt i rennesystemet."
+        ],
+        "risikoer": [
+          "Manglende eller skadet rennesystem gir direkte vannavrenning mot fasade og grunnmur, med risiko for fuktskade i veggkonstruksjon og kjeller.",
+          "Fritt rennende vann fra tak kan gi erosjon av terreng langs grunnmur og belaste dreneringssystemet utover dimensjonert kapasitet.",
+          "Isoppbygging fra lekkende renner kan gi skade på tak, beslag og fasade."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne fullstendig utskifting av renner og nedløp, samt utbedring av eventuelle følgeskader på fasade og grunnmur.",
+          "Totalkostnaden avhenger av byggets størrelse og omfanget av følgeskader.",
+          "Utbedring bør prioriteres for å forhindre videre skade på byggets konstruksjoner."
+        ],
+        "tiltak": [
+          "Renner og nedløp bør skiftes ut i sin helhet med nytt system dimensjonert for byggets takflate.",
+          "Fasade og grunnmur bør kontrolleres for fuktskader forårsaket av sviktende avrenning. Skader utbedres.",
+          "Nedløp bør avsluttes med avrenning bort fra grunnmur, eventuelt tilkoblet overvannssystem eller dagsystem."
+        ]
+      }
+    },
+    "beslag": {
+      "fagtermer": [
+        "beslag",
+        "pipbeslag",
+        "overgangsbeslag",
+        "ytterveggsbeslag",
+        "gjennomføringsbeslag",
+        "vindski",
+        "vannbrett",
+        "fotbeslag",
+        "inndekkingsbeslag",
+        "sink",
+        "aluminium",
+        "stål",
+        "lodding",
+        "fuging",
+        "klemmelist",
+        "falset beslag"
+      ],
+      "observasjonsmarkorer": {
+        "beslag": [
+          "beslag",
+          "inndekning",
+          "overgang",
+          "fotbeslag",
+          "vindski"
+        ],
+        "pipe": [
+          "pipe",
+          "pipbeslag",
+          "skorstein",
+          "gjennomføring"
+        ],
+        "skade": [
+          "løs",
+          "åpen",
+          "sprukket",
+          "korrodert",
+          "rustet",
+          "heng"
+        ],
+        "fukt": [
+          "fukt",
+          "lekkasje",
+          "vannmerke",
+          "drypp",
+          "misfarging"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "slitt",
+          "eldre"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Beslag ved gjennomføringer eller overganger på tak har synlige mangler som løs klemmelist, åpne fuger eller begynnende korrosjon.",
+          "Pipbeslag eller inndekning rundt skorstein viser aldersslitasje med begynnende løsning fra underlag.",
+          "Fotbeslag eller vindskier har synlige skader som kan redusere tetthet ved slagregn eller snøsmelting."
+        ],
+        "risikoer": [
+          "Mangelfull beslagføring ved gjennomføringer er en vanlig årsak til vanninntrengning i takkonstruksjonen.",
+          "Løse eller korroderte beslag gir redusert tetthet som forverres over tid, særlig ved vekslende temperatur og vindbevegelse.",
+          "Utilstrekkelig beslag rundt pipe kan gi fuktinntrengning som er vanskelig å oppdage inntil skaden er vesentlig."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til utbedring eller fornying av beslag ved berørte gjennomføringer og overganger.",
+          "Beslagsarbeid på tak er håndverksarbeid som krever fagkompetanse. Kostnaden avhenger av tilgjengelighet og omfang.",
+          "Dersom utilstrekkelig beslag allerede har gitt fuktinntrengning, kan det være behov for utbedring av underliggende skader i tillegg."
+        ],
+        "tiltak": [
+          "Beslag ved gjennomføringer og overganger bør kontrolleres og utbedres av blikkenslager eller taktekker.",
+          "Løse klemmelister strammes eller skiftes. Åpne fuger tettes med egnet fugemasse. Korroderte beslag fornyes.",
+          "Pipbeslag bør kontrolleres spesielt nøye, da dette er et vanlig svaktpunkt. Ved behov etableres nytt beslag med korrekt overlapp og innfesting."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv vanninntrengning gjennom skadet eller manglende beslag ved gjennomføring, overgang eller pipe.",
+          "Beslag er så korrodert eller skadet at det ikke lenger gir tetthet, med synlige fuktskader på undertak eller innvendige konstruksjoner.",
+          "Gjennomføringsbeslag mangler helt eller er utført med vesentlige feil som gjør det ufunksjonelt."
+        ],
+        "risikoer": [
+          "Aktiv lekkasje gjennom skadet beslag gir direkte risiko for råteskader i takkonstruksjon, bjelkelag og isolasjon.",
+          "Vanninntrengning ved pipe eller gjennomføring kan gi skjulte skader som utvikler seg over tid uten synlige tegn innvendig.",
+          "Vedvarende lekkasje kan i verste fall påvirke bærekonstruksjonens integritet i området rundt gjennomføringen."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne utskifting av berørte beslag og utbedring av eventuelle fukt- og råteskader i underliggende konstruksjon.",
+          "Totalkostnaden avhenger av skadens omfang. Arbeid på tak med pipe kan være kostbart grunnet tilgjengelighet og stillasebehov.",
+          "Inntil utbedring er gjennomført, bør det iverksettes midlertidige tiltak for å begrense vanninntrengning."
+        ],
+        "tiltak": [
+          "Skadet beslag må skiftes ut med nytt beslag utført av kvalifisert blikkenslager. Underliggende konstruksjon kontrolleres for skader.",
+          "Ved pipebeslag bør det sikres korrekt utførelse med klemmelister, overlapp og tetting i henhold til god håndverksskikk.",
+          "Alle fukt- og råteskader i tilstøtende konstruksjon utbedres. Skadet trevirke og isolasjon skiftes ut."
+        ]
+      }
+    },
+    "takkonstruksjon": {
+      "fagtermer": [
+        "taksperrer",
+        "hanebjelke",
+        "takstol",
+        "bæring",
+        "undertaksbord",
+        "undertak",
+        "vindsperre",
+        "lekter",
+        "sløyfe",
+        "møne",
+        "gratsperrer",
+        "forankring",
+        "nedbøyning",
+        "dimensjonering",
+        "ventilasjon"
+      ],
+      "observasjonsmarkorer": {
+        "konstruksjon": [
+          "sperre",
+          "bjelke",
+          "takstol",
+          "bæring",
+          "konstruksjon"
+        ],
+        "nedboyning": [
+          "nedbøyning",
+          "svikt",
+          "bukning",
+          "skjevhet",
+          "gjennomhenging"
+        ],
+        "fukt": [
+          "fukt",
+          "kondens",
+          "mugg",
+          "sopp",
+          "misfarging"
+        ],
+        "ventilasjon": [
+          "ventilasjon",
+          "lufting",
+          "kondens",
+          "tett",
+          "utilstrekkelig"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "trevirke"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Takkonstruksjonen viser tegn til noe nedbøyning av sperrer, som kan skyldes aldersrelatert kryp i trevirket eller høy belastning.",
+          "Det er observert tegn til kondens eller fukt på underside av undertak, som tyder på utilstrekkelig ventilasjon i takkonstruksjonen.",
+          "Takkonstruksjonens forankring eller avstivning viser stedvis svakheter, uten at det utgjør en akutt konstruktiv svikt."
+        ],
+        "risikoer": [
+          "Nedbøyning i sperrer som overskrider normalt kryp kan indikere underdimensjonering eller økt belastning ut over det konstruksjonen er beregnet for.",
+          "Utilstrekkelig ventilasjon i takkonstruksjonen øker risikoen for kondens og fuktrelaterte skader på trevirke og isolasjon.",
+          "Svakheter i forankring kan gi redusert motstand mot vindbelastning over tid."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til nærmere vurdering av takkonstruksjonens tilstand, spesielt ved synlig nedbøyning.",
+          "Utbedring av ventilasjon i takrom kan innebære montering av lufteåpninger eller kontroll av eksisterende ventilasjonsspalter.",
+          "Dersom konstruktive svakheter bekreftes, kan forsterkning av sperrer eller bjelker bli nødvendig."
+        ],
+        "tiltak": [
+          "Takkonstruksjonen bør vurderes nærmere av fagkyndig dersom nedbøyningen overskrider det som er normalt for konstruksjonstypen og spennet.",
+          "Ventilasjon i takkonstruksjonen bør kontrolleres og eventuelt utbedres for å redusere fuktbelastningen.",
+          "Forankringer og avstivning bør inspiseres og utbedres der det er registrert svakheter."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist vesentlig nedbøyning eller svikt i taksperrer som indikerer overbelastning eller konstruktiv svakhet.",
+          "Takkonstruksjonen har synlige fukt- eller soppskader som har svekket trevirkets bæreevne.",
+          "Det er registrert manglende eller skadet undertak, slik at takkonstruksjonen er eksponert for inndriving av vann og snø."
+        ],
+        "risikoer": [
+          "Vesentlig svikt i taksperrer representerer en risiko for konstruksjonssvikt som kan påvirke hele takets bæreevne.",
+          "Soppskader i bærende trevirke gir varig redusert styrke, og skadene kan ha spredd seg til tilstøtende konstruksjonselementer.",
+          "Manglende undertak gir direkte eksponering av isolasjon og konstruksjon for vær, med risiko for omfattende følgeskader."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til utbedring eller forsterkning av takkonstruksjonen.",
+          "Omfanget av skader kan være større enn det som er synlig, og bør avklares grundig av fagkyndig.",
+          "Uten utbedring er det risiko for at takets bæreevne svekkes ytterligere, spesielt ved snølast."
+        ],
+        "tiltak": [
+          "Det anbefales at fagkyndig foretar en grundig vurdering av takkonstruksjonens bæreevne, inkludert kontroll av sperrer, bjelker og forankringer.",
+          "Skadet trevirke bør skiftes eller forsterkes. Ved soppskader bør angrepet trevirke fjernes og erstattes.",
+          "Undertak bør utbedres eller etableres der det mangler, for å beskytte konstruksjonen mot inndriving."
+        ]
+      }
+    }
+  },
+  "rom_under_terreng": {
+    "fuktproblematikk": {
+      "fagtermer": [
+        "fukt",
+        "fuktinntrengning",
+        "kondens",
+        "kapillærfukt",
+        "fuktmåling",
+        "relativ fuktighet",
+        "fuktindikasjon",
+        "saltutslag",
+        "kalkutslag",
+        "misfarging",
+        "muggsopp",
+        "soppvekst",
+        "råte",
+        "inneklima",
+        "ventilasjon",
+        "grunnfukt",
+        "vanntrykk",
+        "dampsperre",
+        "fuktsperre"
+      ],
+      "observasjonsmarkorer": {
+        "fukt": [
+          "fukt",
+          "fuktig",
+          "vått",
+          "fuktmerke",
+          "fuktflekk",
+          "fuktmåling"
+        ],
+        "sopp": [
+          "mugg",
+          "sopp",
+          "soppvekst",
+          "muggsopp",
+          "svertesopp",
+          "misfarging"
+        ],
+        "salt": [
+          "saltutslag",
+          "kalkutslag",
+          "utfelling",
+          "hvitt belegg",
+          "krystaller"
+        ],
+        "lukt": [
+          "lukt",
+          "mugglukt",
+          "kjellerlukt",
+          "fuktig luft",
+          "innestengt"
+        ],
+        "maaling": [
+          "måling",
+          "fuktmåling",
+          "indikasjon",
+          "prosent",
+          "%",
+          "fuktindikator"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Det er registrert forhøyede fuktverdier ved måling på vegger eller gulv i rom under terreng, uten at det er påvist aktiv vanninntrenging.",
+          "Sporadisk saltutslag eller kalkutslag er observert på innvendig grunnmur, noe som indikerer fuktgjennomgang i konstruksjonen.",
+          "Det er registrert fuktlukt eller innestengt luft i rom under terreng, som tyder på utilstrekkelig ventilasjon og forhøyet fuktnivå."
+        ],
+        "risikoer": [
+          "Forhøyet fuktnivå i rom under terreng kan over tid føre til soppvekst i skjulte konstruksjoner som isolasjon og trebjelkelag.",
+          "Vedvarende kapillærfukt gjennom grunnmur belaster innvendig kledning og kan gi gradvis nedbrytning av materialer.",
+          "Utilstrekkelig ventilasjon i kombinasjon med forhøyet fukt gir økt risiko for inneklimautfordringer."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til utbedring av fuktforhold, som kan inkludere forbedret ventilasjon, fuktsperre eller oppgradering av drenering.",
+          "Omfanget avhenger av fuktens kilde og grad. Enklere tiltak som ventilasjonsforbedring er rimelig, mens dreneringsarbeid er kostbart.",
+          "Det anbefales å kartlegge fuktens kilde nærmere for å avklare riktig utbedringsmetode."
+        ],
+        "tiltak": [
+          "Fuktkilde bør kartlegges nærmere — om det er kapillærfukt, kondens eller lekkasje. Fuktmåling over tid kan avklare mønsteret.",
+          "Ventilasjon i rommet bør forbedres for å redusere kondensproblematikk. Vurder mekanisk avtrekk dersom naturlig ventilasjon er utilstrekkelig.",
+          "Dersom fuktgjennomgang er knyttet til manglende fuktsperre, bør innvendig fuktsikring eller utvendig drenering vurderes."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv fuktinntrengning i rom under terreng, med synlige vannskader, soppvekst eller stående vann.",
+          "Fuktmåling viser verdier som indikerer pågående fuktgjennomgang gjennom grunnmur eller gulv, med skade på innvendig kledning.",
+          "Omfattende mugg- eller soppvekst er registrert på vegger, tak eller bjelkelag i rom under terreng."
+        ],
+        "risikoer": [
+          "Aktiv fuktinntrengning med soppvekst gir direkte risiko for strukturelle skader på bjelkelag og bærende konstruksjoner.",
+          "Muggsopp i rom under terreng kan gi alvorlige inneklimautfordringer og helserisiko for beboere.",
+          "Vedvarende fukt uten utbedring vil gi akselererende skade i konstruksjonen og stadig økende utbedringskostnad."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til utbedring av fuktproblemer, sanering av sopp og eventuell reparasjon av konstruksjonsskader.",
+          "Utbedring kan inkludere ny drenering, fuktsikring, utskifting av skadet kledning og isolasjon, samt soppsanering.",
+          "Rom under terreng bør ikke brukes som oppholdsrom før fuktforhold er utbedret og dokumentert tilfredsstillende."
+        ],
+        "tiltak": [
+          "Fuktkilden må identifiseres og utbedres. Dette kan kreve utvendig graving med ny drenering og fuktsikring av grunnmur.",
+          "All synlig soppvekst må saneres av kvalifisert firma. Skadet kledning, isolasjon og eventuelt trevirke skiftes ut.",
+          "Etter utbedring bør det gjennomføres kontrollmåling over tid for å verifisere at fuktproblemet er løst."
+        ]
+      }
+    },
+    "vegger": {
+      "fagtermer": [
+        "grunnmursvegg",
+        "betongvegg",
+        "lecavegg",
+        "Leca",
+        "innvendig kledning",
+        "isolering",
+        "dampsperre",
+        "pusskader",
+        "avflassing",
+        "sprekker",
+        "riss",
+        "bærevegg",
+        "lettklinkerblokk",
+        "mur",
+        "støp",
+        "fuktgjennomslag",
+        "saltutfelling",
+        "kjellervegg"
+      ],
+      "observasjonsmarkorer": {
+        "sprekk": [
+          "sprekk",
+          "riss",
+          "sprekkdannelse",
+          "setningsskade",
+          "brudd"
+        ],
+        "fukt": [
+          "fukt",
+          "fuktig",
+          "vått",
+          "fuktmerke",
+          "saltutslag",
+          "kalkutslag",
+          "misfarging"
+        ],
+        "puss": [
+          "puss",
+          "avflassing",
+          "avskalling",
+          "løs puss",
+          "nedfall"
+        ],
+        "kledning": [
+          "kledning",
+          "panel",
+          "gips",
+          "plater",
+          "isolering",
+          "dampsperre"
+        ],
+        "konstruksjon": [
+          "betong",
+          "leca",
+          "mur",
+          "støp",
+          "blokk",
+          "bærevegg"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Det er observert spredte riss eller sprekker i grunnmursvegg under terreng, uten tegn til aktiv fuktinntrengning gjennom sprekkene.",
+          "Innvendig puss på kjellervegger har begynnende avflassing eller misfarging, noe som indikerer fuktbelastning over tid.",
+          "Innvendig kledning på vegg under terreng har tegn til fuktpåvirkning, som bølging i plater eller misfarging i nedkant."
+        ],
+        "risikoer": [
+          "Riss i grunnmursvegg kan over tid utvikle seg og gi vanninntrengning, særlig ved økt vanntrykk fra terrengsiden.",
+          "Fuktbelastet puss eller kledning indikerer at fukt vandrer gjennom konstruksjonen, noe som kan skade isolasjon og trevirke bak kledningen.",
+          "Uten utbedring kan fuktbelastningen øke og gi grobunn for soppvekst i skjulte konstruksjoner."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til utbedring av riss og eventuelt fornying av innvendig puss eller kledning på berørte veggpartier.",
+          "Dersom fuktproblematikk fra terrengsiden er årsaken, kan det bli nødvendig med utvendig tetting eller dreneringstiltak.",
+          "Omfanget bør kartlegges nærmere, da skjulte skader kan øke kostnaden utover det som er synlig."
+        ],
+        "tiltak": [
+          "Riss i grunnmursvegg bør injiseres eller tettes med egnet materiale. Større riss bør vurderes av konstruksjonsingeniør.",
+          "Innvendig kledning med fuktskade bør åpnes for å kontrollere tilstand på isolasjon, dampsperre og bærende konstruksjon bak.",
+          "Fuktkilden bør kartlegges — om det er kapillærfukt, kondensasjon eller lekkasje gjennom konstruksjonen."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist gjennomgående sprekker i grunnmursvegg med aktiv fuktinntrengning og synlige vannskader innvendig.",
+          "Innvendig kledning på vegger under terreng er fuktskadet med soppvekst, og det er registrert fukt i bærende konstruksjon bak.",
+          "Grunnmursveggen har alvorlige setningsskader eller strukturelle sprekker som kan påvirke konstruksjonens bæreevne."
+        ],
+        "risikoer": [
+          "Gjennomgående sprekker med fuktinntrengning gir direkte risiko for skade på bjelkelag, bærende vegger og innvendig isolasjon.",
+          "Soppvekst bak innvendig kledning medfører inneklimarisiko og kan gi helseutfordringer for beboere.",
+          "Strukturelle sprekker i bærevegg kan i ytterste konsekvens påvirke byggets bæreevne og krever ingeniørvurdering."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til utbedring av veggkonstruksjon, inkludert mulig utvendig graving og tetting.",
+          "Innvendig kledning med soppskade må rives og saneres. Ny kledning etableres etter at fuktproblematikken er løst.",
+          "Ved strukturelle skader kan det være behov for forsterkning av konstruksjonen, noe som øker kostnaden vesentlig."
+        ],
+        "tiltak": [
+          "Sprekker med aktiv fuktinntrengning krever utvendig tetting og eventuelt forsterkning. Dreneringsforholdene må kontrolleres.",
+          "All soppinfisert kledning og isolasjon må fjernes og saneres av kvalifisert firma. Ny kledning monteres etter utbedring.",
+          "Ved strukturelle sprekker anbefales vurdering av konstruksjonsingeniør for å avklare behov for forsterkning."
+        ]
+      }
+    },
+    "gulv": {
+      "fagtermer": [
+        "betonggulv",
+        "støp",
+        "gulv på grunn",
+        "kapillærbrytende lag",
+        "radonsperre",
+        "membran",
+        "overflatebehandling",
+        "avrettingsmasse",
+        "sluk",
+        "fall",
+        "riss",
+        "setning",
+        "fuktmåling",
+        "relativ fuktighet",
+        "dampsperre"
+      ],
+      "observasjonsmarkorer": {
+        "fukt": [
+          "fukt",
+          "vått",
+          "fuktig",
+          "misfarging",
+          "saltutslag"
+        ],
+        "sprekk": [
+          "sprekk",
+          "riss",
+          "oppsprekking",
+          "brudd",
+          "setning"
+        ],
+        "overflate": [
+          "maling",
+          "belegg",
+          "flassing",
+          "bobler",
+          "avskalling"
+        ],
+        "konstruksjon": [
+          "betong",
+          "støp",
+          "gulv",
+          "plate",
+          "grunn"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "byggeår"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Gulv på grunn viser tegn til fuktgjennomslag med misfarging eller saltutslag på overflaten, noe som tyder på kapillær fukttransport gjennom betongen.",
+          "Det er observert mindre riss eller sprekker i betonggulvet som kan relateres til svinnriss eller begynnende setninger.",
+          "Overflatebehandling på gulv under terreng har stedvis avskalling eller blemmer, som er en typisk indikasjon på fuktbelastning fra grunnen."
+        ],
+        "risikoer": [
+          "Fuktgjennomslag gjennom gulv på grunn kan over tid gi fuktskader på gulvbelegg og innredning, og øke risikoen for muggsoppvekst.",
+          "Riss i betonggulv kan utvikle seg dersom de skyldes aktive setninger, og kan gi ujevnheter og skader på overliggende belegg.",
+          "Manglende eller defekt dampsperre under gulv gir vedvarende fuktbelastning som er vanskelig å utbedre uten omfattende tiltak."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til fuktundersøkelse og eventuell etablering av fuktsikring dersom det skal legges nytt gulvbelegg.",
+          "Dersom dampsperre mangler under gulv, kan utbedring kreve oppbryting av gulv eller etablering av sekundær fuktsikring.",
+          "Kostnaden avhenger av om det er tilstrekkelig med overflatebehandling eller om konstruktive tiltak er nødvendig."
+        ],
+        "tiltak": [
+          "Det anbefales fuktmåling i betonggulvet for å avklare nivå på fuktbelastningen. Relativ fuktighet over 85 % tilsier behov for fuktsikring før legging av tett belegg.",
+          "Riss bør overvåkes for å avklare om de er aktive. Stabile svinnriss kan tettes med egnet fyllmasse.",
+          "Ved behov for nytt gulvbelegg bør det vurderes å etablere dampsperre eller benytte fukttolerante materialer."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist omfattende fuktgjennomslag gjennom gulv på grunn, med synlig stående vann eller gjennomgående fuktig betong.",
+          "Betonggulvet har vesentlige setninger eller oppsprekking som indikerer svikt i bærelag eller grunnforhold.",
+          "Det er registrert tydelig muggsoppvekst eller råteskader på materialer i kontakt med gulv på grunn."
+        ],
+        "risikoer": [
+          "Stående vann på gulv i rom under terreng indikerer svikt i drenering eller fuktsikring, med risiko for omfattende fuktskader.",
+          "Vesentlige setninger i gulv på grunn kan indikere problemer med grunnforholdene som også kan påvirke fundamenter.",
+          "Muggsoppvekst som følge av høy fuktbelastning påvirker inneklima og kan utgjøre en helserisiko."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til utredning og utbedring av fuktproblemene, som kan inkludere ny drenering, fuktsikring og gulvkonstruksjon.",
+          "Omfanget av skadene kan være større enn det som er synlig, og bør avklares med fuktundersøkelse.",
+          "Innredning og lagrede gjenstander i berørte rom kan ha tatt skade."
+        ],
+        "tiltak": [
+          "Det anbefales grundig fuktundersøkelse av fagkyndig, inkludert vurdering av dreneringsforhold og kapillærbrytende lag.",
+          "Ved stående vann bør dreneringssystemet inspiseres og eventuelt utbedres. Gulvkonstruksjonen kan kreve oppbryting og ombygging med korrekt fuktsikring.",
+          "Alle materialer med muggsopp- eller råteskader bør fjernes. Rommet bør ikke brukes til varig opphold uten at fuktforholdene er utbedret."
+        ]
+      }
+    },
+    "dreneringsrelaterte_forhold": {
+      "fagtermer": [
+        "drenering",
+        "drensrør",
+        "kum",
+        "inspeksjonskum",
+        "tilbakeslagsventil",
+        "pumpekum",
+        "drensgrøft",
+        "filtermasser",
+        "filterduk",
+        "utløp",
+        "kapasitet",
+        "gjenslamming",
+        "rotinntrengning",
+        "overvannsystem"
+      ],
+      "observasjonsmarkorer": {
+        "drenering": [
+          "drener",
+          "drensrør",
+          "grøft",
+          "kum",
+          "drensystem",
+          "vanntrykk",
+          "grunnmur"
+        ],
+        "fukt": [
+          "fukt",
+          "vått",
+          "vannansamling",
+          "oversvømmelse",
+          "innsig"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "levetid",
+          "eldre"
+        ],
+        "tilstand": [
+          "gjenslammet",
+          "tett",
+          "ødelagt",
+          "sunket",
+          "forskjøvet"
+        ],
+        "pumpe": [
+          "pumpe",
+          "pumpekum",
+          "tilbakeslag",
+          "ventil",
+          "overløp"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Dreneringen har ukjent alder eller tilstand, og det foreligger ikke dokumentasjon på inspeksjon eller vedlikehold.",
+          "Det er observert sporadisk fuktighet langs grunnmur innvendig etter kraftig nedbør, som kan indikere redusert dreneringskapasitet.",
+          "Inspeksjonskum viser tegn til gjenslamming, noe som tyder på at dreneringssystemet har redusert kapasitet."
+        ],
+        "risikoer": [
+          "Drenering med ukjent tilstand representerer en usikkerhet, da svikt kan gi plutselig vanninntrenging i rom under terreng.",
+          "Redusert dreneringskapasitet øker fuktbelastningen mot grunnmur og kan over tid føre til fuktskader innvendig.",
+          "Gjenslammet drenering som ikke spyles eller skiftes vil fortsette å forverres med gradvis økende fuktpåkjenning."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne at drenering kan kreve spyling, reparasjon eller utskifting avhengig av faktisk tilstand og alder.",
+          "Inspeksjon av drenering med kamera anbefales for å avklare faktisk tilstand uten behov for oppgraving.",
+          "Kostnaden for dreneringsarbeid varierer betydelig avhengig av omfang — fra spyling til full omlegging."
+        ],
+        "tiltak": [
+          "Det anbefales kamerainspeksjon av drensrør for å kartlegge tilstand og eventuelt behov for spyling eller utskifting.",
+          "Inspeksjonskummer bør renses og kontrolleres for funksjonell vanngjennomstrømming.",
+          "Dersom dreneringen er eldre enn 20-30 år og det ikke foreligger dokumentasjon på tilstand, bør det budsjetteres for utskifting."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist vesentlig svikt i dreneringssystemet med aktiv vanninntrenging i rom under terreng.",
+          "Drensrør er gjenslammet, kollapset eller har rotinntrengning som gir fullstendig blokkering av vanngjennomstrømming.",
+          "Pumpekum fungerer ikke tilfredsstillende, og det er registrert at vann ikke pumpes bort i tilstrekkelig grad."
+        ],
+        "risikoer": [
+          "Svikt i drenering gir direkte vanninntrenging som kan skade konstruksjon, isolasjon og inventar i rom under terreng.",
+          "Vedvarende høy fuktbelastning mot grunnmur og fundamenter akselererer nedbrytning og kan påvirke bæreevne over tid.",
+          "Uten fungerende drenering er rom under terreng utsatt for gjentatte vannskader ved nedbørsepisoder."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til omlegging av dreneringssystemet, som normalt innebærer graving rundt grunnmur.",
+          "Omlegging av drenering er et omfattende tiltak som ofte kombineres med ny grunnmursplast og utbedring av eventuelle fuktskader innvendig.",
+          "Inntil dreneringen er utbedret bør det utvises forsiktighet med innredning og lagring av verdier i rom under terreng."
+        ],
+        "tiltak": [
+          "Dreneringssystemet bør legges om med nye drensrør, filtermasser og filterduk. Arbeidet bør utføres av fagkyndig entreprenør.",
+          "Samtidig bør grunnmurens fuktsikring vurderes og eventuelt fornyes. Inspeksjonskummer bør etableres for fremtidig vedlikehold.",
+          "Ved pumpekum bør pumpekapasitet og tilbakeslagsventil kontrolleres og eventuelt oppgraderes."
+        ]
+      }
+    }
+  },
+  "yttervegger_og_fasader": {
+    "fasader_inkl_kledning": {
+      "fagtermer": [
+        "kledning",
+        "trekledning",
+        "bordkledning",
+        "panelkledning",
+        "murpuss",
+        "tegl",
+        "fasadeplater",
+        "vindtetting",
+        "luftespalte",
+        "bunnsvill",
+        "malingfilm",
+        "oljemaling",
+        "overflatebehandling",
+        "maling",
+        "beis",
+        "dekkbeis",
+        "fuktopptak",
+        "rånende kledning",
+        "knekt bord"
+      ],
+      "observasjonsmarkorer": {
+        "kledning": [
+          "kledning",
+          "bord",
+          "panel",
+          "fasade",
+          "treverk",
+          "tre"
+        ],
+        "maling": [
+          "maling",
+          "beis",
+          "avflassing",
+          "flassing",
+          "misfarging",
+          "krakkelering"
+        ],
+        "raate": [
+          "råte",
+          "råteskade",
+          "nedbrytning",
+          "morkent",
+          "svamp",
+          "myk"
+        ],
+        "fukt": [
+          "fukt",
+          "fuktig",
+          "fuktopptak",
+          "vått",
+          "mørkt",
+          "oppfukting"
+        ],
+        "konstruksjon": [
+          "luftespalte",
+          "vindtetting",
+          "vindsperre",
+          "isolasjon",
+          "bunnsvill"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Overflatebehandling på trekledning har begynnende avflassing eller krakkelering, slik at treverket stedvis er ubeskyttet mot fukt.",
+          "Det er observert enkeltbord med begynnende råteskade, begrenset til utsatte partier som bunnsvill, rundt vinduer eller ved terskel.",
+          "Fasadekledningen er av eldre dato med synlig aldersslitasje, men konstruktiv integritet er i hovedsak bevart."
+        ],
+        "risikoer": [
+          "Ubeskyttet trevirke tar opp fukt, noe som over tid fører til råte og soppangrep, særlig ved horisontale flater og i endeved.",
+          "Begynnende råteskade kan spre seg til friskt trevirke og i verste fall påvirke bærestruktur bak kledningen.",
+          "Mangelfull overflatebehandling fremskynder nedbrytningen og kan gi behov for full utskifting av kledning fremfor vedlikehold."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til skraping, grunning og ny overflatebehandling av fasaden, samt utskifting av råteskadet bord.",
+          "Omfanget avhenger av hvor utbredt skadene er. Vedlikehold av fasade er normalt løpende, men forsømt vedlikehold øker kostnaden.",
+          "Dersom vindtetting bak kledningen er skadet, kan kostnaden øke vesentlig."
+        ],
+        "tiltak": [
+          "Løs og flassende maling bør skrapes og overflaten grunnes og males på nytt. Bord med råteskade skiftes ut.",
+          "Ved utskifting av enkeltbord bør underliggende vindtetting kontrolleres. Skadet vindtetting utbedres.",
+          "Det anbefales systematisk fasadevedlikehold med overflatebehandling hvert 5-8 år, avhengig av eksponering."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist omfattende råteskade i fasadekledning, med morkent trevirke over store partier og svekket innfesting av bord.",
+          "Overflatebehandlingen har sviktet fullstendig på en eller flere fasader, med gjennomgående fuktopptak og råte i kledningen.",
+          "Det er registrert skade på vindtetting bak kledningen, slik at vann og fukt kan trenge inn i veggkonstruksjonen."
+        ],
+        "risikoer": [
+          "Omfattende råte i kledning medfører risiko for at fukt trenger inn i bærende konstruksjon bak, med fare for skade på isolasjon og bindingsverk.",
+          "Skadet vindtetting gir direkte risiko for fuktinntrengning i veggkonstruksjonen og kan føre til soppvekst og råte i skjulte deler.",
+          "Svekket innfesting av kledning gir i tillegg risiko for at bord kan løsne ved sterk vind."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne utskifting av kledning på berørte fasader, med sannsynlig behov for samtidig utbedring av vindtetting.",
+          "Dersom bærekonstruksjon bak er skadet, øker kostnaden vesentlig. Skjulte skader avdekkes først ved riving av kledningen.",
+          "Fasadeutskifting er en vesentlig vedlikeholdspost og bør hensyntas i kjøpsvurderingen."
+        ],
+        "tiltak": [
+          "Fasadekledning med utbredt råteskade bør skiftes ut i sin helhet på berørte partier. Samtidig kontrolleres vindtetting og underlag.",
+          "Bærekonstruksjon bak kledningen inspekteres for fukt- og soppskader. Skadet trevirke og isolasjon skiftes ut.",
+          "Ny kledning monteres med korrekt luftespalte, bunntilslutning og beslag. Overflatebehandles før montering eller snarest etter."
+        ]
+      }
+    },
+    "vindskier_og_vannbord": {
+      "fagtermer": [
+        "vindski",
+        "vannbord",
+        "bordkledning",
+        "sløyfe",
+        "undertak",
+        "taktro",
+        "overgang",
+        "gavl",
+        "belistning",
+        "endelask",
+        "malingfilm",
+        "impregnering",
+        "råte",
+        "fuktinntrengning",
+        "beslagdekning"
+      ],
+      "observasjonsmarkorer": {
+        "raate": [
+          "råte",
+          "morken",
+          "myk",
+          "nedbrutt",
+          "soppangrep"
+        ],
+        "maling": [
+          "maling",
+          "flassing",
+          "avskalling",
+          "blærer",
+          "vedlikehold"
+        ],
+        "fukt": [
+          "fukt",
+          "misfarging",
+          "vannmerke",
+          "svelling",
+          "mørkt"
+        ],
+        "konstruksjon": [
+          "vindski",
+          "vannbord",
+          "bord",
+          "list",
+          "beslag"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "slitasje",
+          "eldre"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Vindskier og/eller vannbord viser tegn til overflateslitasje med stedvis flassing av maling og begynnende fuktopptak.",
+          "Det er observert mangelfullt vedlikehold av vindskier, med avflasset maling og steder der trevirket er eksponert for vær og vind.",
+          "Vannbord har stedvis redusert funksjon grunnet sprekker eller dårlig tilslutning mot kledning, slik at vann kan trenge inn bak."
+        ],
+        "risikoer": [
+          "Vedlikeholdsetterslep på vindskier og vannbord øker risikoen for fuktinntrengning i underliggende konstruksjon og kan føre til råteutvikling.",
+          "Eksponert trevirke på vindskier tar opp fukt raskere, og uten vedlikehold vil nedbrytningen akselerere.",
+          "Svekket vannbord gir redusert beskyttelse av overgangen mellom tak og vegg, som er et kritisk punkt for vannavledning."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til overflatebehandling og utbedring av vindskier og vannbord innen kort tid.",
+          "Dersom vedlikeholdet utsettes ytterligere, kan det bli nødvendig med utskifting i stedet for overflatebehandling.",
+          "Uten tiltak øker risikoen for at fukt når underliggende konstruksjoner, noe som gir vesentlig høyere utbedringskostnad."
+        ],
+        "tiltak": [
+          "Vindskier og vannbord bør skrapes, grunnes og males med egnet utvendig maling. Løst trevirke og åpne fuger bør tettes før overflatebehandling.",
+          "Vannbord med sprekker eller dårlig tilslutning bør utbedres eller skiftes. Overgangen mellom vannbord og kledning bør sikres med korrekt utforming.",
+          "Det anbefales å gjennomføre vedlikehold av alle vindskier og vannbord som del av et samlet utvendig vedlikeholdsprosjekt."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Vindskier har tydelige råteskader med mykt, nedbrutt trevirke som har mistet bæreevne og beskyttende funksjon.",
+          "Vannbord er gjennområtnet eller mangler på deler av fasaden, slik at vann ledes direkte inn i veggkonstruksjonen.",
+          "Det er påvist omfattende fuktskader i overgangen mellom vindski og takkonstruksjon, med spredning til underliggende bygningsdeler."
+        ],
+        "risikoer": [
+          "Råtne vindskier gir ingen beskyttelse av undertaket og gavlkonstruksjonen, med risiko for vanninntrenging i takkonstruksjonen.",
+          "Manglende eller gjennområtne vannbord utsetter veggkonstruksjonen for direkte vannbelastning, som kan gi omfattende skjulte fuktskader.",
+          "Fuktskader i overgangen mellom vindski og tak kan ha spredd seg til bærende konstruksjoner som ikke er synlige ved vanlig inspeksjon."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utskifting av vindskier og vannbord, samt undersøkelse og eventuell utbedring av underliggende konstruksjoner.",
+          "Omfanget av skadene kan først avklares fullstendig etter demontering, og faktisk kostnad kan bli høyere enn det synlige skadebildet tilsier.",
+          "Uten utbedring vil fuktskadene fortsette å utvikle seg og kan påvirke takkonstruksjon og bærende elementer."
+        ],
+        "tiltak": [
+          "Alle skadet vindskier og vannbord må skiftes. Underliggende konstruksjon bør samtidig inspiseres for fukt- og råteskader.",
+          "Ved utskifting bør det sikres korrekt utforming av vannbord og overganger, med tilstrekkelig avdrypp og lufting bak kledning.",
+          "Det anbefales å la fagkyndig vurdere om skadene har spredd seg til undertak, sperrer eller annen bærende konstruksjon."
+        ]
+      }
+    },
+    "balkonger_og_terrasser": {
+      "fagtermer": [
+        "balkong",
+        "terrasse",
+        "rekkverk",
+        "bærekonstruksjon",
+        "membran",
+        "sluk",
+        "fall",
+        "overflate",
+        "betong",
+        "stål",
+        "trevirke",
+        "avdrypp",
+        "oppkant",
+        "vannbortledning",
+        "innfesting"
+      ],
+      "observasjonsmarkorer": {
+        "konstruksjon": [
+          "balkong",
+          "terrasse",
+          "bæring",
+          "betong",
+          "stål",
+          "trevirke"
+        ],
+        "rekkverk": [
+          "rekkverk",
+          "gelender",
+          "stolpe",
+          "håndlist",
+          "feste"
+        ],
+        "membran": [
+          "membran",
+          "belegg",
+          "tetting",
+          "overflate",
+          "sluk"
+        ],
+        "fukt": [
+          "fukt",
+          "vannmerke",
+          "misfarging",
+          "avskalling",
+          "lekkasje"
+        ],
+        "sprekk": [
+          "sprekk",
+          "riss",
+          "deformasjon",
+          "setning",
+          "nedbøyning"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "slitasje"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Det er observert tegn til aldersrelatert slitasje på balkong-/terrassekonstruksjonen, med stedvis overflatesvekkelse eller begynnende fuktpåvirkning.",
+          "Membran eller belegg på balkong/terrasse viser tegn til slitasje eller redusert funksjon, med enkelte sprekker eller løsninger i overflaten.",
+          "Rekkverk viser tegn til slitasje ved innfesting eller overflatebehandling, uten at det er påvist vesentlig svekkelse av stabiliteten."
+        ],
+        "risikoer": [
+          "Slitasje på balkong-/terrassekonstruksjonen kan over tid gi økt fuktbelastning på underliggende konstruksjon dersom tetthet ikke opprettholdes.",
+          "Redusert funksjon i membran eller belegg kan føre til fuktinntrengning som over tid påvirker bærekonstruksjonen.",
+          "Observerte forhold bør vurderes nærmere for å avklare om det foreligger behov for utbedring."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til vedlikehold eller utbedring av balkong/terrasse. Omfanget bør avklares ved nærmere undersøkelse.",
+          "Dersom utbedring av membran eller overflate er nødvendig, kan kostnaden variere vesentlig avhengig av konstruksjonstype og tilgjengelighet.",
+          "Uten vedlikehold kan følgeskader på underliggende konstruksjon medføre økte kostnader over tid."
+        ],
+        "tiltak": [
+          "Det anbefales nærmere vurdering av balkong-/terrassekonstruksjonen av fagkyndig for å avklare tilstand og eventuelt utbedringsbehov.",
+          "Membran eller belegg med redusert funksjon bør vurderes utbedret eller fornyet. Omfanget bør kartlegges av fagkyndig.",
+          "Rekkverk bør kontrolleres for stabilitet og innfesting. Eventuelle svakheter bør utbedres."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist vesentlige skader eller svekkelser i balkong-/terrassekonstruksjonen som krever nærmere undersøkelse av fagkyndig.",
+          "Membran eller tetting har sviktet med påvist fuktgjennomgang til underliggende konstruksjon.",
+          "Det er observert deformasjon, sprekker eller synlig svekkelse i bærekonstruksjonen som kan indikere redusert kapasitet."
+        ],
+        "risikoer": [
+          "Vesentlige skader i balkong-/terrassekonstruksjonen kan representere en risiko for underliggende konstruksjon og bør vurderes av fagkyndig.",
+          "Fuktgjennomgang til bærekonstruksjon kan ha gitt skjulte skader som først avdekkes ved nærmere undersøkelse.",
+          "Observert svekkelse i konstruksjonen bør avklares med hensyn til sikkerhet og bæreevne."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til fagkyndig vurdering og sannsynlig utbedring. Omfanget kan først avklares etter nærmere undersøkelse.",
+          "Utbedring av balkong-/terrassekonstruksjon kan være kostnadskrevende, spesielt dersom bærekonstruksjonen er berørt.",
+          "Uten utbedring kan forholdene forverres og medføre økte utbedringskostnader."
+        ],
+        "tiltak": [
+          "Det anbefales at fagkyndig foretar en grundig vurdering av konstruksjonens tilstand, inkludert bæreevne og fuktsikring.",
+          "Membran og tetting bør utbedres etter at underliggende konstruksjon er vurdert og eventuelle skader er kartlagt.",
+          "Rekkverk og innfesting bør kontrolleres av fagkyndig med hensyn til sikkerhet."
+        ]
+      }
+    }
+  },
+  "tekniske_installasjoner": {
+    "elektrisk_anlegg": {
+      "fagtermer": [
+        "sikringsskap",
+        "automatsikring",
+        "skrusikring",
+        "jordfeilbryter",
+        "jordfeilvern",
+        "hovedsikring",
+        "kursoversikt",
+        "el-tilsyn",
+        "boliginstallasjon",
+        "NEK 400",
+        "samsvarserklæring",
+        "elektriker",
+        "installasjon",
+        "kabelalder",
+        "aluminiumskabel",
+        "varmegang",
+        "brannfare",
+        "IP-klasse",
+        "stikkontakt"
+      ],
+      "observasjonsmarkorer": {
+        "sikring": [
+          "sikring",
+          "sikringsskap",
+          "automatsikring",
+          "skrusikring",
+          "kurs"
+        ],
+        "jordfeil": [
+          "jordfeilbryter",
+          "jordfeilvern",
+          "jordfeil",
+          "JFBR"
+        ],
+        "dokumentasjon": [
+          "samsvarserklæring",
+          "samsvar",
+          "dokumentasjon",
+          "el-tilsyn",
+          "kontroll"
+        ],
+        "installasjon": [
+          "installasjon",
+          "kabling",
+          "kabel",
+          "ledning",
+          "stikkontakt",
+          "kobling"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "eldre",
+          "ikke oppgradert"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Sikringsskapet har eldre skrusikringer uten kombiautomater, noe som gir begrenset kortslutningsvern og ingen jordfeilbeskyttelse per kurs.",
+          "Det foreligger ikke samsvarserklæring for utførte elektriske arbeider, og det er usikkerhet knyttet til deler av installasjonen.",
+          "Det er observert eldre type installasjonsmateriell eller kabling som ikke tilfredsstiller gjeldende forskrifter, uten at det er påvist konkret fare."
+        ],
+        "risikoer": [
+          "Eldre sikringsskap uten jordfeilbryter på våtromskurser gir økt risiko for strømgjennomgang til personer ved jordfeil.",
+          "Manglende samsvarserklæring betyr at det ikke er dokumentert at installasjonen er forskriftsmessig utført.",
+          "Eldre kabling kan ha redusert isolasjonsevne over tid, med gradvis økt risiko for varmgang og i ytterste fall brann."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til oppgradering av sikringsskap og eventuelt installasjon av jordfeilbryter på påkrevde kurser.",
+          "Kostnad for oppgradering av sikringsskap varierer, men er normalt en moderat investering.",
+          "Det anbefales å få utført en el-kontroll av autorisert installatør for å avklare tilstand og eventuelle pålegg."
+        ],
+        "tiltak": [
+          "Sikringsskapet bør oppgraderes med automatsikringer og jordfeilbryter, minimum på våtrom-, utendørs- og kjøkkenkurser.",
+          "Det bør innhentes samsvarserklæring for eventuelle eldre arbeider som ikke er dokumentert.",
+          "En generell el-kontroll av autorisert elektroinstallatør anbefales for å kartlegge anleggets totale tilstand."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist alvorlige mangler ved det elektriske anlegget, som åpne koblingsbokser, synlige varmemerker eller usikrede koblinger.",
+          "Sikringsskapet har vesentlige mangler med kombinasjon av skrusikringer, manglende jordfeilbeskyttelse og manglende kursoversikt.",
+          "Det er registrert bruk av aluminiumskabel i eldre installasjoner med kjent risiko for varmegang i overganger og koblinger."
+        ],
+        "risikoer": [
+          "Åpne koblingsbokser og usikrede koblinger gir direkte risiko for strømgjennomgang og brann.",
+          "Aluminiumskabel i kombinasjon med kobberkoblinger er en kjent brannårsak på grunn av varmegang i overgangsmotstand.",
+          "Vesentlige mangler i sikringsskap gir utilstrekkelig vern av installasjonen og øker risikoen for både brann og personskade."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til oppgradering av det elektriske anlegget, som kan inkludere nytt sikringsskap, ny kabling og nye kurser.",
+          "Omfanget av nødvendig utbedring bør kartlegges av autorisert installatør. Totalkostnaden avhenger av boligens størrelse og installasjonens tilstand.",
+          "Inntil utbedring er gjennomført, bør bruken av berørte kurser begrenses og overvåkes."
+        ],
+        "tiltak": [
+          "Det elektriske anlegget må gjennomgås og oppgraderes av autorisert elektroinstallatør. Nytt sikringsskap med automatsikringer og jordfeilbrytere bør installeres.",
+          "Aluminiumskabel bør vurderes erstattet med kobberkabel, særlig i kurser med høy belastning og i koblingsoverganger.",
+          "Etter utbedring skal det utstedes samsvarserklæring som dokumenterer at anlegget er forskriftsmessig."
+        ]
+      }
+    },
+    "innvendige_vannror": {
+      "fagtermer": [
+        "vannrør",
+        "kobberrør",
+        "plastrør",
+        "koblinger",
+        "ventil",
+        "stengeventil",
+        "trykk",
+        "vanntrykk",
+        "lekkasje",
+        "korrosjon",
+        "isolasjon",
+        "kondens",
+        "rørføring",
+        "skjøt",
+        "dimensjon"
+      ],
+      "observasjonsmarkorer": {
+        "ror": [
+          "rør",
+          "vannrør",
+          "kobber",
+          "plast",
+          "kobling",
+          "ventil"
+        ],
+        "lekkasje": [
+          "lekkasje",
+          "drypp",
+          "vått",
+          "fukt",
+          "vannmerke"
+        ],
+        "korrosjon": [
+          "korrosjon",
+          "irr",
+          "grønt",
+          "misfarging",
+          "belegg"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "byggeår"
+        ],
+        "funksjon": [
+          "trykk",
+          "kapasitet",
+          "stengeventil",
+          "fungerer",
+          "tett"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Synlige vannrør viser tegn til aldersrelatert slitasje med noe korrosjon eller misfarging ved koblinger.",
+          "Det er observert tegn til kondens eller fuktpåvirkning ved rørgjennomføringer, uten påvist aktiv lekkasje.",
+          "Rørsystemets alder og materialtype tilsier at gjenværende levetid bør vurderes nærmere."
+        ],
+        "risikoer": [
+          "Eldre vannrør kan ha innvendig korrosjon eller svekkede koblinger som øker risikoen for lekkasje over tid.",
+          "Korrosjon ved koblinger som ikke utbedres kan utvikle seg til gjennomgående lekkasje.",
+          "Observerte forhold gir grunnlag for nærmere vurdering av rørsystemets tilstand."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til kontroll og eventuell utskifting av rør og koblinger med synlig slitasje.",
+          "Omfanget av eventuell utskifting bør kartlegges av rørlegger basert på rørsystemets alder og tilstand.",
+          "Lekkasje i trykksatt vannrør kan gi omfattende vannskade, og usikkerhet knyttet til tilstanden bør avklares."
+        ],
+        "tiltak": [
+          "Synlige rør og koblinger med korrosjon eller slitasje bør vurderes av rørlegger.",
+          "Stengeventiler bør kontrolleres for funksjon. Ventiler som ikke lar seg betjene bør skiftes.",
+          "Det anbefales å kartlegge rørsystemets alder og materialtype som grunnlag for videre vedlikeholdsplan."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv lekkasje eller vesentlig korrosjon i vannrørsystemet som krever utbedring.",
+          "Vannrør har synlige skader eller deformasjoner som indikerer vesentlig svekkelse.",
+          "Det er registrert fuktskader i tilstøtende konstruksjon som tilskrives lekkasje fra vannrør."
+        ],
+        "risikoer": [
+          "Aktiv lekkasje i trykksatt vannrør kan gi akutt vannskade med betydelig skadeomfang.",
+          "Vesentlig korrosjon i rørsystemet øker risikoen for plutselig brudd med tilhørende vannskade.",
+          "Fuktskader fra rørlekasje kan ha et større omfang enn det som er synlig, og bør undersøkes nærmere."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utskifting av berørte rør og utbedring av eventuelle fuktskader i tilstøtende konstruksjon.",
+          "Omfanget av skadene bør kartlegges av fagkyndig rørlegger. Skjulte skader kan først avdekkes ved åpning av konstruksjonen.",
+          "Vannrør med vesentlig korrosjon bør skiftes for å forebygge akutt vannskade."
+        ],
+        "tiltak": [
+          "Berørte rør og koblinger bør skiftes av autorisert rørlegger. Tilstøtende konstruksjon bør samtidig undersøkes for fuktskader.",
+          "Ved omfattende korrosjon bør det vurderes samlet utskifting av rørstrekket i stedet for punktreparasjoner.",
+          "Etter utbedring bør systemet trykkprøves for å verifisere tetthet."
+        ]
+      }
+    },
+    "innvendige_avlopsror": {
+      "fagtermer": [
+        "avløpsrør",
+        "avløpsstamme",
+        "vannlås",
+        "grenrør",
+        "lufting",
+        "stakepunkt",
+        "støpejern",
+        "plast",
+        "muffe",
+        "fall",
+        "gjenslamming",
+        "rørinspeksjon",
+        "korrosjon",
+        "tilkobling",
+        "dimensjon"
+      ],
+      "observasjonsmarkorer": {
+        "avlop": [
+          "avløp",
+          "avløpsrør",
+          "stamme",
+          "grenrør",
+          "vannlås"
+        ],
+        "lekkasje": [
+          "lekkasje",
+          "drypp",
+          "fukt",
+          "vannmerke",
+          "vått"
+        ],
+        "lukt": [
+          "lukt",
+          "kloakk",
+          "avløpslukt",
+          "gass",
+          "innestengt"
+        ],
+        "korrosjon": [
+          "korrosjon",
+          "rust",
+          "gjennomrustet",
+          "misfarging",
+          "tæring"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "støpejern",
+          "eldre",
+          "opprinnelig"
+        ],
+        "funksjon": [
+          "tregt",
+          "tett",
+          "gurgel",
+          "tilbakeslag",
+          "overløp"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Synlige avløpsrør viser tegn til aldersrelatert slitasje med overflatekorrosjon eller misfarging.",
+          "Det er registrert sporadisk lukt fra avløpssystemet som kan tyde på svekket tetting eller utilstrekkelig lufting.",
+          "Avløpsrør er av eldre materialtype, og synlige deler viser begynnende slitasje uten gjennomgående skader."
+        ],
+        "risikoer": [
+          "Eldre avløpsrør kan ha innvendig korrosjon og belegg som reduserer kapasiteten over tid.",
+          "Svekket tetting i avløpssystemet kan gi luktgjennomslag og indikerer at vedlikehold er nødvendig.",
+          "Tilstanden på skjulte rør er vanskelig å vurdere visuelt, og rørsystemets faktiske tilstand bør kartlegges nærmere."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til kontroll og eventuelt vedlikehold av avløpssystemet.",
+          "Dersom rørsystemet er av eldre støpejern, bør det vurderes om utskifting er hensiktsmessig basert på alder og observert tilstand.",
+          "Kartlegging av avløpssystemets tilstand, for eksempel med rørinspeksjon, kan gi bedre grunnlag for å vurdere utbedringsbehov."
+        ],
+        "tiltak": [
+          "Det anbefales nærmere vurdering av avløpssystemets tilstand, eventuelt med kamerainspeksjon av skjulte rør.",
+          "Vannlåser og koblinger bør kontrolleres for tetthet. Luktproblemer bør følges opp med kontroll av lufting.",
+          "Synlige rør med tydelig korrosjon bør vurderes skiftet av rørlegger."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv lekkasje, gjennomgående korrosjon eller brudd i avløpssystemet.",
+          "Avløpsrør er vesentlig svekket med gjentatte tilstoppinger som tyder på behov for utskifting.",
+          "Det er registrert fuktskader i tilstøtende konstruksjon som tilskrives svikt i avløpssystemet."
+        ],
+        "risikoer": [
+          "Lekkasje fra avløpsrør gir direkte fuktskade på omgivende konstruksjon og kan gi grobunn for soppvekst.",
+          "Gjennomkorroderte avløpsrør kan gi plutselig brudd med risiko for akutt vannskade og kloakkutslipp.",
+          "Fuktskader fra avløpslekkasje kan ha spredd seg til konstruksjoner som ikke er synlig tilgjengelige."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utskifting av berørte avløpsrør og utbedring av eventuelle fuktskader.",
+          "Omfanget av skjulte skader bør kartlegges av fagkyndig. Åpning av konstruksjon kan bli nødvendig.",
+          "Uten utbedring vil forholdene forverres med risiko for økt skadeomfang."
+        ],
+        "tiltak": [
+          "Berørte avløpsrør bør skiftes av autorisert rørlegger. Tilstøtende konstruksjon bør undersøkes for fukt- og soppskader.",
+          "Ved utskifting bør hele det berørte rørstrekket vurderes samlet for å unngå gjentatte punktreparasjoner.",
+          "Etter utbedring bør avløpssystemet kontrolleres for fall og tetthet."
+        ]
+      }
+    },
+    "varmtvannstank": {
+      "fagtermer": [
+        "varmtvannstank",
+        "bereder",
+        "varmtvannsbereder",
+        "temperatur",
+        "termostat",
+        "sikkerhetsventil",
+        "ekspansjonskar",
+        "anode",
+        "kalkavleiring",
+        "isolasjon",
+        "kapasitet",
+        "levetid",
+        "tilkobling"
+      ],
+      "observasjonsmarkorer": {
+        "tank": [
+          "tank",
+          "bereder",
+          "varmtvannsbereder",
+          "beholder",
+          "sylinder"
+        ],
+        "lekkasje": [
+          "lekkasje",
+          "drypp",
+          "fukt",
+          "vått",
+          "korrosjon"
+        ],
+        "funksjon": [
+          "temperatur",
+          "termostat",
+          "varme",
+          "kapasitet",
+          "fungerer"
+        ],
+        "sikkerhet": [
+          "sikkerhetsventil",
+          "ventil",
+          "overtrykk",
+          "ekspansjon"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "byggeår",
+          "levetid"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Varmtvannstanken viser tegn til aldersrelatert slitasje, og alder tilsier at gjenværende levetid bør vurderes.",
+          "Det er observert noe korrosjon eller fukt ved tilkoblinger til varmtvannstanken, uten påvist aktiv lekkasje.",
+          "Sikkerhetsventil eller tilkoblinger viser tegn til slitasje som bør kontrolleres."
+        ],
+        "risikoer": [
+          "Eldre varmtvannstank kan ha innvendig korrosjon eller svekket anode, noe som øker risikoen for lekkasje over tid.",
+          "Lekkasje fra varmtvannstank kan gi vannspill med risiko for fuktskade på omgivende konstruksjon.",
+          "Observerte forhold gir grunnlag for nærmere vurdering av tankens tilstand og gjenværende levetid."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne at varmtvannstanken kan kreve utskifting innen relativt kort tid, avhengig av alder og tilstand.",
+          "Utskifting av varmtvannstank er en moderat kostnad, men bør planlegges for å unngå akutt lekkasje.",
+          "Tilstand på sikkerhetsventil og tilkoblinger bør avklares som del av vurderingen."
+        ],
+        "tiltak": [
+          "Varmtvannstankens alder og tilstand bør vurderes av rørlegger, inkludert kontroll av anode og sikkerhetsventil.",
+          "Dersom tanken nærmer seg forventet levetid, bør utskifting planlegges.",
+          "Tilkoblinger med synlig korrosjon eller fukt bør kontrolleres og eventuelt utbedres."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv lekkasje fra varmtvannstanken eller vesentlig korrosjon som tilsier at utskifting er nødvendig.",
+          "Varmtvannstanken fungerer ikke tilfredsstillende med hensyn til kapasitet eller temperaturregulering.",
+          "Sikkerhetsventil mangler eller fungerer ikke, noe som representerer en svikt i sikkerhetsinnretningen."
+        ],
+        "risikoer": [
+          "Aktiv lekkasje fra varmtvannstank kan gi betydelig vannskade dersom den ikke utbedres.",
+          "Manglende eller sviktende sikkerhetsventil kan gi overtrykk i tanken med risiko for skade.",
+          "Observerte forhold tilsier at utskifting bør prioriteres for å unngå akutt svikt."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utskifting av varmtvannstank og eventuell utbedring av fuktskader.",
+          "Ved aktiv lekkasje bør tilstøtende konstruksjon kontrolleres for fuktskader.",
+          "Utskifting bør gjennomføres snarest for å forebygge ytterligere skade."
+        ],
+        "tiltak": [
+          "Varmtvannstank bør skiftes av autorisert rørlegger. Ny tank bør ha korrekt sikkerhetsventil og ekspansjonsløsning.",
+          "Tilstøtende konstruksjon bør kontrolleres for fuktskader ved utskifting.",
+          "Ved utskifting bør det vurderes om tilkoblinger og ventiler i tilknytning til tanken også bør fornyes."
+        ]
+      }
+    },
+    "ventilasjon": {
+      "fagtermer": [
+        "ventilasjon",
+        "ventilasjonsanlegg",
+        "avtrekk",
+        "tilluft",
+        "balansert ventilasjon",
+        "mekanisk avtrekk",
+        "naturlig ventilasjon",
+        "kanaler",
+        "filter",
+        "varmegjenvinning",
+        "inneklima",
+        "luftmengde",
+        "kapasitet",
+        "kondensering"
+      ],
+      "observasjonsmarkorer": {
+        "anlegg": [
+          "ventilasjon",
+          "ventilasjonsanlegg",
+          "aggregat",
+          "kanal",
+          "filter"
+        ],
+        "avtrekk": [
+          "avtrekk",
+          "vifte",
+          "tilluft",
+          "spilluft",
+          "ventil"
+        ],
+        "funksjon": [
+          "fungerer",
+          "kapasitet",
+          "svak",
+          "støy",
+          "trekker"
+        ],
+        "fukt": [
+          "fukt",
+          "kondens",
+          "mugg",
+          "dugg",
+          "fuktig"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "type"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Ventilasjonsanlegget viser tegn til redusert funksjon eller aldersrelatert slitasje.",
+          "Det er observert tegn til utilstrekkelig ventilasjon i form av kondens på overflater eller innestengt luft.",
+          "Filter eller ventiler viser tegn til manglende vedlikehold som kan påvirke anleggets kapasitet."
+        ],
+        "risikoer": [
+          "Redusert ventilasjonskapasitet kan påvirke inneklimaet og øke fuktbelastningen på bygningsdeler.",
+          "Utilstrekkelig ventilasjon over tid kan gi grunnlag for fukt- og muggsoppproblemer.",
+          "Observerte forhold gir grunnlag for nærmere vurdering av ventilasjonsanleggets funksjon."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til service, vedlikehold eller oppgradering av ventilasjonsanlegget.",
+          "Omfanget av eventuelle tiltak bør kartlegges basert på en vurdering av anleggets faktiske funksjon.",
+          "Manglende vedlikehold kan over tid føre til økt slitasje og behov for utskifting av komponenter."
+        ],
+        "tiltak": [
+          "Ventilasjonsanlegget bør gjennomgås og serviceres. Filter bør kontrolleres og eventuelt skiftes.",
+          "Det anbefales å få vurdert anleggets kapasitet og funksjon av fagkyndig dersom det er tegn til utilstrekkelig ventilasjon.",
+          "Ventiler bør kontrolleres for korrekt innstilling og funksjon."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Ventilasjonsanlegget fungerer ikke tilfredsstillende, med tydelig utilstrekkelig kapasitet eller svikt i sentrale komponenter.",
+          "Det er påvist mugg- eller fuktskader som helt eller delvis tilskrives manglende eller sviktende ventilasjon.",
+          "Anlegget mangler sentrale komponenter eller er i en tilstand der normal drift ikke kan opprettholdes."
+        ],
+        "risikoer": [
+          "Sviktende ventilasjon gir vedvarende høy fuktbelastning som kan skade bygningsdeler og påvirke inneklimaet.",
+          "Mugg- og fuktskader som følge av ventilasjonssvikt kan ha et omfang som krever nærmere undersøkelse.",
+          "Uten fungerende ventilasjon vil fuktbelastningen vedvare uavhengig av andre tiltak."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utbedring eller utskifting av ventilasjonsanlegget, samt utbedring av eventuelle fuktskader.",
+          "Omfanget av fukt- og muggskader bør kartlegges av fagkyndig for å avklare utbedringsbehov.",
+          "Uten fungerende ventilasjon bør det utvises varsomhet med bruk av berørte rom."
+        ],
+        "tiltak": [
+          "Ventilasjonsanlegget bør vurderes og utbedres av fagkyndig. Ved vesentlig svikt kan utskifting av anlegget være nødvendig.",
+          "Fukt- og muggskader bør utbedres etter at ventilasjonsproblemet er løst, for å unngå gjentakelse.",
+          "Det anbefales å få en helhetlig vurdering av ventilasjonsbehov og anleggets stand av kvalifisert fagperson."
+        ]
+      }
+    }
+  },
+  "kjokken": {
+    "vanninstallasjoner": {
+      "fagtermer": [
+        "vannrør",
+        "stoppekran",
+        "stengeventil",
+        "kobberrør",
+        "PEX-rør",
+        "blandebatteri",
+        "oppvaskmaskin",
+        "tilkobling",
+        "vannlekkasje",
+        "drypp",
+        "korrosjon",
+        "vanntrykk",
+        "rørdimensjon",
+        "benkebeslag",
+        "slange",
+        "akvastop",
+        "vannlås",
+        "overløp",
+        "kum",
+        "vask"
+      ],
+      "observasjonsmarkorer": {
+        "ror": [
+          "rør",
+          "kobberrør",
+          "vannrør",
+          "PEX",
+          "slange",
+          "ledning"
+        ],
+        "lekkasje": [
+          "lekkasje",
+          "drypp",
+          "fuktig",
+          "vått",
+          "vannmerke",
+          "korrosjon"
+        ],
+        "ventil": [
+          "ventil",
+          "stoppekran",
+          "stengeventil",
+          "kran",
+          "batteri"
+        ],
+        "maskin": [
+          "oppvaskmaskin",
+          "maskin",
+          "tilkobling",
+          "slange",
+          "akvastop"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "byggeår",
+          "levetid",
+          "ikke skiftet",
+          "eldre"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Synlige vannrør under kjøkkenbenk har begynnende korrosjon eller grønne avleiringer ved koblinger og ventiler.",
+          "Stoppekran under vask fungerer tregt eller er ikke testet, noe som vanskeliggjør stenging ved akutt lekkasje.",
+          "Tilkobling til oppvaskmaskin er av eldre type uten akvastop, noe som gir begrenset sikkerhet mot vannlekkasje."
+        ],
+        "risikoer": [
+          "Eldre kobberrør med korrosjon har økt risiko for punktlekkasje, særlig ved koblinger og overganger mellom ulike materialer.",
+          "Defekt eller treg stoppekran betyr at lekkasje ikke kan stenges raskt, noe som kan gi større vannskade.",
+          "Manglende akvastop på oppvaskmaskin gir økt risiko for vannskade ved slangehavari."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til utskifting av eldre ventiler og eventuelt fornying av synlige rør under kjøkkenbenk.",
+          "Installasjon av akvastop og ny stengeventil er relativt rimelige tiltak som reduserer risikoen vesentlig.",
+          "Dersom røranlegget er gjennomgående eldre, bør det tas høyde for mer omfattende rørfornyelse."
+        ],
+        "tiltak": [
+          "Stoppekran under vask bør kontrolleres og skiftes dersom den ikke fungerer tilfredsstillende.",
+          "Eldre tilkoblinger til oppvaskmaskin bør oppgraderes med akvastop-slange og ny stengeventil.",
+          "Synlige rør med korrosjon bør vurderes skiftet av autorisert rørlegger."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv vannlekkasje fra rør, koblinger eller ventiler under kjøkkenbenk, med synlige vannskader på underskap eller gulv.",
+          "Røranlegget under kjøkken har omfattende korrosjon med gjentatte reparasjoner og kjent lekkasjehistorikk.",
+          "Vannlekkasje fra kjøkken har gitt fuktskade i underliggende gulvkonstruksjon eller tilstøtende rom."
+        ],
+        "risikoer": [
+          "Aktiv lekkasje fra kjøkkeninstallasjoner gir direkte risiko for vannskade på gulvkonstruksjon, isolasjon og eventuelt underliggende etasje.",
+          "Gjentatte lekkasjer indikerer at røranlegget er utslitt og at nye lekkasjer kan oppstå når som helst.",
+          "Langvarig vannlekkasje kan gi soppvekst i skjulte konstruksjoner under og rundt kjøkkeninnredningen."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne utskifting av vanninstallasjoner under kjøkken, samt utbedring av følgeskader på gulv og tilstøtende konstruksjoner.",
+          "Totalkostnaden avhenger av skadens omfang. Dersom gulvkonstruksjonen er skadet, øker kostnaden vesentlig.",
+          "Inntil utbedring er gjennomført, bør vannforsyning til berørte installasjoner stenges."
+        ],
+        "tiltak": [
+          "Vanninstallasjoner under kjøkken må skiftes ut av autorisert rørlegger. Nye rør, ventiler og tilkoblinger monteres.",
+          "Gulvkonstruksjon og vegg bak innredning kontrolleres for fukt- og soppskader. Skadet materiale skiftes ut.",
+          "Etter utbedring bør det kontrolleres at alle tilkoblinger er tette og at stoppekraner fungerer."
+        ]
+      }
+    },
+    "avlop": {
+      "fagtermer": [
+        "avløpsrør",
+        "vannlås",
+        "sluk",
+        "koblinger",
+        "avløpsstamme",
+        "grenrør",
+        "fettavskiller",
+        "tetting",
+        "fall",
+        "dimensjon",
+        "materialtype",
+        "støpejern",
+        "plast",
+        "muffe",
+        "klemmering"
+      ],
+      "observasjonsmarkorer": {
+        "avlop": [
+          "avløp",
+          "rør",
+          "sluk",
+          "vannlås",
+          "kloakk"
+        ],
+        "lekkasje": [
+          "lekkasje",
+          "drypp",
+          "vått",
+          "fukt",
+          "vannmerke"
+        ],
+        "lukt": [
+          "lukt",
+          "kloakk",
+          "avløpslukt",
+          "gass",
+          "tett"
+        ],
+        "funksjon": [
+          "tregt",
+          "tett",
+          "overløp",
+          "gurgel",
+          "tilbakeslag"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "støpejern",
+          "eldre",
+          "opprinnelig"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Avløpsrør under kjøkkenbenk viser tegn til aldersrelatert slitasje med noe korrosjon eller misfarging ved koblinger.",
+          "Det er registrert sporadisk lukt fra avløp som kan tyde på svekket vannlås eller utilstrekkelig ventilering av avløpssystemet.",
+          "Avløpsrør er av eldre type støpejern, og synlige deler viser overflatekorrosjon uten gjennomgående skader."
+        ],
+        "risikoer": [
+          "Eldre avløpsrør kan ha innvendig korrosjon og belegg som reduserer kapasiteten og øker risikoen for tilstopping.",
+          "Svekket vannlås kan gi gjennomslag av avløpslukt til rommet og indikerer behov for vedlikehold av avløpssystemet.",
+          "Korrosjon ved koblinger kan over tid gi lekkasje som fører til fuktskader i underskap eller konstruksjon."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til kontroll og eventuell utskifting av synlige avløpsrør og koblinger under kjøkkenbenk.",
+          "Dersom avløpsrør er av eldre støpejern, bør det vurderes samlet utskifting til plast i synlige deler.",
+          "Utbedring av avløp i kjøkken er normalt en begrenset kostnad dersom det gjøres før lekkasje oppstår."
+        ],
+        "tiltak": [
+          "Avløpsrør og koblinger under kjøkkenbenk bør kontrolleres for tetthet. Slitte koblinger og pakninger bør skiftes.",
+          "Ved eldre støpejerns avløp bør synlige rør vurderes skiftet til plast med korrekte koblinger.",
+          "Vannlås bør kontrolleres og renses. Dersom lukt vedvarer etter rensing, bør avløpssystemets ventilering undersøkes."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist lekkasje fra avløpsrør eller koblinger under kjøkkenbenk, med synlig fuktskade i underskap eller tilstøtende konstruksjon.",
+          "Avløpsrør er gjennomkorrodert eller har brudd som gir aktiv vannlekkasje ved bruk.",
+          "Det er registrert gjentatte tilstopping i avløp som tyder på vesentlig svekket kapasitet eller feil i rørsystemet."
+        ],
+        "risikoer": [
+          "Aktiv lekkasje fra avløp gir direkte fuktskade på omgivende konstruksjon og kan føre til råte- og soppskader.",
+          "Gjennomkorroderte rør kan gi plutselig brudd med risiko for vannspill og akutte skader.",
+          "Gjentatte tilstoppinger kan indikere at rørsystemet trenger utskifting, ikke bare rensing."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utskifting av avløpsrør og utbedring av påviste fuktskader i underskap og tilstøtende konstruksjon.",
+          "Dersom skadene har pågått over tid, kan det være fuktskader i gulvkonstruksjon som først avdekkes ved åpning.",
+          "Utskifting av avløpsrør i kjøkken er normalt en overkommelig kostnad, men eventuelle følgeskader kan øke omfanget."
+        ],
+        "tiltak": [
+          "Avløpsrør med lekkasje eller gjennomgående korrosjon må skiftes. Alle koblinger bør fornyes samtidig.",
+          "Underskap og tilstøtende konstruksjon bør kontrolleres for fuktskader og eventuelt utbedres.",
+          "Ved gjentatte tilstoppinger bør hele avløpsstrekket fra kjøkken til stamme inspiseres, for eksempel med kamera."
+        ]
+      }
+    },
+    "overflater_vannutsatte_soner": {
+      "fagtermer": [
+        "benkeplater",
+        "fuger",
+        "overgang benk-vegg",
+        "silikon",
+        "fugemasse",
+        "vannavvisende",
+        "membran",
+        "oppkant",
+        "vannbord",
+        "fliser",
+        "tetting",
+        "våtsone",
+        "sprut",
+        "avrenning"
+      ],
+      "observasjonsmarkorer": {
+        "fuger": [
+          "fuge",
+          "silikon",
+          "tetting",
+          "åpning",
+          "misfarge"
+        ],
+        "fukt": [
+          "fukt",
+          "vann",
+          "misfarging",
+          "svelling",
+          "boble"
+        ],
+        "overflate": [
+          "benk",
+          "fliser",
+          "vegg",
+          "overgang",
+          "sprut"
+        ],
+        "slitasje": [
+          "slitasje",
+          "riper",
+          "avskalling",
+          "krakelering",
+          "slitt"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "innredning"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Fuger mellom benkeplate og vegg viser tegn til aldring med stedvis misfarging eller krymping som gir redusert tetting.",
+          "Overflater i vannutsatte soner ved vask har noe slitasje, og overganger mellom benk og vegg har stedvis svekket vannavvisning.",
+          "Silikonfuger rundt vask eller benkeplate har begynnende løsning fra underlag, som gir redusert tetthet."
+        ],
+        "risikoer": [
+          "Svekket fugetetting i vannutsatte soner gir risiko for at vann trenger bak benkeplate eller ned i underskap.",
+          "Fuktbelastning bak benkeplater og i overganger kan over tid gi fuktskader på underliggende konstruksjon.",
+          "Vann som trenger inn bak overflater kan gi grobunn for mugg uten at det er synlig."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til fornyelse av fuger i vannutsatte soner på kjøkkenet.",
+          "Fuging er normalt en lav kostnad, men utsatt vedlikehold kan føre til fuktskader som er vesentlig dyrere å utbedre.",
+          "Ved fornyelse av fuger bør overflater bak kontrolleres for fuktskader."
+        ],
+        "tiltak": [
+          "Silikonfuger mellom benkeplate og vegg bør fornyes. Gamle fuger bør fjernes helt før ny fuge legges.",
+          "Overganger mellom benk og vegg bør kontrolleres for tetthet. Manglende oppkant bør vurderes etablert.",
+          "Overflater i sprut-soner bør vedlikeholdes for å opprettholde vannavvisende egenskaper."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist fuktskader bak benkeplater eller i underskap grunnet manglende eller sviktende tetting i vannutsatte soner.",
+          "Overflater ved vask har vesentlige skader med svelling, avskalling eller gjennomgående fuktmerker.",
+          "Fuger mangler eller er fullstendig svekket, slik at vann fritt trenger inn bak overflater og ned i konstruksjonen."
+        ],
+        "risikoer": [
+          "Manglende tetting gir direkte vanntilførsel til konstruksjon bak kjøkkeninnredning, med risiko for råte- og soppskader.",
+          "Fuktskader bak benkeplater kan ha spredd seg til veggkonstruksjon og gulv uten at det er synlig.",
+          "Vedvarende fuktbelastning kan skade hele kjøkkeninnredningens underskap og bæring."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utbedring av fuktskader og fornyelse av tetting. Omfanget avklares ved demontering av berørte deler.",
+          "Dersom fuktskadene har nådd vegg- eller gulvkonstruksjon, kan utbedringskostnaden bli vesentlig.",
+          "Det kan bli nødvendig å skifte deler av kjøkkeninnredningen dersom underskap er skadet av fukt."
+        ],
+        "tiltak": [
+          "Berørte overflater og innredning bør demonteres for å kartlegge skadeomfanget. Fuktskadede materialer bør fjernes.",
+          "Alle fuger og overganger i vannutsatte soner bør fornyes med egnet fugemasse etter utbedring av underliggende skader.",
+          "Det anbefales å kontrollere at vann- og avløpsinstallasjoner i området er tette og fungerer tilfredsstillende."
+        ]
+      }
+    }
+  },
+  "innvendige_forhold": {
+    "overflater": {
+      "fagtermer": [
+        "veggoverflater",
+        "takoverflater",
+        "maling",
+        "tapet",
+        "sparkling",
+        "gipsplater",
+        "panel",
+        "overflatebehandling",
+        "sprekker",
+        "riss",
+        "misfarging",
+        "fuktmerker",
+        "sopp",
+        "vedlikehold",
+        "slitasje"
+      ],
+      "observasjonsmarkorer": {
+        "overflate": [
+          "maling",
+          "tapet",
+          "panel",
+          "gips",
+          "overflate",
+          "vegg",
+          "tak"
+        ],
+        "fukt": [
+          "fukt",
+          "misfarging",
+          "vannmerke",
+          "flekk",
+          "mørkt"
+        ],
+        "sopp": [
+          "mugg",
+          "sopp",
+          "soppvekst",
+          "svart",
+          "grønt"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "slitasje",
+          "eldre",
+          "vedlikehold"
+        ],
+        "overflateskade": [
+          "sprekk",
+          "riss",
+          "boble",
+          "flassing",
+          "avskalling"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Innvendige overflater viser aldersrelatert slitasje med stedvis flassing, riss eller normal bruksslitasje.",
+          "Det er observert mindre sprekker i sparkling eller overgang vegg/tak som er typisk for byggets alder og konstruksjonstype.",
+          "Overflatebehandlingen er eldre og har behov for fornyelse, men uten tegn til underliggende fukt- eller konstruksjonsskader."
+        ],
+        "risikoer": [
+          "Slitte overflater er primært et estetisk og vedlikeholdsmessig forhold, men kan skjule underliggende fukt dersom misfarging er til stede.",
+          "Sprekker i sparkling kan i noen tilfeller indikere bevegelser i konstruksjonen, selv om de oftest skyldes normal svinn.",
+          "Manglende vedlikehold av overflater kan over tid gi økt fuktbelastning på underliggende materialer."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til oppussing og fornyelse av innvendige overflater.",
+          "Omfanget og kostnaden avhenger av antall rom og ønsket standard.",
+          "Ved overflatefornyelse bør eventuelle fuktmerker eller misfarging undersøkes nærmere før ny overflatebehandling."
+        ],
+        "tiltak": [
+          "Innvendige overflater bør fornyes med egnet maling eller tapet. Sprekker og riss bør sparkles og slipes før overflatebehandling.",
+          "Eventuelle fuktmerker bør undersøkes for å avklare om fuktkilden er aktiv før overflaten dekkes til.",
+          "Vedlikehold av innvendige overflater er normalt en del av løpende oppgradering av boligen."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist tydelige fuktmerker eller soppvekst på innvendige overflater som indikerer aktiv fuktbelastning fra konstruksjonen.",
+          "Overflater har vesentlige skader med gjennomgående misfarging, avskalling og synlig nedbrytning av underliggende materialer.",
+          "Sprekker i vegger eller tak er av et omfang som kan indikere konstruktive bevegelser eller setninger."
+        ],
+        "risikoer": [
+          "Aktiv fukt bak overflater kan gi muggsoppvekst med negativ påvirkning på inneklima og helse.",
+          "Vesentlige overflateskader kan indikere underliggende konstruksjons- eller fuksproblemer som krever utredning.",
+          "Sprekker som skyldes setninger eller konstruktive bevegelser kan utvikle seg og påvirke byggets stabilitet."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utredning av årsak samt utbedring av både overflater og underliggende fukt- eller konstruksjonsskader.",
+          "Omfanget av skadene kan være større enn det som er synlig fra overflaten, og avklares først ved åpning av konstruksjonen.",
+          "Uten utbedring av årsaken vil nye overflater raskt få tilsvarende skader."
+        ],
+        "tiltak": [
+          "Årsaken til fukt eller skade bør kartlegges før overflater fornyes. Ved fuktskader bør fagkyndig vurdere om det er lekkasje, kondens eller byggfukt.",
+          "Materialer med mugg- eller soppskader bør fjernes. Nye overflater bør ikke etableres før fuktkilden er eliminert.",
+          "Ved sprekker som kan skyldes setninger, bør konstruksjonen vurderes av fagkyndig for å avklare om bevegelsene er aktive."
+        ]
+      }
+    },
+    "innvendige_dorer": {
+      "fagtermer": [
+        "innerdør",
+        "karm",
+        "foring",
+        "hengsler",
+        "dørhåndtak",
+        "vrider",
+        "terskel",
+        "list",
+        "dørblad",
+        "fylling",
+        "glass",
+        "laminat",
+        "lukking",
+        "justering",
+        "overflatebehandling"
+      ],
+      "observasjonsmarkorer": {
+        "funksjon": [
+          "lukking",
+          "åpning",
+          "henger",
+          "klem",
+          "stram"
+        ],
+        "overflate": [
+          "maling",
+          "riper",
+          "slitasje",
+          "skade",
+          "vedlikehold"
+        ],
+        "karm": [
+          "karm",
+          "foring",
+          "list",
+          "sprekk",
+          "løs"
+        ],
+        "fukt": [
+          "fukt",
+          "svelling",
+          "deformasjon",
+          "buling",
+          "misfarging"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "slitt"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Innvendige dører viser aldersrelatert slitasje med bruksspor, riper og stedvis behov for overflatebehandling.",
+          "Enkelte dører lukker ikke tilfredsstillende grunnet skjevhet i karm eller behov for justering av hengsler.",
+          "Listverk og foring rundt dører har stedvis sprekker eller er løse, men uten tegn til underliggende skade."
+        ],
+        "risikoer": [
+          "Feil i lukking og tetting av dører er primært et funksjonelt og komfortmessig forhold med begrenset risiko for følgeskader.",
+          "Slitasje på overflater er et estetisk og vedlikeholdsmessig forhold som normalt ikke påvirker konstruksjonen.",
+          "Løst listverk kan gi trekk og nedsatt komfort, men representerer normalt ingen konstruktiv risiko."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til justering og eventuell oppussing av innvendige dører.",
+          "Utskifting av enkeltdører kan bli aktuelt dersom slitasjen er omfattende eller dørene ikke kan justeres tilfredsstillende.",
+          "Kostnaden er normalt begrenset og en del av generell oppgradering av boligen."
+        ],
+        "tiltak": [
+          "Dører som ikke lukker tilfredsstillende bør justeres i hengsler. Dørbladet kan eventuelt høvles ved klemming.",
+          "Overflatebehandling bør fornyes der det er behov. Løst listverk og foring bør festes og tettes.",
+          "Ved utskifting bør det velges dører som passer eksisterende karmer for å begrense omfanget av arbeidet."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Innvendige dører har vesentlige funksjonelle mangler, med dører som ikke kan lukkes, låses eller brukes tilfredsstillende.",
+          "Det er påvist fuktskader i karm eller dørblad med svelling og deformasjon som skyldes fuktbelastning i rommet.",
+          "Flere dører har skader som overstiger normal bruksslitasje, med knekte fyllinger, ødelagte hengsler eller skadet glass."
+        ],
+        "risikoer": [
+          "Fuktskader i karm kan indikere at rommet har hatt for høy fuktbelastning, som også kan ha skadet tilstøtende veggkonstruksjon.",
+          "Dører som ikke kan lukkes tilfredsstillende gir redusert bruksfunksjon og kan påvirke branncelleinndelingen dersom det gjelder branndører.",
+          "Skadede glassfyllinger kan utgjøre en sikkerhetsrisiko, spesielt i dører mot trapperom eller barnerom."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utskifting av dører med vesentlige skader. Ved fuktskade i karm bør det vurderes om karmen også må skiftes.",
+          "Dersom fuktskadene indikerer generell fuktproblematikk, bør årsaken kartlegges for å unngå gjentatte skader.",
+          "Ved branndører som ikke fungerer tilfredsstillende, bør disse prioriteres for utskifting."
+        ],
+        "tiltak": [
+          "Dører med vesentlige skader bør skiftes. Ved fuktskade i karm bør årsaken til fuktbelastningen avklares og utbedres.",
+          "Skadede glassfyllinger bør skiftes umiddelbart dersom de utgjør en sikkerhetsrisiko.",
+          "Dersom flere dører har fuktskader, bør inneklimaet og ventilasjonen i berørte rom vurderes for å forebygge gjentakelse."
+        ]
+      }
+    },
+    "etasjeskiller": {
+      "fagtermer": [
+        "etasjeskiller",
+        "bjelkelag",
+        "dekke",
+        "betongdekke",
+        "trebjelke",
+        "nedbøyning",
+        "svikt",
+        "bæreevne",
+        "lydisolasjon",
+        "vibrasjon",
+        "knarking",
+        "opplagring",
+        "dimensjonering",
+        "spennvidde",
+        "konstruksjon"
+      ],
+      "observasjonsmarkorer": {
+        "konstruksjon": [
+          "bjelkelag",
+          "dekke",
+          "etasjeskiller",
+          "konstruksjon",
+          "bæring"
+        ],
+        "nedboyning": [
+          "nedbøyning",
+          "svikt",
+          "gjennomhenging",
+          "bukning",
+          "skjevhet"
+        ],
+        "lyd": [
+          "knarking",
+          "knirking",
+          "vibrasjon",
+          "lyd",
+          "trinn"
+        ],
+        "fukt": [
+          "fukt",
+          "misfarging",
+          "vannmerke",
+          "flekk",
+          "lekkasje"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "trevirke"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Etasjeskilleren viser noe nedbøyning eller knarking som kan skyldes konstruksjonstype, alder eller bruksbelastning.",
+          "Det er observert tegn til fuktpåvirkning i etasjeskiller fra overliggende våtrom eller rørgjennomføring.",
+          "Etasjeskilleren har aldersrelatert slitasje som viser seg som vibrasjoner eller noe nedbøyning."
+        ],
+        "risikoer": [
+          "Nedbøyning utover det som er normalt for konstruksjonstypen bør vurderes nærmere for å avklare årsak.",
+          "Fuktpåvirkning i etasjeskiller kan over tid føre til svekkelse av bærekonstruksjon dersom kilden ikke utbedres.",
+          "Observerte forhold gir alene ikke grunnlag for å fastslå konstruktiv svikt, men bør kartlegges nærmere."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til nærmere vurdering av etasjeskilleren for å avklare om utbedring er nødvendig.",
+          "Omfanget av eventuelle tiltak avhenger av årsaken til observerte forhold, og bør vurderes av fagkyndig.",
+          "Knarking og vibrasjoner kan i mange tilfeller være normalt for konstruksjonstypen, men bør vurderes i sammenheng."
+        ],
+        "tiltak": [
+          "Det anbefales at fagkyndig vurderer etasjeskilleren nærmere dersom nedbøyning eller vibrasjoner oppleves som unormale.",
+          "Eventuell fuktpåvirkning bør kartlegges med hensyn til kilde og omfang før tiltak iverksettes.",
+          "Ved usikkerhet om konstruktiv tilstand bør det innhentes vurdering fra konstruksjonsrådgiver."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist vesentlig nedbøyning eller synlig svikt i etasjeskilleren som kan indikere redusert bæreevne.",
+          "Etasjeskilleren har tydelige fuktskader eller soppangrep som har svekket konstruksjonen.",
+          "Det er registrert markant deformasjon eller setning i etasjeskilleren som overstiger det normale for konstruksjonstypen."
+        ],
+        "risikoer": [
+          "Vesentlig svikt i etasjeskiller kan representere en risiko for konstruksjonens bæreevne og bør vurderes av fagkyndig umiddelbart.",
+          "Fukt- eller soppskader i bærende bjelkelag kan ha svekket konstruksjonen utover det som er synlig.",
+          "Observerte forhold kan indikere behov for konstruktive tiltak som bør avklares før normal bruk fortsetter."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til fagkyndig vurdering og sannsynlig konstruktiv utbedring. Omfanget avklares ved undersøkelse.",
+          "Utbedring av bærende etasjeskiller kan være kostnadskrevende og kreve spesialkompetanse.",
+          "Uten avklaring av konstruktiv tilstand bør det utvises varsomhet med tung belastning av berørte områder."
+        ],
+        "tiltak": [
+          "Det anbefales at konstruksjonsrådgiver eller fagkyndig foretar en grundig vurdering av etasjeskilleren før overtakelse.",
+          "Skadet trevirke eller konstruksjonselementer bør utbedres etter anvisning fra fagkyndig.",
+          "Eventuell fuktkilde bør identifiseres og elimineres før konstruktiv utbedring gjennomføres."
+        ]
+      }
+    },
+    "trapplosninger": {
+      "fagtermer": [
+        "trapp",
+        "trappeløp",
+        "repos",
+        "rekkverk",
+        "håndlist",
+        "stigning",
+        "inntrinn",
+        "vange",
+        "trinn",
+        "sklisikring",
+        "innfesting",
+        "bæring",
+        "stabilitet",
+        "overflatebehandling",
+        "konstruksjon"
+      ],
+      "observasjonsmarkorer": {
+        "konstruksjon": [
+          "trapp",
+          "trappeløp",
+          "trinn",
+          "vange",
+          "repos"
+        ],
+        "rekkverk": [
+          "rekkverk",
+          "håndlist",
+          "gelender",
+          "stolpe",
+          "feste"
+        ],
+        "funksjon": [
+          "knarking",
+          "løst",
+          "ustabil",
+          "vipper",
+          "slitasje"
+        ],
+        "sikkerhet": [
+          "sikkerhet",
+          "fall",
+          "åpning",
+          "avstand",
+          "høyde"
+        ],
+        "overflate": [
+          "maling",
+          "overflate",
+          "sklisikring",
+          "slitt",
+          "riper"
+        ],
+        "alder": [
+          "alder",
+          "gammel",
+          "opprinnelig",
+          "eldre",
+          "trevirke"
+        ]
+      },
+      "TG2": {
+        "arsaker": [
+          "Trappeløsningen viser tegn til aldersrelatert slitasje på trinn, rekkverk eller overflatebehandling.",
+          "Rekkverk eller håndlist har noe redusert stabilitet eller løse innfestinger.",
+          "Det er observert slitasje som påvirker trappens funksjon og komfort, uten vesentlig svekkelse av sikkerhet."
+        ],
+        "risikoer": [
+          "Slitasje på trinn og overflater kan redusere gangkomfort og øke risiko for snubling.",
+          "Redusert stabilitet i rekkverk kan over tid gi utilstrekkelig sikring dersom det ikke utbedres.",
+          "Observerte forhold representerer primært et vedlikeholdsbehov, men bør følges opp."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnader til vedlikehold og eventuell utbedring av trappeløsningen.",
+          "Utbedring av overflater og justering av rekkverk er normalt en begrenset kostnad.",
+          "Dersom konstruktive svakheter avdekkes ved nærmere undersøkelse, kan kostnaden bli høyere."
+        ],
+        "tiltak": [
+          "Rekkverk og håndlist bør kontrolleres for stabilitet og eventuelt etterstrammes eller utbedres.",
+          "Slitte trinn bør vedlikeholdes for å opprettholde gangkomfort. Sklisikring bør vurderes der det er behov.",
+          "Løse innfestinger bør utbedres for å opprettholde rekkverkets funksjon."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist vesentlige mangler ved trappeløsningen med hensyn til sikkerhet eller konstruktiv tilstand.",
+          "Rekkverk mangler, er vesentlig svekket, eller har innfesting som ikke gir tilstrekkelig sikring.",
+          "Trappetrinn har vesentlige skader, deformasjon eller svekkelser som påvirker sikker bruk."
+        ],
+        "risikoer": [
+          "Mangler ved trappeløsningen kan utgjøre en sikkerhetsrisiko som bør avklares og utbedres.",
+          "Svekket rekkverk eller manglende sikring gir risiko for fall, spesielt for barn og eldre.",
+          "Konstruktive svekkelser i trapp bør vurderes av fagkyndig for å avklare omfang og utbedringsbehov."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne kostnader til utbedring av sikkerhetsmangler i trappeløsningen.",
+          "Omfanget av utbedring avhenger av type mangel og konstruksjonstype, og bør vurderes av fagkyndig.",
+          "Sikkerhetsmangler bør prioriteres for utbedring."
+        ],
+        "tiltak": [
+          "Sikkerhetsmangler bør utbedres. Rekkverk som mangler eller er vesentlig svekket bør fornyes eller forsterkes.",
+          "Skadede trappetrinn bør utbedres eller skiftes. Konstruktive svekkelser bør vurderes av fagkyndig.",
+          "Det anbefales å innhente fagkyndig vurdering dersom omfanget av manglene er uklart."
         ]
       }
     }

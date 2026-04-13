@@ -117,10 +117,14 @@ export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMelding
   const pathname = usePathname();
   const totalUlest = ulesteMeldinger + nyeBestillinger;
 
-  // Feature-betingede nav-items
-  const featureNavItems = [];
+  // Bygg komplett nav-liste med feature-betingede items innvevd
+  const allNavItems = [...navItems];
+
+  // ARKAT Skrivehjelp — settes inn mellom Kalender og Fylkesynlighet
   if (features.includes("arkat_skrivehjelp")) {
-    featureNavItems.push({
+    const kalenderIndex = allNavItems.findIndex((item) => item.href === "/portal/takstmann/kalender");
+    const insertAt = kalenderIndex >= 0 ? kalenderIndex + 1 : allNavItems.length;
+    allNavItems.splice(insertAt, 0, {
       href: "/portal/takstmann/arkat",
       label: "ARKAT Skrivehjelp",
       icon: (
@@ -175,13 +179,13 @@ export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMelding
 
       {/* Nav */}
       <nav className="flex-1 p-4 space-y-1">
-        {navItems.map((item) => {
+        {allNavItems.map((item) => {
           const count = "badge" in item ? getBadge(item.badge) : 0;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`portal-sidebar-link ${isActive(item.href, item.exact) ? "active" : ""}`}
+              className={`portal-sidebar-link ${isActive(item.href, "exact" in item && item.exact) ? "active" : ""}`}
             >
               {item.icon}
               <span className="flex-1">{item.label}</span>
@@ -193,25 +197,6 @@ export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMelding
             </Link>
           );
         })}
-
-        {/* Feature-betingede nav-items (ARKAT, premium, etc.) */}
-        {featureNavItems.length > 0 && (
-          <>
-            <div className="pt-3 pb-1">
-              <div className="h-px bg-[#e2e8f0]" />
-            </div>
-            {featureNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`portal-sidebar-link ${isActive(item.href) ? "active" : ""}`}
-              >
-                {item.icon}
-                <span className="flex-1">{item.label}</span>
-              </Link>
-            ))}
-          </>
-        )}
       </nav>
 
       {/* Footer */}
