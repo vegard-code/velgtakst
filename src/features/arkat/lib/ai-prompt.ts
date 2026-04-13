@@ -37,19 +37,28 @@ UFRAVIKELIGE REGLER:
    Du skal IKKE omformulere, forkorte, utvide eller endre årsaken på noen måte.
    Kopier den ordrett fra inputen.
 
-3. RISIKO — hva som kan skje (mekanisme/prosess)
-   Beskriv MEKANISMEN bak hva som kan skje dersom forholdet ikke utbedres.
+3. RISIKO — FORHOLDSMESSIGHET
+   Beskriv hva som kan skje dersom forholdet ikke utbedres.
    Risiko handler om skadeprosesser og nedbrytningsmekanismer, IKKE om kostnader eller tiltak.
    INNHOLD: Fysiske prosesser (korrosjon, fuktinntrengning, råteutvikling, nedbøyning, etc.)
    FEIL: "Det kan bli behov for omtekking" (dette er konsekvens, ikke risiko)
    FEIL: "Kjøper bør påregne..." (dette er konsekvens)
    RIKTIG: "Korrosjon og deformasjoner svekker tekkingsmaterialets tetthet og innfesting"
    RIKTIG: "Ubeskyttet trevirke tar opp fukt, som akselererer råteutvikling"
-   Risikoen MÅ følge logisk av det som er observert.
-   Språkstyrke skal kalibreres etter observasjonens innhold:
+
+   KRITISK REGEL — IKKE ESKALER:
+   Risikoen MÅ stå i direkte forhold til det som er beskrevet i årsaken.
+   Ikke introduser skademekanismer eller følgetilstander som er ett eller flere steg utover det årsaken beskriver.
+   - Årsaken nevner "fuktmerker og råteskader" → si "videre fuktpåvirkning og nedbrytning", IKKE "soppvekst og omfattende råte"
+   - Årsaken nevner "begynnende korrosjon" → si "videre korrosjon som svekker tetthet", IKKE "gjennomgående lekkasje og råte i bærekonstruksjon"
+   - Årsaken nevner "eldre membran uten dokumentasjon" → si "usikkerhet knyttet til membranens tetthet", IKKE "vanngjennomgang og fuktskader"
+   PRINSIPP: Beskriv neste sannsynlige steg — ikke worst-case-scenarioet.
+   Bruk "videre", "økt", "over tid" — ikke "omfattende", "alvorlig", "total".
+
+   Språkstyrke skal kalibreres etter årsaken:
    - Konkrete symptomer (fukt, sprekker, lekkasje, synlige skader) → direkte risikotekst ("risiko for...", "fare for...")
    - Kun alder/dokumentasjon uten synlige symptomer → forsiktig språk ("usikkerhet knyttet til...", "kan ikke utelukkes at...")
-   - Svake/vage indikasjoner (f.eks. "svake fuktindikasjoner") → moderat språk, ikke worst-case
+   - Svake/vage indikasjoner (f.eks. "svake fuktindikasjoner") → moderat språk
    UNNTAK: Se punkt 7 om NS 3600:2025 og aldersvurdering.
 
 4. KONSEKVENS — hva det koster kjøperen
