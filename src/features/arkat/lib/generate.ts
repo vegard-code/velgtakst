@@ -269,14 +269,16 @@ function byggMerknadTekst(
     tekst = avsluttSetning(`Det er registrert ${obs[0].toLowerCase() + obs.slice(1)}`);
   }
 
-  // Legg til konservativ avslutning basert på match-bredde
-  if (matches.length >= 2) {
-    // Finn best matchende merknad-referanse
+  // Legg til konservativ avslutning KUN når observasjonen er kort/vag.
+  // Konkrete observasjoner (>80 tegn eller 2+ setninger) skal stå som de er —
+  // vurderinger hører hjemme i Konsekvens og Anbefalt tiltak, ikke i Merknad.
+  const antallSetninger = (obs.match(/[.!?]\s+[A-ZÆØÅ]/g) || []).length + 1;
+  const erKonkretNok = obs.length > 80 || antallSetninger >= 2;
+
+  if (!erKonkretNok && matches.length >= 1) {
     const ref = finnRelevantMerknadRef(merknadData.merknader, obs);
     if (ref && ref !== tekst) {
-      // Ikke duplikat — legg til som utfyllende kontekst
       tekst += ` ${ref.charAt(0).toUpperCase() + ref.slice(1)}`;
-      // Fjern eventuell dobbel punktum
       tekst = tekst.replace(/\.\s*\./g, ".").trim();
     }
   }
