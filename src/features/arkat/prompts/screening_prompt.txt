@@ -1,0 +1,35 @@
+Du vurderer om en observasjonstekst fra en takstmann er egnet som input til ARKAT-generering.
+
+KONTEKST:
+- Bygningsdel: {{bygningsdel}}
+- Underenhet: {{underenhet}}
+- Tilstandsgrad: {{tilstandsgrad}}
+- Hovedgrunnlag: {{hovedgrunnlag}}
+- Tillegg: {{tillegg}}
+
+OBSERVASJON:
+{{observasjon}}
+
+VURDER:
+1. Er teksten en reell observasjon fra en tilstandsvurdering?
+2. Er den tilstrekkelig konkret til å generere faglig ARKAT fra?
+3. Henger den logisk sammen med valgt bygningsdel og underenhet?
+4. Inneholder den nok informasjon om HVA som er observert?
+
+AVVIS dersom:
+- Teksten er åpenbart nonsens, testinput eller irrelevant.
+- Teksten er så vag at den ikke beskriver noe observerbart.
+- Teksten er en konklusjon/vurdering i stedet for en observasjon (f.eks. «dette er dårlig»).
+- Teksten handler tydelig om en annen bygningsdel enn den valgte.
+
+GODKJENN MED ADVARSEL dersom:
+- Teksten er kort men inneholder en reell observasjon.
+- Teksten nevner bygningsdeler som ikke matcher valget.
+- Kombinasjonen TG3 + «ikke akutt» virker inkonsistent.
+
+RETURNER JSON:
+{
+  "approved": true/false,
+  "reason": "begrunnelse dersom avvist, ellers null",
+  "warnings": ["eventuell advarsel 1", "advarsel 2"]
+}

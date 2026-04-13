@@ -10,6 +10,8 @@ interface Props {
   rolle: string;
   ulesteMeldinger?: number;
   nyeBestillinger?: number;
+  /** Feature-tilganger som er aktive for denne brukeren */
+  features?: string[];
 }
 
 const navItems = [
@@ -111,9 +113,23 @@ const navItems = [
   },
 ];
 
-export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMeldinger = 0, nyeBestillinger = 0 }: Props) {
+export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMeldinger = 0, nyeBestillinger = 0, features = [] }: Props) {
   const pathname = usePathname();
   const totalUlest = ulesteMeldinger + nyeBestillinger;
+
+  // Feature-betingede nav-items
+  const featureNavItems = [];
+  if (features.includes("arkat_skrivehjelp")) {
+    featureNavItems.push({
+      href: "/portal/takstmann/arkat",
+      label: "ARKAT Skrivehjelp",
+      icon: (
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+        </svg>
+      ),
+    });
+  }
 
   function isActive(href: string, exact?: boolean) {
     if (exact) return pathname === href;
@@ -177,6 +193,25 @@ export default function TakstmannSidebar({ navn, firmanavn, rolle, ulesteMelding
             </Link>
           );
         })}
+
+        {/* Feature-betingede nav-items (ARKAT, premium, etc.) */}
+        {featureNavItems.length > 0 && (
+          <>
+            <div className="pt-3 pb-1">
+              <div className="h-px bg-[#e2e8f0]" />
+            </div>
+            {featureNavItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`portal-sidebar-link ${isActive(item.href) ? "active" : ""}`}
+              >
+                {item.icon}
+                <span className="flex-1">{item.label}</span>
+              </Link>
+            ))}
+          </>
+        )}
       </nav>
 
       {/* Footer */}

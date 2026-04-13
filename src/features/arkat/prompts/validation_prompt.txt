@@ -1,0 +1,32 @@
+Valider følgende ARKAT-output fra genereringssystemet.
+
+ORIGINAL INPUT:
+- Bygningsdel: {{bygningsdel_label}}
+- Underenhet: {{underenhet_label}}
+- Tilstandsgrad: {{tilstandsgrad}}
+- Observasjon: {{observasjon}}
+
+GENERERT ARKAT:
+- Årsak: {{arsak}}
+- Risiko: {{risiko}}
+- Konsekvens: {{konsekvens}}
+- Anbefalt tiltak: {{anbefalt_tiltak}}
+
+FORBUDTE FRASER:
+{{forbudte_fraser}}
+
+VALIDER:
+1. Inneholder noen av de forbudte frasene? Hvis ja, hvilke?
+2. Er årsak, risiko, konsekvens og tiltak SPESIFIKKE for observasjonen, eller er de generiske?
+3. Foreslår teksten en annen TG enn den som er valgt? (Ikke tillatt.)
+4. Er språket nøkternt og faglig, eller inneholder det salgsfraser, dramatisering eller AI-floskler?
+5. Henger de fire feltene logisk sammen? Følger konsekvens naturlig av risiko?
+6. Er anbefalt tiltak konkret og gjennomførbart?
+
+RETURNER JSON:
+{
+  "valid": true/false,
+  "issues": ["problem 1", "problem 2"],
+  "forbidden_phrases_found": ["frase 1"],
+  "severity": "ok" | "warning" | "reject"
+}

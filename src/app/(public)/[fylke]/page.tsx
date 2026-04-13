@@ -407,7 +407,7 @@ export default async function FylkePage({ params }: Props) {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { tittel: "Tilstandsrapport", beskrivelse: "Obligatorisk ved boligsalg. Dokumenterer teknisk tilstand.", href: "/blogg/tilstandsrapport-guide" },
+            { tittel: "Tilstandsrapport", beskrivelse: "Vanlig og sterkt anbefalt ved boligsalg. Dokumenterer teknisk tilstand.", href: "/blogg/tilstandsrapport-guide" },
             { tittel: "Verditakst", beskrivelse: "Verdivurdering ved refinansiering, arv eller skifte.", href: "/blogg/verditakst-hva-er-det" },
             { tittel: "Skadetakst", beskrivelse: "Skadedokumentasjon for forsikringsoppgjør.", href: "/blogg/hva-er-skadetakst" },
             { tittel: "Næringstakst", beskrivelse: "Verdivurdering av næringseiendommer.", href: "/blogg/naeringstakst-bedrifter" },

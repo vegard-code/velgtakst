@@ -1,0 +1,388 @@
+{
+  "_meta": {
+    "versjon": "1.0",
+    "beskrivelse": "Fagterminologi for ARKAT-generering. Hver underenhet har termer, typiske årsaker, risikoer, konsekvenser og tiltak per TG.",
+    "dekning": [
+      "grunn_og_fundamenter/terrengforhold",
+      "grunn_og_fundamenter/fuktsikring_og_drenering",
+      "vatrom/overflater",
+      "vatrom/membran_tettesjikt",
+      "vinduer_og_utvendige_dorer/vinduer",
+      "tak/taktekking"
+    ]
+  },
+
+  "grunn_og_fundamenter": {
+    "terrengforhold": {
+      "fagtermer": [
+        "terrengfall", "grunnmur", "overflatevann", "bortledning av vann",
+        "terrengnivå", "avstand fra grunnmur", "fylling", "pukk",
+        "plastring", "tilbakefylling", "selvdrenerende masser",
+        "3-meters sone", "fallretning", "grunnforhold", "infiltrasjon"
+      ],
+      "observasjonsmarkorer": {
+        "fall": ["fall", "terrengfall", "helling", "skråning", "stigning"],
+        "vann": ["overflatevann", "vannansamling", "oppdemming", "nedbør", "avrenning"],
+        "avstand": ["avstand", "meter", "grunnmur", "3,00", "3 meter"],
+        "fyll": ["fylling", "tilbakefylling", "masser", "grunn", "pukk"],
+        "beplantning": ["beplantning", "vegetasjon", "vekst", "røtter", "busker"]
+      },
+      "TG2": {
+        "arsaker": [
+          "Terrengfallet i sonen nærmest grunnmuren er ikke tilstrekkelig til å lede overflatevann effektivt bort fra konstruksjonen.",
+          "Terrenget i 3-meters sonen rundt bygget har utilstrekkelig fall, slik at overflatevann ikke ledes bort fra grunnmuren i tilstrekkelig grad.",
+          "Terrengnivået langs deler av grunnmuren gir begrenset fall utover, noe som reduserer bortledning av overflatevann.",
+          "Tilbakefylte masser langs grunnmur har sunket eller komprimert seg over tid, og gir nå redusert terrengfall."
+        ],
+        "risikoer": [
+          "Utilstrekkelig terrengfall øker fuktbelastningen mot grunnmur og kan over tid føre til fuktgjennomslag til konstruksjoner under terreng.",
+          "Med redusert fall i 3-meters sonen vil overflatevann bli stående lenger mot grunnmuren, noe som belaster fuktsikringen utover det den er dimensjonert for.",
+          "Økt fuktpåkjenning mot grunnmur og kjellervegger kan over tid føre til fuktrelaterte skader innvendig."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til terrengjustering for å oppnå tilfredsstillende fallforhold bort fra grunnmuren.",
+          "Dersom terrengfallet ikke utbedres, kan det oppstå fuktproblemer i underliggende konstruksjoner som medfører mer omfattende utbedringskostnader.",
+          "Uten korrigering av terrengforhold vil fuktbelastningen mot grunnmuren vedvare, med risiko for gradvis forverring."
+        ],
+        "tiltak": [
+          "Terrenget i 3-meters sonen bør justeres slik at det oppnås tilstrekkelig fall bort fra grunnmuren. Bruk selvdrenerende masser som pukk eller grus ved tilbakefylling.",
+          "Det anbefales å bygge opp terrenget langs grunnmuren med egnet fyllmasse for å oppnå minimum 1:50 fall i de første 3 meterne fra vegg.",
+          "Terrenget bør omprofileres med fall bort fra bygget. Eventuell beplantning tett inntil grunnmur bør fjernes for å redusere fuktbelastning."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Terrenget faller mot grunnmuren i stedet for bort fra den, slik at overflatevann aktivt ledes inn mot konstruksjonen.",
+          "Det er påvist vesentlig manglende terrengfall kombinert med synlig vannansamling langs grunnmuren etter nedbør.",
+          "Terrengnivået ligger stedvis over fuktsikringens overkant, slik at overflatevann kan trenge direkte inn bak grunnmurens fuktsikring."
+        ],
+        "risikoer": [
+          "Feil fallretning på terrenget gir direkte vanntransport mot grunnmur, med betydelig risiko for fuktinntrengning i bærende konstruksjoner.",
+          "Vedvarende fuktbelastning mot grunnmuren kan føre til soppvekst, råteskader i bjelkelag og nedbrytning av isolasjon i konstruksjoner under terreng.",
+          "Kombinasjonen av manglende terrengfall og overvann mot grunnmur representerer en akutt risiko for fuktskade i kjeller- eller underetasje."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til omprofilering av terreng, eventuelt supplert med drenering og fuktsikringstiltak.",
+          "Uten utbedring er det stor sannsynlighet for at fuktskader vil utvikle seg eller forverres, med tilhørende merkostnader.",
+          "Forholdene kan medføre behov for utgraving, ny drenering og reparasjon av eventuelt skadet bjelkelag eller isolasjon."
+        ],
+        "tiltak": [
+          "Terrenget må omprofileres slik at fall ledes bort fra grunnmuren. Ved terreng som ligger over fuktsperren, må terrengnivået senkes. Vurder samtidig tilstand på drenering.",
+          "Omlegging av terreng bør kombineres med inspeksjon av dreneringssystemet. Dersom drenering er eldre enn 20-30 år, bør utskifting vurderes samtidig.",
+          "Det anbefales å engasjere fagkyndig for å prosjektere terrengløsning som ivaretar fallforhold, fuktsikring og eventuell beplantning."
+        ]
+      }
+    },
+
+    "fuktsikring_og_drenering": {
+      "fagtermer": [
+        "drenering", "drensrør", "drensgrøft", "kum", "tilbakeslagsventil",
+        "grunnmurplate", "fuktsikring", "radonsperre", "membran",
+        "grunnmursplast", "avskjæringsgrøft", "infiltrasjon",
+        "vanntrykk", "kapillærbrytende lag", "singel", "filterduk",
+        "grunnvannstand", "pumpekum", "levetid drenering"
+      ],
+      "observasjonsmarkorer": {
+        "drenering": ["drener", "drensrør", "grøft", "kum", "drensystem"],
+        "fukt": ["fukt", "vått", "fuktig", "vanninntrenging", "fuktmerke"],
+        "alder": ["alder", "gammel", "opprinnelig", "byggeår", "levetid", "år"],
+        "membran": ["membran", "grunnmursplast", "plast", "fuktsikring", "tetting"],
+        "pumpe": ["pumpe", "pumpekum", "tilbakeslag", "ventil"]
+      },
+      "TG2": {
+        "arsaker": [
+          "Dreneringssystemet har ukjent alder eller nærmer seg forventet levetid på 20-30 år, og det foreligger ikke dokumentasjon på vedlikehold eller inspeksjon.",
+          "Det er observert tegn til redusert dreneringskapasitet, som sporadisk fuktighet på innvendig grunnmur eller kjellergulv etter kraftig nedbør.",
+          "Grunnmursplasten har synlige skader eller er av eldre type uten knaster, noe som gir begrenset fuktsikring mot jordtrykk."
+        ],
+        "risikoer": [
+          "Eldre drenering kan ha redusert kapasitet grunnet gjenslamming eller setninger, noe som øker risikoen for fuktgjennomslag ved høy vannstand.",
+          "Utilstrekkelig fuktsikring av grunnmur belaster konstruksjonen ved vedvarende fuktpåkjenning, med gradvis risiko for fuktrelaterte skader.",
+          "Uten kjent tilstand på dreneringen er det vanskelig å vurdere gjenværende levetid, og uforutsette feil kan gi plutselig vanninntrenging."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne at drenering og fuktsikring kan kreve utbedring innen relativt kort tid, avhengig av faktisk tilstand og alder.",
+          "Dersom drenering svikter, vil utbedringskostnaden inkludere graving, nye drensrør, filtermasser og eventuelt ny grunnmursplast.",
+          "Det anbefales å ta høyde for dreneringsutgifter i vedlikeholdsplanlegging for eiendommen."
+        ],
+        "tiltak": [
+          "Det anbefales spyling og TV-inspeksjon av eksisterende drenering for å avklare faktisk tilstand og gjenværende levetid.",
+          "Ved alder over 25 år bør utskifting av drenering planlegges. Arbeidet bør inkludere ny filterduk, drensrør, kapillærbrytende lag og grunnmursplast med knaster.",
+          "Fuktsikring av grunnmur bør vurderes oppgradert i forbindelse med eventuell dreneringsutskifting."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv vanninntrenging gjennom grunnmur eller kjellergulv, noe som tyder på svikt i drenering eller fuktsikring.",
+          "Dreneringen er dokumentert eldre enn 30 år uten vedlikehold, og det er registrert stående vann eller gjentakende fukt innvendig.",
+          "Fuktsikringen av grunnmur mangler eller er vesentlig skadet, slik at jordtrykk og fukt trenger uhindret inn i konstruksjonen."
+        ],
+        "risikoer": [
+          "Aktiv vanninntrenging gir direkte risiko for råteskader i bjelkelag, soppvekst og nedbrytning av isolasjon og innvendig kledning.",
+          "Svikt i drenering kan føre til økt vanntrykk mot grunnmur, med fare for strukturelle setninger og ytterligere skade på fuktsikring.",
+          "Vedvarende fukt i konstruksjoner under terreng skaper grobunn for muggsopp og kan gi inneklimautfordringer."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne vesentlige kostnader til fullstendig utskifting av drenering og etablering av ny fuktsikring mot grunnmur.",
+          "I tillegg til selve dreneringsarbeidet kan det være behov for utbedring av fuktskadede konstruksjoner innvendig.",
+          "Dersom forholdene ikke utbedres, vil skadeomfanget øke og kostnadene stige vesentlig over tid."
+        ],
+        "tiltak": [
+          "Fullstendig utskifting av dreneringssystem anbefales, inkludert nye drensrør, kum, filterduk, kapillærbrytende lag og ny grunnmursplast.",
+          "Arbeidet bør utføres av kvalifisert entreprenør. Samtidig bør innvendige konstruksjoner under terreng inspiseres for fuktskader og utbedres ved behov.",
+          "Det anbefales å etablere pumpekum med tilbakeslagsventil dersom eiendommen ligger lavt i terrenget eller har historikk med vanninntrengning."
+        ]
+      }
+    }
+  },
+
+  "vatrom": {
+    "overflater": {
+      "fagtermer": [
+        "flis", "fugemasse", "silikonfuge", "flislegging",
+        "våtromsnorm", "våtromsplater", "belegg", "epoxy",
+        "sparkel", "sementbasert", "keramisk flis",
+        "veggflis", "gulvflis", "overgang gulv/vegg",
+        "membran bak flis", "hulrom bak flis", "misfarging"
+      ],
+      "observasjonsmarkorer": {
+        "flis": ["flis", "fliser", "keramisk", "gulvflis", "veggflis"],
+        "fuge": ["fuge", "fugemasse", "silikon", "silikonfuge", "fugeskade"],
+        "sprekk": ["sprekk", "riss", "brudd", "knekt", "løs"],
+        "fukt": ["fukt", "misfarging", "mørke flekker", "kalkutslag", "vått"],
+        "belegg": ["belegg", "vinyl", "maling", "overflatebehandling"]
+      },
+      "TG2": {
+        "arsaker": [
+          "Det er observert skadet eller manglende fugemasse mellom fliser og i overgang mellom gulv og vegg, noe som reduserer overflatenes evne til å holde vann ute av konstruksjonen.",
+          "Eldre silikonfuger i våtsonen har løsnet eller sprukket, slik at vann kan trenge bak overflaten ved normal bruk av rommet.",
+          "Det er registrert enkelte løse eller sprukne fliser. Skadene er begrenset i omfang, men svekker overflatens tetthet lokalt."
+        ],
+        "risikoer": [
+          "Skadet fugemasse eller løse fliser kan tillate fuktinntrengning bak overflaten. Dersom underliggende membran er intakt, er risikoen begrenset, men forverring over tid er sannsynlig.",
+          "Utilstrekkelig tetting i fuger ved vannutsatte soner øker faren for at vanndamp og sprut trenger bak flis og belaster membran og underlag.",
+          "Dersom flisoverflaten ikke vedlikeholdes, vil skadeomfanget gradvis øke og kan over tid medføre behov for full rehabilitering av våtrommet."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til omfuging og utskifting av skadede fliser. Omfanget avhenger av hvor utbredt skadene er.",
+          "Vedlikehold av fuger og overflater er normalt løpende, men skadens karakter tilsier at det bør utføres relativt snart.",
+          "Dersom kun fuger og enkeltfliser er berørt, er utbedringskostnaden moderat. Full rehabilitering er vesentlig dyrere."
+        ],
+        "tiltak": [
+          "Skadet silikonfuge bør skjæres ut og erstattes med ny våtromsgodkjent silikon. Sprukne eller løse fliser bør skiftes ut og fuges på nytt.",
+          "Det anbefales å kontrollere tilstanden bak berørte fliser ved utskifting, for å avklare om membran og underlag er intakt.",
+          "Fuger i overganger mellom gulv og vegg samt rundt sluk og gjennomføringer bør gjennomgås og utbedres ved behov."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist omfattende skade på flisoverflater med utbredte løse fliser, knekte fliser og manglende fugemasse over store deler av våtrommet.",
+          "Hulrom bak fliser er registrert ved banking, og det er synlige tegn til fuktgjennomslag som misfarging, kalkutslag eller mørke felter i fuger.",
+          "Overflatebehandlingen i våtrommet er utført i strid med gjeldende våtromsnorm, eller er så nedslitt at den ikke lenger gir tilstrekkelig beskyttelse av underliggende konstruksjon."
+        ],
+        "risikoer": [
+          "Omfattende overflateskader i kombinasjon med fukt bak fliser gir direkte risiko for skade på membran, underlag og bærende konstruksjoner.",
+          "Vedvarende fuktbelastning gjennom skadet overflate kan føre til soppvekst, råte i trevirke og nedbrytning av gipsplater og isolasjon.",
+          "Dersom membranen allerede er kompromittert, vil videre bruk av våtrommet uten utbedring medføre akselererende skade i skjulte konstruksjoner."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne full rehabilitering av våtrommet, inkludert riving av eksisterende overflater, ny membran, nye fliser og nye fuger.",
+          "Totalkostnaden for våtromsrehabilitering er betydelig og avhenger av rommets størrelse og omfanget av underliggende skader.",
+          "Det bør tas høyde for at skjulte skader i konstruksjonen kan øke omfanget og kostnaden utover selve overflatearbeidet."
+        ],
+        "tiltak": [
+          "Våtrommet bør rehabiliteres i sin helhet. Eksisterende overflater rives, tilstand på membran og underlag kartlegges, og nye overflater etableres i henhold til gjeldende våtromsnorm.",
+          "Under rehabilitering bør bjelkelag og underlaget inspiseres for fukt- og soppskader. Skadet trevirke eller gipsplater må utskiftes.",
+          "Arbeidet bør utføres av våtromssertifisert håndverker, og det bør innhentes dokumentasjon på utførelse i henhold til gjeldende norm."
+        ]
+      }
+    },
+
+    "membran_tettesjikt": {
+      "fagtermer": [
+        "membran", "tettesjikt", "smøremembran", "foliert membran",
+        "våtromsnorm", "NS 3420", "oppbrett", "slukmansjett",
+        "gjennomføring", "rørmansjett", "overlapp", "primer",
+        "tørketid", "tykkelse", "membrantype", "Schlüter", "Mapei"
+      ],
+      "observasjonsmarkorer": {
+        "membran": ["membran", "tettesjikt", "smøremembran", "folie"],
+        "sluk": ["sluk", "mansjett", "slukmansjett", "slukring"],
+        "gjennomforing": ["gjennomføring", "rørmansjett", "rørgjennomføring", "penetrasjon"],
+        "alder": ["alder", "gammel", "opprinnelig", "byggeår", "renovert", "rehabilitert"],
+        "lekkasje": ["lekkasje", "vannskade", "fuktskade", "vanngjennomslag"]
+      },
+      "TG2": {
+        "arsaker": [
+          "Membran eller tettesjikt er av eldre dato, og det foreligger ikke dokumentasjon på type membran, utførende firma eller samsvar med gjeldende våtromsnorm.",
+          "Det er observert usikkerhet knyttet til membranens tilstand ved gjennomføringer og rundt sluk, uten at det er påvist aktiv lekkasje.",
+          "Våtrommet er oppgitt å være bygget eller renovert før gjeldende våtromsnorm, noe som gir usikkerhet om tettesjiktets kvalitet og utførelse."
+        ],
+        "risikoer": [
+          "Membran uten kjent alder eller dokumentasjon representerer en usikkerhet. Dersom membranen svikter, vil vannskade kunne utvikle seg skjult over tid.",
+          "Eldre membraner kan ha redusert elastisitet og vedheft, slik at bevegelser i konstruksjonen kan gi sprekkdannelse i tettesjiktet.",
+          "Manglende dokumentasjon gjør det vanskelig å vurdere gjenværende levetid, og det kan ikke utelukkes svakheter ved kritiske punkter."
+        ],
+        "konsekvenser": [
+          "Kjøper bør være klar over at membranens tilstand og gjenværende levetid er usikker, og bør ta høyde for mulig behov for våtromsrehabilitering.",
+          "Kostnaden for å erstatte membran og tettesjikt er knyttet til full rehabilitering av våtrommet, inkludert riving og nye overflater.",
+          "Ved salg kan usikker membrankvalitet påvirke eiendommens verdi eller forsikringsvilkår."
+        ],
+        "tiltak": [
+          "Det anbefales å forsøke å fremskaffe dokumentasjon på membrantype og utførende firma. Dersom dette ikke er mulig, bør fuktsøk utføres for å avklare tilstanden.",
+          "Alternativt kan det utføres prøveåpning ved et kritisk punkt (f.eks. rundt sluk) for å vurdere membranens tilstand visuelt.",
+          "Ved planlagt oppgradering av overflater bør det samtidig etableres ny membran i henhold til gjeldende våtromsnorm."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist svikt i membran eller tettesjikt, dokumentert gjennom fuktmåling, synlig lekkasje eller vannskade i underliggende konstruksjon.",
+          "Membran mangler helt eller er utført med vesentlige feil, slik som manglende oppbrett, manglende slukmansjett eller utilstrekkelig overlapp.",
+          "Aktiv fuktgjennomgang er registrert ved gjennomføringer eller i overgang mellom gulv og vegg, noe som indikerer svikt i tettesjiktet."
+        ],
+        "risikoer": [
+          "Svikt i membran gir direkte vanngjennomgang til underliggende konstruksjoner. Dette medfører akutt risiko for råte, soppvekst og strukturelle skader.",
+          "Vedvarende lekkasje gjennom sviktende tettesjikt kan gi omfattende skjulte skader i bjelkelag, isolasjon og tilstøtende rom.",
+          "Vannlekkasje fra våtrom kan også skade underliggende etasjer og medføre erstatningskrav dersom det er snakk om flermannsbolig."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne full rehabilitering av våtrommet med ny membran, nye overflater og eventuell utbedring av konstruksjonsskader.",
+          "Kostnaden vil avhenge av skadens omfang i underliggende konstruksjoner. Erfaringsmessig er dette blant de mest kostbare utbedringene på en bolig.",
+          "Inntil utbedring er gjennomført, bør bruk av våtrommet begrenses for å unngå ytterligere skade."
+        ],
+        "tiltak": [
+          "Våtrommet må rehabiliteres med ny membran i henhold til gjeldende våtromsnorm. All eksisterende overflate og gammelt tettesjikt fjernes. Underlaget inspiseres for skader.",
+          "Bjelkelag og konstruksjoner rundt våtrommet må kontrolleres for fukt, sopp og råte. Skadet materiale byttes ut.",
+          "Arbeidet må utføres av våtromssertifisert håndverker. Det bør kreves skriftlig dokumentasjon på utførelse, membrantype og samsvar med norm."
+        ]
+      }
+    }
+  },
+
+  "vinduer_og_utvendige_dorer": {
+    "vinduer": {
+      "fagtermer": [
+        "vindusramme", "karm", "varevindusløsning", "isolerglass",
+        "trelags glass", "energiglass", "kondensering", "duggdannelse",
+        "punktert glass", "tettelister", "beslag", "vannbord",
+        "vindusfuge", "utforingskarm", "innfesting",
+        "vindusåpner", "ventil", "U-verdi", "luftlekkasje"
+      ],
+      "observasjonsmarkorer": {
+        "glass": ["glass", "isolerglass", "rute", "punktert", "dugg", "kondens"],
+        "karm": ["karm", "ramme", "vindusramme", "utforing", "tre"],
+        "tetting": ["tetteliste", "fuge", "fuging", "tetting", "luft", "trekk"],
+        "beslag": ["beslag", "vannbord", "avrenning", "overgang"],
+        "alder": ["alder", "gammel", "opprinnelig", "byggeår", "utskiftet"]
+      },
+      "TG2": {
+        "arsaker": [
+          "Det er registrert punktert isolerglass i ett eller flere vinduer, synlig som dugg eller belegg mellom glassene som ikke lar seg tørke bort.",
+          "Tettelister i vinduer er slitt eller mangler, slik at det registreres merkbar luftlekkasje ved karm eller ramme.",
+          "Vindusbeslag eller vannbord har mangler som gjør at regnvann ikke ledes tilstrekkelig bort fra karm og kan trenge inn i konstruksjonen over tid."
+        ],
+        "risikoer": [
+          "Punktert isolerglass gir redusert varmeisolasjonsevne og økt energiforbruk. Vinduer med punkterte glass har også økt risiko for kondensering på innvendig overflate.",
+          "Slitte tettelister gir luftlekkasje som reduserer komfort og øker oppvarmingskostnader. I tillegg kan fukt fra romluft kondensere i konstruksjonen bak karmen.",
+          "Mangelfull beslagføring medfører risiko for fuktinntrengning i veggkonstruksjonen rundt vinduet over tid."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til utskifting av punkterte glass og eventuelt fornyelse av tettelister.",
+          "Kostnad for utskifting av isolerglass varierer med størrelse og antall vinduer. Tettelister er en relativt rimelig utbedring.",
+          "Dersom beslag er mangelfulle, bør dette utbedres for å forhindre fuktskade i veggkonstruksjonen."
+        ],
+        "tiltak": [
+          "Punkterte glass bør skiftes ut. Det anbefales å vurdere oppgradering til energiglass ved utskifting.",
+          "Tettelister i vinduer med merkbar luftlekkasje bør fornyes. Kontroller også at karmen er tett mot vegg.",
+          "Beslag og vannbord bør kontrolleres og utbedres slik at regnvann ledes bort fra karm og veggkonstruksjon."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist råteskader i vinduskarm eller ramme, med synlig nedbrytning av trevirket og svekket konstruktiv integritet.",
+          "Flere vinduer har omfattende punktering, slitte karmer og mangelfull tetting, og vinduene er generelt i svært dårlig stand med behov for utskifting.",
+          "Det er registrert aktiv fuktinntrengning rundt vinduer ved slagregn, med synlige vannskader på innvendig listverk og veggflate."
+        ],
+        "risikoer": [
+          "Råte i vinduskarm eller ramme svekker vinduets funksjon og kan spre seg til tilstøtende veggkonstruksjon dersom det ikke utbedres.",
+          "Aktiv fuktinntrengning rundt vinduer gir direkte risiko for fuktskade i isolasjon, dampsperre og bærende konstruksjon bak vinduet.",
+          "Vinduer i svært dårlig stand har vesentlig redusert isolasjonsevne og vindtetthet, med merkbart energitap og komforttap."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne utskifting av berørte vinduer. Avhengig av omfang kan dette representere en vesentlig kostnad.",
+          "Ved råteskader som har spredt seg til veggkonstruksjonen, vil utbedringskostnaden øke vesentlig utover selve vindusutskiftingen.",
+          "Det bør tas høyde for at tilstøtende konstruksjon kan være skadet og kreve utbedring i forbindelse med vindusbytte."
+        ],
+        "tiltak": [
+          "Berørte vinduer bør skiftes ut i sin helhet. Ved utskifting må tilstøtende veggkonstruksjon kontrolleres for fukt- og råteskader.",
+          "Nye vinduer bør monteres med korrekt fuge-utførelse og beslag i henhold til monteringsanvisning og gjeldende krav.",
+          "Dersom flere vinduer er berørt, bør det innhentes tilbud på samlet utskifting. Vurder energiglass med lav U-verdi."
+        ]
+      }
+    }
+  },
+
+  "tak": {
+    "taktekking": {
+      "fagtermer": [
+        "takstein", "betongtakstein", "tegltakstein", "takpapp",
+        "shingel", "stålplater", "profilerte plater", "undertak",
+        "undertaksbane", "lekter", "sløyfer", "mønekam", "møne",
+        "overlapp", "vindavheving", "snøfanger", "takrenner",
+        "innfesting", "ventilering", "lufting under tak"
+      ],
+      "observasjonsmarkorer": {
+        "stein": ["takstein", "stein", "betong", "tegl", "panne"],
+        "plater": ["plate", "stålplate", "profilerte", "bølgeblekk"],
+        "papp": ["papp", "takpapp", "shingel", "belegg"],
+        "skade": ["knekt", "sprukket", "løs", "forskjøvet", "mangl"],
+        "alder": ["alder", "gammel", "opprinnelig", "byggeår", "levetid"],
+        "mose": ["mose", "alge", "begroing", "lav", "grønt"]
+      },
+      "TG2": {
+        "arsaker": [
+          "Det er observert spredte knekte eller forskjøvne taksteiner. Skadene er begrenset i omfang, men reduserer tekkingenes tetthet lokalt.",
+          "Taktekkingens alder tilsier at den nærmer seg forventet levetid, og det er synlige tegn til slitasje som avflassing, begroing eller mosegrodd.",
+          "Mønekam eller beslag ved gjennomføringer har synlige mangler som kan redusere tetthet ved slagregn eller snøsmelting."
+        ],
+        "risikoer": [
+          "Knekte eller forskjøvne taksteiner kan tillate vanninntrengning til undertak. Dersom undertaket er intakt, er risikoen begrenset, men bør utbedres.",
+          "Tekking som nærmer seg levetidsgrensen vil ha økende frekvens av skader og lekkasjer, med tilhørende risiko for skade på underliggende konstruksjoner.",
+          "Mangelfull mønekam eller beslag øker risikoen for vanninntrenging ved spesielt utsatte punkter på taket."
+        ],
+        "konsekvenser": [
+          "Kjøper bør påregne kostnad til utskifting av skadede taksteiner og utbedring av beslag. Ved eldre tekking bør det planlegges for omtekking.",
+          "Løpende reparasjoner er mulig på kort sikt, men dersom tekkingen nærmer seg levetid, vil fullstendig omtekking bli nødvendig.",
+          "Omtekking er en vesentlig vedlikeholdskostnad som bør hensyntas i kjøpsvurderingen."
+        ],
+        "tiltak": [
+          "Skadede taksteiner bør skiftes ut. Mønekam og beslag bør kontrolleres og utbedres der det er registrert mangler.",
+          "Dersom tekkingen er eldre enn forventet levetid, bør det planlegges for omtekking. Samtidig bør tilstand på undertak og lekter vurderes.",
+          "Eventuell begroing bør fjernes for å forhindre at fukt holdes mot tekkingen og fremskynder nedbrytning."
+        ]
+      },
+      "TG3": {
+        "arsaker": [
+          "Det er påvist aktiv vanninntrengning gjennom taktekking, med synlige fuktskader på undertak, lekter eller i konstruksjoner under taket.",
+          "Taktekkingens tilstand er så dårlig at den ikke lenger gir tilstrekkelig beskyttelse — med utbredte knekte steiner, manglende steiner eller gjennomgående slitasje.",
+          "Undertaket har synlige skader eller mangler, slik at taktekkingens evne til å beskytte konstruksjonen er vesentlig svekket."
+        ],
+        "risikoer": [
+          "Aktiv lekkasje gjennom tak gir direkte risiko for råteskader i bærende takkonstruksjon, bjelkelag og isolasjon.",
+          "Vedvarende fukt i takkonstruksjonen kan føre til soppvekst og strukturell svekkelse som i verste fall påvirker takets bæreevne.",
+          "Lekkasje fra tak kan også gi vannskader i underliggende etasjer og på innvendig overflatebehandling."
+        ],
+        "konsekvenser": [
+          "Kjøper må påregne fullstendig omtekking av taket, med sannsynlig behov for samtidig utskifting av undertak, lekter og eventuelt skadet bærekonstruksjon.",
+          "Totalkostnaden avhenger av skadens omfang og takets areal. Omtekking med undertak er en av de større vedlikeholdspostene på en bolig.",
+          "Dersom bærende konstruksjoner er skadet, vil kostnaden øke vesentlig utover selve tekkingsarbeidet."
+        ],
+        "tiltak": [
+          "Taket bør tekkes om i sin helhet. Ved omtekking må undertak, lekter og sløyfer kontrolleres og skiftes ut der det er registrert skade.",
+          "Bærende takkonstruksjon bør inspiseres for råte og soppskader. Skadet trevirke må utskiftes eller forsterkes.",
+          "Arbeidet bør utføres av kvalifisert takentreprenør. Det bør velges tekking med dokumentert levetid tilpasset klimabelastningen på stedet."
+        ]
+      }
+    }
+  }
+}

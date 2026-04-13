@@ -1,0 +1,56 @@
+Generer ARKAT (Årsak, Risiko, Konsekvens, Anbefalt tiltak) basert på følgende input fra takstmannen.
+
+INPUT:
+- Bygningsdel: {{bygningsdel_label}}
+- Underenhet: {{underenhet_label}}
+- Tilstandsgrad: {{tilstandsgrad}} (IKKE endre eller diskuter denne)
+- Hovedgrunnlag: {{hovedgrunnlag_label}}
+- Tillegg: {{tillegg_labels}}
+- Akuttgrad: {{akuttgrad_label}}
+- Lengde: {{onsket_lengde}}
+- Observasjon: {{observasjon}}
+
+RELEVANTE FAGTERMER:
+{{fagtermer}}
+
+EKSEMPLER PÅ GODE FORMULERINGER FOR DENNE UNDERENHETEN OG TG:
+Årsak-eksempler:
+{{eksempel_arsaker}}
+
+Risiko-eksempler:
+{{eksempel_risikoer}}
+
+Konsekvens-eksempler:
+{{eksempel_konsekvenser}}
+
+Tiltak-eksempler:
+{{eksempel_tiltak}}
+
+FORBUDTE FRASER (bruk ALDRI disse):
+{{forbudte_fraser}}
+
+INSTRUKSJONER:
+1. Les observasjonen nøye. Identifiser den konkrete skaden/mangelen.
+2. Formuler ÅRSAK: Hva er avviket og hvorfor har det oppstått? Knytt direkte til observasjonen. Ikke gjenta observasjonen ordrett — reformuler faglig.
+3. Formuler RISIKO: Hva kan skje dersom dette ikke utbedres? Beskriv den fysiske mekanismen (fukt, råte, setning, etc.).
+4. Formuler KONSEKVENS: Hva betyr dette for kjøper? Vær konkret om hva de bør ta høyde for.
+5. Formuler ANBEFALT TILTAK: Hva bør gjøres? Vær spesifikk. Nevn type arbeid, type fagperson, og eventuell hastegrad.
+
+LENGDE:
+- «kort»: 1-2 setninger per felt.
+- «normal»: 2-4 setninger per felt.
+
+KRAV:
+- Bruk relevante fagtermer naturlig, ikke tving dem inn.
+- La deg inspirere av eksemplene, men TILPASS til den spesifikke observasjonen. Ikke kopier eksempler ordrett.
+- Hver ARKAT-tekst skal være spesifikk for denne observasjonen — ikke generisk.
+- Kontroller at ingen forbudte fraser forekommer i output.
+- Dersom akuttgrad er «haster», gjenspeiles dette eksplisitt i anbefalt tiltak.
+
+RETURNER JSON:
+{
+  "arsak": "...",
+  "risiko": "...",
+  "konsekvens": "...",
+  "anbefalt_tiltak": "..."
+}

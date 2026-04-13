@@ -15,9 +15,13 @@ import { verifyVippsWebhook } from '@/lib/vipps/webhook-auth'
  * Fail-closed: uten gyldig signatur svarer vi 401 og gjør ingen oppdateringer.
  */
 export async function POST(request: NextRequest) {
-  const secret = process.env.VIPPS_RECURRING_WEBHOOK_SECRET
+  // VIPPS_RECURRING_WEBHOOK_SECRET er det foretrukne navnet, men vi faller tilbake
+  // på VIPPS_WEBHOOK_SECRET siden den eksisterer fra før og inneholder HMAC-secret'en
+  // som Vipps returnerte ved webhook-registrering.
+  const secret =
+    process.env.VIPPS_RECURRING_WEBHOOK_SECRET ?? process.env.VIPPS_WEBHOOK_SECRET
   if (!secret) {
-    console.error('[vipps-recurring-webhook] VIPPS_RECURRING_WEBHOOK_SECRET ikke satt')
+    console.error('[vipps-recurring-webhook] Hverken VIPPS_RECURRING_WEBHOOK_SECRET eller VIPPS_WEBHOOK_SECRET er satt')
     return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
   }
 

@@ -1,0 +1,104 @@
+{
+  "_meta": {
+    "versjon": "1.0",
+    "beskrivelse": "Fraser som er for generiske, typiske AI-formuleringer eller innholdsløse vendinger. Disse skal aldri forekomme i ARKAT-output. Brukes til post-validering og som negativ-instruks i prompts."
+  },
+
+  "forbidden": [
+    {
+      "phrase": "avvik fra normalt forventet tilstand",
+      "grunn": "Innholdsløs — sier ingenting om hva avviket faktisk er."
+    },
+    {
+      "phrase": "kjøper bør være oppmerksom på forholdet",
+      "grunn": "Generisk frase som ikke gir kjøper noe å handle på."
+    },
+    {
+      "phrase": "risikoen vurderes som moderat på nåværende tidspunkt",
+      "grunn": "Vag — unngå subjektive graderinger uten konkret begrunnelse."
+    },
+    {
+      "phrase": "eventuelt kan fagkyndig konsulteres",
+      "grunn": "Passiv og uforpliktende. Enten anbefal fagkyndig eller la være."
+    },
+    {
+      "phrase": "følges opp med egnet tiltak",
+      "grunn": "Sier ikke hva tiltaket er. ARKAT skal foreslå konkrete tiltak."
+    },
+    {
+      "phrase": "det kan medføre behov for",
+      "grunn": "Vag hedge. Si hva behovet er direkte."
+    },
+    {
+      "phrase": "forholdet representerer et avvik",
+      "grunn": "Tautologi — alt som rapporteres er et avvik. Beskriv avviket i stedet."
+    },
+    {
+      "phrase": "kostnadsnivået avhenger av omfang og utførelsesmetode",
+      "grunn": "Generisk og selvsagt. Gi heller indikasjon på hva som typisk inngår."
+    },
+    {
+      "phrase": "videre forverring",
+      "grunn": "Tomt — beskriv hva som forverres og hva konsekvensen er."
+    },
+    {
+      "phrase": "det anbefales at forholdet følges opp",
+      "grunn": "For passivt. Anbefal et spesifikt tiltak."
+    },
+    {
+      "phrase": "på sikt",
+      "grunn": "Upresist. Angi omtrentlig tidshorisont der mulig."
+    },
+    {
+      "phrase": "vurderes som normalt",
+      "grunn": "Frase som hører hjemme i TG1, ikke i ARKAT for TG2/TG3."
+    },
+    {
+      "phrase": "det foreligger risiko for",
+      "grunn": "Passiv konstruksjon. Skriv hva risikoen er direkte."
+    },
+    {
+      "phrase": "kan over tid føre til",
+      "grunn": "For vag uten tidsangivelse. Beskriv mekanismen."
+    },
+    {
+      "phrase": "eiendommens markedsverdi",
+      "grunn": "Takstmannen vurderer tilstand, ikke markedsverdi. Unngå."
+    },
+    {
+      "phrase": "i henhold til gjeldende krav",
+      "grunn": "OK kun hvis kombinert med spesifikk referanse (f.eks. våtromsnorm, TEK)."
+    },
+    {
+      "phrase": "det bør nevnes at",
+      "grunn": "Fyllord. Nevn det direkte i stedet."
+    },
+    {
+      "phrase": "generelt sett",
+      "grunn": "Fyllord som svekker utsagnet."
+    },
+    {
+      "phrase": "det er viktig å understreke",
+      "grunn": "AI-frase. Understrek ved å si det direkte."
+    },
+    {
+      "phrase": "noe som kan ha implikasjoner",
+      "grunn": "Vag — beskriv implikasjonene konkret."
+    }
+  ],
+
+  "soft_warnings": [
+    {
+      "pattern": "bør vurderes",
+      "grunn": "Akseptabelt, men foretrekk konkret anbefaling der mulig."
+    },
+    {
+      "pattern": "kan ikke utelukkes",
+      "grunn": "OK i begrenset bruk, men ikke som eneste risikoformulering."
+    },
+    {
+      "pattern": "erfaringsmessig",
+      "grunn": "Akseptabelt, men unngå overbruk — begrunn med observasjon."
+    }
+  ]
+}

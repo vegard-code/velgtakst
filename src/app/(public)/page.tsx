@@ -233,7 +233,7 @@ export default async function Home() {
               {
                 tittel: "Tilstandsrapport",
                 beskrivelse:
-                  "Obligatorisk ved boligsalg. Dokumenterer boligens tekniske tilstand med tilstandsgrader.",
+                  "Vanlig og sterkt anbefalt ved boligsalg. Dokumenterer boligens tekniske tilstand med tilstandsgrader.",
                 href: "/blogg/tilstandsrapport-guide",
               },
               {

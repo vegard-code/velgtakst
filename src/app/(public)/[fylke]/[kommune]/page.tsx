@@ -185,7 +185,7 @@ function getKommuneFAQ(kommuneNavn: string, _fylkeNavn: string) {
     },
     {
       sporsmal: `Hva er forskjellen på en tilstandsrapport og en verdivurdering?`,
-      svar: `En tilstandsrapport er en grundig teknisk gjennomgang av boligen etter NS 3600-standarden, der tilstanden på alt fra tak til grunnmur vurderes og graderes. En verdivurdering er et kortere dokument som fastsetter boligens markedsverdi, ofte brukt ved refinansiering eller arveoppgjør. Ved boligsalg i ${kommuneNavn} er det tilstandsrapporten som er lovpålagt etter avhendingsloven.`,
+      svar: `En tilstandsrapport er en grundig teknisk gjennomgang av boligen etter NS 3600-standarden, der tilstanden på alt fra tak til grunnmur vurderes og graderes. En verdivurdering er et kortere dokument som fastsetter boligens markedsverdi, ofte brukt ved refinansiering eller arveoppgjør. Ved boligsalg i ${kommuneNavn} er tilstandsrapport ikke lovpålagt, men i praksis brukt i de aller fleste transaksjoner etter lovendringen i 2022.`,
     },
     {
       sporsmal: `Er det krav om tilstandsrapport ved boligsalg i ${kommuneNavn}?`,
@@ -463,7 +463,7 @@ export default async function KommunePage({ params }: Props) {
             {
               tittel: "Tilstandsrapport",
               beskrivelse:
-                "Obligatorisk ved boligsalg. Dokumenterer teknisk tilstand.",
+                "Vanlig og sterkt anbefalt ved boligsalg. Dokumenterer teknisk tilstand.",
               href: "/blogg/tilstandsrapport-guide",
             },
             {

@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
+import { harFeatureTilgang } from '@/lib/feature-tilgang'
 import ForlengForm from './ForlengForm'
+import FeatureToggle from './FeatureToggle'
 
 const FYLKE_NAVN: Record<string, string> = {
   oslo: 'Oslo', rogaland: 'Rogaland', vestland: 'Vestland', trondelag: 'Trøndelag',
@@ -34,11 +36,16 @@ export default async function AdminTakstmannProfilPage({
 
   const { data: takstmann } = await supabase
     .from('takstmann_profiler')
-    .select('id, navn, epost, telefon, tittel, spesialitet, sertifiseringer, created_at, company_id')
+    .select('id, user_id, navn, epost, telefon, tittel, spesialitet, sertifiseringer, created_at, company_id')
     .eq('id', id)
     .maybeSingle()
 
   if (!takstmann) notFound()
+
+  // Hent feature-tilganger for denne brukeren
+  const harArkat = takstmann.user_id
+    ? await harFeatureTilgang(takstmann.user_id, 'arkat_skrivehjelp')
+    : false
 
   // Hent abonnement
   const { data: abonnement } = takstmann.company_id
@@ -167,6 +174,20 @@ export default async function AdminTakstmannProfilPage({
           <p className="text-sm text-[#94a3b8]">Ingen abonnement registrert.</p>
         )}
       </div>
+
+      {/* Feature-tilgang */}
+      {takstmann.user_id && (
+        <div className="bg-white rounded-xl border border-[#e2e8f0] p-6 mb-4">
+          <h2 className="text-sm font-semibold text-[#64748b] uppercase tracking-wider mb-4">Feature-tilgang</h2>
+          <FeatureToggle
+            userId={takstmann.user_id}
+            feature="arkat_skrivehjelp"
+            label="ARKAT Skrivehjelp"
+            beskrivelse="AI-assistert generering av Årsak, Risiko, Konsekvens og Anbefalt tiltak"
+            aktivNå={harArkat}
+          />
+        </div>
+      )}
 
       {/* Fylkesynlighet */}
       <div className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden">

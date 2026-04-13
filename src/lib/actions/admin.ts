@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { settFeatureTilgang, type FeatureNavn } from '@/lib/feature-tilgang'
 
 async function sjekkAdmin() {
   const supabase = await createClient()
@@ -114,4 +115,46 @@ export async function forlengProveperiode(
   revalidatePath('/', 'layout')
 
   return { success: true, nySluttDato: nySluttDato.toISOString() }
+}
+
+/**
+ * Slå feature-tilgang av eller på for en bruker.
+ * Brukes fra admin-panelet for å gi/fjerne tilgang til f.eks. ARKAT Skrivehjelp.
+ *
+ * userId = user_profiles.id (auth.users.id)
+ */
+export async function toggleFeatureTilgang(
+  userId: string,
+  feature: FeatureNavn,
+  aktiv: boolean
+): Promise<{ success?: boolean; error?: string }> {
+  const admin = await sjekkAdmin()
+  if (!admin) return { error: 'Ikke autorisert' }
+  if (!userId || !feature) return { error: 'Mangler userId eller feature' }
+
+  const resultat = await settFeatureTilgang({
+    userId,
+    feature,
+    aktiv,
+    gittAv: admin.id,
+    kilde: 'admin',
+  })
+
+  if (!resultat.success) return { error: resultat.error }
+
+  // Logg hendelsen
+  const supabase = await createServiceClient()
+  void supabase
+    .from('admin_hendelse_logg')
+    .insert({
+      admin_user_id: admin.id,
+      hendelse_type: aktiv ? 'feature_tilgang_gitt' : 'feature_tilgang_fjernet',
+      target_id: userId,
+      target_type: 'bruker',
+      detaljer: { feature, aktiv },
+    })
+
+  revalidatePath('/', 'layout')
+
+  return { success: true }
 }

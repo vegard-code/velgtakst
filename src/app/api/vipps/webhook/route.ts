@@ -20,9 +20,11 @@ import { verifyVippsWebhook } from '@/lib/vipps/webhook-auth'
  *   - FAILED     → noe gikk galt
  */
 export async function POST(request: NextRequest) {
+  // ePayment er foreløpig inaktiv – hvis/når den aktiveres må en egen
+  // HMAC-secret registreres som VIPPS_EPAYMENT_WEBHOOK_SECRET.
   const secret = process.env.VIPPS_EPAYMENT_WEBHOOK_SECRET
   if (!secret) {
-    console.error('[vipps-webhook] VIPPS_EPAYMENT_WEBHOOK_SECRET ikke satt')
+    console.error('[vipps-webhook] VIPPS_EPAYMENT_WEBHOOK_SECRET ikke satt (ePayment er inaktiv)')
     return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 })
   }
 
