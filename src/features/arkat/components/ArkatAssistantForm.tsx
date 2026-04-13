@@ -568,66 +568,6 @@ export default function ArkatAssistantForm() {
             </div>
           )}
 
-          {/* Vis manuelt grunnlag-valg hvis observasjonen er for kort for auto */}
-          {!harAutoGrunnlag && (
-            <div className="space-y-4">
-              {/* Hovedgrunnlag */}
-              <div>
-                <label className="block text-sm font-medium text-[#1e293b] mb-1">
-                  Hovedgrunnlag for vurderingen
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {(
-                    Object.entries(HOVEDGRUNNLAG_LABELS) as [Hovedgrunnlag, string][]
-                  ).map(([key, label]) => (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => handleHovedgrunnlagChange(key)}
-                      className={`px-3 py-2.5 rounded-lg text-sm font-medium border transition-all cursor-pointer text-left ${
-                        hovedgrunnlag === key
-                          ? "bg-[#285982] text-white border-[#285982]"
-                          : "bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#285982] hover:text-[#285982]"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Tillegg */}
-              {hovedgrunnlag && (
-                <div>
-                  <label className="block text-sm font-medium text-[#1e293b] mb-1">
-                    Tillegg{" "}
-                    <span className="font-normal text-[#94a3b8]">(valgfritt — nyanserer grunnlaget)</span>
-                  </label>
-                  <div className="space-y-2">
-                    {tilgjengeligeTillegg.map(([key, label]) => (
-                      <label
-                        key={key}
-                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border cursor-pointer transition-all ${
-                          tillegg.includes(key)
-                            ? "bg-[#f0f4f8] border-[#285982]/40 text-[#1e293b]"
-                            : "bg-white border-[#e2e8f0] text-[#64748b] hover:border-[#285982]/30"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={tillegg.includes(key)}
-                          onChange={() => handleTilleggToggle(key)}
-                          className="w-4 h-4 rounded border-[#cbd5e1] text-[#285982] focus:ring-[#285982]"
-                        />
-                        <span className="text-sm">{label}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Akuttgrad */}
           <div>
             <label className="block text-sm font-medium text-[#1e293b] mb-1">
