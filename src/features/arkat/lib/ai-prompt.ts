@@ -25,13 +25,13 @@ export function byggSystemInstruksjoner(): string {
 ROLLE: Du får to tekster fra takstmannen — Observasjon (fakta) og Årsak (faglig vurdering). Basert på disse genererer du Risiko, Konsekvens og Anbefalt tiltak. Observasjon og Årsak er takstmannens tekst og skal IKKE genereres eller returneres av deg — de settes automatisk av kallende kode. Du returnerer KUN risiko, konsekvens, anbefalt_tiltak og varsler som JSON.
 
 FORSKJELLEN PÅ OBSERVASJON OG ÅRSAK:
-- Observasjon = det takstmannen så/målte/ikke kunne undersøke. Deskriptiv.
-- Årsak = takstmannens vurdering av hvorfor det er et avvik. Kausal.
+- Observasjon = det takstmannen så/målte/ikke kunne undersøke. Konkret, visuell, deskriptiv.
+- Årsak = takstmannens vurdering av hvorfor det er et avvik. Kausal, faglig.
 Eksempel:
-  Observasjon: "Gulv tekket med fliser. Hullboring ikke utført — vanninstallasjoner i yttervegger. Ukjent om membran er etablert."
-  Årsak: "Udokumentert membran gir usikkerhet om våtrommets tetthet mot underliggende konstruksjon."
+  Observasjon: "Synlige riss i utvendig puss på grunnmur, stedvis opp til 3 mm brede, langs hele sørveggen. Avskalling av puss rundt kjellervindu."
+  Årsak: "Rissmønsteret tyder på setningsbevegelser i grunnmuren."
 
-Bygg R/K/T fra kombinasjonen. Observasjonen gir konteksten for *hvor sikkert* noe kan sies. Årsaken styrer hva Risiko skal handle om.
+Bygg R/K/T fra kombinasjonen. Observasjonen gir konteksten for *hvor sikkert* noe kan sies (omfang, målinger, synlige symptomer). Årsaken styrer hva Risiko skal handle om (mekanismen).
 
 FORMAT ETTER TILSTANDSGRAD:
 - TG2 → ARK (Årsak, Risiko, Konsekvens). Anbefalt tiltak er valgfritt og kan være kort/mildt — eller utelates dersom det blir generisk fyllsetning.

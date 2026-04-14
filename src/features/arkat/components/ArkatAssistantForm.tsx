@@ -459,8 +459,8 @@ export default function ArkatAssistantForm() {
               onChange={(e) => setObservasjon(e.target.value)}
               rows={3}
               placeholder={merknadModus
-                ? "F.eks. «Sikringsskap fra 1985 uten overspenningsvern. Ikke kjent om el-tilsyn er gjennomført siste 5 år.»"
-                : "F.eks. «Gulv tekket med fliser. Hullboring ikke utført — vanninstallasjoner i yttervegger. Fukt kontrollert med pigg uten avvik. Ukjent om membran er etablert.»"
+                ? "F.eks. «Sikringsskap fra 1985 med skrusikringer. Synlig spor av varmeutvikling på to sikringer. Overspenningsvern ikke montert.»"
+                : "F.eks. «Synlige riss i utvendig puss på grunnmur, stedvis opp til 3 mm brede, langs hele sørveggen. Avskalling av puss rundt kjellervindu.»"
               }
               className="portal-input resize-y min-h-[80px]"
             />
@@ -485,7 +485,7 @@ export default function ArkatAssistantForm() {
                 value={arsak}
                 onChange={(e) => setArsak(e.target.value)}
                 rows={3}
-                placeholder="F.eks. «Udokumentert membran gir usikkerhet om våtrommets tetthet mot underliggende konstruksjon.» eller «Deformasjoner på nedløpsrør skyldes frostspreng.»"
+                placeholder="F.eks. «Rissmønsteret tyder på setningsbevegelser i grunnmuren.» eller «Deformasjoner på nedløpsrør skyldes frostspreng.»"
                 className="portal-input resize-y min-h-[80px]"
               />
               <p className="text-xs text-[#94a3b8] mt-1">
