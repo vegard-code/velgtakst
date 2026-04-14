@@ -134,41 +134,85 @@ export default async function BloggPost({ params }: Props) {
         </p>
 
         <div className="prose prose-invert max-w-none">
-          {post.innhold.split("\n\n").map((paragraph, i) => {
-            if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
-              return (
-                <h2 key={i} className="text-xl font-bold text-gray-900 mt-8 mb-3">
-                  {paragraph.replace(/\*\*/g, "")}
-                </h2>
-              );
-            }
-            if (paragraph.startsWith("- ")) {
-              return (
-                <ul key={i} className="list-disc list-inside space-y-1 text-gray-600 mb-4">
-                  {paragraph.split("\n").map((line, j) => (
-                    <li key={j}>{parseInline(line.replace(/^- /, ""), `li-${i}-${j}`)}</li>
-                  ))}
-                </ul>
-              );
-            }
-            return (
-              <p key={i} className="text-gray-600 leading-relaxed mb-4">
-                {parseInline(paragraph, `p-${i}`)}
-              </p>
-            );
-          })}
+          {(() => {
+            const paragrafer = post.innhold.split("\n\n");
+            // Sett inn midt-CTA etter ca 40 % av innholdet (men aldri før paragraf 4
+            // og aldri etter de siste 3 paragrafene)
+            const midtIndex = Math.max(4, Math.min(
+              Math.floor(paragrafer.length * 0.4),
+              paragrafer.length - 3
+            ));
+
+            return paragrafer.map((paragraph, i) => {
+              const elementer: React.ReactNode[] = [];
+
+              if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
+                elementer.push(
+                  <h2 key={i} className="text-xl font-bold text-gray-900 mt-8 mb-3">
+                    {paragraph.replace(/\*\*/g, "")}
+                  </h2>
+                );
+              } else if (paragraph.startsWith("- ")) {
+                elementer.push(
+                  <ul key={i} className="list-disc list-inside space-y-1 text-gray-600 mb-4">
+                    {paragraph.split("\n").map((line, j) => (
+                      <li key={j}>{parseInline(line.replace(/^- /, ""), `li-${i}-${j}`)}</li>
+                    ))}
+                  </ul>
+                );
+              } else {
+                elementer.push(
+                  <p key={i} className="text-gray-600 leading-relaxed mb-4">
+                    {parseInline(paragraph, `p-${i}`)}
+                  </p>
+                );
+              }
+
+              // Inline midt-CTA
+              if (i === midtIndex && paragrafer.length >= 8) {
+                elementer.push(
+                  <aside
+                    key={`cta-${i}`}
+                    className="not-prose my-8 bg-gradient-to-br from-accent/10 to-blue-400/5 border border-accent/30 rounded-xl p-5 sm:p-6"
+                  >
+                    <p className="text-gray-900 font-semibold text-base sm:text-lg mb-1">
+                      Trenger du en takstmann der du bor?
+                    </p>
+                    <p className="text-gray-600 text-sm mb-4">
+                      Sammenlign sertifiserte takstmenn i ditt fylke og få tilbud direkte.
+                    </p>
+                    <Link
+                      href="/#fylker"
+                      className="inline-flex items-center gap-2 bg-accent hover:bg-accent/80 text-white font-semibold px-5 py-2.5 rounded-lg transition-all"
+                    >
+                      Finn takstmann i ditt fylke
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </aside>
+                );
+              }
+
+              return elementer;
+            });
+          })()}
         </div>
 
         <div className="gradient-line mt-12 mb-8" />
 
-        {/* CTA */}
-        <div className="bg-card-bg border border-card-border rounded-xl p-6 text-center">
-          <p className="text-gray-600 mb-3">Trenger du en takstmann?</p>
+        {/* Bunn-CTA — forsterket */}
+        <div className="bg-gradient-to-br from-accent/10 to-blue-400/5 border border-accent/30 rounded-xl p-6 sm:p-8 text-center">
+          <p className="text-gray-900 font-bold text-lg sm:text-xl mb-2">
+            Klar til å bestille takst?
+          </p>
+          <p className="text-gray-600 text-sm sm:text-base mb-5 max-w-md mx-auto">
+            Velg fylke, sammenlign sertifiserte takstmenn og få tilbud i dag.
+          </p>
           <Link
             href="/#fylker"
-            className="inline-block bg-accent hover:bg-accent/80 text-white font-semibold px-6 py-2 rounded-lg transition-all"
+            className="inline-flex items-center gap-2 bg-accent hover:bg-accent/80 text-white font-semibold px-7 py-3 rounded-lg transition-all"
           >
             Finn takstmann i ditt fylke
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </article>
