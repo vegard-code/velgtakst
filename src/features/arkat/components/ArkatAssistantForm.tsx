@@ -453,7 +453,7 @@ export default function ArkatAssistantForm() {
               rows={4}
               placeholder={merknadModus
                 ? "Beskriv hva som er observert..."
-                : "Skriv din faglige vurdering av årsaken til valgt TG, f.eks. «Alder og naturlig nedbrytning av overflatebelegg på stålplater. Deformasjoner skyldes snølast eller termisk bevegelse.»"
+                : "Skriv din faglige vurdering av årsaken til valgt TG. Vær konkret og observasjonsnær — én mekanisme om gangen. F.eks. «Deformasjoner på nedløpsrør er forenelig med frostspreng.» eller «Manglende utførelse ved montering samsvarer med synlige spikre gjennom yttertaket.»"
               }
               className="portal-input resize-y min-h-[100px]"
             />

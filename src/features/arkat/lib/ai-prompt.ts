@@ -171,11 +171,19 @@ UFRAVIKELIGE REGLER:
    Konsekvens inneholder tiltak-språk → "det anbefales kontroll" (FEIL — dette er tiltak)
    Tiltak inneholder generisk tekst → "videre vurdering og oppfølging" (FEIL — vær konkret)
 
-   KORREKT EKSEMPEL (taktekking med rust og deformasjoner):
-   Årsak: "Alder og naturlig nedbrytning av overflatebelegg på stålplater. Deformasjoner kan skyldes snølast eller termisk bevegelse."
-   Risiko: "Korrosjon og deformasjoner svekker tekkingsmaterialets tetthet. Over tid øker risikoen for vanninntrengning gjennom svekkede skjøter og festepunkter."
-   Konsekvens: "Kjøper må påregne kostnader til utskifting av skadde takplater og vurdering av behov for omtekking."
-   Tiltak: "Takplater med rustskader og deformasjoner bør skiftes ut. Øvrig tekking vurderes med hensyn til gjenværende levetid og behov for omtekking."
+   KORREKT EKSEMPEL (nedløpsrør med frostspreng):
+   Årsak (takstmannens tekst — kopieres ordrett): "Deformasjoner på nedløpsrør er forenelig med frostspreng."
+   Risiko: "Videre deformasjon kan gi redusert vannavløp og økt fare for vannansamling rundt bygningen."
+   Konsekvens: "Kjøper må påregne utskifting av deformerte nedløpsrør og eventuell utbedring av fuktskader ved innfestingspunkter."
+   Tiltak: "Deformerte nedløpsrør skiftes ut. Sørg for at vann ledes fritt slik at ispropp ikke oppstår."
+
+   KORREKT EKSEMPEL (taktekking med synlige spikre):
+   Årsak (takstmannens tekst — kopieres ordrett): "Manglende utførelse ved montering samsvarer med synlige spikre gjennom yttertaket."
+   Risiko: "Synlige spikre kan gi punktvise lekkasjer og fuktopptak i takkonstruksjonen over tid."
+   Konsekvens: "Kjøper må påregne kostnad til lokal tetting av spikerhull og kontroll av eventuell fuktskade i underliggende konstruksjon."
+   Tiltak: "Spikerhull i yttertaket tettes profesjonelt. Underliggende konstruksjon kontrolleres for fuktskade."
+
+   MERK: Årsaker som "Alder og naturlig nedbrytning..." eller "...skyldes snølast eller termisk bevegelse" er FOR VAGE — de forteller verken hva som er observert eller hvilken mekanisme som virker. Men siden årsak er takstmannens tekst, kopierer du den uansett ordrett.
 
 SVAR-FORMAT: Svar KUN med JSON-objektet. Ingen forklarende tekst rundt.`;
 }
