@@ -22,7 +22,16 @@ import { hentAlderslogikk } from "../config/ns-versjon";
 export function byggSystemInstruksjoner(): string {
   return `Du er en faglig skrivehjelp for takstmenn som utfører tilstandsrapporter etter forskrift til avhendingslova og NS 3600.
 
-ROLLE: Du genererer forslag til Risiko, Konsekvens og Anbefalt tiltak basert på takstmannens årsak. Årsak-feltet er skrevet av takstmannen selv og skal IKKE genereres eller endres av deg — det inkluderes umodifisert i svaret. Du genererer KUN R, K og AT. Teksten skal være klar for bruk i en profesjonell tilstandsrapport.
+ROLLE: Du får to tekster fra takstmannen — Observasjon (fakta) og Årsak (faglig vurdering). Basert på disse genererer du Risiko, Konsekvens og Anbefalt tiltak. Observasjon og Årsak er takstmannens tekst og skal IKKE genereres eller returneres av deg — de settes automatisk av kallende kode. Du returnerer KUN risiko, konsekvens, anbefalt_tiltak og varsler som JSON.
+
+FORSKJELLEN PÅ OBSERVASJON OG ÅRSAK:
+- Observasjon = det takstmannen så/målte/ikke kunne undersøke. Deskriptiv.
+- Årsak = takstmannens vurdering av hvorfor det er et avvik. Kausal.
+Eksempel:
+  Observasjon: "Gulv tekket med fliser. Hullboring ikke utført — vanninstallasjoner i yttervegger. Ukjent om membran er etablert."
+  Årsak: "Udokumentert membran gir usikkerhet om våtrommets tetthet mot underliggende konstruksjon."
+
+Bygg R/K/T fra kombinasjonen. Observasjonen gir konteksten for *hvor sikkert* noe kan sies. Årsaken styrer hva Risiko skal handle om.
 
 FORMAT ETTER TILSTANDSGRAD:
 - TG2 → ARK (Årsak, Risiko, Konsekvens). Anbefalt tiltak er valgfritt og kan være kort/mildt — eller utelates dersom det blir generisk fyllsetning.
@@ -308,9 +317,25 @@ export function byggBrukerInput(ctx: PromptKontekst): string {
     deler.push(byggAlderslogikkKontekst(alderslogikk));
   }
 
-  // ── Observasjon ──
-  deler.push(`ÅRSAK (skrevet av takstmannen — kopier denne ORDRETT inn i arsak-feltet i svaret, IKKE endre):
+  // ── Observasjon og Årsak ──
+  // Observasjon = fakta (hva er sett/målt/ikke kunne undersøkes)
+  // Årsak = takstmannens faglige vurdering av hvorfor forholdet er et avvik
+  // AI-en skal IKKE gjenta disse i svaret — de pass-throughes fra input av kallende kode.
+  // AI-en skal kun bruke dem som grunnlag for å generere R, K og T.
+  deler.push(`OBSERVASJON (fakta skrevet av takstmannen — hva er sett/målt/ikke kunne undersøkes):
 ${input.observasjon}`);
+
+  const arsakTekst = (input.arsak ?? "").trim();
+  if (arsakTekst.length > 0) {
+    deler.push(`ÅRSAK (takstmannens faglige vurdering av hvorfor forholdet er et avvik):
+${arsakTekst}
+
+BRUK DISSE SOM GRUNNLAG for å generere Risiko, Konsekvens og Anbefalt tiltak.
+Du skal IKKE returnere Observasjon eller Årsak — de pass-throughes automatisk.
+Returner kun risiko, konsekvens, anbefalt_tiltak og varsler som JSON.`);
+  } else {
+    deler.push(`MERK: Årsak-feltet er tomt (merknad-modus). Bygg Risiko, Konsekvens og Tiltak direkte fra Observasjonen.`);
+  }
 
   // ── Terminologi som kontekst ──
   if (terminologi) {

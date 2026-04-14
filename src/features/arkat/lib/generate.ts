@@ -240,8 +240,9 @@ async function genererMerknad(
         : [],
     },
     result: {
-      arsak: merknad,        // Vises som "Merknad" i UI
-      risiko: "",             // Ikke brukt i merknad-modus
+      observasjon: obs,        // Pass-through av takstmannens observasjon
+      arsak: merknad,          // Vises som "Merknad" i UI
+      risiko: "",              // Ikke brukt i merknad-modus
       konsekvens,
       anbefalt_tiltak: tiltak,
       modus: "merknad",
@@ -345,7 +346,10 @@ function analyserObservasjon(
   terminologi: UnderenhetTerminologi
 ): ObservasjonsAnalyse {
   const obs = input.observasjon.trim();
-  const matches = finnObservasjonsMatch(terminologi, obs);
+  const arsak = (input.arsak ?? "").trim();
+  // Kombiner observasjon + årsak ved matching så markører i begge teksten fanges
+  const kombinert = arsak.length > 0 ? `${obs}\n${arsak}` : obs;
+  const matches = finnObservasjonsMatch(terminologi, kombinert);
   const advarsler: string[] = [];
 
   // Vurder dekningsgrad
@@ -360,9 +364,9 @@ function analyserObservasjon(
     );
   } else {
     // Sjekk om det er fagtermer selv om markørene ikke matcher
-    const obsLower = obs.toLowerCase();
+    const kombLower = kombinert.toLowerCase();
     const harFagterm = terminologi.fagtermer.some((t) =>
-      obsLower.includes(t.toLowerCase())
+      kombLower.includes(t.toLowerCase())
     );
     dekning = harFagterm ? "svak" : "ingen";
     if (harFagterm) {
@@ -404,13 +408,19 @@ function byggArkat(
   // Referanser — brukes KUN som strukturmal, aldri som direkte kilde
   const risikoRef = finnRelevantReferanse(tgData.risikoer, analyse);
 
-  // Årsak = brukerens input direkte (ikke generert)
-  const arsak = avsluttSetning(input.observasjon.trim());
+  // Pass-through fra takstmannens input
+  const observasjon = avsluttSetning(input.observasjon.trim());
+  const arsakInput = (input.arsak ?? "").trim();
+  // Hvis Årsak mangler (eldre inputs), fall tilbake til observasjon for bakoverkompatibilitet
+  const arsak = arsakInput.length > 0
+    ? avsluttSetning(arsakInput)
+    : observasjon;
+
   const risiko = byggRisiko(analyse, risikoRef, erKort, analyse.alderSomGrunnlag);
   const konsekvens = byggKonsekvens(analyse, tgData, ueLabel, erKort);
   const tiltak = byggTiltak(analyse, tgData, ueLabel, input, erKort);
 
-  return { arsak, risiko, konsekvens, anbefalt_tiltak: tiltak };
+  return { observasjon, arsak, risiko, konsekvens, anbefalt_tiltak: tiltak };
 }
 
 /**

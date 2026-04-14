@@ -120,13 +120,23 @@ export default async function AdminArkatFeedbackPage() {
                   </div>
                 </div>
 
-                {/* Årsak (brukerens input) */}
+                {/* Observasjon (fakta — brukerens input) */}
                 <div className="mb-3">
-                  <div className="text-xs font-medium text-[#64748b] mb-1">Årsak (brukerens input)</div>
+                  <div className="text-xs font-medium text-[#64748b] mb-1">Observasjon (brukerens input)</div>
                   <p className="text-sm text-[#1e293b] bg-[#f8fafc] rounded p-2.5 leading-relaxed">
                     {f.observasjon}
                   </p>
                 </div>
+
+                {/* Årsak — kun vist hvis den finnes (etter april 2026-splittingen) */}
+                {f.arsak && (
+                  <div className="mb-3">
+                    <div className="text-xs font-medium text-[#64748b] mb-1">Årsak (brukerens input)</div>
+                    <p className="text-sm text-[#1e293b] bg-[#f8fafc] rounded p-2.5 leading-relaxed">
+                      {f.arsak}
+                    </p>
+                  </div>
+                )}
 
                 {/* Generert resultat */}
                 <div className="grid grid-cols-2 gap-2 mb-3">

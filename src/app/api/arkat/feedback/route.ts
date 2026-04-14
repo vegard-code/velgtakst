@@ -50,6 +50,7 @@ export async function POST(request: Request) {
     underenhet,
     tilstandsgrad: typeof body.tilstandsgrad === "string" ? body.tilstandsgrad : null,
     observasjon,
+    arsak: typeof body.arsak === "string" && body.arsak.trim() ? body.arsak.trim() : null,
     resultat_arsak: typeof body.resultat_arsak === "string" ? body.resultat_arsak : null,
     resultat_risiko: typeof body.resultat_risiko === "string" ? body.resultat_risiko : null,
     resultat_konsekvens: typeof body.resultat_konsekvens === "string" ? body.resultat_konsekvens : null,

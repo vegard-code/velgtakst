@@ -9,6 +9,7 @@ export interface ArkatInputKontekst {
   underenhet: string;
   tilstandsgrad?: string;
   observasjon: string;
+  arsak?: string;
 }
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const STANDARD_FIELDS = [
+  { key: "observasjon" as const, label: "Observasjon" },
   { key: "arsak" as const, label: "Årsak" },
   { key: "risiko" as const, label: "Risiko" },
   { key: "konsekvens" as const, label: "Konsekvens" },
@@ -24,6 +26,7 @@ const STANDARD_FIELDS = [
 ];
 
 const MERKNAD_FIELDS = [
+  { key: "observasjon" as const, label: "Observasjon" },
   { key: "arsak" as const, label: "Merknad" },
   { key: "konsekvens" as const, label: "Konsekvens" },
   { key: "anbefalt_tiltak" as const, label: "Anbefalt tiltak" },
@@ -225,6 +228,7 @@ export default function ArkatAssistantResult({ response, inputKontekst }: Props)
                             underenhet: inputKontekst.underenhet,
                             tilstandsgrad: inputKontekst.tilstandsgrad ?? null,
                             observasjon: inputKontekst.observasjon,
+                            arsak: inputKontekst.arsak ?? null,
                             resultat_arsak: result.arsak ?? null,
                             resultat_risiko: result.risiko ?? null,
                             resultat_konsekvens: result.konsekvens ?? null,

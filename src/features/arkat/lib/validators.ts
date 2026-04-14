@@ -39,7 +39,8 @@ export const ArkatInputSchema = z
     observasjon: z
       .string()
       .min(1, "Observasjon er påkrevd")
-      .min(15, "Observasjonen må være minst 15 tegn — beskriv hva som faktisk er observert"),
+      .min(10, "Observasjonen må være minst 10 tegn — beskriv hva som faktisk er observert"),
+    arsak: z.string().optional(),
     onsket_lengde: z.enum(["kort", "normal"]).optional().default("normal"),
     ns_versjon: z.enum(["NS3600_2018", "NS3600_2025"], {
       error: "Velg NS-versjon",
@@ -78,6 +79,24 @@ export const ArkatInputSchema = z
         path: ["tilstandsgrad"],
         message: "Velg TG2 eller TG3",
       });
+    }
+
+    // Årsak er påkrevd i standard-modus (min 10 tegn)
+    if (!merknad) {
+      const arsak = (data.arsak ?? "").trim();
+      if (arsak.length === 0) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["arsak"],
+          message: "Årsak er påkrevd — skriv din faglige vurdering av hvorfor forholdet er et avvik",
+        });
+      } else if (arsak.length < 10) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["arsak"],
+          message: "Årsaken må være minst 10 tegn",
+        });
+      }
     }
 
     // Valider at "dokumentasjon_mangler" ikke er valgt som både hovedgrunnlag og tillegg

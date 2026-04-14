@@ -51,14 +51,19 @@ export async function genererMedAi(
     return { bruktAi: false, kilde: null, resultat: null, varsler: [], feil: null };
   }
 
+  // Pass-through felter fra takstmannens input
+  const observasjon = input.observasjon.trim();
+  const arsak = (input.arsak ?? input.observasjon).trim();
+
   // ── Mock-modus ──
   if (modus === "mock") {
-    const mock = mockArkatResultat(input.observasjon);
+    const mock = mockArkatResultat();
     return {
       bruktAi: true,
       kilde: "mock",
       resultat: {
-        arsak: mock.arsak,
+        observasjon,
+        arsak,
         risiko: mock.risiko,
         konsekvens: mock.konsekvens,
         anbefalt_tiltak: mock.anbefalt_tiltak,
@@ -78,13 +83,17 @@ export async function genererMedAi(
       input: brukerInput,
     });
 
-    // Skill ARKAT-felter fra varsler
-    const { varsler, ...arkatFelter } = aiResultat;
+    // AI returnerer kun R/K/T + varsler. Observasjon og Årsak er pass-through.
+    const { varsler, ...rkt } = aiResultat;
 
     return {
       bruktAi: true,
       kilde: "live",
-      resultat: arkatFelter,
+      resultat: {
+        observasjon,
+        arsak,
+        ...rkt,
+      },
       varsler: varsler ?? [],
       feil: null,
     };

@@ -89,11 +89,14 @@ const KONKRETE_MARKORER = [
 
 export function screenObservasjon(input: ArkatGenerateInput): ArkatScreeningResult {
   const warnings: string[] = [];
-  const obs = input.observasjon.trim();
+  const obsRaw = input.observasjon.trim();
+  const arsakRaw = (input.arsak ?? "").trim();
+  // Screening baseres på kombinasjonen av observasjon og årsak så markører i begge fanges.
+  const obs = arsakRaw.length > 0 ? `${obsRaw} ${arsakRaw}` : obsRaw;
   const obsLower = obs.toLowerCase();
 
   // 1. Tom eller for kort
-  if (obs.length < 20) {
+  if (obsRaw.length < 10) {
     return avvis(
       "Observasjonen er for kort. Beskriv konkret hva som er observert — " +
       "type skade, plassering, omfang eller måleverdi."

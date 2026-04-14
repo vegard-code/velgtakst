@@ -38,6 +38,7 @@ export default function ArkatAssistantForm() {
   const [tillegg, setTillegg] = useState<ObservasjonsTillegg[]>([]);
   const [akuttgrad, setAkuttgrad] = useState<Akuttgrad | "">("");
   const [observasjon, setObservasjon] = useState("");
+  const [arsak, setArsak] = useState("");
   const [onsketLengde, setOnsketLengde] = useState<OnsketLengde>("normal");
   const [nsVersjon, setNsVersjon] = useState<NsVersjon>("NS3600_2018");
   const [aldersvurdering, setAldersvurdering] = useState<Aldersvurdering | "">("");
@@ -182,7 +183,8 @@ export default function ArkatAssistantForm() {
     (merknadModus || tilstandsgrad) &&
     hovedgrunnlag &&
     akuttgrad &&
-    observasjon.trim().length >= 15 &&
+    observasjon.trim().length >= 10 &&
+    (merknadModus || arsak.trim().length >= 10) && // Årsak påkrevd i standard-modus
     (!visAldersvurdering || aldersvurdering !== "");
 
   const handleSubmit = async () => {
@@ -206,6 +208,7 @@ export default function ArkatAssistantForm() {
       tillegg: rensetTillegg,
       akuttgrad: akuttgrad as Akuttgrad,
       observasjon: observasjon.trim(),
+      ...(merknadModus ? {} : { arsak: arsak.trim() }),
       onsket_lengde: onsketLengde,
       ns_versjon: nsVersjon,
       ...(visAldersvurdering && aldersvurdering
@@ -238,6 +241,7 @@ export default function ArkatAssistantForm() {
     setTillegg([]);
     setAkuttgrad("");
     setObservasjon("");
+    setArsak("");
     setOnsketLengde("normal");
     setNsVersjon("NS3600_2018");
     setAldersvurdering("");
@@ -266,7 +270,7 @@ export default function ArkatAssistantForm() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#1e293b]">ARKAT Skrivehjelp</h1>
         <p className="text-[#64748b] text-sm mt-0.5">
-          Skriv årsak — få Risiko, Konsekvens og Anbefalt tiltak
+          Skriv Observasjon og Årsak — få Risiko, Konsekvens og Anbefalt tiltak
         </p>
       </div>
 
@@ -442,28 +446,56 @@ export default function ArkatAssistantForm() {
             </div>
           )}
 
-          {/* Årsak (standard) / Observasjon (merknad-modus) */}
+          {/* Observasjon — alltid synlig (fakta) */}
           <div>
             <label className="block text-sm font-medium text-[#1e293b] mb-1">
-              {merknadModus ? "Observasjon" : "Årsak"}
+              Observasjon
             </label>
+            <p className="text-xs text-[#64748b] mb-2">
+              Hva du har sett, målt, eller ikke kunne undersøke. Hold deg til fakta — ingen vurderinger her.
+            </p>
             <textarea
               value={observasjon}
               onChange={(e) => setObservasjon(e.target.value)}
-              rows={4}
+              rows={3}
               placeholder={merknadModus
-                ? "Beskriv hva som er observert..."
-                : "Skriv din faglige vurdering av årsaken til valgt TG. Vær konkret og observasjonsnær — én mekanisme om gangen. F.eks. «Deformasjoner på nedløpsrør skyldes frostspreng.» eller «Spikre er synlige gjennom yttertaket grunnet feil ved montering.»"
+                ? "F.eks. «Sikringsskap fra 1985 uten overspenningsvern. Ikke kjent om el-tilsyn er gjennomført siste 5 år.»"
+                : "F.eks. «Gulv tekket med fliser. Hullboring ikke utført — vanninstallasjoner i yttervegger. Fukt kontrollert med pigg uten avvik. Ukjent om membran er etablert.»"
               }
-              className="portal-input resize-y min-h-[100px]"
+              className="portal-input resize-y min-h-[80px]"
             />
             <p className="text-xs text-[#94a3b8] mt-1">
               {observasjon.trim().length} tegn
-              {observasjon.trim().length > 0 && observasjon.trim().length < 15 && (
-                <span className="text-red-400"> — minimum 15 tegn</span>
+              {observasjon.trim().length > 0 && observasjon.trim().length < 10 && (
+                <span className="text-red-400"> — minimum 10 tegn</span>
               )}
             </p>
           </div>
+
+          {/* Årsak — kun i standard-modus (ikke merknad) */}
+          {!merknadModus && (
+            <div>
+              <label className="block text-sm font-medium text-[#1e293b] mb-1">
+                Årsak
+              </label>
+              <p className="text-xs text-[#64748b] mb-2">
+                Din faglige vurdering av hvorfor dette er et avvik. Én mekanisme om gangen.
+              </p>
+              <textarea
+                value={arsak}
+                onChange={(e) => setArsak(e.target.value)}
+                rows={3}
+                placeholder="F.eks. «Udokumentert membran gir usikkerhet om våtrommets tetthet mot underliggende konstruksjon.» eller «Deformasjoner på nedløpsrør skyldes frostspreng.»"
+                className="portal-input resize-y min-h-[80px]"
+              />
+              <p className="text-xs text-[#94a3b8] mt-1">
+                {arsak.trim().length} tegn
+                {arsak.trim().length > 0 && arsak.trim().length < 10 && (
+                  <span className="text-red-400"> — minimum 10 tegn</span>
+                )}
+              </p>
+            </div>
+          )}
 
           {/* ─── Grunnlag: auto-forslag eller manuell ─────────── */}
           {harAutoGrunnlag && !visGrunnlagDetaljer ? (
@@ -663,6 +695,7 @@ export default function ArkatAssistantForm() {
                 underenhet,
                 tilstandsgrad: merknadModus ? undefined : tilstandsgrad,
                 observasjon,
+                arsak: merknadModus ? undefined : arsak,
               }}
             />
           ) : (

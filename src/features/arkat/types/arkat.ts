@@ -96,7 +96,12 @@ export interface ArkatGenerateInput {
   hovedgrunnlag: Hovedgrunnlag;
   tillegg: ObservasjonsTillegg[];
   akuttgrad: Akuttgrad;
+  /** Observasjon — hva takstmannen har sett, målt, eller ikke kunne undersøke (fakta).
+   *  Brukes både i standard-modus og merknad-modus. */
   observasjon: string;
+  /** Årsak — takstmannens faglige vurdering av hvorfor forholdet er et avvik.
+   *  Kun i standard-modus (TG2/TG3). Tom/undefined i merknad-modus. */
+  arsak?: string;
   onsket_lengde?: OnsketLengde;
   ns_versjon: NsVersjon;
   /** Kun relevant for NS 3600:2025 + utvalgte underenheter */
@@ -110,6 +115,9 @@ export interface ArkatScreeningResult {
 }
 
 export interface ArkatGeneratedResult {
+  /** Observasjon — fakta (hva er sett/målt/ikke kunne undersøkes). Pass-through fra input. */
+  observasjon: string;
+  /** Årsak — faglig vurdering. Pass-through fra input (standard) eller generert (merknad). */
   arsak: string;
   risiko: string;
   konsekvens: string;

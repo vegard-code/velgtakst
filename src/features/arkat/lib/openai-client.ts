@@ -29,30 +29,30 @@ export function aiModus(): "live" | "mock" | "av" {
 
 // ─── Typer ─────────────────────────────────────────────────
 
-/** Strukturert ARKAT-resultat fra AI */
+/** Strukturert ARKAT-resultat fra AI.
+ *  Observasjon og Årsak er pass-through fra takstmannens input og generes IKKE av AI. */
 export interface AiArkatResultat {
-  arsak: string;
   risiko: string;
   konsekvens: string;
   anbefalt_tiltak: string;
   varsler: string[];
 }
 
-/** JSON Schema for strukturert output */
+/** JSON Schema for strukturert output.
+ *  AI genererer KUN Risiko, Konsekvens, Anbefalt tiltak og varsler.
+ *  Observasjon og Årsak er takstmannens tekst og settes på av kallende kode. */
 const ARKAT_OUTPUT_SCHEMA = {
   type: "object" as const,
   properties: {
-    arsak: {
-      type: "string" as const,
-      description: "Årsak — hva er observert, reformulert faglig",
-    },
     risiko: {
       type: "string" as const,
-      description: "Risiko — hva kan skje dersom forholdet ikke utbedres",
+      description: "Risiko — hva kan skje med bygningsdelen dersom forholdet ikke utbedres",
     },
     konsekvens: {
       type: "string" as const,
-      description: "Konsekvens — kostnadsmessig konsekvens for kjøper",
+      description:
+        "Konsekvens — hva innebærer avviket for kjøper i praksis (kostnad, undersøkelse, " +
+        "vedlikehold, brukbarhet, komfort/inneklima/sikkerhet, usikkerhet)",
     },
     anbefalt_tiltak: {
       type: "string" as const,
@@ -68,7 +68,7 @@ const ARKAT_OUTPUT_SCHEMA = {
         "konkrete symptomer. Tom liste hvis ingen forbehold.",
     },
   },
-  required: ["arsak", "risiko", "konsekvens", "anbefalt_tiltak", "varsler"] as const,
+  required: ["risiko", "konsekvens", "anbefalt_tiltak", "varsler"] as const,
   additionalProperties: false as const,
 };
 
@@ -151,18 +151,12 @@ export async function kallResponseApi(
  * Brukes for testing uten API-nøkkel.
  * Markert tydelig som mock slik at det ikke kan forveksles med ekte AI-output.
  */
-export function mockArkatResultat(observasjon: string): AiArkatResultat {
-  const kortObs =
-    observasjon.length > 80
-      ? observasjon.slice(0, 80) + "..."
-      : observasjon;
-
+export function mockArkatResultat(): AiArkatResultat {
   return {
-    arsak: `[MOCK] Det er registrert ${kortObs.toLowerCase()}`,
     risiko:
       "[MOCK] Uten utbedring er det risiko for følgeskader i konstruksjonen.",
     konsekvens:
-      "[MOCK] Kjøper bør påregne kostnad til utbedring. Omfanget bør kartlegges nærmere.",
+      "[MOCK] Kjøper må påregne kostnad til utbedring og videre undersøkelse av omfang.",
     anbefalt_tiltak:
       "[MOCK] Det anbefales utbedring. Innhent vurdering fra kvalifisert fagperson.",
     varsler: ["[MOCK] Dette er et mock-svar, ikke generert av AI."],
@@ -210,7 +204,6 @@ function extractOutputText(data: Record<string, unknown>): string | null {
 /** Valider at AI-resultatet har alle påkrevde felter med innhold */
 function validerArkatResultat(r: AiArkatResultat): void {
   const felter: (keyof AiArkatResultat)[] = [
-    "arsak",
     "risiko",
     "konsekvens",
     "anbefalt_tiltak",
