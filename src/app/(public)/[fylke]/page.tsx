@@ -532,7 +532,7 @@ export default async function FylkePage({ params }: Props) {
 
       {/* CTA */}
       <section className="bg-slate-900 py-14">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-xl font-bold text-white mb-3">
             Er du takstmann i {fylke.navn}?
           </h2>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { OPPDRAG_TYPE_LABELS, BESTILLING_STATUS_LABELS } from "@/lib/supabase/types";
 import type { OppdragType, BestillingStatus } from "@/lib/supabase/types";
@@ -7,7 +8,7 @@ import { hentSamtaler } from "@/lib/actions/meldinger";
 export default async function TakstmannInnboksPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
+  if (!user) redirect("/logg-inn");
 
   const serviceSupabase = await createServiceClient();
 

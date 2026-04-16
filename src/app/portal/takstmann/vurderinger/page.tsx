@@ -20,15 +20,38 @@ export default async function TakstmannVurderingerPage() {
 
   const { data: vurderingerRaw } = await serviceSupabase
     .from("megler_vurderinger")
-    .select(`
-      id, karakter, kommentar, created_at,
-      megler:megler_profiler(navn),
-      kunde:privatkunde_profiler(navn)
-    `)
+    .select("id, karakter, kommentar, created_at, megler_id, kunde_id")
     .eq("takstmann_id", profil.id)
     .order("created_at", { ascending: false });
 
-  const vurderinger = (vurderingerRaw ?? []) as unknown as {
+  // Hent megler- og kunde-navn i separate spørringer (PostgREST joins fungerer ikke pålitelig)
+  const meglerIds = [...new Set((vurderingerRaw ?? []).map(v => v.megler_id).filter(Boolean))]
+  const kundeIds = [...new Set((vurderingerRaw ?? []).map(v => v.kunde_id).filter(Boolean))]
+
+  const meglerNavnMap: Record<string, string> = {}
+  const kundeNavnMap: Record<string, string> = {}
+
+  if (meglerIds.length > 0) {
+    const { data: meglere } = await serviceSupabase
+      .from("megler_profiler")
+      .select("id, navn")
+      .in("id", meglerIds)
+    for (const m of meglere ?? []) meglerNavnMap[m.id] = m.navn
+  }
+
+  if (kundeIds.length > 0) {
+    const { data: kunder } = await serviceSupabase
+      .from("privatkunde_profiler")
+      .select("id, navn")
+      .in("id", kundeIds)
+    for (const k of kunder ?? []) kundeNavnMap[k.id] = k.navn
+  }
+
+  const vurderinger = (vurderingerRaw ?? []).map(v => ({
+    ...v,
+    megler: v.megler_id && meglerNavnMap[v.megler_id] ? { navn: meglerNavnMap[v.megler_id] } : null,
+    kunde: v.kunde_id && kundeNavnMap[v.kunde_id] ? { navn: kundeNavnMap[v.kunde_id] } : null,
+  })) as {
     id: string;
     karakter: number;
     kommentar: string | null;

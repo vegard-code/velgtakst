@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { hentMeldinger } from '@/lib/actions/meldinger'
 import ChatVindu from '@/components/portal/ChatVindu'
@@ -12,25 +12,35 @@ export default async function TakstmannSamtalePage({ params }: Props) {
   const { samtaleId } = await params
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
+  if (!user) redirect('/logg-inn')
 
   const serviceSupabase = await createServiceClient()
 
   const { data: samtale } = await serviceSupabase
     .from('samtaler')
-    .select(`
-      id, takstmann_id, kunde_id, megler_id,
-      kunde:privatkunde_profiler(navn),
-      megler:megler_profiler(navn)
-    `)
+    .select('id, takstmann_id, kunde_id, megler_id')
     .eq('id', samtaleId)
     .single()
 
   if (!samtale) notFound()
 
-  const kunde = samtale.kunde as unknown as { navn: string } | null
-  const megler = samtale.megler as unknown as { navn: string } | null
-  const motpartNavn = kunde?.navn ?? megler?.navn ?? 'Ukjent'
+  // Hent motpart-navn i separate spørringer (PostgREST joins fungerer ikke pålitelig)
+  let motpartNavn = 'Ukjent'
+  if (samtale.kunde_id) {
+    const { data: kp } = await serviceSupabase
+      .from('privatkunde_profiler')
+      .select('navn')
+      .eq('id', samtale.kunde_id)
+      .single()
+    if (kp?.navn) motpartNavn = kp.navn
+  } else if (samtale.megler_id) {
+    const { data: mp } = await serviceSupabase
+      .from('megler_profiler')
+      .select('navn')
+      .eq('id', samtale.megler_id)
+      .single()
+    if (mp?.navn) motpartNavn = mp.navn
+  }
 
   const meldinger = await hentMeldinger(samtaleId)
 
