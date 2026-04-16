@@ -1,6 +1,23 @@
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 
 const GYLDIGE_VURDERINGER = ["bra", "justeringer", "darlig"] as const;
+const GYLDIGE_MODI = ["standard", "merknad"] as const;
+
+const FeedbackSchema = z.object({
+  bygningsdel: z.string().min(1),
+  underenhet: z.string().min(1),
+  tilstandsgrad: z.string().optional(),
+  observasjon: z.string().min(1),
+  arsak: z.string().optional().transform(v => v?.trim() || undefined),
+  resultat_arsak: z.string().optional(),
+  resultat_risiko: z.string().optional(),
+  resultat_konsekvens: z.string().optional(),
+  resultat_tiltak: z.string().optional(),
+  resultat_modus: z.enum(GYLDIGE_MODI).optional(),
+  vurdering: z.enum(GYLDIGE_VURDERINGER),
+  kommentar: z.string().optional().transform(v => v?.trim() || undefined),
+});
 
 export async function POST(request: Request) {
   // Auth
@@ -14,50 +31,39 @@ export async function POST(request: Request) {
   }
 
   // Parse body
-  let body: Record<string, unknown>;
+  let rawBody: unknown;
   try {
-    body = await request.json();
+    rawBody = await request.json();
   } catch {
     return Response.json({ error: "Ugyldig JSON" }, { status: 400 });
   }
 
-  // Valider påkrevde felter
-  const { bygningsdel, underenhet, observasjon, vurdering } = body;
-
-  if (
-    typeof bygningsdel !== "string" ||
-    typeof underenhet !== "string" ||
-    typeof observasjon !== "string" ||
-    typeof vurdering !== "string"
-  ) {
+  // Valider med Zod
+  const parsed = FeedbackSchema.safeParse(rawBody);
+  if (!parsed.success) {
     return Response.json(
-      { error: "Mangler påkrevde felter: bygningsdel, underenhet, observasjon, vurdering" },
+      { error: "Ugyldig input", detaljer: parsed.error.issues.map(i => i.message) },
       { status: 400 }
     );
   }
 
-  if (!GYLDIGE_VURDERINGER.includes(vurdering as typeof GYLDIGE_VURDERINGER[number])) {
-    return Response.json(
-      { error: "Ugyldig vurdering — må være 'bra', 'justeringer' eller 'darlig'" },
-      { status: 400 }
-    );
-  }
+  const data = parsed.data;
 
   // Sett inn
   const { error } = await supabase.from("arkat_feedback").insert({
     user_id: user.id,
-    bygningsdel,
-    underenhet,
-    tilstandsgrad: typeof body.tilstandsgrad === "string" ? body.tilstandsgrad : null,
-    observasjon,
-    arsak: typeof body.arsak === "string" && body.arsak.trim() ? body.arsak.trim() : null,
-    resultat_arsak: typeof body.resultat_arsak === "string" ? body.resultat_arsak : null,
-    resultat_risiko: typeof body.resultat_risiko === "string" ? body.resultat_risiko : null,
-    resultat_konsekvens: typeof body.resultat_konsekvens === "string" ? body.resultat_konsekvens : null,
-    resultat_tiltak: typeof body.resultat_tiltak === "string" ? body.resultat_tiltak : null,
-    resultat_modus: typeof body.resultat_modus === "string" ? body.resultat_modus : null,
-    vurdering,
-    kommentar: typeof body.kommentar === "string" && body.kommentar.trim() ? body.kommentar.trim() : null,
+    bygningsdel: data.bygningsdel,
+    underenhet: data.underenhet,
+    tilstandsgrad: data.tilstandsgrad ?? null,
+    observasjon: data.observasjon,
+    arsak: data.arsak ?? null,
+    resultat_arsak: data.resultat_arsak ?? null,
+    resultat_risiko: data.resultat_risiko ?? null,
+    resultat_konsekvens: data.resultat_konsekvens ?? null,
+    resultat_tiltak: data.resultat_tiltak ?? null,
+    resultat_modus: data.resultat_modus ?? null,
+    vurdering: data.vurdering,
+    kommentar: data.kommentar ?? null,
   });
 
   if (error) {

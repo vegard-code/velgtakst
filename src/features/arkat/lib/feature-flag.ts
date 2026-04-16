@@ -17,5 +17,10 @@ export function isArkatEnabled(): boolean {
 
   // Ikke satt — tillat på localhost, blokkér i prod
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
-  return siteUrl.includes("localhost");
+  try {
+    const url = new URL(siteUrl);
+    return url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
 }
