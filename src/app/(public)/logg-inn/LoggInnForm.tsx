@@ -67,7 +67,7 @@ export default function LoggInnForm() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") ?? "";
   const vippsError = searchParams.get("error");
-  const vippsDetalj = searchParams.get("detalj");
+  // Feildetaljer logges kun server-side, vises ikke i UI
 
   const [valgtRolle, setValgtRolle] = useState<Rolle | null>(null);
   const [visEpost, setVisEpost] = useState(false);
@@ -105,9 +105,6 @@ export default function LoggInnForm() {
       {vippsError && (
         <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-xl">
           <p>{vippsFeilmeldinger[vippsError] ?? `Vipps-feil: ${vippsError}`}</p>
-          {vippsDetalj && (
-            <p className="text-red-500/60 text-xs mt-1">Detalj: {vippsDetalj}</p>
-          )}
         </div>
       )}
 

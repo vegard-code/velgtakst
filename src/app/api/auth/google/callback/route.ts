@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
       const errMsg = tokenErr instanceof Error ? tokenErr.message : String(tokenErr)
       console.error('Google OAuth token exchange failed:', errMsg)
       return NextResponse.redirect(
-        new URL(`${redirectBase}?fane=integrasjoner&error=token_feil&detalj=${encodeURIComponent(errMsg)}`, request.url)
+        new URL(`${redirectBase}?fane=integrasjoner&error=token_feil`, request.url)
       )
     }
 

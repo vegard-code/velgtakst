@@ -27,9 +27,11 @@ export async function POST(request: NextRequest) {
 
   await slettToken(takstmannProfil.id)
 
-  // Redirect tilbake til innstillinger
-  const redirectUrl = request.nextUrl.searchParams.get('redirect')
-    ?? '/portal/takstmann/innstillinger?fane=integrasjoner&success=outlook_frakoblet'
+  // Redirect tilbake til innstillinger — valider at redirect er intern sti
+  const rawRedirect = request.nextUrl.searchParams.get('redirect')
+  const redirectUrl = rawRedirect && rawRedirect.startsWith('/') && !rawRedirect.startsWith('//')
+    ? rawRedirect
+    : '/portal/takstmann/innstillinger?fane=integrasjoner&success=outlook_frakoblet'
 
   return NextResponse.redirect(new URL(redirectUrl, request.url))
 }

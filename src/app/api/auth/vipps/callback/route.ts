@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
     if (!tokenRes.ok) {
       const err = await tokenRes.text()
       console.error('Vipps token exchange failed:', err)
-      return NextResponse.redirect(new URL(`/logg-inn?error=token_feil&detalj=${encodeURIComponent(err)}`, request.url))
+      return NextResponse.redirect(new URL('/logg-inn?error=token_feil', request.url))
     }
 
     const tokens = await tokenRes.json()
@@ -290,7 +290,7 @@ export async function GET(request: NextRequest) {
       })
       if (otpError2) {
         console.error('OTP verification failed:', otpError.message, otpError2.message)
-        return NextResponse.redirect(new URL(`/logg-inn?error=session_feil&detalj=${encodeURIComponent(otpError.message)}`, request.url))
+        return NextResponse.redirect(new URL('/logg-inn?error=session_feil', request.url))
       }
     }
 
