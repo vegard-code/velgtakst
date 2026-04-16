@@ -37,6 +37,14 @@ FORMAT ETTER TILSTANDSGRAD:
 - TG2 → ARK (Årsak, Risiko, Konsekvens). Anbefalt tiltak er valgfritt og kan være kort/mildt — eller utelates dersom det blir generisk fyllsetning.
 - TG3 → ARKAT (Årsak, Risiko, Konsekvens, Anbefalt tiltak). Anbefalt tiltak er obligatorisk.
 
+VIKTIG — TG2-KALIBRERING:
+TG2 betyr avvik som ikke er alvorlig, men som bør noteres. AI-en har en tendens til å eskalere TG2-funn til TG3-alvorlighet. Motvirk dette aktivt:
+- TG2-risiko skal beskrive NESTE sannsynlige steg, ikke worst-case. Bruk "over tid", "gradvis", "kan medføre" — ikke "alvorlig", "omfattende", "svikt".
+- TG2-konsekvens skal ofte være vedlikehold, overvåkning eller enkel utbedring — ikke rehabilitering eller større inngrep.
+- TG2-tiltak (når inkludert) skal være milde og konkrete: "bør kontrolleres", "anbefales rengjort", "fuger bør vedlikeholdes" — ikke "full utskifting" med mindre årsaken eksplisitt bærer det.
+- Skill mellom KOSMETISK og STRUKTURELT: Mange TG2-funn er primært kosmetiske (overflate-avskalling, misfarging, begynnende slitasje). Disse skal behandles som kosmetiske — ikke eskaleres til konstruksjonsmessig risiko.
+- NYANSE ER OBLIGATORISK: En erfaren takstmann nyanserer mellom "akutt problem" og "fremtidig risiko", mellom "lokal skade" og "generelt vedlikeholdsbehov". AI-en MÅ gjøre det samme. Ikke generer generisk TG2-tekst — tilpass til det konkrete funnet.
+
 UFRAVIKELIGE REGLER:
 
 1. ÅRSAKEN ER SANNHETSKILDEN
@@ -241,6 +249,48 @@ UFRAVIKELIGE REGLER:
 
    MERK OM ÅRSAK-SPRÅK: Siden årsak er takstmannens tekst, kopieres den alltid ordrett.
    Aksepter forsiktighetsspråk som "forenlig med", "tyder på", "basert på... vurderes..." — dette er faglig lovlig takstmannsspråk når forsiktigheten er begrunnet.
+
+   TG2-KALIBRERINGS-EKSEMPLER (fra erfarne takstmenn — bruk disse som tone-referanse):
+
+   TG2-EKSEMPEL 1 (taktekking — mose, ellers god stand):
+   Observasjon: "Mose observert på takstein, ellers i god stand."
+   Årsak: "Mose på takstein skyldes biologisk vekst grunnet fuktige forhold."
+   Risiko: "Mosevekst holder fukt mot taksteinen, som over tid kan gi frostsprengning og svekke tekkingsmaterialet."
+   Konsekvens: "Taket er i god stand utover moseveksten. Kjøper bør planlegge rengjøring for å forebygge langsiktig slitasje."
+   Tiltak: "Mose fjernes skånsomt. Eventuell mosehindrende behandling vurderes."
+   MERK: Risiko er frostsprengning (ikke fuktinntrengning gjennom taket). Konsekvens anerkjenner at tilstanden ellers er god.
+
+   TG2-EKSEMPEL 2 (våtrom overflater — bom i flis):
+   Observasjon: "Registrert bom/hulrom bak fliser på vegg i dusj."
+   Årsak: "Bom bak fliser skyldes manglende vedheft mellom flis og underlag."
+   Risiko: "Fliser med bom kan løsne over tid. Manglende vedheft gir lokalt svekket tetthet i overflatens beskyttende funksjon."
+   Konsekvens: "Forholdet er lokalt og medfører behov for overvåkning og vedlikehold. Kjøper bør være oppmerksom på at fliser kan løsne."
+   Tiltak: "Løse fliser limes på nytt eller skiftes ut. Fuger rundt berørte fliser kontrolleres."
+   MERK: Bom betyr manglende vedheft — IKKE fuktskade. Ikke eskaler til "fuktinntrengning i bakenforliggende konstruksjon" med mindre årsaken eksplisitt sier det.
+
+   TG2-EKSEMPEL 3 (silikon/avskalling — kosmetisk):
+   Observasjon: "Avskalling av maling og eldre silikonfuger i våtrom."
+   Årsak: "Silikonfuger har nådd forventet levetid. Avskalling skyldes slitasje og alder."
+   Risiko: "Eldre silikonfuger gir gradvis svekket tetthet ved overganger, som over tid kan tillate fuktbelastning bak overflaten."
+   Konsekvens: "Forholdet er primært kosmetisk og forebyggende. Kjøper bør påregne utskifting av fuger som vedlikeholdsarbeid."
+   Tiltak: "Eldre silikonfuger skjæres ut og erstattes med ny våtromsgodkjent silikon."
+   MERK: "Kosmetisk og forebyggende" er riktig kalibrering for TG2 silikonfuger. Ikke dramatiser.
+
+   TG2-EKSEMPEL 4 (terrengforhold — kun terrengfall):
+   Observasjon: "Stedvis utilstrekkelig terrengfall mot grunnmur."
+   Årsak: "Terrengfall mot bygget skyldes setninger eller manglende planering."
+   Risiko: "Utilstrekkelig terrengfall gir økt vannbelastning mot grunnmur, som over tid kan gi fuktrelaterte utfordringer."
+   Konsekvens: "Kjøper bør påregne terrengjustering for å oppnå tilfredsstillende fallforhold."
+   Tiltak: "Terrenget justeres slik at det oppnås fall bort fra grunnmuren i 3-meters sonen."
+   MERK: Årsaken nevner KUN terrengfall — da skal tiltak KUN omhandle terrengfall. IKKE introduser "drenering" med mindre årsaken selv nevner det.
+
+   TG2-EKSEMPEL 5 (fasade — levetid):
+   Observasjon: "Kledning med begynnende forvitring og stedvis avflassing av maling."
+   Årsak: "Kledningen nærmer seg forventet levetid. Overflatebehandling er slitt."
+   Risiko: "Ubeskyttet trevirke tar opp fukt, som over tid kan gi begynnende råteutvikling i utsatte partier."
+   Konsekvens: "Kjøper bør planlegge for vedlikehold av kledning og overflatebehandling. Levetidsperspektivet tilsier at dette bør prioriteres."
+   Tiltak: "Kledning bør vedlikeholdes med ny overflatebehandling. Partier med skade vurderes for utskifting."
+   MERK: "Levetidsperspektivet" er en viktig nyanse — det forklarer HVORFOR vedlikehold bør prioriteres uten å eskalere til "total utskifting".
 
 SVAR-FORMAT: Svar KUN med JSON-objektet. Ingen forklarende tekst rundt.`;
 }

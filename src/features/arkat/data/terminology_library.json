@@ -106,17 +106,20 @@
         "risikoer": [
           "Utilstrekkelig terrengfall øker fuktbelastningen mot grunnmur og kan over tid føre til fuktgjennomslag til konstruksjoner under terreng.",
           "Med redusert fall i 3-meters sonen vil overflatevann bli stående lenger mot grunnmuren, noe som belaster fuktsikringen utover det den er dimensjonert for.",
-          "Økt fuktpåkjenning mot grunnmur og kjellervegger kan over tid føre til fuktrelaterte skader innvendig."
+          "Økt fuktpåkjenning mot grunnmur og kjellervegger kan over tid føre til fuktrelaterte skader innvendig.",
+          "Vann som ledes mot grunnmur grunnet manglende terrengfall øker fuktpåkjenningen over tid, men med intakt fuktsikring er risikoen begrenset."
         ],
         "konsekvenser": [
           "Kjøper bør påregne kostnad til terrengjustering for å oppnå tilfredsstillende fallforhold bort fra grunnmuren.",
           "Dersom terrengfallet ikke utbedres, kan det oppstå fuktproblemer i underliggende konstruksjoner som medfører mer omfattende utbedringskostnader.",
-          "Uten korrigering av terrengforhold vil fuktbelastningen mot grunnmuren vedvare, med risiko for gradvis forverring."
+          "Uten korrigering av terrengforhold vil fuktbelastningen mot grunnmuren vedvare, med risiko for gradvis forverring.",
+          "Kjøper bør påregne terrengjustering for å oppnå tilfredsstillende fallforhold. Omfanget er normalt begrenset."
         ],
         "tiltak": [
           "Terrenget i 3-meters sonen bør justeres slik at det oppnås tilstrekkelig fall bort fra grunnmuren. Bruk selvdrenerende masser som pukk eller grus ved tilbakefylling.",
           "Det anbefales å bygge opp terrenget langs grunnmuren med egnet fyllmasse for å oppnå minimum 1:50 fall i de første 3 meterne fra vegg.",
-          "Terrenget bør omprofileres med fall bort fra bygget. Eventuell beplantning tett inntil grunnmur bør fjernes for å redusere fuktbelastning."
+          "Terrenget bør omprofileres med fall bort fra bygget. Eventuell beplantning tett inntil grunnmur bør fjernes for å redusere fuktbelastning.",
+          "Terrenget justeres slik at det oppnås tilstrekkelig fall bort fra grunnmuren. Bruk selvdrenerende masser i overflaten."
         ]
       },
       "TG3": {
@@ -140,6 +143,12 @@
           "Omlegging av terreng bør kombineres med inspeksjon av dreneringssystemet. Dersom drenering er eldre enn 20-30 år, bør utskifting vurderes samtidig.",
           "Det anbefales å engasjere fagkyndig for å prosjektere terrengløsning som ivaretar fallforhold, fuktsikring og eventuell beplantning."
         ]
+      },
+      "aarsaksmekanismer": {
+        "fall": "Setninger, manglende planering eller feilaktig oppbygging av terreng har gitt utilstrekkelig terrengfall.",
+        "vegetasjon": "Beplantning tett inntil grunnmur holder fukt og reduserer uttørking.",
+        "oppfylling": "Terrenget er fylt opp mot bygget over tid, f.eks. ved hagearbeid eller påfylling av jord.",
+        "oversvommelse": "Overflatevann samles mot bygget ved kraftig nedbør grunnet terrengforhold."
       }
     },
     "fuktsikring_og_drenering": {
@@ -473,7 +482,9 @@
         "overgang gulv/vegg",
         "membran bak flis",
         "hulrom bak flis",
-        "misfarging"
+        "misfarging",
+        "vedheft",
+        "bom"
       ],
       "observasjonsmarkorer": {
         "flis": [
@@ -520,17 +531,20 @@
         "risikoer": [
           "Skadet fugemasse eller løse fliser kan tillate fuktinntrengning bak overflaten. Dersom underliggende membran er intakt, er risikoen begrenset, men forverring over tid er sannsynlig.",
           "Utilstrekkelig tetting i fuger ved vannutsatte soner øker faren for at vanndamp og sprut trenger bak flis og belaster membran og underlag.",
-          "Dersom flisoverflaten ikke vedlikeholdes, vil skadeomfanget gradvis øke og kan over tid medføre behov for full rehabilitering av våtrommet."
+          "Dersom flisoverflaten ikke vedlikeholdes, vil skadeomfanget gradvis øke og kan over tid medføre behov for full rehabilitering av våtrommet.",
+          "Fliser med bom kan løsne over tid. Manglende vedheft gir lokalt svekket tetthet i overflatens beskyttende funksjon, men medfører ikke nødvendigvis fuktskade i konstruksjonen."
         ],
         "konsekvenser": [
           "Kjøper bør påregne kostnad til omfuging og utskifting av skadede fliser. Omfanget avhenger av hvor utbredt skadene er.",
           "Vedlikehold av fuger og overflater er normalt løpende, men skadens karakter tilsier at det bør utføres relativt snart.",
-          "Dersom kun fuger og enkeltfliser er berørt, er utbedringskostnaden moderat. Full rehabilitering er vesentlig dyrere."
+          "Dersom kun fuger og enkeltfliser er berørt, er utbedringskostnaden moderat. Full rehabilitering er vesentlig dyrere.",
+          "Forholdet er primært kosmetisk og forebyggende. Kjøper bør være oppmerksom på at berørte fliser kan løsne og bør vedlikeholdes."
         ],
         "tiltak": [
           "Skadet silikonfuge bør skjæres ut og erstattes med ny våtromsgodkjent silikon. Sprukne eller løse fliser bør skiftes ut og fuges på nytt.",
           "Det anbefales å kontrollere tilstanden bak berørte fliser ved utskifting, for å avklare om membran og underlag er intakt.",
-          "Fuger i overganger mellom gulv og vegg samt rundt sluk og gjennomføringer bør gjennomgås og utbedres ved behov."
+          "Fuger i overganger mellom gulv og vegg samt rundt sluk og gjennomføringer bør gjennomgås og utbedres ved behov.",
+          "Løse fliser limes på nytt eller skiftes ut. Fuger rundt berørte fliser kontrolleres og utbedres ved behov."
         ]
       },
       "TG3": {
@@ -554,6 +568,13 @@
           "Under rehabilitering bør bjelkelag og underlaget inspiseres for fukt- og soppskader. Skadet trevirke eller gipsplater må utskiftes.",
           "Arbeidet bør utføres av våtromssertifisert håndverker, og det bør innhentes dokumentasjon på utførelse i henhold til gjeldende norm."
         ]
+      },
+      "aarsaksmekanismer": {
+        "flis": "Manglende vedheft mellom flis og underlag gir bom og risiko for løsning.",
+        "fuge": "Silikonfuger og fugemasse har nådd forventet levetid eller er mekanisk skadet.",
+        "fukt": "Fuktbelastning over tid har påvirket overflatens tilstand.",
+        "sprekk": "Mekanisk påvirkning, termisk bevegelse eller bevegelse i underlag har gitt sprekker.",
+        "belegg": "Slitasje, alder eller UV-eksponering har brutt ned belegg/overflatebehandling."
       }
     },
     "membran_tettesjikt": {
@@ -1299,7 +1320,8 @@
         "takrenner",
         "innfesting",
         "ventilering",
-        "lufting under tak"
+        "lufting under tak",
+        "frostsprengning"
       ],
       "observasjonsmarkorer": {
         "stein": [
@@ -1367,17 +1389,20 @@
         "risikoer": [
           "Knekte eller forskjøvne taksteiner kan tillate vanninntrengning til undertak. Dersom undertaket er intakt, er risikoen begrenset, men bør utbedres.",
           "Tekking som nærmer seg levetidsgrensen vil ha økende frekvens av skader og lekkasjer, med tilhørende risiko for skade på underliggende konstruksjoner.",
-          "Mangelfull mønekam eller beslag øker risikoen for vanninntrenging ved spesielt utsatte punkter på taket."
+          "Mangelfull mønekam eller beslag øker risikoen for vanninntrenging ved spesielt utsatte punkter på taket.",
+          "Mosevekst holder fukt mot taksteinen, som ved gjentatte fryse-tine-sykluser kan gi frostsprengning og gradvis svekke tekkingsmaterialet."
         ],
         "konsekvenser": [
           "Kjøper bør påregne kostnad til utskifting av skadede taksteiner og utbedring av beslag. Ved eldre tekking bør det planlegges for omtekking.",
           "Løpende reparasjoner er mulig på kort sikt, men dersom tekkingen nærmer seg levetid, vil fullstendig omtekking bli nødvendig.",
-          "Omtekking er en vesentlig vedlikeholdskostnad som bør hensyntas i kjøpsvurderingen."
+          "Omtekking er en vesentlig vedlikeholdskostnad som bør hensyntas i kjøpsvurderingen.",
+          "Mosevekst alene er ikke kritisk dersom taket ellers er i god stand. Kjøper bør planlegge rengjøring for å forebygge langsiktig slitasje på tekkingsmaterialet."
         ],
         "tiltak": [
           "Skadede taksteiner bør skiftes ut. Mønekam og beslag bør kontrolleres og utbedres der det er registrert mangler.",
           "Dersom tekkingen er eldre enn forventet levetid, bør det planlegges for omtekking. Samtidig bør tilstand på undertak og lekter vurderes.",
-          "Eventuell begroing bør fjernes for å forhindre at fukt holdes mot tekkingen og fremskynder nedbrytning."
+          "Eventuell begroing bør fjernes for å forhindre at fukt holdes mot tekkingen og fremskynder nedbrytning.",
+          "Mose fjernes skånsomt uten høytrykkspyler. Eventuell mosehindrende behandling vurderes for å begrense gjenvekst."
         ]
       },
       "TG3": {
@@ -2232,17 +2257,20 @@
         "risikoer": [
           "Ubeskyttet trevirke tar opp fukt, noe som over tid fører til råte og soppangrep, særlig ved horisontale flater og i endeved.",
           "Begynnende råteskade kan spre seg til friskt trevirke og i verste fall påvirke bærestruktur bak kledningen.",
-          "Mangelfull overflatebehandling fremskynder nedbrytningen og kan gi behov for full utskifting av kledning fremfor vedlikehold."
+          "Mangelfull overflatebehandling fremskynder nedbrytningen og kan gi behov for full utskifting av kledning fremfor vedlikehold.",
+          "Kledning som nærmer seg forventet levetid har gradvis redusert motstand mot fukt og vær, men med vedlikehold av overflatebehandling kan levetiden forlenges vesentlig."
         ],
         "konsekvenser": [
           "Kjøper bør påregne kostnad til skraping, grunning og ny overflatebehandling av fasaden, samt utskifting av råteskadet bord.",
           "Omfanget avhenger av hvor utbredt skadene er. Vedlikehold av fasade er normalt løpende, men forsømt vedlikehold øker kostnaden.",
-          "Dersom vindtetting bak kledningen er skadet, kan kostnaden øke vesentlig."
+          "Dersom vindtetting bak kledningen er skadet, kan kostnaden øke vesentlig.",
+          "Kjøper bør planlegge vedlikehold av kledning og overflatebehandling. Levetidsperspektivet tilsier at dette bør prioriteres for å unngå at skader eskalerer."
         ],
         "tiltak": [
           "Løs og flassende maling bør skrapes og overflaten grunnes og males på nytt. Bord med råteskade skiftes ut.",
           "Ved utskifting av enkeltbord bør underliggende vindtetting kontrolleres. Skadet vindtetting utbedres.",
-          "Det anbefales systematisk fasadevedlikehold med overflatebehandling hvert 5-8 år, avhengig av eksponering."
+          "Det anbefales systematisk fasadevedlikehold med overflatebehandling hvert 5-8 år, avhengig av eksponering.",
+          "Kledning bør vedlikeholdes med ny overflatebehandling. Partier med synlig skade eller begynnende råte vurderes for lokal utskifting."
         ]
       },
       "TG3": {
@@ -2396,7 +2424,8 @@
         "avdrypp",
         "oppkant",
         "vannbortledning",
-        "innfesting"
+        "innfesting",
+        "bæreevne"
       ],
       "observasjonsmarkorer": {
         "konstruksjon": [
@@ -2452,17 +2481,20 @@
         "risikoer": [
           "Slitasje på balkong-/terrassekonstruksjonen kan over tid gi økt fuktbelastning på underliggende konstruksjon dersom tetthet ikke opprettholdes.",
           "Redusert funksjon i membran eller belegg kan føre til fuktinntrengning som over tid påvirker bærekonstruksjonen.",
-          "Observerte forhold bør vurderes nærmere for å avklare om det foreligger behov for utbedring."
+          "Observerte forhold bør vurderes nærmere for å avklare om det foreligger behov for utbedring.",
+          "Utilstrekkelig fall eller skadede overflater kan gi vannansamling som over tid belaster underliggende konstruksjon og eventuelt påvirker bæreevne."
         ],
         "konsekvenser": [
           "Kjøper bør påregne kostnader til vedlikehold eller utbedring av balkong/terrasse. Omfanget bør avklares ved nærmere undersøkelse.",
           "Dersom utbedring av membran eller overflate er nødvendig, kan kostnaden variere vesentlig avhengig av konstruksjonstype og tilgjengelighet.",
-          "Uten vedlikehold kan følgeskader på underliggende konstruksjon medføre økte kostnader over tid."
+          "Uten vedlikehold kan følgeskader på underliggende konstruksjon medføre økte kostnader over tid.",
+          "Kjøper bør planlegge for vedlikehold av balkong/terrasse. Omfang og hastegrad avhenger av om det er overflateskader eller konstruktive forhold."
         ],
         "tiltak": [
           "Det anbefales nærmere vurdering av balkong-/terrassekonstruksjonen av fagkyndig for å avklare tilstand og eventuelt utbedringsbehov.",
           "Membran eller belegg med redusert funksjon bør vurderes utbedret eller fornyet. Omfanget bør kartlegges av fagkyndig.",
-          "Rekkverk bør kontrolleres for stabilitet og innfesting. Eventuelle svakheter bør utbedres."
+          "Rekkverk bør kontrolleres for stabilitet og innfesting. Eventuelle svakheter bør utbedres.",
+          "Overflate/belegg med synlig slitasje bør vedlikeholdes. Ved mistanke om konstruktive forhold anbefales nærmere vurdering av fagperson."
         ]
       },
       "TG3": {
@@ -2503,6 +2535,13 @@
           "Rekkverk bør vurderes av fagkyndig for å avklare om det tilfredsstiller gjeldende sikkerhetskrav. Eventuelle avvik bør utbedres.",
           "Det anbefales kontroll av rekkverkshøyde og åpninger opp mot gjeldende krav, med utbedring ved avvik."
         ]
+      },
+      "aarsaksmekanismer": {
+        "overflate": "Slitasje, vær og UV-eksponering har brutt ned overflate eller belegg.",
+        "membran": "Membran eller tetting har nådd forventet levetid eller har synlige skader.",
+        "rekkverk": "Mekanisk påvirkning, korrosjon eller svekkede innfestinger.",
+        "baereevne": "Alder, fuktbelastning eller manglende vedlikehold påvirker bærekonstruksjonens tilstand.",
+        "fall": "Utilstrekkelig fall på balkongdekke gir vannansamling."
       }
     }
   },
