@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
 
   try {
     // Bytt code mot tokens
-    console.log('Outlook OAuth: Exchanging code for tokens. Redirect URI:', process.env.OUTLOOK_REDIRECT_URI ?? 'NOT SET')
+    // Token exchange med konfigurert redirect URI
 
     let tokens
     try {

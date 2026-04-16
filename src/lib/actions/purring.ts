@@ -75,29 +75,60 @@ export async function kjorAutomatiskPurring() {
   const serviceClient = await createServiceClient()
   const naa = new Date()
 
-  // Hent alle fakturerte oppdrag med bedriftssettings
+  // Hent alle fakturerte oppdrag (uten PostgREST joins)
   const { data: oppdragsListe } = await serviceClient
     .from('oppdrag')
-    .select(`
-      id, tittel, pris, faktura_id, updated_at, company_id,
-      megler:megler_profiler(navn, epost),
-      privatkunde:privatkunde_profiler(navn, epost)
-    `)
+    .select('id, tittel, pris, faktura_id, updated_at, company_id, megler_id, kunde_id')
     .eq('status', 'fakturert')
 
   if (!oppdragsListe?.length) return { behandlet: 0 }
+
+  // Batch-hent alle company_settings og purre_logg i stedet for N+1
+  const companyIds = [...new Set(oppdragsListe.map(o => o.company_id).filter(Boolean))]
+  const oppdragIds = oppdragsListe.map(o => o.id)
+  const meglerIds = [...new Set(oppdragsListe.map(o => o.megler_id).filter(Boolean))]
+  const kundeIds = [...new Set(oppdragsListe.map(o => o.kunde_id).filter(Boolean))]
+
+  // Parallelle batch-spørringer
+  const [settingsRes, purringerRes, meglereRes, kunderRes] = await Promise.all([
+    companyIds.length > 0
+      ? serviceClient.from('company_settings')
+          .select('company_id, purring_dager_1, purring_dager_2, inkasso_dager')
+          .in('company_id', companyIds)
+      : Promise.resolve({ data: [] as { company_id: string; purring_dager_1: number | null; purring_dager_2: number | null; inkasso_dager: number | null }[] }),
+    serviceClient.from('purre_logg')
+      .select('oppdrag_id, purre_type')
+      .in('oppdrag_id', oppdragIds),
+    meglerIds.length > 0
+      ? serviceClient.from('megler_profiler').select('id, navn, epost').in('id', meglerIds)
+      : Promise.resolve({ data: [] as { id: string; navn: string; epost: string | null }[] }),
+    kundeIds.length > 0
+      ? serviceClient.from('privatkunde_profiler').select('id, navn, epost').in('id', kundeIds)
+      : Promise.resolve({ data: [] as { id: string; navn: string; epost: string | null }[] }),
+  ])
+
+  // Bygg oppslag-maps
+  const settingsMap: Record<string, { purring_dager_1: number | null; purring_dager_2: number | null; inkasso_dager: number | null }> = {}
+  for (const s of settingsRes.data ?? []) settingsMap[s.company_id] = s
+
+  const purringerPerOppdrag: Record<string, string[]> = {}
+  for (const p of purringerRes.data ?? []) {
+    if (!purringerPerOppdrag[p.oppdrag_id]) purringerPerOppdrag[p.oppdrag_id] = []
+    purringerPerOppdrag[p.oppdrag_id].push(p.purre_type)
+  }
+
+  const meglerMap: Record<string, { navn: string; epost: string | null }> = {}
+  for (const m of meglereRes.data ?? []) meglerMap[m.id] = m
+
+  const kundeMap: Record<string, { navn: string; epost: string | null }> = {}
+  for (const k of kunderRes.data ?? []) kundeMap[k.id] = k
 
   let behandlet = 0
 
   for (const oppdrag of oppdragsListe) {
     if (!oppdrag.company_id) continue
 
-    const { data: settings } = await serviceClient
-      .from('company_settings')
-      .select('purring_dager_1, purring_dager_2, inkasso_dager')
-      .eq('company_id', oppdrag.company_id)
-      .maybeSingle()
-
+    const settings = settingsMap[oppdrag.company_id]
     const dagerSidenstatus = Math.floor(
       (naa.getTime() - new Date(oppdrag.updated_at).getTime()) / (1000 * 60 * 60 * 24)
     )
@@ -106,18 +137,13 @@ export async function kjorAutomatiskPurring() {
     const purring2Dager = settings?.purring_dager_2 ?? 28
     const inkassoDager = settings?.inkasso_dager ?? 60
 
-    // Hent eksisterende purringer
-    const { data: purringer } = await serviceClient
-      .from('purre_logg')
-      .select('purre_type')
-      .eq('oppdrag_id', oppdrag.id)
+    const purreTyper = purringerPerOppdrag[oppdrag.id] ?? []
+    const harPurring1 = purreTyper.includes('purring_1')
+    const harPurring2 = purreTyper.includes('purring_2')
+    const harInkasso = purreTyper.includes('inkasso')
 
-    const harPurring1 = purringer?.some((p) => p.purre_type === 'purring_1')
-    const harPurring2 = purringer?.some((p) => p.purre_type === 'purring_2')
-    const harInkasso = purringer?.some((p) => p.purre_type === 'inkasso')
-
-    const kunde = (oppdrag.megler as unknown as { navn: string; epost: string | null } | null)
-      || (oppdrag.privatkunde as unknown as { navn: string; epost: string | null } | null)
+    const kunde = (oppdrag.megler_id ? meglerMap[oppdrag.megler_id] : null)
+      ?? (oppdrag.kunde_id ? kundeMap[oppdrag.kunde_id] : null)
     if (!kunde?.epost) continue
 
     try {

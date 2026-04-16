@@ -116,22 +116,50 @@ export async function POST(request: NextRequest) {
     }
 
     if (vippsAgreementStatus !== null) {
+      // Bygg oppdateringsobjekt
+      const updateData: Record<string, unknown> = {
+        vipps_agreement_status: vippsAgreementStatus,
+        status: nyStatus,
+        updated_at: new Date().toISOString(),
+      }
+
+      // KRITISK: Når avtalen aktiveres, sett neste_trekk_dato til i morgen
+      // slik at abonnement-trekk-cron fanger den opp ved neste kjøring.
+      if (nyStatus === 'aktiv') {
+        const iMorgen = new Date()
+        iMorgen.setDate(iMorgen.getDate() + 1)
+        updateData.neste_trekk_dato = iMorgen.toISOString().split('T')[0]
+      }
+
       const { error: updateError } = await supabase
         .from('abonnementer')
-        .update({
-          vipps_agreement_status: vippsAgreementStatus,
-          status: nyStatus,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updateData)
         .eq('id', abonnement.id)
 
       if (updateError) {
         console.error('[vipps-recurring-webhook] DB-feil ved oppdatering:', updateError.message)
         return NextResponse.json({ error: 'DB error' }, { status: 500 })
       }
+
+      console.log(`[vipps-recurring-webhook] Abonnement ${abonnement.id}: ${abonnement.status} → ${nyStatus}`)
+    } else if (eventType.includes('charge-captured')) {
+      // Vellykket belastning — logg for sporbarhet
+      const chargeId = (body.data as Record<string, unknown> | undefined)?.chargeId ?? 'ukjent'
+      console.log(`[vipps-recurring-webhook] Charge captured for ${agreementId}, chargeId=${chargeId}`)
+
+    } else if (eventType.includes('charge-failed') || eventType.includes('charge-creation-failed')) {
+      // Mislykket belastning — logg som error for varsling
+      const chargeId = (body.data as Record<string, unknown> | undefined)?.chargeId ?? 'ukjent'
+      const failureReason = (body.data as Record<string, unknown> | undefined)?.failureReason ?? 'ukjent'
+      console.error(
+        `[vipps-recurring-webhook] CHARGE FAILED for ${agreementId}, chargeId=${chargeId}, reason=${failureReason}`
+      )
+
+    } else if (eventType.includes('charge-cancelled')) {
+      console.log(`[vipps-recurring-webhook] Charge cancelled for ${agreementId}`)
+
     } else {
-      // Charge-events (captured/failed/etc) logges foreløpig, håndteres i neste iterasjon
-      console.log('[vipps-recurring-webhook] Mottatt event (ikke agreement-status):', eventType, agreementId)
+      console.log('[vipps-recurring-webhook] Ukjent event:', eventType, agreementId)
     }
 
     return NextResponse.json({ ok: true })
