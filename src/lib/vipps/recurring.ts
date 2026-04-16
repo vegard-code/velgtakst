@@ -41,9 +41,9 @@ async function getAccessToken(): Promise<string> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'client_id': process.env.VIPPS_CLIENT_ID!,
-      'client_secret': process.env.VIPPS_CLIENT_SECRET!,
-      'Ocp-Apim-Subscription-Key': process.env.VIPPS_SUBSCRIPTION_KEY!,
+      'client_id': process.env.VIPPS_RECURRING_CLIENT_ID ?? process.env.VIPPS_CLIENT_ID!,
+      'client_secret': process.env.VIPPS_RECURRING_CLIENT_SECRET ?? process.env.VIPPS_CLIENT_SECRET!,
+      'Ocp-Apim-Subscription-Key': process.env.VIPPS_RECURRING_SUBSCRIPTION_KEY ?? process.env.VIPPS_SUBSCRIPTION_KEY!,
       'Merchant-Serial-Number': process.env.VIPPS_RECURRING_MSN ?? process.env.VIPPS_MSN!,
     },
   })
@@ -67,7 +67,7 @@ function vippsHeaders(accessToken: string, idempotencyKey?: string) {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
-    'Ocp-Apim-Subscription-Key': process.env.VIPPS_SUBSCRIPTION_KEY!,
+    'Ocp-Apim-Subscription-Key': process.env.VIPPS_RECURRING_SUBSCRIPTION_KEY ?? process.env.VIPPS_SUBSCRIPTION_KEY!,
     'Merchant-Serial-Number': process.env.VIPPS_RECURRING_MSN ?? process.env.VIPPS_MSN!,
     'Vipps-System-Name': 'VelgTakst',
     'Vipps-System-Version': '1.0.0',
