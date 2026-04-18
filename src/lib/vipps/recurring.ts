@@ -240,6 +240,7 @@ export async function opprettCharge(params: OpprettChargeParams): Promise<{ char
     description: params.description,
     due: params.dueDate,
     retryDays: 5,
+    transactionType: 'RESERVE_CAPTURE',
   }
 
   const res = await fetch(`${BASE_URL}/recurring/v3/agreements/${params.agreementId}/charges`, {
