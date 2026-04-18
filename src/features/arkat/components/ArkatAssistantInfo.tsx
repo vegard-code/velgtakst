@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 /**
  * Informasjonsboks for ARKAT — ansvarserklæring og kort hjelpetekst.
  */
@@ -15,7 +17,16 @@ export default function ArkatAssistantInfo() {
       </p>
       <p className="text-xs text-[#94a3b8] mt-2">
         Dette er en skrivehjelp. Du er selv ansvarlig for faglig vurdering,
-        valgt TG og endelig tekst i rapporten.
+        valgt TG og endelig tekst i rapporten. Ved å bruke ARKAT aksepterer
+        du våre{" "}
+        <Link
+          href="/vilkar"
+          target="_blank"
+          className="text-[#285982] hover:underline"
+        >
+          vilkår for AI-basert skrivehjelp
+        </Link>
+        .
       </p>
     </div>
   );

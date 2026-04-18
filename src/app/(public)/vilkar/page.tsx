@@ -13,15 +13,15 @@ export const metadata: Metadata = {
 export default function VilkarPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="text-3xl font-bold text-white mb-2">Salgsvilkår</h1>
-      <p className="text-gray-400 text-sm mb-10">
-        Sist oppdatert: 30. mars 2026
+      <h1 className="text-3xl font-bold text-gray-900 mb-2">Salgsvilkår</h1>
+      <p className="text-gray-500 text-sm mb-10">
+        Sist oppdatert: 18. april 2026
       </p>
 
-      <div className="space-y-10 text-gray-300 text-sm leading-relaxed">
+      <div className="space-y-10 text-gray-700 text-sm leading-relaxed">
         {/* --- 1. Generelt --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
             1. Generelt
           </h2>
           <p>
@@ -38,7 +38,7 @@ export default function VilkarPage() {
 
         {/* --- 2. Tjenesten --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
             2. Tjenesten
           </h2>
           <p>
@@ -56,13 +56,13 @@ export default function VilkarPage() {
 
         {/* --- 3. Priser og betaling --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
             3. Priser og betaling
           </h2>
           <p>
             Abonnementet faktureres som en fast månedspris per fylke
             takstmannen er oppført i. Gjeldende priser fremgår ved bestilling
-            og i din portal under &laquo;Innstillinger&raquo;.
+            og i din portal under &laquo;Abonnement&raquo;.
           </p>
           <p className="mt-3">
             Alle priser er oppgitt i norske kroner (NOK) og er eksklusive
@@ -79,10 +79,70 @@ export default function VilkarPage() {
           </p>
         </section>
 
-        {/* --- 4. Angrerett --- */}
+        {/* --- 4. AI-basert skrivehjelp (ARKAT) --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
-            4. Angrerett
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            4. AI-basert skrivehjelp (ARKAT Skrivehjelp)
+          </h2>
+          <p>
+            takstmann.net tilbyr en AI-basert skrivehjelp (&laquo;ARKAT
+            Skrivehjelp&raquo;) som et støtteverktøy for takstmenn ved
+            utarbeidelse av tilstandsrapporter etter NS 3600. Tjenesten
+            genererer tekstforslag basert på informasjon takstmannen oppgir,
+            ved hjelp av kunstig intelligens (OpenAI).
+          </p>
+          <p className="mt-3 font-semibold text-gray-900">
+            Viktige forbehold:
+          </p>
+          <ul className="mt-2 space-y-2 ml-4 list-disc">
+            <li>
+              ARKAT Skrivehjelp er et <strong>hjelpeverktøy</strong>, ikke en
+              erstatning for takstmannens egen faglige vurdering. Alt innhold
+              som genereres er forslag som må kontrolleres, tilpasses og
+              godkjennes av takstmannen før bruk i en rapport.
+            </li>
+            <li>
+              Takstmannen har <strong>fullt og utelukkende ansvar</strong> for
+              innholdet i sine tilstandsrapporter, uavhengig av om AI-genererte
+              tekstforslag er benyttet. takstmann.net påtar seg intet ansvar for
+              feil, mangler, utelatelser eller konsekvenser som følge av bruk
+              av AI-generert innhold.
+            </li>
+            <li>
+              AI-modellen kan produsere tekst som inneholder <strong>feil,
+              unøyaktigheter eller upassende formuleringer</strong>. Det er
+              takstmannens ansvar å kvalitetssikre alt innhold før det
+              inkluderes i en rapport.
+            </li>
+            <li>
+              Tekst og data som tastes inn i ARKAT Skrivehjelp sendes til en
+              ekstern AI-tjeneste (OpenAI) for prosessering. Ikke oppgi
+              personopplysninger, personnummer eller annen sensitiv informasjon
+              som ikke er nødvendig for tekstgenereringen. Se vår{" "}
+              <Link
+                href="/personvern"
+                className="text-blue-700 hover:text-blue-900 underline"
+              >
+                personvernerklæring
+              </Link>{" "}
+              for detaljer om databehandling.
+            </li>
+            <li>
+              takstmann.net forbeholder seg retten til å endre, begrense eller
+              avvikle ARKAT Skrivehjelp uten forvarsel.
+            </li>
+          </ul>
+          <p className="mt-3">
+            Ved å bruke ARKAT Skrivehjelp aksepterer du disse forbeholdene og
+            bekrefter at du forstår at ansvaret for rapportens innhold til
+            enhver tid ligger hos deg som takstmann.
+          </p>
+        </section>
+
+        {/* --- 5. Angrerett --- */}
+        <section>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            5. Angrerett
           </h2>
           <p>
             I henhold til angrerettloven har du 14 dagers angrerett fra den
@@ -95,7 +155,7 @@ export default function VilkarPage() {
             fristen. Du kan kontakte oss på{" "}
             <a
               href="mailto:post@takstmann.net"
-              className="text-accent hover:text-accent/80 transition-colors"
+              className="text-blue-700 hover:text-blue-900 underline"
             >
               post@takstmann.net
             </a>{" "}
@@ -104,7 +164,7 @@ export default function VilkarPage() {
               href="https://www.regjeringen.no/no/dokumenter/angrerettloven/id2558028/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent hover:text-accent/80 transition-colors"
+              className="text-blue-700 hover:text-blue-900 underline"
             >
               standard angreskjema
             </a>
@@ -116,28 +176,28 @@ export default function VilkarPage() {
           </p>
         </section>
 
-        {/* --- 5. Oppsigelse --- */}
+        {/* --- 6. Oppsigelse --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
-            5. Oppsigelse og avbestilling
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            6. Oppsigelse og avbestilling
           </h2>
           <p>
             Du kan når som helst si opp abonnementet ditt via portalen under
-            &laquo;Innstillinger&raquo; eller ved å kontakte oss på e-post.
+            &laquo;Abonnement&raquo; eller ved å kontakte oss på e-post.
             Oppsigelsen trer i kraft ved utløpet av inneværende betalingsperiode.
           </p>
           <p className="mt-3">
             Ved oppsigelse beholder du tilgang til tjenesten ut perioden du
             allerede har betalt for. Det gis ikke refusjon for gjenstående tid
             i inneværende periode, med unntak av angrerettsperioden beskrevet
-            i punkt 4.
+            i punkt 5.
           </p>
         </section>
 
-        {/* --- 6. Retur og refusjon --- */}
+        {/* --- 7. Retur og refusjon --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
-            6. Retur og refusjon
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            7. Retur og refusjon
           </h2>
           <p>
             Ettersom takstmann.net leverer en digital tjeneste, gjelder ikke
@@ -151,10 +211,10 @@ export default function VilkarPage() {
           </p>
         </section>
 
-        {/* --- 7. Klagehåndtering --- */}
+        {/* --- 8. Klagehåndtering --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
-            7. Klagehåndtering
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            8. Klagehåndtering
           </h2>
           <p>
             Dersom du er misfornøyd med tjenesten eller mener det foreligger
@@ -165,7 +225,7 @@ export default function VilkarPage() {
               E-post:{" "}
               <a
                 href="mailto:post@takstmann.net"
-                className="text-accent hover:text-accent/80 transition-colors"
+                className="text-blue-700 hover:text-blue-900 underline"
               >
                 post@takstmann.net
               </a>
@@ -179,7 +239,7 @@ export default function VilkarPage() {
               href="https://www.forbrukertilsynet.no"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent hover:text-accent/80 transition-colors"
+              className="text-blue-700 hover:text-blue-900 underline"
             >
               Forbrukertilsynet
             </a>{" "}
@@ -188,7 +248,7 @@ export default function VilkarPage() {
               href="https://www.forbrukerradet.no"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent hover:text-accent/80 transition-colors"
+              className="text-blue-700 hover:text-blue-900 underline"
             >
               Forbrukerrådet
             </a>{" "}
@@ -196,24 +256,29 @@ export default function VilkarPage() {
           </p>
         </section>
 
-        {/* --- 8. Personvern --- */}
+        {/* --- 9. Personvern --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
-            8. Personvern
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            9. Personvern
           </h2>
           <p>
             Vi behandler personopplysninger i samsvar med gjeldende
-            personvernlovgivning (GDPR). Opplysninger vi samler inn brukes
-            kun til å levere tjenesten og kommunisere med deg. Vi deler ikke
-            dine personopplysninger med tredjeparter utover det som er
-            nødvendig for å levere tjenesten (f.eks. betalingsformidler Vipps).
+            personvernlovgivning (GDPR). Se vår{" "}
+            <Link
+              href="/personvern"
+              className="text-blue-700 hover:text-blue-900 underline"
+            >
+              personvernerklæring
+            </Link>{" "}
+            for fullstendig informasjon om hvordan vi samler inn, bruker og
+            beskytter dine opplysninger.
           </p>
         </section>
 
-        {/* --- 9. Endringer --- */}
+        {/* --- 10. Endringer --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
-            9. Endringer i vilkårene
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            10. Endringer i vilkårene
           </h2>
           <p>
             takstmann.net forbeholder seg retten til å endre disse vilkårene. Ved
@@ -224,10 +289,10 @@ export default function VilkarPage() {
           </p>
         </section>
 
-        {/* --- 10. Kontakt --- */}
+        {/* --- 11. Kontakt --- */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-3">
-            10. Kontaktinformasjon
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            11. Kontaktinformasjon
           </h2>
           <p>Validert AS</p>
           <p>Org.nr: 936 714 080</p>
@@ -235,7 +300,7 @@ export default function VilkarPage() {
             E-post:{" "}
             <a
               href="mailto:post@takstmann.net"
-              className="text-accent hover:text-accent/80 transition-colors"
+              className="text-blue-700 hover:text-blue-900 underline"
             >
               post@takstmann.net
             </a>
@@ -243,12 +308,12 @@ export default function VilkarPage() {
         </section>
       </div>
 
-      <div className="gradient-line my-10" />
+      <hr className="my-10 border-gray-200" />
 
       <p className="text-center text-xs text-gray-500">
         <Link
           href="/"
-          className="text-accent hover:text-accent/80 transition-colors"
+          className="text-blue-700 hover:text-blue-900 underline"
         >
           Tilbake til forsiden
         </Link>

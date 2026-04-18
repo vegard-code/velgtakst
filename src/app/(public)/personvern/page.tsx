@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Personvernerklæring – takstmann.net",
@@ -11,25 +12,25 @@ export const metadata: Metadata = {
 export default function PersonvernPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="text-3xl font-bold text-white mb-2">Personvernerklæring</h1>
-      <p className="text-gray-400 text-sm mb-10">Sist oppdatert: 2. april 2026</p>
+      <h1 className="text-3xl font-bold text-gray-900 mb-2">Personvernerklæring</h1>
+      <p className="text-gray-500 text-sm mb-10">Sist oppdatert: 18. april 2026</p>
 
-      <div className="prose prose-invert max-w-none space-y-8 text-gray-300">
+      <div className="space-y-8 text-gray-700 text-sm leading-relaxed">
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">1. Behandlingsansvarlig</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">1. Behandlingsansvarlig</h2>
           <p>
-            Behandlingsansvarlig for personopplysninger på takstmann.net er BMTF AS. Har du spørsmål
-            om personvern, kan du kontakte oss på{" "}
-            <a href="mailto:vegard@bmtf.no" className="text-blue-400 hover:text-blue-300 underline">
-              vegard@bmtf.no
+            Behandlingsansvarlig for personopplysninger på takstmann.net er Validert AS
+            (org.nr. 936 714 080). Har du spørsmål om personvern, kan du kontakte oss på{" "}
+            <a href="mailto:post@takstmann.net" className="text-blue-700 hover:text-blue-900 underline">
+              post@takstmann.net
             </a>
             .
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">2. Hvilke opplysninger samler vi inn?</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">2. Hvilke opplysninger samler vi inn?</h2>
           <p>Vi samler inn følgende kategorier av personopplysninger:</p>
           <ul className="list-disc list-inside mt-2 space-y-1">
             <li><strong>Kontaktinformasjon:</strong> navn, e-postadresse, telefonnummer og adresse.</li>
@@ -38,11 +39,16 @@ export default function PersonvernPage() {
             <li><strong>Kommunikasjonsdata:</strong> meldinger sendt via plattformens meldingssystem.</li>
             <li><strong>Tekniske data:</strong> IP-adresse, nettlesertype, operativsystem og bruksmønster via Google Analytics (kun med samtykke).</li>
             <li><strong>Autentiseringsdata:</strong> passordhash og innloggingsinformasjon via Vipps eller e-post/passord.</li>
+            <li>
+              <strong>Data fra AI-skrivehjelp (ARKAT):</strong> tekst som takstmannen oppgir
+              i skrivehjelpen (observasjoner, bygningsdeler, tilstandsgrader) sendes til en
+              ekstern AI-tjeneste for prosessering. Se punkt 4 om databehandlere.
+            </li>
           </ul>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">3. Formål og rettslig grunnlag</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">3. Formål og rettslig grunnlag</h2>
           <p>Vi behandler personopplysninger til følgende formål:</p>
           <ul className="list-disc list-inside mt-2 space-y-2">
             <li>
@@ -58,6 +64,12 @@ export default function PersonvernPage() {
               forpliktelse (GDPR art. 6 nr. 1 b og c).
             </li>
             <li>
+              <strong>AI-basert skrivehjelp (ARKAT)</strong> – nødvendig for oppfyllelse av avtale
+              (GDPR art. 6 nr. 1 b). Tekst brukeren oppgir sendes til OpenAI for å generere
+              tekstforslag. Vi lagrer ikke innholdet lenger enn nødvendig for å levere
+              tjenesten.
+            </li>
+            <li>
               <strong>Varsler og e-postnotifikasjoner</strong> – berettiget interesse i å holde brukere
               informert om aktivitet (GDPR art. 6 nr. 1 f), med mulighet til å reservere seg.
             </li>
@@ -69,7 +81,7 @@ export default function PersonvernPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">4. Databehandlere</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">4. Databehandlere</h2>
           <p>Vi benytter følgende underleverandører (databehandlere) for å drifte tjenesten:</p>
           <ul className="list-disc list-inside mt-2 space-y-1">
             <li><strong>Supabase Inc.</strong> – databaselagring og autentisering. Data lagres i EU (Frankfurt).</li>
@@ -77,6 +89,12 @@ export default function PersonvernPage() {
             <li><strong>Google LLC</strong> – Google Analytics (kun med samtykke) og Google Kalender-integrasjon.</li>
             <li><strong>Vipps MobilePay AS</strong> – betalingsformidling og innlogging via Vipps.</li>
             <li><strong>Resend Inc.</strong> – utsending av e-postvarsler.</li>
+            <li>
+              <strong>OpenAI, L.L.C.</strong> – prosessering av tekst i ARKAT Skrivehjelp.
+              Data sendes til OpenAI sine servere (USA) for å generere tekstforslag.
+              OpenAI er bundet av databehandleravtale og bruker ikke innsendt data
+              til trening av sine modeller når API-et benyttes.
+            </li>
           </ul>
           <p className="mt-2">
             Alle databehandlere er bundet av databehandleravtaler som sikrer at personopplysningene
@@ -85,20 +103,20 @@ export default function PersonvernPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">5. Lagring og sletting</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">5. Lagring og sletting</h2>
           <p>
             Vi lagrer personopplysninger så lenge kontoen er aktiv og så lenge det er nødvendig for å
             oppfylle formålene beskrevet i denne erklæringen. For opplysninger knyttet til faktura og
             regnskap gjelder lovpålagt oppbevaringsplikt på 5 år (regnskapsloven § 13).
           </p>
           <p className="mt-2">
-            Når en konto slettes, slettes tilknyttede personopplysninger automatisk (via CASCADE i
-            databasen), med unntak av opplysninger vi er lovpålagt å beholde.
+            Når en konto slettes, slettes tilknyttede personopplysninger automatisk,
+            med unntak av opplysninger vi er lovpålagt å beholde.
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">6. Dine rettigheter</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">6. Dine rettigheter</h2>
           <p>Du har følgende rettigheter etter GDPR:</p>
           <ul className="list-disc list-inside mt-2 space-y-2">
             <li>
@@ -125,15 +143,15 @@ export default function PersonvernPage() {
           </ul>
           <p className="mt-2">
             Send forespørsler til{" "}
-            <a href="mailto:vegard@bmtf.no" className="text-blue-400 hover:text-blue-300 underline">
-              vegard@bmtf.no
+            <a href="mailto:post@takstmann.net" className="text-blue-700 hover:text-blue-900 underline">
+              post@takstmann.net
             </a>
             . Vi besvarer henvendelser innen 30 dager.
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">7. Informasjonskapsler (cookies)</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">7. Informasjonskapsler (cookies)</h2>
           <p>
             Vi bruker informasjonskapsler for å huske ditt samtykke til analytics og for å holde deg
             innlogget. Google Analytics aktiveres kun dersom du gir samtykke via cookie-banneret.
@@ -145,7 +163,7 @@ export default function PersonvernPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">8. Klagerett</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">8. Klagerett</h2>
           <p>
             Dersom du mener vi behandler dine personopplysninger i strid med GDPR, har du rett til å
             klage til Datatilsynet:{" "}
@@ -153,7 +171,7 @@ export default function PersonvernPage() {
               href="https://www.datatilsynet.no"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 underline"
+              className="text-blue-700 hover:text-blue-900 underline"
             >
               www.datatilsynet.no
             </a>
@@ -162,20 +180,32 @@ export default function PersonvernPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-white mb-3">9. Kontakt</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-3">9. Kontakt</h2>
           <p>
             Spørsmål om personvern kan rettes til:
           </p>
-          <address className="mt-2 not-italic text-gray-300">
-            BMTF AS<br />
+          <address className="mt-2 not-italic text-gray-700">
+            Validert AS<br />
+            Org.nr: 936 714 080<br />
             E-post:{" "}
-            <a href="mailto:vegard@bmtf.no" className="text-blue-400 hover:text-blue-300 underline">
-              vegard@bmtf.no
+            <a href="mailto:post@takstmann.net" className="text-blue-700 hover:text-blue-900 underline">
+              post@takstmann.net
             </a>
           </address>
         </section>
 
       </div>
+
+      <hr className="my-10 border-gray-200" />
+
+      <p className="text-center text-xs text-gray-500">
+        <Link
+          href="/"
+          className="text-blue-700 hover:text-blue-900 underline"
+        >
+          Tilbake til forsiden
+        </Link>
+      </p>
     </div>
   );
 }

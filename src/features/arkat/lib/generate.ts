@@ -124,7 +124,7 @@ export async function generateArkat(
         warnings.push("AI-modus: mock — resultatet er ikke generert av AI.");
       }
       if (aiResultat.kilde === "live") {
-        warnings.push("Teksten er AI-generert og bør kontrolleres av takstmannen før bruk.");
+        warnings.push("Teksten er AI-generert og skal kontrolleres av takstmannen før bruk.");
       }
       // Legg til varsler fra AI-modellen selv (forbehold, usikkerhet)
       if (aiResultat.varsler.length > 0) {
