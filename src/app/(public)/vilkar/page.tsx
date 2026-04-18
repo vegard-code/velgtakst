@@ -65,8 +65,8 @@ export default function VilkarPage() {
             og i din portal under &laquo;Abonnement&raquo;.
           </p>
           <p className="mt-3">
-            Alle priser er oppgitt i norske kroner (NOK) og er eksklusive
-            merverdiavgift (MVA) med mindre annet er angitt.
+            Alle priser er oppgitt i norske kroner (NOK) og er inklusive
+            merverdiavgift (MVA).
           </p>
           <p className="mt-3">
             Betaling skjer via Vipps. Ved å godkjenne betalingsavtalen i Vipps,
