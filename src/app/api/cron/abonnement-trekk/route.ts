@@ -22,6 +22,11 @@ export async function GET(request: Request) {
   const supabase = getAdminClient()
   const today = new Date().toISOString().split('T')[0]
 
+  // Vipps krever minimum 2 dager frem i tid for due date
+  const dueDate = new Date()
+  dueDate.setDate(dueDate.getDate() + 2)
+  const dueDateStr = dueDate.toISOString().split('T')[0]
+
   const { data: abonnementer } = await supabase
     .from('abonnementer')
     .select('id, vipps_agreement_id, maanedlig_belop, neste_trekk_dato')
@@ -43,7 +48,7 @@ export async function GET(request: Request) {
         agreementId: ab.vipps_agreement_id,
         amountOre: ab.maanedlig_belop,
         description: 'Månedlig abonnement – takstmann.net',
-        dueDate: today,
+        dueDate: dueDateStr,
       })
 
       // Oppdater neste_trekk_dato til +1 måned
