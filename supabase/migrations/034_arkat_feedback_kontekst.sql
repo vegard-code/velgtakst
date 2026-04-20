@@ -1,4 +1,4 @@
--- Legger til akuttgrad, hovedgrunnlag og tilleggsgrunnlag i arkat_feedback
+-- Legger til akuttgrad, hovedgrunnlag, tilleggsgrunnlag og ns_versjon i arkat_feedback
 -- slik at admin-feedback-siden viser fullstendig kontekst for hva takstmannen valgte.
 ALTER TABLE arkat_feedback
   ADD COLUMN IF NOT EXISTS akuttgrad text,
