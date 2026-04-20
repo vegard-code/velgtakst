@@ -168,32 +168,6 @@ export default async function AdminArkatFeedbackPage() {
                   </div>
                 )}
 
-                {/* Kontekst: akuttgrad, grunnlag, tillegg */}
-                {(f.akuttgrad || f.hovedgrunnlag || f.ns_versjon || (f.tilleggsgrunnlag && f.tilleggsgrunnlag.length > 0)) && (
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {f.ns_versjon && (
-                      <span className="text-xs bg-[#f5f0ff] text-[#6b21a8] px-2 py-0.5 rounded">
-                        {NS_VERSJON_LABELS[f.ns_versjon as NsVersjon] ?? f.ns_versjon}
-                      </span>
-                    )}
-                    {f.akuttgrad && (
-                      <span className="text-xs bg-[#f0f4f8] text-[#1e293b] px-2 py-0.5 rounded">
-                        Akuttgrad: {AKUTTGRAD_LABELS[f.akuttgrad] ?? f.akuttgrad}
-                      </span>
-                    )}
-                    {f.hovedgrunnlag && (
-                      <span className="text-xs bg-[#f0f4f8] text-[#1e293b] px-2 py-0.5 rounded">
-                        Grunnlag: {HOVEDGRUNNLAG_LABELS[f.hovedgrunnlag as Hovedgrunnlag] ?? f.hovedgrunnlag}
-                      </span>
-                    )}
-                    {f.tilleggsgrunnlag?.map((t: string) => (
-                      <span key={t} className="text-xs bg-[#eef2ff] text-[#4338ca] px-2 py-0.5 rounded">
-                        + {OBSERVASJONS_TILLEGG_LABELS[t as ObservasjonsTillegg] ?? t}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
                 {/* Observasjon (fakta — brukerens input) */}
                 <div className="mb-3">
                   <div className="text-xs font-medium text-[#64748b] mb-1">Observasjon (brukerens input)</div>

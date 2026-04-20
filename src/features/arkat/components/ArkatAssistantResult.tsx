@@ -15,10 +15,6 @@ export interface ArkatInputKontekst {
   hovedgrunnlag?: string;
   tilleggsgrunnlag?: string[];
   ns_versjon?: string;
-  akuttgrad?: string;
-  hovedgrunnlag?: string;
-  tilleggsgrunnlag?: string[];
-  ns_versjon?: string;
 }
 
 interface Props {
@@ -244,10 +240,6 @@ export default function ArkatAssistantResult({ response, inputKontekst }: Props)
                             tilstandsgrad: inputKontekst.tilstandsgrad ?? null,
                             observasjon: inputKontekst.observasjon,
                             arsak: inputKontekst.arsak ?? null,
-                            akuttgrad: inputKontekst.akuttgrad ?? null,
-                            hovedgrunnlag: inputKontekst.hovedgrunnlag ?? null,
-                            tilleggsgrunnlag: inputKontekst.tilleggsgrunnlag ?? null,
-                            ns_versjon: inputKontekst.ns_versjon ?? null,
                             akuttgrad: inputKontekst.akuttgrad ?? null,
                             hovedgrunnlag: inputKontekst.hovedgrunnlag ?? null,
                             tilleggsgrunnlag: inputKontekst.tilleggsgrunnlag ?? null,
