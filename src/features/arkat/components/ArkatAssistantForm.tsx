@@ -27,6 +27,7 @@ import { erAldersvurderingRelevant, hentAlderslogikk } from "../config/ns-versjo
 import { inferGrunnlag } from "../lib/infer-grunnlag";
 import ArkatAssistantResult from "./ArkatAssistantResult";
 import ArkatAssistantInfo from "./ArkatAssistantInfo";
+import { logArkatEvent } from "../lib/log-event";
 
 export default function ArkatAssistantForm() {
   // Form state
@@ -225,6 +226,17 @@ export default function ArkatAssistantForm() {
 
       const data: ArkatGenerateResponse = await res.json();
       setResponse(data);
+      logArkatEvent({
+        event_type: 'generated',
+        bygningsdel,
+        underenhet,
+        tilstandsgrad: merknadModus ? undefined : (tilstandsgrad || undefined),
+        hovedgrunnlag: hovedgrunnlag as string,
+        akuttgrad: akuttgrad as string,
+        observasjon_lengde: observasjon.trim().length,
+        screening_approved: data.screening.approved_for_generation,
+        screening_reason: data.screening.reason,
+      });
     } catch {
       setFeilmelding("Noe gikk galt. Sjekk nettverkstilkoblingen og prøv igjen.");
     } finally {
@@ -233,6 +245,9 @@ export default function ArkatAssistantForm() {
   };
 
   const handleNullstill = () => {
+    if (response !== null) {
+      logArkatEvent({ event_type: 'reset' });
+    }
     setBygningsdel("");
     setUnderenhet("");
     setSubmodus("");

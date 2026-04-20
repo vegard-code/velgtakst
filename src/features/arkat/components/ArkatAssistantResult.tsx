@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ArkatGenerateResponse } from "../types/arkat";
+import { logArkatEvent } from "../lib/log-event";
 
 /** Kontekst om hva brukeren sendte inn — brukes til feedback */
 export interface ArkatInputKontekst {
@@ -42,15 +43,21 @@ export default function ArkatAssistantResult({ response, inputKontekst }: Props)
   const [feedbackSendt, setFeedbackSendt] = useState(false);
   const [feedbackSending, setFeedbackSending] = useState(false);
 
+  const LOGGBARE_FELT = ['arsak', 'risiko', 'konsekvens', 'anbefalt_tiltak'];
+
   const copyToClipboard = async (text: string, field?: string) => {
     try {
       await navigator.clipboard.writeText(text);
       if (field) {
         setCopiedField(field);
         setTimeout(() => setCopiedField(null), 2000);
+        if (LOGGBARE_FELT.includes(field)) {
+          logArkatEvent({ event_type: 'copied_field', copied_field: field });
+        }
       } else {
         setCopiedAll(true);
         setTimeout(() => setCopiedAll(false), 2000);
+        logArkatEvent({ event_type: 'copied_all' });
       }
     } catch {
       // Fallback — ignorér
