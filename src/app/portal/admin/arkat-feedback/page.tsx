@@ -2,8 +2,6 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { BYGNINGSDELER } from "@/features/arkat/config/bygningsdeler";
 import { HOVEDGRUNNLAG_LABELS, OBSERVASJONS_TILLEGG_LABELS, NS_VERSJON_LABELS } from "@/features/arkat/types/arkat";
 import type { Hovedgrunnlag, ObservasjonsTillegg, NsVersjon } from "@/features/arkat/types/arkat";
-import { HOVEDGRUNNLAG_LABELS, OBSERVASJONS_TILLEGG_LABELS, NS_VERSJON_LABELS } from "@/features/arkat/types/arkat";
-import type { Hovedgrunnlag, ObservasjonsTillegg, NsVersjon } from "@/features/arkat/types/arkat";
 
 // Lesbare labels
 const BD_LABELS = new Map(BYGNINGSDELER.map((b) => [b.key, b.label]));
@@ -12,15 +10,6 @@ const UE_LABELS = new Map(
     b.underenheter.map((u) => [`${b.key}/${u.key}`, u.label])
   )
 );
-
-const AKUTTGRAD_LABELS: Record<string, string> = {
-  akutt: "Akutt",
-  moderat: "Moderat",
-  lav: "Lav",
-  kosmetisk: "Kosmetisk",
-  ingen_umiddelbar: "Ingen umiddelbar",
-  positiv: "Positiv",
-};
 
 const AKUTTGRAD_LABELS: Record<string, string> = {
   akutt: "Akutt",
