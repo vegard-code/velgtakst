@@ -715,6 +715,10 @@ export default function ArkatAssistantForm() {
                 hovedgrunnlag: hovedgrunnlag || undefined,
                 tilleggsgrunnlag: tillegg.length > 0 ? tillegg : undefined,
                 ns_versjon: nsVersjon,
+                akuttgrad: merknadModus ? undefined : (akuttgrad || undefined),
+                hovedgrunnlag: hovedgrunnlag || undefined,
+                tilleggsgrunnlag: tillegg.length > 0 ? tillegg : undefined,
+                ns_versjon: nsVersjon,
               }}
             />
           ) : (
