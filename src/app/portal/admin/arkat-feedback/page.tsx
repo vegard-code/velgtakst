@@ -1,5 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { BYGNINGSDELER } from "@/features/arkat/config/bygningsdeler";
+import { HOVEDGRUNNLAG_LABELS, OBSERVASJONS_TILLEGG_LABELS, NS_VERSJON_LABELS } from "@/features/arkat/types/arkat";
+import type { Hovedgrunnlag, ObservasjonsTillegg, NsVersjon } from "@/features/arkat/types/arkat";
 
 // Lesbare labels
 const BD_LABELS = new Map(BYGNINGSDELER.map((b) => [b.key, b.label]));
@@ -8,6 +10,15 @@ const UE_LABELS = new Map(
     b.underenheter.map((u) => [`${b.key}/${u.key}`, u.label])
   )
 );
+
+const AKUTTGRAD_LABELS: Record<string, string> = {
+  akutt: "Akutt",
+  moderat: "Moderat",
+  lav: "Lav",
+  kosmetisk: "Kosmetisk",
+  ingen_umiddelbar: "Ingen umiddelbar",
+  positiv: "Positiv",
+};
 
 const VURDERING_STYLE: Record<string, { label: string; bg: string; text: string }> = {
   bra: { label: "Ja, direkte", bg: "bg-emerald-50", text: "text-emerald-700" },
@@ -119,6 +130,32 @@ export default async function AdminArkatFeedbackPage() {
                     {navnMap.get(f.user_id) ?? "Ukjent"} · {dato}
                   </div>
                 </div>
+
+                {/* Kontekst: akuttgrad, grunnlag, tillegg */}
+                {(f.akuttgrad || f.hovedgrunnlag || f.ns_versjon || (f.tilleggsgrunnlag && f.tilleggsgrunnlag.length > 0)) && (
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {f.ns_versjon && (
+                      <span className="text-xs bg-[#f5f0ff] text-[#6b21a8] px-2 py-0.5 rounded">
+                        {NS_VERSJON_LABELS[f.ns_versjon as NsVersjon] ?? f.ns_versjon}
+                      </span>
+                    )}
+                    {f.akuttgrad && (
+                      <span className="text-xs bg-[#f0f4f8] text-[#1e293b] px-2 py-0.5 rounded">
+                        Akuttgrad: {AKUTTGRAD_LABELS[f.akuttgrad] ?? f.akuttgrad}
+                      </span>
+                    )}
+                    {f.hovedgrunnlag && (
+                      <span className="text-xs bg-[#f0f4f8] text-[#1e293b] px-2 py-0.5 rounded">
+                        Grunnlag: {HOVEDGRUNNLAG_LABELS[f.hovedgrunnlag as Hovedgrunnlag] ?? f.hovedgrunnlag}
+                      </span>
+                    )}
+                    {f.tilleggsgrunnlag?.map((t: string) => (
+                      <span key={t} className="text-xs bg-[#eef2ff] text-[#4338ca] px-2 py-0.5 rounded">
+                        + {OBSERVASJONS_TILLEGG_LABELS[t as ObservasjonsTillegg] ?? t}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 {/* Observasjon (fakta — brukerens input) */}
                 <div className="mb-3">

@@ -711,6 +711,10 @@ export default function ArkatAssistantForm() {
                 tilstandsgrad: merknadModus ? undefined : tilstandsgrad,
                 observasjon,
                 arsak: merknadModus ? undefined : arsak,
+                akuttgrad: merknadModus ? undefined : (akuttgrad || undefined),
+                hovedgrunnlag: hovedgrunnlag || undefined,
+                tilleggsgrunnlag: tillegg.length > 0 ? tillegg : undefined,
+                ns_versjon: nsVersjon,
               }}
             />
           ) : (
