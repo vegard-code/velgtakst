@@ -199,7 +199,9 @@ export const RECURRING_WEBHOOK_EVENTS = [
   'recurring.agreement-expired.v1',
   'recurring.charge-reserved.v1',
   'recurring.charge-captured.v1',
-  'recurring.charge-cancelled.v1',
+  // 'recurring.charge-cancelled.v1' — fjernet 21.04.2026: Vipps returnerer
+  // "Unsupported values" ved registrering. Håndteringskoden i recurring-webhook/route.ts
+  // er beholdt for evt. gjenopptagelse.
   'recurring.charge-failed.v1',
   'recurring.charge-creation-failed.v1',
 ]
