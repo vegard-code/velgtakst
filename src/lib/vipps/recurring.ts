@@ -182,7 +182,7 @@ export async function stoppAgreement(agreementId: string): Promise<void> {
 
   const res = await fetch(`${BASE_URL}/recurring/v3/agreements/${agreementId}`, {
     method: 'PATCH',
-    headers: vippsHeaders(accessToken),
+    headers: vippsHeaders(accessToken, crypto.randomUUID()),
     body: JSON.stringify({ status: 'STOPPED' }),
   })
 
@@ -200,7 +200,7 @@ export async function oppdaterAgreementBelop(agreementId: string, nyMaanedligOre
 
   const res = await fetch(`${BASE_URL}/recurring/v3/agreements/${agreementId}`, {
     method: 'PATCH',
-    headers: vippsHeaders(accessToken),
+    headers: vippsHeaders(accessToken, crypto.randomUUID()),
     body: JSON.stringify({
       pricing: {
         amount: nyMaanedligOre,
