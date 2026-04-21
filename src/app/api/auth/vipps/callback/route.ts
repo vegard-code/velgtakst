@@ -207,6 +207,11 @@ export async function GET(request: NextRequest) {
       userId = newAuth.user.id
 
       await opprettProfiler(supabaseAdmin, userId, valgtRolle, navn, email, telefon)
+
+      // Sjekk om ny Vipps-bruker ser ut som duplikat av en eksisterende bruker,
+      // basert på navn eller telefon. Logger i admin_hendelse_logg slik at admin
+      // kan finne dem på /portal/admin/duplikater og evt. merge.
+      await loggMuligDuplikat(supabaseAdmin, userId, navn, telefon)
     }
 
     // --- 4. Bestem riktig redirect basert på faktisk rolle ---
@@ -367,4 +372,78 @@ async function opprettProfiler(
       epost: email,
     })
   }
+}
+
+/**
+ * Normaliser navn for duplikat-sammenligning: lowercase, fjern alt
+ * annet enn bokstaver og tall. Fanger varianter som "Geir-Jonny",
+ * "Geir Jonny", "geir_jonny".
+ */
+function normNavn(s: string | null | undefined): string {
+  if (!s) return ''
+  return s.toLowerCase().normalize('NFKD').replace(/[^a-zæøå0-9]/g, '')
+}
+
+/**
+ * Normaliser telefon: behold kun siffer, ta de siste 8 (for å fange
+ * varianter med/uten +47).
+ */
+function normTlf(s: string | null | undefined): string {
+  if (!s) return ''
+  return s.replace(/\D/g, '').slice(-8)
+}
+
+/**
+ * Etter opprettelse av ny Vipps-bruker: sjekk om noen eksisterende
+ * brukere har samme normaliserte navn eller telefon. Hvis ja, logg
+ * i admin_hendelse_logg så admin kan følge opp.
+ */
+async function loggMuligDuplikat(
+  supabase: Awaited<ReturnType<typeof createServiceClient>>,
+  nyUserId: string,
+  navn: string,
+  telefon?: string,
+) {
+  const nyNavn = normNavn(navn)
+  const nyTlf = normTlf(telefon)
+  if (!nyNavn && !nyTlf) return
+
+  const [takstResp, meglerResp, kundeResp] = await Promise.all([
+    supabase.from('takstmann_profiler').select('user_id, navn, telefon'),
+    supabase.from('megler_profiler').select('user_id, navn, telefon'),
+    supabase.from('privatkunde_profiler').select('user_id, navn, telefon'),
+  ])
+
+  const alle = [
+    ...(takstResp.data ?? []),
+    ...(meglerResp.data ?? []),
+    ...(kundeResp.data ?? []),
+  ] as { user_id: string | null; navn: string | null; telefon: string | null }[]
+
+  const matcher = new Set<string>()
+  for (const rad of alle) {
+    if (!rad.user_id || rad.user_id === nyUserId) continue
+    const annetNavn = normNavn(rad.navn)
+    const annetTlf = normTlf(rad.telefon)
+    if (nyNavn && annetNavn === nyNavn) {
+      matcher.add(rad.user_id)
+    } else if (nyTlf && annetTlf === nyTlf) {
+      matcher.add(rad.user_id)
+    }
+  }
+
+  if (matcher.size === 0) return
+
+  await supabase.from('admin_hendelse_logg').insert({
+    admin_user_id: nyUserId,
+    hendelse_type: 'mulig_duplikat_ved_vipps_registrering',
+    target_id: nyUserId,
+    target_type: 'user',
+    detaljer: {
+      ny_bruker_id: nyUserId,
+      ny_navn: navn,
+      ny_telefon: telefon ?? null,
+      mulige_matchende_bruker_ids: Array.from(matcher),
+    },
+  })
 }
