@@ -149,7 +149,15 @@ export default async function AdminBrukerePage({ searchParams }: Props) {
           <h1 className="text-2xl font-bold text-[#1e293b]">Brukere</h1>
           <p className="text-sm text-[#64748b]">{totalBrukere ?? 0} totalt</p>
         </div>
-        <Link href="/portal/admin" className="text-sm text-[#285982] hover:underline">Tilbake</Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/portal/admin/duplikater"
+            className="text-sm font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded-lg transition-colors"
+          >
+            Finn duplikater →
+          </Link>
+          <Link href="/portal/admin" className="text-sm text-[#285982] hover:underline">Tilbake</Link>
+        </div>
       </div>
 
       {/* Rolle-oversikt */}
