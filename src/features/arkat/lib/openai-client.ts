@@ -47,19 +47,29 @@ const ARKAT_OUTPUT_SCHEMA = {
     risiko: {
       type: "string" as const,
       description:
-        "Risiko — hva KAN GÅ GALT dersom forholdet ikke utbedres. " +
-        "Fremtidsrettet og usikkert: «kan føre til», «risiko for». " +
-        "Beskriv mekanismen (fukt, råte, setning, frost, etc.).",
+        "Risiko — hva kan utvikle seg i bygningsdelen dersom forholdet ikke utbedres. " +
+        "RETTSLIG BÆRENDE varsling til kjøper, må oppfylle to krav: " +
+        "(1) navngi konkret mekanisme (fukt, råte, korrosjon, setning, frost/frostsprengning, " +
+        "bom, nedbrytning av tetning, lekkasje, svekket innfesting, osv.) og " +
+        "(2) bruke fremtidsrettet språk («kan føre til», «risiko for», «gir over tid»). " +
+        "SKAL IKKE handle om kjøper, kostnader eller tiltak — det hører under konsekvens/anbefalt_tiltak. " +
+        "SKAL IKKE være tom formel uten mekanisme («kan gi konsekvenser»).",
     },
     konsekvens: {
       type: "string" as const,
       description:
-        "Konsekvens — hva SKJER FAKTISK dersom risikoen inntreffer. " +
-        "Beskriv fysisk skade, funksjonssvikt, sikkerhetsrisiko eller " +
-        "kostnadsbildet ved utbedring. Dette handler om utfall, ikke om handling. " +
-        "IKKE skriv råd eller anbefalinger. Ingen setning skal begynne med " +
-        "«Kjøper bør», «Det anbefales», «Det må» eller «Videre bør» — " +
-        "den type formuleringer hører under anbefalt_tiltak.",
+        "Konsekvens — den konkrete følgen for kjøper av at årsaken foreligger. " +
+        "Kan dekke én eller flere av tre kategorier: " +
+        "(a) funksjonssvikt (redusert brukbarhet, komfort, inneklima, sikkerhet), " +
+        "(b) utbedringskostnader (kjøpers forventede utbedringsbehov, uten konkrete kronebeløp), " +
+        "(c) uavklart skadeomfang (hva kjøper overtar av ukartlagt/skjult tilstand). " +
+        "Skal være en «mashup» som binder teknisk utfall (fra risiko) til kjøpers realitet. " +
+        "SKAL IKKE åpne rutinemessig med «Kjøper må påregne» eller «Kjøper bør påregne» — " +
+        "det er én av mange legitime åpninger, ikke malen. Varier med f.eks. «Ved forverring...», " +
+        "«Et slikt skadeforløp gir...», «Utbedring innebærer...», «Forholdet gir usikkerhet om...». " +
+        "SKAL IKKE inneholde «videre oppfølging» eller «undersøkelser kjøper bør bestille» — det hører under anbefalt_tiltak. " +
+        "SKAL IKKE være ren teknisk beskrivelse uten kjøperanker — da hører det under risiko. " +
+        "SKAL IKKE være sirkulær (gjenta risiko med «kjøper bør...» foran).",
     },
     anbefalt_tiltak: {
       type: "string" as const,
@@ -165,7 +175,8 @@ export function mockArkatResultat(): AiArkatResultat {
     risiko:
       "[MOCK] Uten utbedring er det risiko for følgeskader i konstruksjonen.",
     konsekvens:
-      "[MOCK] Ved forverring kan det oppstå fuktskader i bærende bjelkelag og soppvekst, med tilhørende kostnader til sanering.",
+      "[MOCK] Ved forverring kan det oppstå fuktskader i bjelkelag og soppvekst, " +
+      "med tilhørende sanerings- og utbedringskostnader som kjøper må ta høyde for.",
     anbefalt_tiltak:
       "[MOCK] Det anbefales utbedring. Innhent vurdering fra kvalifisert fagperson.",
     varsler: ["[MOCK] Dette er et mock-svar, ikke generert av AI."],

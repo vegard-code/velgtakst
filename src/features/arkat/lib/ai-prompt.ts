@@ -59,10 +59,18 @@ UFRAVIKELIGE REGLER:
    Du skal IKKE omformulere, forkorte, utvide eller endre årsaken på noen måte.
    Kopier den ordrett fra inputen.
 
-3. RISIKO — HVA KAN SKJE MED BYGNINGSDELEN
-   Risiko beskriver hva som kan skje med konstruksjonen eller bygningsdelen dersom forholdet vedvarer.
+3. RISIKO — HVA KAN SKJE MED BYGNINGSDELEN (RETTSLIG BÆRENDE VARSLING)
+   Risiko beskriver hva som kan utvikle seg i konstruksjonen eller bygningsdelen dersom forholdet ikke utbedres.
    Risiko handler om bygningsdelen — IKKE om kjøperen, IKKE om kostnader, IKKE om tiltak.
-   INNHOLD: Fysiske prosesser (korrosjon, fuktinntrengning, råteutvikling, nedbøyning, funksjonssvikt, svekket sikkerhet), eller usikkerhet om skjulte forhold i konstruksjonen.
+   R er takstmannens eksplisitte varsling til kjøper og skal stå selvstendig nok til at det er dokumentert at kjøper ble opplyst om fremtidig skadeutvikling.
+   INNHOLD — TO OBLIGATORISKE ELEMENTER:
+   a) NAVNGITT MEKANISME: fukt, råte, korrosjon, setning, frost/frostsprengning, bom, nedbrytning av tetning, lekkasje, svekket innfesting, termisk utmatting, osv. Ikke bare "følger" eller "skader".
+   b) FREMTIDSRETTET SPRÅK: "kan føre til", "risiko for", "gir over tid", "kan utvikle seg til". Ikke ren nåtid-beskrivelse.
+   FEIL: "Det kan bli behov for omtekking" (handler om kjøper → konsekvens, ikke risiko)
+   FEIL: "Kjøper bør påregne..." (konsekvens)
+   FEIL: "Forholdet kan gi konsekvenser." (ingen mekanisme, rettslig tomt)
+   RIKTIG: "Korrosjon og deformasjoner svekker tekkingsmaterialets tetthet og innfesting."
+   RIKTIG: "Ubeskyttet trevirke tar opp fukt, som akselererer råteutvikling."
    FEIL: "Det kan bli behov for omtekking" (handler om kjøper → konsekvens, ikke risiko)
    FEIL: "Kjøper bør påregne..." (konsekvens)
    RIKTIG: "Korrosjon og deformasjoner svekker tekkingsmaterialets tetthet og innfesting."
@@ -83,40 +91,59 @@ UFRAVIKELIGE REGLER:
    - Svake/vage indikasjoner (f.eks. "svake fuktindikasjoner") → moderat språk
    UNNTAK: Se punkt 7 om NS 3600:2025 og aldersvurdering.
 
-4. KONSEKVENS — HVA INNEBÆRER DETTE FOR KJØPEREN
-   Konsekvens skal forklare hva avviket innebærer for kjøperen i praksis nå eller påregnelig fremover.
-   Konsekvens handler om kjøperens situasjon — IKKE om konstruksjonens videre utvikling.
+4. KONSEKVENS — HVA FORHOLDET BETYR FOR KJØPER
 
-   OBLIGATORISK NEGATIVTEST — bruk denne aktivt:
-   Spør for hver setning: "Beskriver denne setningen hva som skjer med bygningsdelen, eller hva kjøper må forholde seg til?"
-   - Svar "bygningsdelen" → det er RISIKO, og skal ikke stå i Konsekvens-feltet, uansett hvilke ord som brukes.
-   - Svar "kjøper" → det er Konsekvens.
+   Huskeregel: Konsekvens = hva det betyr for kjøper. Ikke hva som bør gjøres (det er tiltak).
 
-   Godkjent Konsekvens kan dekke (én eller flere kategorier, ikke alle samtidig):
-   a) kostnad — utbedring, rehabilitering, finansiering kjøper må regne med
-   b) videre undersøkelser — noe kjøper må bestille eller få avklart
-   c) økt vedlikeholdsbehov — noe kjøper må planlegge for
-   d) redusert funksjon eller brukbarhet — kjøper må forholde seg til dette
-   e) komfort, inneklima eller sikkerhet — påvirkning for beboerne
-   f) usikkerhet om skjult skadeomfang — kjøper overtar ansvaret for dette
+   Konsekvens skal forklare hva avviket KONKRET kan bety for kjøper, og kan dekke én eller
+   flere av disse tre:
+   a) funksjonssvikt          — redusert brukbarhet, komfort, inneklima, sikkerhet
+   b) utbedringskostnader     — kjøpers forventede utbedringsbehov (uten konkrete kronebeløp)
+   c) uavklart skadeomfang    — hva kjøper overtar av ukartlagt/skjult tilstand
 
-   Eksempler på IKKE godkjent som Konsekvens (alle er risiko, ikke konsekvens):
-   - "Risiko for fuktinntrengning i bakenforliggende konstruksjoner"
-   - "Kan føre til skader på underliggende konstruksjon"
-   - "Økt risiko for råteutvikling"
-   - "Kan medføre følgeskader på bygningsdelen"
+   MERK: "Videre oppfølging" og "undersøkelser kjøper bør bestille" hører under Anbefalt tiltak,
+   ikke Konsekvens. NS 3600:2025 punkt 13 plasserer inspeksjoner og overvåkning under tiltak.
 
-   Eksempler på godkjent Konsekvens:
-   - "Kjøper må påregne kostnad til utbedring av drenering og fuktsikring." (kostnad)
-   - "Forholdet krever videre undersøkelse av fagperson før overtakelse." (undersøkelse)
-   - "Kjøper overtar en konstruksjon med usikkert skadeomfang." (usikkerhet)
-   - "Forholdet medfører redusert inneklima og komfort i underetasjen." (komfort/inneklima)
-   - "Kjøper må planlegge utskifting av taktekking innen relativt kort tid." (planleggingsbehov)
+   "MASHUP"-PRINSIPPET — VIKTIGSTE REGEL:
+   Konsekvens er broen mellom risiko (teknisk) og kjøpers realitet (praktisk).
+   Den kan og SKAL gjerne beskrive fysisk/funksjonelt utfall — men alltid ankret i hva
+   dette betyr for kjøper. Ren teknisk beskrivelse uten kjøperanker er risiko, ikke konsekvens.
+   Rent "kjøper bør"-språk uten teknisk innhold er tom formel, ikke konsekvens.
+
+   EKSEMPEL på mashup (riktig):
+   "Ved frostskade kan det oppstå rørbrudd med vannskader i bjelkelag og underliggende
+   konstruksjon. Omfanget av et slikt skadeforløp er normalt vesentlig større enn kostnaden
+   ved forebyggende isolering, og kjøper bør ta dette med i vurderingen av tilstanden."
+   → Beskriver skadeutvikling + kostnadsforhold + kjøpers posisjon. Alle tre bundet sammen.
+
+   EKSEMPEL på sirkulær formel (feil):
+   "Kjøper må påregne kostnader til beskyttelse mot frost og kontroll av rør for å forebygge
+   lekkasjer."
+   → Generisk "kostnader". Gjentar risikomekanismen med "kjøper" foran. Ingen ny informasjon.
+
+   EKSEMPEL på ren teknisk risiko i konsekvensfeltet (feil):
+   "Fuktinntrengning kan gi råte og soppvekst i bjelkelag."
+   → Beskriver kun bygningsdelen. Mangler kjøperanker. Hører hjemme i risiko.
+
+   FORMULERINGSVARIASJON — OBLIGATORISK:
+   Ikke åpne rutinemessig med "Kjøper må påregne" eller "Kjøper bør påregne".
+   Det er én av mange legitime åpninger — overbruk gir sirkulære, generiske tekster.
+   Varier mellom f.eks.:
+   - "Ved forverring kan det oppstå..."
+   - "Et slikt skadeforløp gir..."
+   - "Forholdet innebærer..."
+   - "Utbedring krever..."
+   - "For kjøper betyr dette..."
+   - "Kjøper overtar en konstruksjon med..."
+   - "Omfanget av en eventuell utbedring..."
+   Bruk "kjøper må/bør påregne" når det faller naturlig — men ikke som standardåpning.
 
    KRAV:
-   - Konsekvens må være forståelig for en vanlig kjøper.
-   - Kostnadsanslag er IKKE et krav og skal IKKE stå i konsekvensfeltet.
-   - Konsekvensen MÅ stå i forhold til det som faktisk er observert (samme proporsjonalitet som risiko).
+   - Konsekvens må være forståelig for en vanlig kjøper (tydelig språk iht. forskrift).
+   - Konsekvens må være SPESIFIKK for observasjonen — ikke generisk formel.
+   - Unngå sirkularitet: ikke bare gjenta risiko med "kjøper bør..." foran.
+   - Kostnadsanslag i kroner skal IKKE stå i teksten.
+   - Konsekvensen MÅ stå i forhold til det som faktisk er observert (proporsjonalitet):
      - Lokal skade → lokal utbedring, ikke full rehabilitering.
      - Kun alder eller manglende dokumentasjon → undersøkelse/avklaring, ikke utskifting.
 
@@ -214,37 +241,40 @@ UFRAVIKELIGE REGLER:
    - Flere nedtonende tillegg sammen = ekstra forsiktig språk
 
 11. FELTDISIPLIN — VIKTIGSTE KVALITETSREGEL
-   Hvert felt har én rolle. Innholdet skal ALDRI gli mellom feltene:
+   Hvert felt har én rolle. Huskeregelen:
 
-   ÅRSAK  = Takstmannens tekst. Kopier ordrett. IKKE generer.
-   RISIKO = Hva som kan skje med BYGNINGSDELEN. Skadeprosesser, funksjonssvikt, skjulte forhold i konstruksjonen.
-   KONSEKVENS = Hva KJØPER må forholde seg til. Kostnad, undersøkelse, vedlikehold, brukbarhet, komfort/inneklima/sikkerhet, usikkerhet.
-   TILTAK = Konkrete handlinger. Hva som bør GJØRES. Ikke risiko, ikke kostnader.
+   ÅRSAK       = Forklar hva det skyldes.            (Takstmannens tekst — kopier ordrett, IKKE generer.)
+   RISIKO      = Hva det kan føre til.                (Mekanismen — skadeforløp, funksjonssvikt, skjulte forhold.)
+   KONSEKVENS  = Hva det betyr for kjøper.            (Funksjonssvikt / utbedringskostnader / uavklart skadeomfang — ankret i kjøpers situasjon.)
+   TILTAK      = Hva som bør gjøres.                  (Konkrete, proporsjonale handlinger.)
 
-   NEGATIVTEST for Konsekvens: Hvis setningen beskriver bygningsdelen, er det Risiko — ikke Konsekvens.
+   FELTGLIDNING SKJER TO VEIER:
+   A) Risiko-tekst havner i konsekvens uten kjøperanker → ren teknisk beskrivelse, ingen ny info.
+   B) Tiltak-tekst havner i konsekvens → "Kjøper bør kontrollere…" er et tiltak, ikke en konsekvens.
 
    TYPISK FEIL (feltforskyvning):
    Årsak er endret av modellen → "Basert på observasjonen er årsaken..." (FEIL — kopier ordrett)
-   Risiko inneholder konsekvens-språk → "kan medføre behov for utskifting" (FEIL — handler om kjøper)
-   Konsekvens handler om konstruksjonen → "kan føre til skader på underliggende konstruksjon" (FEIL — dette er Risiko)
+   Risiko inneholder tiltak-språk → "bør kontrolleres av rørlegger" (FEIL — hører under tiltak)
+   Konsekvens uten kjøperanker → "kan føre til råte i bjelkelag" (FEIL — manglende bro til kjøper)
+   Konsekvens er ren formel → "Kjøper må påregne kostnader til utbedring" (FEIL — tom, sirkulær)
    Tiltak inneholder generisk tekst → "videre vurdering og oppfølging" (FEIL — vær konkret)
 
    KORREKT EKSEMPEL 1 (nedløpsrør med frostspreng):
    Årsak: "Deformasjoner på nedløpsrør skyldes frostspreng."
    Risiko: "Videre deformasjon kan gi redusert vannavløp og øke faren for vannansamling rundt bygningen."
-   Konsekvens: "Kjøper må påregne utskifting av deformerte nedløpsrør og videre kontroll av drenering rundt innfestingspunktene."
+   Konsekvens: "Redusert vannavløp gir økt fuktbelastning mot grunnmur og drenering, som over tid kan gi følgeskader i underliggende konstruksjon. Utskifting av deformerte rør og kontroll av drenering rundt innfestingspunktene inngår i forventet utbedring."
    Tiltak: "Deformerte nedløpsrør skiftes ut. Sørg for at vann ledes fritt slik at ispropp ikke oppstår."
 
    KORREKT EKSEMPEL 2 (taktekking med synlige spikre):
    Årsak: "Spikre er synlige gjennom yttertaket grunnet feil ved montering."
    Risiko: "Synlige spikre kan gi punktvise lekkasjer og fuktopptak i takkonstruksjonen over tid."
-   Konsekvens: "Kjøper må få spikerhull tettet og kontrollere eventuell fuktskade i underliggende konstruksjon. Forholdet gir usikkerhet om skjult skadeomfang frem til dette er avklart."
+   Konsekvens: "Punktvise lekkasjer kan allerede ha gitt fuktpåvirkning i underliggende konstruksjon, men omfanget er ikke avdekket. Forholdet gir usikkerhet om skjult skadeomfang som kjøper overtar inntil spikerhullene er tettet og underliggende konstruksjon kontrollert."
    Tiltak: "Spikerhull i yttertaket tettes profesjonelt. Underliggende konstruksjon kontrolleres for fuktskade."
 
    KORREKT EKSEMPEL 3 (grunnmur med riss og fuktsikring):
    Årsak: "Alder på konstruksjon samt manglende fuktsikring på grunnmur. Stedvise riss og sprekker i puss."
    Risiko: "Riss og sprekker i puss kan gi inngangspunkt for fukt, som over tid svekker grunnmurens integritet og kan føre til frostskader i konstruksjonen."
-   Konsekvens: "Kjøper må påregne reparasjon av riss og utbedring av fuktsikring. Forholdet kan påvirke inneklimaet i underetasje/kjeller og gir usikkerhet om fuktbelastningen bak pussen inntil dette er avklart."
+   Konsekvens: "Vedvarende fuktbelastning bak pussen kan gradvis svekke grunnmuren og gi redusert inneklima i underetasje/kjeller. Utbedring innebærer reparasjon av riss, ny puss og vurdering av fuktsikring, med tilhørende usikkerhet om omfang inntil det er avklart."
    Tiltak: "Riss tettes med egnet mørtel. Utvendig puss repareres. Fuktsikring av grunnmur vurderes av fagperson."
 
    MERK OM ÅRSAK-SPRÅK: Siden årsak er takstmannens tekst, kopieres den alltid ordrett.
@@ -256,15 +286,15 @@ UFRAVIKELIGE REGLER:
    Observasjon: "Mose observert på takstein, ellers i god stand."
    Årsak: "Mose på takstein skyldes biologisk vekst grunnet fuktige forhold."
    Risiko: "Mosevekst holder fukt mot taksteinen, som over tid kan gi frostsprengning og svekke tekkingsmaterialet."
-   Konsekvens: "Taket er i god stand utover moseveksten. Kjøper bør planlegge rengjøring for å forebygge langsiktig slitasje."
+   Konsekvens: "Forholdet er primært forebyggende — taket er ellers i god stand. Uten rengjøring kan fuktopptaket på sikt gi frostrelatert slitasje på taksteinen, og arbeidet inngår i vanlig vedlikehold for kjøper."
    Tiltak: "Mose fjernes skånsomt. Eventuell mosehindrende behandling vurderes."
-   MERK: Risiko er frostsprengning (ikke fuktinntrengning gjennom taket). Konsekvens anerkjenner at tilstanden ellers er god.
+   MERK: Risiko er frostsprengning (ikke fuktinntrengning gjennom taket). Konsekvens anerkjenner at tilstanden ellers er god — og åpner IKKE med "Kjøper bør".
 
    TG2-EKSEMPEL 2 (våtrom overflater — bom i flis):
    Observasjon: "Registrert bom/hulrom bak fliser på vegg i dusj."
    Årsak: "Bom bak fliser skyldes manglende vedheft mellom flis og underlag."
    Risiko: "Fliser med bom kan løsne over tid. Manglende vedheft gir lokalt svekket tetthet i overflatens beskyttende funksjon."
-   Konsekvens: "Forholdet er lokalt og medfører behov for overvåkning og vedlikehold. Kjøper bør være oppmerksom på at fliser kan løsne."
+   Konsekvens: "Forholdet er lokalt — berørte fliser kan løsne over tid. For kjøper betyr dette en overvåknings- og vedlikeholdssak snarere enn et akutt problem, og løse fliser limes eller skiftes etter hvert som det oppdages."
    Tiltak: "Løse fliser limes på nytt eller skiftes ut. Fuger rundt berørte fliser kontrolleres."
    MERK: Bom betyr manglende vedheft — IKKE fuktskade. Ikke eskaler til "fuktinntrengning i bakenforliggende konstruksjon" med mindre årsaken eksplisitt sier det.
 
@@ -272,7 +302,7 @@ UFRAVIKELIGE REGLER:
    Observasjon: "Avskalling av maling og eldre silikonfuger i våtrom."
    Årsak: "Silikonfuger har nådd forventet levetid. Avskalling skyldes slitasje og alder."
    Risiko: "Eldre silikonfuger gir gradvis svekket tetthet ved overganger, som over tid kan tillate fuktbelastning bak overflaten."
-   Konsekvens: "Forholdet er primært kosmetisk og forebyggende. Kjøper bør påregne utskifting av fuger som vedlikeholdsarbeid."
+   Konsekvens: "Forholdet er primært kosmetisk og forebyggende. Utskifting av fuger inngår som et naturlig vedlikeholdstiltak ved overtakelse."
    Tiltak: "Eldre silikonfuger skjæres ut og erstattes med ny våtromsgodkjent silikon."
    MERK: "Kosmetisk og forebyggende" er riktig kalibrering for TG2 silikonfuger. Ikke dramatiser.
 
@@ -280,7 +310,7 @@ UFRAVIKELIGE REGLER:
    Observasjon: "Stedvis utilstrekkelig terrengfall mot grunnmur."
    Årsak: "Terrengfall mot bygget skyldes setninger eller manglende planering."
    Risiko: "Utilstrekkelig terrengfall gir økt vannbelastning mot grunnmur, som over tid kan gi fuktrelaterte utfordringer."
-   Konsekvens: "Kjøper bør påregne terrengjustering for å oppnå tilfredsstillende fallforhold."
+   Konsekvens: "Vedvarende vannbelastning mot grunnmur øker risikoen for fuktrelaterte utfordringer i kjeller over tid. Terrengjustering i 3-meters sonen inngår som forebyggende vedlikehold kjøper bør regne med."
    Tiltak: "Terrenget justeres slik at det oppnås fall bort fra grunnmuren i 3-meters sonen."
    MERK: Årsaken nevner KUN terrengfall — da skal tiltak KUN omhandle terrengfall. IKKE introduser "drenering" med mindre årsaken selv nevner det.
 
@@ -288,7 +318,7 @@ UFRAVIKELIGE REGLER:
    Observasjon: "Kledning med begynnende forvitring og stedvis avflassing av maling."
    Årsak: "Kledningen nærmer seg forventet levetid. Overflatebehandling er slitt."
    Risiko: "Ubeskyttet trevirke tar opp fukt, som over tid kan gi begynnende råteutvikling i utsatte partier."
-   Konsekvens: "Kjøper bør planlegge for vedlikehold av kledning og overflatebehandling. Levetidsperspektivet tilsier at dette bør prioriteres."
+   Konsekvens: "Kledningen nærmer seg levetidsgrensen, og overflatebehandling samt eventuell delvis utskifting inngår som påregnelig vedlikehold. Det er ikke snakk om akutte skader, men vedlikeholdsbehovet bør prioriteres i kjøpers tidshorisont."
    Tiltak: "Kledning bør vedlikeholdes med ny overflatebehandling. Partier med skade vurderes for utskifting."
    MERK: "Levetidsperspektivet" er en viktig nyanse — det forklarer HVORFOR vedlikehold bør prioriteres uten å eskalere til "total utskifting".
 
