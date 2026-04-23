@@ -152,7 +152,7 @@ UFRAVIKELIGE REGLER:
    - "riving og utskifting", "oppgradering eller utskifting"
    - "omfattende reparasjoner"
    - "eldgammelt", "eldgammel", "svært gammelt"
-   Disse er kun tillatt når årsaken eksplisitt beskriver skader som bærer dem.
+   Disse er kun tillatt når årsaken eksplisitt beskriver skader som bærer dem — ELLER når punkt 12 (Alderstyrt proporsjonalitet) utløses.
    "Eldgammelt" / "svært gammelt" er ALDRI tillatt — bruk "over forventet levetid" eller "høy alder".
 
 5. ANBEFALT TILTAK — KONKRETE HANDLINGER
@@ -172,7 +172,7 @@ UFRAVIKELIGE REGLER:
    - Lokale skader → tiltak = lokal utbedring, ikke total ombygging
    - Omfattende skader / TG3 → tiltak kan være mer inngripende
    Inkluder "innhent vurdering fra kvalifisert fagperson" når omfanget er uklart.
-   Ikke anbefal utskifting/rehabilitering uten konkret grunnlag i årsaken.
+   Ikke anbefal utskifting/rehabilitering uten konkret grunnlag i årsaken — MEN se punkt 12 (Alderstyrt proporsjonalitet) for unntak der alder er den faglige driveren.
 
    UNNGÅ GENERISKE FYLLSETNINGER:
    Ikke avslutt alle tiltak med "oppfølging anbefales innen rimelig tid" uten grunn.
@@ -321,6 +321,43 @@ UFRAVIKELIGE REGLER:
    Konsekvens: "Kledningen nærmer seg levetidsgrensen, og overflatebehandling samt eventuell delvis utskifting inngår som påregnelig vedlikehold. Det er ikke snakk om akutte skader, men vedlikeholdsbehovet bør prioriteres i kjøpers tidshorisont."
    Tiltak: "Kledning bør vedlikeholdes med ny overflatebehandling. Partier med skade vurderes for utskifting."
    MERK: "Levetidsperspektivet" er en viktig nyanse — det forklarer HVORFOR vedlikehold bør prioriteres uten å eskalere til "total utskifting".
+
+12. ALDERSTYRT PROPORSJONALITET — UNNTAK FRA PUNKT 4 OG 5
+   Dette punktet er et faglig unntak som gjelder kritiske bygningsdeler der alder er den primære driveren for avviket. Det åpner for prescriptive utbedringsanbefalinger selv uten påvist skade, basert på at erfaren takstmannsfaglig vurdering tilsier fornyelse når levetid er passert.
+
+   UTLØSERE (minst én må være oppfylt):
+   a) Hovedgrunnlag = "Alder / slitasje"
+   b) Tillegg inkluderer "Undersøkelsesbegrensning" OG bygningsdelen er kritisk (se liste nedenfor)
+   c) Observasjon eller Årsak nevner eksplisitt at forventet levetid er nådd eller passert (f.eks. "har nådd forventet levetid", "normal levetid er X år" kombinert med alder over dette, "fra byggeår" på bygningsdel kjent for begrenset levetid)
+
+   KRITISKE BYGNINGSDELER som omfattes:
+   - Drenering og fuktsikring rundt grunnmur
+   - Vanntett sjikt / membran / tettesjikt i våtrom
+   - Undertak / taktekking / skorstein-beslag
+   - Hovedvannledning og sentrale avløpsrør
+   - Bærende konstruksjoner med synlig nedbrytning
+   - Oljetanker og nedgravde installasjoner
+
+   NÅR UTLØST — DU MÅ:
+   - AT kan og bør inkludere prescriptive utbedring: "planlegge for utskifting", "etablering av ny drenering", "full oppgradering av våtrommet", "fornyelse av tettesjikt og sluk" — formulert som planlegging, ikke hastverk.
+   - K kan konkretisere utbedringsomfanget: "fornyelse av drenering og utvendig fuktsikring", "full oppgradering av våtrommet" — ikke bare "utbedring vurderes" eller "kontroll anbefales".
+   - Formuleringer som er forbudt i punkt 4 ("full rehabilitering", "fornyelse av våtrommet", "oppgradering eller utskifting") er TILLATT her, forutsatt at de er aldersforankret.
+
+   GRENSER SOM FORTSATT GJELDER:
+   - Språket skal være PLANLEGGINGSORIENTERT, ikke akutt: "bør planlegges for", "må påregnes", "forventes utbedret innen rimelig tid" — IKKE "haster" eller "må iverksettes umiddelbart" med mindre akuttgrad eksplisitt sier det.
+   - Ikke PÅSTÅ konkrete skader ("lekkasje er påvist", "råte er konstatert") når de ikke er observert. Du anbefaler utbedring pga. aldersstyrt risiko, ikke pga. påstått skade.
+   - Hvis Tillegg = "Ingen påvist skade", hold deg fortsatt til at skade ikke er konstatert, men du kan fortsatt anbefale planlagt utbedring basert på alder.
+   - R-teksten skal fortsatt være fremtidsrettet og hypotetisk ("kan utvikle seg til...", "risiko for..."), ikke konstaterende.
+
+   EKSEMPEL (drenering fra byggeår, ikke inspiserbar, TG2):
+   AT-FEIL (underkalibrert): "Det anbefales å gjennomføre kontroll av dreneringen med spyling og TV-inspeksjon. Videre tiltak vurderes basert på tilstand etter kontroll."
+   AT-RIKTIG: "Det bør planlegges for graving og etablering av ny drenering med grunnmursplast og isolering rundt boligen. Inntil dette er utført bør overvann ledes bort fra grunnmuren. TV-inspeksjon kan gi grunnlag for å prioritere strekk, men fornyelse må påregnes innen rimelig tid."
+
+   EKSEMPEL (våtromsmembran fra 2002, normal levetid 20 år, ikke inspiserbar, TG2):
+   AT-FEIL (underkalibrert): "Det anbefales å fremskaffe dokumentasjon på membranens utførelse. Dersom dette ikke er mulig, bør jevnlig fuktsøk gjennomføres."
+   AT-RIKTIG: "Full oppgradering av våtrommet med fornyelse av tettesjikt og sluk bør planlegges. Inntil dette er utført bør dusjkabinett benyttes for å redusere vannbelastning på gulv. Jevnlig fuktsøk i tilstøtende rom anbefales frem til oppgradering er gjennomført."
+
+   HVORFOR DETTE FINNES: Erfarne takstmenn vurderer en kritisk bygningsdel over forventet levetid som en utbedringssak, ikke en utredningssak. Å kun anbefale "kontroll" gir kjøper et underkalibrert risikobilde og takstmannen et svakere rettslig standpunkt i en senere tvist. Dette punktet kalibrerer AI-outputen til erfaren takstmannspraksis i aldersstyrte tilfeller.
 
 SVAR-FORMAT: Svar KUN med JSON-objektet. Ingen forklarende tekst rundt.`;
 }
