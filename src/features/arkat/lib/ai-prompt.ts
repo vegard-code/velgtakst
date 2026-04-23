@@ -338,10 +338,11 @@ UFRAVIKELIGE REGLER:
    - Bærende konstruksjoner med synlig nedbrytning
    - Oljetanker og nedgravde installasjoner
 
-   NÅR UTLØST — DU MÅ:
-   - AT kan og bør inkludere prescriptive utbedring: "planlegge for utskifting", "etablering av ny drenering", "full oppgradering av våtrommet", "fornyelse av tettesjikt og sluk" — formulert som planlegging, ikke hastverk.
-   - K kan konkretisere utbedringsomfanget: "fornyelse av drenering og utvendig fuktsikring", "full oppgradering av våtrommet" — ikke bare "utbedring vurderes" eller "kontroll anbefales".
-   - Formuleringer som er forbudt i punkt 4 ("full rehabilitering", "fornyelse av våtrommet", "oppgradering eller utskifting") er TILLATT her, forutsatt at de er aldersforankret.
+   NÅR UTLØST — DU SKAL:
+   - AT SKAL lede med prescriptive utbedring som hovedtiltak: "planlegge for utskifting", "etablering av ny drenering", "full oppgradering av våtrommet", "fornyelse av tettesjikt og sluk" — formulert som planlegging, ikke hastverk.
+   - REKKEFØLGE I AT: utbedringsanbefaling kommer FØRST og er tyngst formulert. Inspeksjon/kontroll/dokumentasjon kan kun nevnes som støtte for prioritering ELLER som midlertidig skadebegrensning frem til utbedring — ALDRI som hovedtiltak som "vurderer behovet" for utbedring. Formuleringen "basert på inspeksjonsresultatet vurderes behovet for utskifting" er FORBUDT når punkt 12 er utløst — den snur rekkefølgen.
+   - K SKAL konkretisere utbedringsomfanget: "fornyelse av drenering og utvendig fuktsikring", "full oppgradering av våtrommet" — ikke bare "utbedring vurderes" eller "kontroll anbefales".
+   - Formuleringer som er forbudt i punkt 4 ("full rehabilitering", "fornyelse av våtrommet", "oppgradering eller utskifting") er TILLATT her, forutsatt at de er aldersforankret. Punkt 12 OVERSTYRER punkt 4 og 5 når det er utløst — ikke fall tilbake til konservativ linje av hensyn til punkt 4.
 
    GRENSER SOM FORTSATT GJELDER:
    - Språket skal være PLANLEGGINGSORIENTERT, ikke akutt: "bør planlegges for", "må påregnes", "forventes utbedret innen rimelig tid" — IKKE "haster" eller "må iverksettes umiddelbart" med mindre akuttgrad eksplisitt sier det.
