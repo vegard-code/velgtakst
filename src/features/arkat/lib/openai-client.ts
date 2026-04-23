@@ -14,7 +14,7 @@
 // ─── Konfigurasjon ─────────────────────────────────────────
 
 const OPENAI_API_URL = "https://api.openai.com/v1/responses";
-const DEFAULT_MODEL = "gpt-4o";
+const DEFAULT_MODEL = "gpt-4.1";
 const REQUEST_TIMEOUT_MS = 30_000;
 
 /**
@@ -46,17 +46,26 @@ const ARKAT_OUTPUT_SCHEMA = {
   properties: {
     risiko: {
       type: "string" as const,
-      description: "Risiko — hva kan skje med bygningsdelen dersom forholdet ikke utbedres",
+      description:
+        "Risiko — hva KAN GÅ GALT dersom forholdet ikke utbedres. " +
+        "Fremtidsrettet og usikkert: «kan føre til», «risiko for». " +
+        "Beskriv mekanismen (fukt, råte, setning, frost, etc.).",
     },
     konsekvens: {
       type: "string" as const,
       description:
-        "Konsekvens — hva innebærer avviket for kjøper i praksis (kostnad, undersøkelse, " +
-        "vedlikehold, brukbarhet, komfort/inneklima/sikkerhet, usikkerhet)",
+        "Konsekvens — hva SKJER FAKTISK dersom risikoen inntreffer. " +
+        "Beskriv fysisk skade, funksjonssvikt, sikkerhetsrisiko eller " +
+        "kostnadsbildet ved utbedring. Dette handler om utfall, ikke om handling. " +
+        "IKKE skriv råd eller anbefalinger. Ingen setning skal begynne med " +
+        "«Kjøper bør», «Det anbefales», «Det må» eller «Videre bør» — " +
+        "den type formuleringer hører under anbefalt_tiltak.",
     },
     anbefalt_tiltak: {
       type: "string" as const,
-      description: "Anbefalt tiltak — konkret utbedringsforslag",
+      description:
+        "Anbefalt tiltak — konkret utbedringsforslag. Alle råd, " +
+        "anbefalinger, og «bør gjøre»-formuleringer hører her.",
     },
     varsler: {
       type: "array" as const,
@@ -156,7 +165,7 @@ export function mockArkatResultat(): AiArkatResultat {
     risiko:
       "[MOCK] Uten utbedring er det risiko for følgeskader i konstruksjonen.",
     konsekvens:
-      "[MOCK] Kjøper må påregne kostnad til utbedring og videre undersøkelse av omfang.",
+      "[MOCK] Ved forverring kan det oppstå fuktskader i bærende bjelkelag og soppvekst, med tilhørende kostnader til sanering.",
     anbefalt_tiltak:
       "[MOCK] Det anbefales utbedring. Innhent vurdering fra kvalifisert fagperson.",
     varsler: ["[MOCK] Dette er et mock-svar, ikke generert av AI."],

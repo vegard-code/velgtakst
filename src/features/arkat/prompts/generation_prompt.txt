@@ -32,8 +32,8 @@ FORBUDTE FRASER (bruk ALDRI disse):
 INSTRUKSJONER:
 1. Les observasjonen nøye. Identifiser den konkrete skaden/mangelen.
 2. Formuler ÅRSAK: Hva er avviket og hvorfor har det oppstått? Knytt direkte til observasjonen. Ikke gjenta observasjonen ordrett — reformuler faglig.
-3. Formuler RISIKO: Hva kan skje dersom dette ikke utbedres? Beskriv den fysiske mekanismen (fukt, råte, setning, etc.).
-4. Formuler KONSEKVENS: Hva betyr dette for kjøper? Vær konkret om hva de bør ta høyde for.
+3. Formuler RISIKO: Hva KAN GÅ GALT dersom dette ikke utbedres? Beskriv den fysiske mekanismen (fukt, råte, setning, etc.). Bruk fremtidsrettet form: «kan føre til», «risiko for».
+4. Formuler KONSEKVENS: Hva SKJER dersom risikoen inntreffer? Beskriv fysisk skade, funksjonssvikt, sikkerhetsrisiko eller kostnadsbildet ved utbedring. IKKE skriv råd, anbefalinger, eller hva kjøper «bør» gjøre — det hører under ANBEFALT TILTAK. Sjekk at ingen konsekvens-setning begynner med «Kjøper bør», «Det anbefales», «Det må», eller «Videre bør».
 5. Formuler ANBEFALT TILTAK: Hva bør gjøres? Vær spesifikk. Nevn type arbeid, type fagperson, og eventuell hastegrad.
 
 LENGDE:
